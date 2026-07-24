@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { Aperture, ArrowDownToLine, Banknote, ChevronDown, Factory, MoveHorizontal, RotateCcw, SlidersHorizontal, Sparkles } from "lucide-react"
 import { ScrubInput } from "@/components/ui/scrub-input"
 
@@ -81,25 +81,12 @@ export default function ScrubInputLabPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <Link
-              href="/"
-              className="rounded-lg border border-stone-300 bg-stone-100/80 px-3 py-1.5 font-medium text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950"
-            >
-              Spotlight Lab
-            </Link>
-            <Link
-              href="/split-flap"
-              className="rounded-lg border border-stone-300 bg-stone-100/80 px-3 py-1.5 font-medium text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950"
-            >
-              Split Flap Lab
-            </Link>
-            <Link
-              href="/scrub-input"
-              aria-current="page"
-              className="rounded-lg bg-neutral-950 px-3.5 py-1.5 font-semibold text-white shadow-xs"
-            >
-              Scrub Input Lab
-            </Link>
+            <LabNavigation
+              className="contents"
+              linkClassName="px-3.5"
+              activeClassName="bg-neutral-950 font-semibold text-white shadow-xs"
+              inactiveClassName="border border-stone-300 bg-stone-100/80 text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950"
+            />
             <button
               type="button"
               onClick={() => setReduceMotion((value) => !value)}

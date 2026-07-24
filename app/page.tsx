@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+import { LabNavigation } from "@/components/navigation/lab-navigation"
 import {
   BeamSpotlightCard,
   SpotlightCard,
@@ -61,19 +61,11 @@ export default function Home() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <Link
-              href="/"
-              aria-current="page"
-              className="rounded-lg bg-neutral-900 px-3 py-1.5 font-medium text-white"
-            >
-              Spotlight Lab
-            </Link>
-            <Link
-              href="/split-flap"
-              className="rounded-lg border border-stone-300 bg-stone-100/80 px-3 py-1.5 font-medium text-neutral-700 transition-all hover:border-neutral-400 hover:text-neutral-950"
-            >
-              Split Flap Lab
-            </Link>
+            <LabNavigation
+              className="contents"
+              activeClassName="bg-neutral-900 text-white"
+              inactiveClassName="border border-stone-300 bg-stone-100/80 text-neutral-700 transition-all hover:border-neutral-400 hover:text-neutral-950"
+            />
             <button
               type="button"
               onClick={() => setSimulateReducedMotion((v) => !v)}

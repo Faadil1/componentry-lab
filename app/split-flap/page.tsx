@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { ArrowRight, BarChart3, CheckCircle2, ChevronDown, Clapperboard, RotateCcw, SlidersHorizontal } from "lucide-react"
 import { SplitFlapDisplay } from "@/components/ui/split-flap-display"
 
@@ -48,19 +48,12 @@ export default function SplitFlapLabPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <Link
-              className="rounded-lg border border-stone-300 bg-stone-100/80 px-3 py-1.5 font-medium text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950"
-              href="/"
-            >
-              Spotlight Lab
-            </Link>
-            <Link
-              className="rounded-lg bg-neutral-950 px-3.5 py-1.5 font-semibold text-white shadow-xs"
-              href="/split-flap"
-              aria-current="page"
-            >
-              Split Flap Lab
-            </Link>
+            <LabNavigation
+              className="contents"
+              linkClassName="px-3.5"
+              activeClassName="bg-neutral-950 font-semibold text-white shadow-xs"
+              inactiveClassName="border border-stone-300 bg-stone-100/80 text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950"
+            />
             <button
               type="button"
               onClick={() => setReduceMotion((value) => !value)}
