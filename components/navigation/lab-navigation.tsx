@@ -9,6 +9,7 @@ const labLinks = [
   { href: "/", label: "Spotlight Lab" },
   { href: "/split-flap", label: "Split Flap Lab" },
   { href: "/scrub-input", label: "Scrub Input Lab" },
+  { href: "/kinetic-text", label: "Kinetic Text Lab" },
 ] as const
 
 export interface LabNavigationProps {

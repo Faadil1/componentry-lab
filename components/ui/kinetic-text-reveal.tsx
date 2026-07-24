@@ -12,6 +12,7 @@ import {
   useEffect,
   useImperativeHandle,
   useMemo,
+  useRef,
   useState,
   type HTMLAttributes,
 } from "react";
@@ -55,6 +56,8 @@ interface KineticTextRevealProps extends Omit<
   blur?: boolean;
   /** Starts automatically after mount. */
   autoPlay?: boolean;
+  /** Forces reduced motion independently from the OS preference. */
+  reduceMotion?: boolean;
   /** Optional delay before the automatic reveal begins, in seconds. */
   delay?: number;
   /** Called when the reveal begins. */
@@ -168,6 +171,7 @@ export const KineticTextReveal = forwardRef<
       transition = { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
       blur = true,
       autoPlay = true,
+      reduceMotion = false,
       delay = 0,
       onRevealStart,
       onRevealComplete,
@@ -175,35 +179,57 @@ export const KineticTextReveal = forwardRef<
     },
     ref,
   ) => {
-    const shouldReduceMotion = useReducedMotion();
+    const prefersReducedMotion = useReducedMotion();
+    const shouldReduceMotion = prefersReducedMotion || reduceMotion;
+    const animationFrameRef = useRef<number | null>(null);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [run, setRun] = useState(0);
     const [visible, setVisible] = useState(false);
 
     const segments = useMemo(() => getSegments(text, splitBy), [text, splitBy]);
     const animatedTotal = segments.filter((segment) => segment.animated).length;
 
+    const clearPendingAnimation = () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+
     useImperativeHandle(ref, () => ({
       play: () => {
+        clearPendingAnimation();
         setVisible(false);
-        requestAnimationFrame(() => {
+        animationFrameRef.current = requestAnimationFrame(() => {
+          animationFrameRef.current = null;
           setRun((current) => current + 1);
           setVisible(true);
           onRevealStart?.();
         });
       },
-      reset: () => setVisible(false),
+      reset: () => {
+        clearPendingAnimation();
+        setRun((current) => current + 1);
+        setVisible(false);
+      },
     }));
 
     useEffect(() => {
-      if (!autoPlay) return;
+      clearPendingAnimation();
+      if (!autoPlay) return clearPendingAnimation;
 
-      const timeout = window.setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
         setRun((current) => current + 1);
         setVisible(true);
         onRevealStart?.();
       }, delay * 1000);
 
-      return () => window.clearTimeout(timeout);
+      return clearPendingAnimation;
     }, [autoPlay, delay, text, onRevealStart]);
 
     const offset = getOffset(direction, distance);

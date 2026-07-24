@@ -106,6 +106,41 @@ export const registryComponents = [
       "Very small step sizes may need a tuned scrubSensitivity per product domain.",
     ],
   },
+  {
+    id: "componentry-kinetic-text-reveal",
+    name: "Kinetic Text Reveal",
+    slug: "kinetic-text-reveal",
+    route: "/kinetic-text",
+    description: "Sequenced typographic reveal system for editorial headlines, product statements and cinematic manifestos.",
+    category: "Typography",
+    interactionModel: "Imperative Replay and Reset controls reveal deterministic text segments with configurable speed presets.",
+    maturity: "Lab Ready",
+    dependencies: ["react", "next", "framer-motion", "lucide-react", "tailwindcss", "clsx", "tailwind-merge"],
+    mobileSupport: "Supported",
+    keyboardSupport: "Supported",
+    tactileSupport: "Supported",
+    reducedMotion: "Supported",
+    deterministicCapture: true,
+    remotionReady: true,
+    playwrightSelectors: {
+      root: '[data-kinetic-text-variant="cinematic"]',
+      variants: [
+        '[data-kinetic-text-variant="editorial"]',
+        '[data-kinetic-text-variant="product"]',
+        '[data-kinetic-text-variant="cinematic"]',
+      ],
+      controls: ["button"],
+    },
+    heroDemoMoment: "Three-step manifesto sequence ending on a strong consequence-focused final frame.",
+    recommendedViewport: { width: 1440, height: 1100, label: "Desktop typographic capture" },
+    recommendedCaptureDuration: "6-8 seconds",
+    initialState: "Cinematic sequence starts in a quiet hidden state with step one selected.",
+    finalState: "Final manifesto frame reads: The best systems reveal consequence.",
+    limitations: [
+      "Very long headlines require viewport checks at 390px width to avoid awkward wrapping.",
+      "Frame-perfect captures should trigger Replay and sequence steps through Playwright rather than relying on manual timing.",
+    ],
+  },
 ] as const satisfies readonly RegistryComponent[]
 
 export function getComponentBySlug(slug: string): RegistryComponent | undefined {
