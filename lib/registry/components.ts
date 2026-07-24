@@ -176,6 +176,41 @@ export const registryComponents = [
       "Real touch hardware should be used to evaluate the feel of long sticky sections on mobile.",
     ],
   },
+  {
+    id: "componentry-webgl-liquid",
+    name: "WebGL Liquid",
+    slug: "webgl-liquid",
+    route: "/webgl-liquid",
+    description: "Real-time liquid shader field for premium atmospheres, operational states and cinematic WebGL reveals.",
+    category: "3D & WebGL",
+    interactionModel: "Preset controls update shader uniforms while replay and reset remount deterministic reveal states.",
+    maturity: "Lab Ready",
+    dependencies: ["react", "next", "lucide-react", "tailwindcss", "clsx", "tailwind-merge"],
+    mobileSupport: "Supported",
+    keyboardSupport: "Supported",
+    tactileSupport: "Supported",
+    reducedMotion: "Supported",
+    deterministicCapture: false,
+    remotionReady: true,
+    playwrightSelectors: {
+      root: '[data-webgl-liquid-variant="cinematic"]',
+      variants: [
+        '[data-webgl-liquid-variant="product"]',
+        '[data-webgl-liquid-variant="data"]',
+        '[data-webgl-liquid-variant="cinematic"]',
+      ],
+      controls: ["button"],
+    },
+    heroDemoMoment: "Three-state cinematic reveal from Dormant to Emergence to Full Field with persistent final frame.",
+    recommendedViewport: { width: 1440, height: 1000, label: "Desktop WebGL capture" },
+    recommendedCaptureDuration: "6-8 seconds",
+    initialState: "Dormant liquid field with restrained reveal and stable overlay copy.",
+    finalState: "Full Field state remains visible until Replay or Reset.",
+    limitations: [
+      "The live shader uses requestAnimationFrame time, so exact Remotion determinism requires future explicit time/progress uniforms.",
+      "WebGL availability and shader precision should be verified on target mobile hardware.",
+    ],
+  },
 ] as const satisfies readonly RegistryComponent[]
 
 export function getComponentBySlug(slug: string): RegistryComponent | undefined {

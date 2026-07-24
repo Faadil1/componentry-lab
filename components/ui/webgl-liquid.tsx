@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { WebGLErrorBoundary, WebGLFallback } from "./webgl-error-boundary";
 
@@ -134,6 +134,9 @@ export interface WebGLLiquidProps extends React.HTMLAttributes<HTMLDivElement> {
   reveal?: boolean;
   delayMs?: number;
   revealDuration?: number;
+  reduceMotion?: boolean;
+  forceFallback?: boolean;
+  fallbackMessage?: string;
   children?: React.ReactNode;
 }
 
@@ -155,6 +158,9 @@ export function WebGLLiquid({
   reveal = true,
   delayMs = 0,
   revealDuration = 1.2,
+  reduceMotion = false,
+  forceFallback = false,
+  fallbackMessage,
   className,
   children,
   style,
@@ -164,9 +170,9 @@ export function WebGLLiquid({
   const hostRef = useRef<HTMLDivElement | null>(null);
   const [hasWebGLError, setHasWebGLError] = useState(false);
 
-  const reportWebGLError = () => {
+  const reportWebGLError = useCallback(() => {
     queueMicrotask(() => setHasWebGLError(true));
-  };
+  }, []);
 
   const settings = useMemo(
     () => ({
@@ -198,7 +204,7 @@ export function WebGLLiquid({
   );
 
   useEffect(() => {
-    if (hasWebGLError) {
+    if (hasWebGLError || reduceMotion || forceFallback) {
       return;
     }
 
@@ -315,6 +321,7 @@ export function WebGLLiquid({
       resizeObserver.observe(host);
 
       let rafId = 0;
+      let isVisible = document.visibilityState === "visible";
       const start = performance.now();
 
       const render = (now: number) => {
@@ -342,13 +349,27 @@ export function WebGLLiquid({
         gl.uniform1f(uReveal, revealProgress);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-        rafId = requestAnimationFrame(render);
+        if (isVisible) {
+          rafId = requestAnimationFrame(render);
+        }
       };
 
+      const handleVisibilityChange = () => {
+        isVisible = document.visibilityState === "visible";
+        if (isVisible) {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(render);
+        } else {
+          cancelAnimationFrame(rafId);
+        }
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
       rafId = requestAnimationFrame(render);
 
       return () => {
         cancelAnimationFrame(rafId);
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
         resizeObserver.disconnect();
         gl.deleteBuffer(quadBuffer);
         gl.deleteProgram(program);
@@ -359,7 +380,7 @@ export function WebGLLiquid({
       reportWebGLError();
       return;
     }
-  }, [hasWebGLError, settings]);
+  }, [forceFallback, hasWebGLError, reduceMotion, reportWebGLError, settings]);
 
   const fallbackContent = (
     <div
@@ -370,7 +391,7 @@ export function WebGLLiquid({
       style={{ containerType: "size", ...style }}
       {...props}
     >
-      <WebGLFallback className="absolute inset-0 h-full w-full" />
+      <WebGLFallback className="absolute inset-0 h-full w-full" message={fallbackMessage} />
       {(title || subtitle || description || children) && (
         <div className="relative z-10 mx-auto w-full max-w-[1240px] px-6 py-20 md:px-10 md:py-28">
           <div className="max-w-[760px]">
@@ -392,7 +413,7 @@ export function WebGLLiquid({
     </div>
   );
 
-  if (hasWebGLError) {
+  if (hasWebGLError || reduceMotion || forceFallback) {
     return fallbackContent;
   }
 
