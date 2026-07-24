@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
@@ -12,13 +12,17 @@ interface ScrollChoreographyProps {
     bottomLeft: string;
     bottomRight: string;
   };
+  reduceMotion?: boolean;
 }
 
 export function ScrollChoreography({
   className,
   images,
+  reduceMotion = false,
 }: ScrollChoreographyProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const shouldReduceMotion = prefersReducedMotion || reduceMotion;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -68,6 +72,27 @@ export function ScrollChoreography({
   const baseImageClasses =
     "absolute left-1/2 top-1/2 w-[36vw] h-[24vh] overflow-hidden -translate-x-1/2 -translate-y-1/2 bg-muted shadow-2xl will-change-transform";
 
+  if (shouldReduceMotion) {
+    return (
+      <div ref={containerRef} className={cn("grid gap-3 md:grid-cols-4", className)}>
+        {[
+          [images.topLeft, "Opening context panel"],
+          [images.topRight, "Final hero panel"],
+          [images.bottomLeft, "Mechanism panel"],
+          [images.bottomRight, "Outcome panel"],
+        ].map(([src, label]) => (
+          <div
+            key={label}
+            role="img"
+            aria-label={label}
+            className="min-h-[220px] rounded-xl border border-white/10 bg-cover bg-center shadow-xl"
+            style={{ backgroundImage: `url(${src})` }}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className={cn("relative h-[300vh] w-full", className)}>
       <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -78,7 +103,7 @@ export function ScrollChoreography({
             style={{ x: tlX, y: tlY, opacity: underImagesOpacity }}
             className={cn(baseImageClasses, "z-10")}
           >
-            <img src={images.topLeft} alt="Top Left" className="h-full w-full object-cover" />
+            <div role="img" aria-label="Opening context panel" className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${images.topLeft})` }} />
           </motion.div>
 
           {/* Bottom Right Image */}
@@ -86,7 +111,7 @@ export function ScrollChoreography({
             style={{ x: brX, y: brY, opacity: underImagesOpacity }}
             className={cn(baseImageClasses, "z-20")}
           >
-            <img src={images.bottomRight} alt="Bottom Right" className="h-full w-full object-cover" />
+            <div role="img" aria-label="Outcome panel" className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${images.bottomRight})` }} />
           </motion.div>
 
           {/* Bottom Left Image */}
@@ -94,7 +119,7 @@ export function ScrollChoreography({
             style={{ x: blX, y: blY, opacity: underImagesOpacity }}
             className={cn(baseImageClasses, "z-30")}
           >
-            <img src={images.bottomLeft} alt="Bottom Left" className="h-full w-full object-cover" />
+            <div role="img" aria-label="Mechanism panel" className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${images.bottomLeft})` }} />
           </motion.div>
 
           {/* Top Right Image (Hero - expands at the end) */}
@@ -107,7 +132,7 @@ export function ScrollChoreography({
             }}
             className={cn(baseImageClasses, "z-40 origin-center bg-black/5")}
           >
-            <img src={images.topRight} alt="Top Right (Hero)" className="h-full w-full object-cover" />
+            <div role="img" aria-label="Final hero panel" className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${images.topRight})` }} />
           </motion.div>
         </div>
       </div>

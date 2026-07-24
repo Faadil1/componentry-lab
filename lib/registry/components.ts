@@ -141,6 +141,41 @@ export const registryComponents = [
       "Frame-perfect captures should trigger Replay and sequence steps through Playwright rather than relying on manual timing.",
     ],
   },
+  {
+    id: "componentry-scroll-choreography",
+    name: "Scroll Choreography",
+    slug: "scroll-choreography",
+    route: "/scroll-choreography",
+    description: "Sticky scroll-driven storytelling system for product stories, evidence walkthroughs and cinematic reveal sequences.",
+    category: "Scroll & Storytelling",
+    interactionModel: "Vertical scroll progress drives staged panel movement while IntersectionObserver tracks active chapters.",
+    maturity: "Lab Ready",
+    dependencies: ["react", "next", "framer-motion", "lucide-react", "tailwindcss", "clsx", "tailwind-merge"],
+    mobileSupport: "Supported",
+    keyboardSupport: "Supported",
+    tactileSupport: "Supported",
+    reducedMotion: "Supported",
+    deterministicCapture: true,
+    remotionReady: true,
+    playwrightSelectors: {
+      root: '[data-scroll-choreography-variant="cinematic"]',
+      variants: [
+        '[data-scroll-choreography-variant="product"]',
+        '[data-scroll-choreography-variant="evidence"]',
+        '[data-scroll-choreography-variant="cinematic"]',
+      ],
+      controls: ["button", "nav button"],
+    },
+    heroDemoMoment: "Sticky cinematic sequence where four visual fragments align and resolve into a final hero frame.",
+    recommendedViewport: { width: 1440, height: 1100, label: "Desktop scroll capture" },
+    recommendedCaptureDuration: "8-12 seconds",
+    initialState: "Four visual panels begin separated around the sticky stage with chapter progress at the cinematic section.",
+    finalState: "Hero panel expands and remains visible at the end of the scroll section.",
+    limitations: [
+      "Scroll capture should use deterministic wheel or scrollTo increments rather than manual trackpad input.",
+      "Real touch hardware should be used to evaluate the feel of long sticky sections on mobile.",
+    ],
+  },
 ] as const satisfies readonly RegistryComponent[]
 
 export function getComponentBySlug(slug: string): RegistryComponent | undefined {
