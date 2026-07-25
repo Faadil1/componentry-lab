@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -12,6 +12,7 @@ const labLinks = [
   { href: "/kinetic-text", label: "Kinetic Text Lab" },
   { href: "/typography", label: "Typography" },
   { href: "/foundations", label: "Foundations" },
+  { href: "/layouts", label: "Layouts" },
   { href: "/scroll-choreography", label: "Scroll Choreography Lab" },
   { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
   { href: "/image-ripple", label: "Image Ripple Lab" },
