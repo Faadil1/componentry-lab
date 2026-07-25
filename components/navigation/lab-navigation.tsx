@@ -16,6 +16,7 @@ const labLinks = [
   { href: "/scroll-choreography", label: "Scroll Choreography Lab" },
   { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
   { href: "/image-ripple", label: "Image Ripple Lab" },
+  { href: "/player", label: "Interaction Player" },
 ] as const
 
 export interface LabNavigationProps {
