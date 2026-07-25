@@ -17,6 +17,7 @@ const labLinks = [
   { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
   { href: "/image-ripple", label: "Image Ripple Lab" },
   { href: "/player", label: "Interaction Player" },
+  { href: "/decisions", label: "Decision Systems" },
 ] as const
 
 export interface LabNavigationProps {
