@@ -1,7 +1,7 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
-import { Check, Copy, MoonStar, SunMedium, Waves, LayoutGrid } from "lucide-react"
+import { MoonStar, SunMedium, Waves, LayoutGrid, AlertCircle, FileText } from "lucide-react"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { ColorTokenGrid } from "@/components/foundations/color-token-grid"
 import { SemanticColorPreview } from "@/components/foundations/semantic-color-preview"
@@ -40,8 +40,8 @@ function SegmentButton({ active, children, onClick }: { active: boolean; childre
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-mono font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70 ${
-        active ? "border-neutral-950 bg-neutral-950 text-white" : "border-stone-300 bg-white text-neutral-700 hover:border-neutral-500 hover:text-neutral-950"
+      className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-mono font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 ${
+        active ? "border-neutral-950 bg-neutral-950 text-white shadow-xs" : "border-stone-300 bg-white text-neutral-700 hover:border-stone-500 hover:text-neutral-950"
       }`}
     >
       {children}
@@ -51,22 +51,16 @@ function SegmentButton({ active, children, onClick }: { active: boolean; childre
 
 export default function FoundationsPage() {
   const [mode, setMode] = React.useState<"light" | "dark">("light")
-  const [copied, setCopied] = React.useState<"none" | "ts" | "css">("none")
   const [motionReduced, setMotionReduced] = React.useState(false)
 
-  const handleCopy = async (value: string, kind: "ts" | "css") => {
-    await navigator.clipboard.writeText(value)
-    setCopied(kind)
-    window.setTimeout(() => setCopied("none"), 1800)
-  }
-
   return (
-    <main className={mode === "light" ? "min-h-screen bg-[#f3efe6] text-neutral-950 selection:bg-neutral-950 selection:text-stone-100" : "min-h-screen bg-[#121110] text-stone-100 selection:bg-stone-100 selection:text-neutral-950"}>
-      <header className="sticky top-0 z-50 border-b border-stone-300/80 bg-inherit/90 px-4 py-3 backdrop-blur-md md:px-8">
+    <main className={mode === "light" ? "min-h-screen bg-[#f3efe6] text-neutral-950 selection:bg-neutral-950 selection:text-stone-100 font-sans" : "min-h-screen bg-[#121110] text-stone-100 selection:bg-stone-100 selection:text-neutral-950 font-sans"}>
+      {/* Shared Navigation Header */}
+      <header className="sticky top-0 z-50 border-b border-stone-300/80 bg-inherit/90 px-4 py-3 backdrop-blur-md md:px-8 shadow-xs">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className={`font-mono text-xs uppercase tracking-[0.22em] ${mode === "light" ? "text-neutral-500" : "text-stone-400"}`}>Componentry Foundations</p>
-            <h1 className="text-base font-semibold tracking-tight">Visual Systems Workbench</h1>
+            <p className={`font-mono text-xs uppercase tracking-[0.22em] ${mode === "light" ? "text-neutral-500" : "text-stone-400"} font-bold`}>Componentry Foundations</p>
+            <h1 className="text-base font-bold tracking-tight">Visual Systems Workbench</h1>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <LabNavigation
@@ -106,158 +100,181 @@ export default function FoundationsPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl space-y-10 px-4 py-8 md:px-8 md:py-12">
+      {/* Main Container */}
+      <div className="mx-auto max-w-6xl space-y-16 px-4 py-8 md:px-8 md:py-12">
+        {/* 1. HERO — VISUAL FOUNDATIONS SPECIMEN GRID */}
         <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]" data-foundations-section="hero">
-          <div className={`flex min-h-[540px] flex-col justify-between rounded-2xl border p-6 md:p-8 ${mode === "light" ? "border-stone-900 bg-[#121110] text-stone-100" : "border-stone-700 bg-[#0d0d0c] text-stone-100"}`}>
-            <div className="space-y-5">
+          {/* Specimen Layer mockup */}
+          <div className={`flex min-h-[560px] flex-col justify-between rounded-xl border p-6 md:p-10 ${mode === "light" ? "border-stone-900 bg-[#121110] text-stone-100 shadow-2xl" : "border-stone-850 bg-[#0d0d0c] text-stone-100"}`}>
+            <div className="space-y-6">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-white/5 px-3 py-1 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
-                  <LayoutGrid className="h-3.5 w-3.5" /> Foundation Workbench
+                <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-[#1c1a18] px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">
+                  <LayoutGrid className="h-3.5 w-3.5" /> Visual Specimen Panel
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-stone-400">Typography + Color + Space + Motion</span>
+                <span className="font-mono text-[10px] text-stone-400 uppercase tracking-widest bg-stone-900 px-2 py-0.5 rounded">
+                  [Canvas: bg-canvas] [Space: 16px] [Radius: control / panel]
+                </span>
               </div>
-              <h2 className="max-w-3xl text-balance text-5xl font-semibold leading-[0.98] tracking-tight text-white md:text-7xl">Tokens that keep the system readable, consistent, and exportable.</h2>
-              <p className="max-w-2xl text-pretty text-sm leading-7 text-stone-300 md:text-base">A reusable foundation for semantic colors, spacing, surfaces, radius, elevation, and motion. The route is built for inspection, comparison, and export rather than decorative effect.</p>
+              <h2 className="max-w-3xl text-balance text-4xl font-bold leading-[0.98] tracking-tight text-white md:text-6xl">
+                Tokens that keep the system readable, consistent, and exportable.
+              </h2>
+              <p className="max-w-2xl text-xs md:text-sm leading-relaxed text-stone-300 font-sans">
+                A reusable foundation for semantic colors, spacing, surfaces, radius, elevation, and motion. The route is built for inspection, comparison, and export rather than decorative effect.
+              </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border border-stone-800 bg-white/[0.04] p-4">
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Canvas</p>
-                <p className="mt-2 text-lg font-semibold text-white">Structured surfaces</p>
-              </div>
-              <div className="rounded-xl border border-stone-800 bg-white/[0.04] p-4">
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Spacing</p>
-                <p className="mt-2 text-lg font-semibold text-white">Page to inline scale</p>
-              </div>
-              <div className="rounded-xl border border-stone-800 bg-white/[0.04] p-4">
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Motion</p>
-                <p className="mt-2 text-lg font-semibold text-white">Deterministic tokens</p>
+
+            {/* Nested Mockup Composition */}
+            <div className="bg-[#1c1b18] border border-stone-800 p-6 rounded-xl space-y-4">
+              <span className="font-mono text-[9px] text-stone-400 block">[bg-canvas // space-gutter]</span>
+
+              <div className="bg-[#121110] border border-stone-800 p-4 rounded-lg shadow-sm flex items-center justify-between">
+                <div className="space-y-1">
+                  <span className="font-mono text-[9px] text-cyan-300 block">[bg-surface // radius-control]</span>
+                  <p className="text-xs font-bold text-white">Visual Alignment Matrix</p>
+                </div>
+                <span className="rounded bg-cyan-950 border border-cyan-800 px-3 py-1 font-mono text-[10px] text-cyan-300 font-bold">
+                  ACTIVE
+                </span>
               </div>
             </div>
           </div>
 
-          <aside className={`rounded-2xl border p-5 md:p-6 ${mode === "light" ? "border-stone-300 bg-[#eae6db] text-neutral-950" : "border-stone-700 bg-[#1a1816] text-stone-100"}`} aria-label="Foundation controls">
-            <div className="flex items-start justify-between gap-4 border-b border-stone-300/80 pb-4">
-              <div>
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">Workbench controls</p>
-                <h2 className="mt-1 text-2xl font-semibold tracking-tight">System preview</h2>
+          {/* Workbench instrumentation controls */}
+          <aside className={`rounded-xl border p-6 shadow-sm flex flex-col justify-between space-y-6 ${mode === "light" ? "border-stone-300 bg-[#eae6db] text-neutral-950" : "border-stone-800 bg-[#1a1816] text-stone-100"}`} aria-label="Foundation controls">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-4 border-b border-stone-300 pb-3">
+                <div>
+                  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Workbench Controls</p>
+                  <h2 className="mt-1 text-2xl font-bold tracking-tight text-neutral-900">System preview</h2>
+                </div>
+                <div className="flex gap-1.5">
+                  <SegmentButton active={mode === "light"} onClick={() => setMode("light")}>Light</SegmentButton>
+                  <SegmentButton active={mode === "dark"} onClick={() => setMode("dark")}>Dark</SegmentButton>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <SegmentButton active={mode === "light"} onClick={() => setMode("light")}>Light</SegmentButton>
-                <SegmentButton active={mode === "dark"} onClick={() => setMode("dark")}>Dark</SegmentButton>
+
+              {/* Specs parameters */}
+              <div className="space-y-3 text-xs font-mono">
+                <div className="flex items-center justify-between border-b border-stone-300 pb-2">
+                  <span>Color mode</span>
+                  <span className="font-bold text-neutral-900">{mode.toUpperCase()}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-stone-300 pb-2">
+                  <span>Motion standard</span>
+                  <span className="font-bold text-neutral-900">{motionReduced ? "REDUCED" : "ACTIVE"}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-stone-300 pb-2">
+                  <span>Core categories</span>
+                  <span className="font-bold text-neutral-900">6 sets</span>
+                </div>
               </div>
             </div>
-            <div className="mt-5 space-y-4">
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-500">Current state</p>
-              <div className="grid gap-3 text-sm">
-                <div className="flex items-center justify-between border-b border-stone-300/70 pb-2">
-                  <span>Color mode</span><span className="font-mono text-xs">{mode}</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-stone-300/70 pb-2">
-                  <span>Motion</span><span className="font-mono text-xs">{motionReduced ? "reduced" : "standard"}</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-stone-300/70 pb-2">
-                  <span>Tokens</span><span className="font-mono text-xs">colors, surfaces, spacing, radius, elevation, motion</span>
-                </div>
-              </div>
-              <div className="rounded-xl border border-stone-300 bg-white/40 p-4 text-xs leading-6 text-neutral-700">
-                Light and dark are direct previews of the semantic color set. Motion remains deterministic and does not require ongoing animation.
-              </div>
+
+            <div className="rounded-lg border border-stone-300 bg-stone-150 p-4 font-mono text-[11px] text-neutral-600 leading-relaxed">
+              Light and dark modes produce direct previews of the semantic color set. Motion transitions respect standard accessibility rules and reduce timing on request.
             </div>
           </aside>
         </section>
 
-        <section className="space-y-5" data-foundations-section="semantic-colors">
-          <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
+        {/* 2. SEMANTIC COLORS */}
+        <section className="space-y-6" data-foundations-section="semantic-colors">
+          <div className="flex flex-wrap items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Semantic Colors</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Clear and dark roles with usage notes.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Semantic Colors</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Clear and dark roles with usage notes.</h2>
             </div>
           </div>
           <SemanticColorPreview tokens={colorTokens} mode={mode} onModeChange={setMode} />
           <ColorTokenGrid tokens={colorTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="surfaces">
+        {/* 3. SURFACES */}
+        <section className="space-y-6" data-foundations-section="surfaces">
           <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Surfaces</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Canvas to cinematic hierarchy.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Surfaces</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Canvas to cinematic hierarchy.</h2>
             </div>
           </div>
           <SurfacePreview tokens={surfaceTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="spacing">
+        {/* 4. SPACING */}
+        <section className="space-y-6" data-foundations-section="spacing">
           <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Spacing</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Inline, stack, layout, gutter.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Spacing Scale</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Inline, stack, layout, gutter metrics.</h2>
             </div>
           </div>
           <SpacingScalePreview tokens={spacingTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="radius">
+        {/* 5. RADIUS */}
+        <section className="space-y-6" data-foundations-section="radius">
           <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Radius</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Control through round.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Radius System</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Control through round specs.</h2>
             </div>
           </div>
           <RadiusPreview tokens={radiusTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="elevation">
+        {/* 6. ELEVATION */}
+        <section className="space-y-6" data-foundations-section="elevation">
           <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Elevation</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Flat to cinematic, with restraint.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Elevation System</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Flat to cinematic depth.</h2>
             </div>
           </div>
           <ElevationPreview tokens={elevationTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="motion">
+        {/* 7. MOTION */}
+        <section className="space-y-6" data-foundations-section="motion">
           <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Motion</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">Durations and easings that stay deterministic.</h2>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">Motion System</p>
+              <h2 className="text-2xl font-bold text-neutral-950">Deterministic durations and easing paths.</h2>
             </div>
           </div>
           <MotionTokenPreview durations={motionDurationTokens} easings={motionEasingTokens} />
         </section>
 
-        <section className="space-y-5" data-foundations-section="export">
-          <div className="flex items-end justify-between gap-4 border-b border-stone-300 pb-3">
-            <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Export</p>
-              <h2 className="text-2xl font-semibold text-neutral-950">CSS custom properties and TypeScript.</h2>
-            </div>
-            <div className="flex gap-2">
-              <button type="button" aria-pressed={copied === "ts"} onClick={() => handleCopy(tsExport, "ts")} className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs font-mono font-semibold text-neutral-700 hover:border-neutral-500 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
-                {copied === "ts" ? <><Check className="h-3.5 w-3.5" /> Copied TS</> : <><Copy className="h-3.5 w-3.5" /> Copy TS</>}
-              </button>
-              <button type="button" aria-pressed={copied === "css"} onClick={() => handleCopy(foundationTokensCss.trim(), "css")} className="inline-flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-3 py-1.5 text-xs font-mono font-semibold text-neutral-700 hover:border-neutral-500 hover:text-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
-                {copied === "css" ? <><Check className="h-3.5 w-3.5" /> Copied CSS</> : <><Copy className="h-3.5 w-3.5" /> Copy CSS</>}
-              </button>
-            </div>
-          </div>
-          <FoundationTokenExport css={foundationTokensCss.trim()} ts={tsExport} />
-          <p className="text-xs leading-6 text-neutral-600">Copy feedback is announced via button labels and the export contents stay inside their own scroll container.</p>
-        </section>
+        {/* 8. TOKEN EXPORT */}
+        <FoundationTokenExport css={foundationTokensCss.trim()} ts={tsExport} />
 
-        <section className={`grid gap-6 rounded-2xl border p-6 md:grid-cols-[0.8fr_1.2fr] md:p-8 ${mode === "light" ? "border-stone-900 bg-[#121110] text-stone-100" : "border-stone-700 bg-[#0d0d0c] text-stone-100"}`} data-foundations-section="usage">
-          <div className="space-y-2">
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cyan-400">Notes</p>
-            <h2 className="text-3xl font-semibold tracking-tight text-[#f5f3ee]">Usage and limitations stay explicit.</h2>
+        {/* 9. NOTES AND LIMITATIONS */}
+        <section className="rounded-xl border border-stone-300 bg-[#eae6db] p-6 md:p-8 space-y-6" data-foundations-section="usage">
+          <div className="border-b border-stone-300 pb-3 flex items-center gap-2">
+            <FileText className="h-5 w-5 text-cyan-700" />
+            <h2 className="text-xl font-bold text-neutral-900 font-mono uppercase tracking-wider">System Specifications &amp; Notes</h2>
           </div>
-          <div className="grid gap-4">
-            {usageNotes.map((note) => (
-              <div key={note} className="rounded-xl border border-stone-800 bg-white/[0.04] p-4 text-sm leading-6 text-stone-200">{note}</div>
-            ))}
-            <div className="rounded-xl border border-stone-800 bg-white/[0.04] p-4 text-xs leading-6 text-stone-300">
+
+          <div className="grid gap-6 md:grid-cols-2 text-xs leading-relaxed text-neutral-700">
+            {/* Recommended guidelines */}
+            <div className="space-y-3">
+              <p className="font-bold text-neutral-900 uppercase font-mono tracking-wider">Recommended Usage</p>
+              {usageNotes.map((note) => (
+                <div key={note} className="flex gap-2">
+                  <span className="text-cyan-700 font-bold">•</span>
+                  <p>{note}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Technical limits */}
+            <div className="space-y-3">
+              <p className="font-bold text-neutral-900 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                <AlertCircle className="h-4 w-4 text-amber-600" /> System Limitations
+              </p>
               {limitations.map((note) => (
-                <p key={note}>• {note}</p>
+                <div key={note} className="flex gap-2 text-neutral-600">
+                  <span>•</span>
+                  <p>{note}</p>
+                </div>
               ))}
             </div>
           </div>
