@@ -12,6 +12,7 @@ const labLinks = [
   { href: "/kinetic-text", label: "Kinetic Text Lab" },
   { href: "/scroll-choreography", label: "Scroll Choreography Lab" },
   { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
+  { href: "/image-ripple", label: "Image Ripple Lab" },
 ] as const
 
 export interface LabNavigationProps {

@@ -211,6 +211,41 @@ export const registryComponents = [
       "WebGL availability and shader precision should be verified on target mobile hardware.",
     ],
   },
+  {
+    id: "componentry-image-ripple-effect",
+    name: "Image Ripple Effect",
+    slug: "image-ripple-effect",
+    route: "/image-ripple",
+    description: "Seeded WebGL image distortion for product materials, editorial archives and deterministic cinematic ripple paths.",
+    category: "Image & Media",
+    interactionModel: "Pointer movement or captureMode coordinates spawn seeded ripple waves over image textures.",
+    maturity: "Lab Ready",
+    dependencies: ["react", "next", "three", "@react-three/fiber", "@react-three/drei", "lucide-react", "tailwindcss", "clsx", "tailwind-merge"],
+    mobileSupport: "Supported",
+    keyboardSupport: "Supported",
+    tactileSupport: "Supported",
+    reducedMotion: "Supported",
+    deterministicCapture: true,
+    remotionReady: true,
+    playwrightSelectors: {
+      root: '[data-image-ripple-variant="cinematic"]',
+      variants: [
+        '[data-image-ripple-variant="product"]',
+        '[data-image-ripple-variant="editorial"]',
+        '[data-image-ripple-variant="cinematic"]',
+      ],
+      controls: ["button"],
+    },
+    heroDemoMoment: "Seeded cinematic ripple path moving from Still to Disturbance to Resolve with a persistent final frame.",
+    recommendedViewport: { width: 1440, height: 1000, label: "Desktop image ripple capture" },
+    recommendedCaptureDuration: "6-8 seconds",
+    initialState: "Still image field with deterministic seed and no active disturbance.",
+    finalState: "Resolve frame holds after the deterministic ripple trajectory completes.",
+    limitations: [
+      "WebGL output depends on browser and GPU precision even with seeded wave rotations.",
+      "Mobile devices should use lower wave density and verified fallback behavior.",
+    ],
+  },
 ] as const satisfies readonly RegistryComponent[]
 
 export function getComponentBySlug(slug: string): RegistryComponent | undefined {
