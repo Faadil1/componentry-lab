@@ -11,6 +11,7 @@ const labLinks = [
   { href: "/scrub-input", label: "Scrub Input Lab" },
   { href: "/kinetic-text", label: "Kinetic Text Lab" },
   { href: "/typography", label: "Typography" },
+  { href: "/foundations", label: "Foundations" },
   { href: "/scroll-choreography", label: "Scroll Choreography Lab" },
   { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
   { href: "/image-ripple", label: "Image Ripple Lab" },
