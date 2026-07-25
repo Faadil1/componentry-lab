@@ -18,6 +18,8 @@ const labLinks = [
   { href: "/image-ripple", label: "Image Ripple Lab" },
   { href: "/player", label: "Interaction Player" },
   { href: "/decisions", label: "Decision Systems" },
+  { href: "/capture", label: "Capture Systems" },
+  { href: "/recipes", label: "Composition Recipes" },
 ] as const
 
 export interface LabNavigationProps {
