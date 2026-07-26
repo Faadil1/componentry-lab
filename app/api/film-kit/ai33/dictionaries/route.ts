@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server"; export function GET() { return NextResponse.json({ endpoints: ["GET /v3/dictionaries", "GET /v3/dictionaries/:id", "PUT /v3/dictionaries/:id", "DELETE /v3/dictionaries/:id"] }) }

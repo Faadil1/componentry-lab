@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server"; export function GET() { return NextResponse.json({ endpoints: ["GET /v3/voices"] }) }
