@@ -3,8 +3,42 @@
 import * as React from "react"
 import { useComponentLibrary } from "./library-provider"
 import { getRecommendedRegistryEntries, getRegistryEntryById } from "@/lib/registry/selectors"
+import { getPlaybooksForRegistryEntry } from "@/lib/playbooks"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+
+// ── Related Playbooks Section ────────────────────────────────
+function RelatedPlaybooksSection({ registryId }: { registryId: string }) {
+  const playbooks = React.useMemo(
+    () => getPlaybooksForRegistryEntry(registryId).slice(0, 4),
+    [registryId]
+  )
+  if (playbooks.length === 0) return null
+
+  return (
+    <div className="space-y-2 border-t border-stone-900 pt-4 text-left">
+      <span className="font-mono text-[9px] text-violet-400 uppercase tracking-widest block font-bold">
+        Related Playbooks
+      </span>
+      <div className="space-y-1.5">
+        {playbooks.map((pb) => (
+          <Link
+            key={pb.id}
+            href={`/playbooks/${pb.slug}`}
+            className="flex flex-col gap-0.5 p-2 rounded border border-stone-900 hover:border-stone-700 transition-colors"
+          >
+            <span className="font-mono text-[9px] text-stone-500 uppercase">
+              {pb.collectionId.replace(/-/g, " ")} · {pb.format}
+            </span>
+            <span className="font-mono text-[10px] text-stone-300 font-semibold leading-snug">
+              {pb.title}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export interface LibraryDetailPanelProps {
   className?: string
@@ -166,6 +200,9 @@ export function LibraryDetailPanel({ className }: LibraryDetailPanelProps) {
           </ul>
         </div>
       )}
+
+      {/* Related Playbooks */}
+      <RelatedPlaybooksSection registryId={entry.id} />
     </div>
   )
 }
