@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { createContext, useContext, useState, useMemo, useCallback } from "react"
+import { createContext, useContext, useState, useMemo, useCallback, useEffect, useRef } from "react"
 import type { ReactNode } from "react"
 import type { ProjectContext, ProjectId, ProjectPhase, ProjectSnapshot } from "@/lib/projects/types"
 import {
@@ -22,6 +22,10 @@ import {
 
 const ProjectCtx = createContext<ProjectContext | null>(null)
 
+function isValidSection(section: string | undefined): section is string {
+  return !!section && section.length > 0
+}
+
 export function ProjectProvider({
   children,
   initialProjectId,
@@ -39,16 +43,16 @@ export function ProjectProvider({
 }) {
   const allProjects = useMemo(() => getAllProjects(), [])
   const initialProject = useMemo(() => getProjectById(initialProjectId), [initialProjectId])
-  const initialSnapshot = typeof window !== "undefined" ? parseProjectUrl(window.location.search) : {}
+  const didRestoreUrl = useRef(false)
 
-  const [activeProjectId, setActiveProjectId] = useState<ProjectId>(initialSnapshot.activeProjectId ?? initialProjectId)
-  const [activeSection, setActiveSection] = useState<string>(initialSnapshot.activeSection ?? initialSection)
-  const [activePhase, setActivePhase] = useState<ProjectPhase>(initialSnapshot.activePhase ?? initialProject?.currentPhase ?? "intake")
-  const [activeItemId, setActiveItemId] = useState<string | null>(initialSnapshot.activeItemId ?? null)
-  const [inspectorVisible, setInspectorVisible] = useState<boolean>(initialSnapshot.inspectorVisible ?? showInspector)
-  const [recommendationsVisible, setRecommendationsVisible] = useState<boolean>(initialSnapshot.recommendationsVisible ?? showRecommendations)
-  const [auditVisible, setAuditVisible] = useState<boolean>(initialSnapshot.auditVisible ?? showAudit)
-  const [selectedRecommendationId, setSelectedRecommendationId] = useState<string | null>(initialSnapshot.selectedRecommendationId ?? null)
+  const [activeProjectId, setActiveProjectId] = useState<ProjectId>(initialProjectId)
+  const [activeSection, setActiveSection] = useState<string>(initialSection)
+  const [activePhase, setActivePhase] = useState<ProjectPhase>(initialProject?.currentPhase ?? "intake")
+  const [activeItemId, setActiveItemId] = useState<string | null>(null)
+  const [inspectorVisible, setInspectorVisible] = useState<boolean>(showInspector)
+  const [recommendationsVisible, setRecommendationsVisible] = useState<boolean>(showRecommendations)
+  const [auditVisible, setAuditVisible] = useState<boolean>(showAudit)
+  const [selectedRecommendationId, setSelectedRecommendationId] = useState<string | null>(null)
   const [exportFeedback, setExportFeedback] = useState<string | null>(null)
 
   const activeProject = useMemo(() => {
@@ -67,7 +71,7 @@ export function ProjectProvider({
         recommendationsVisible: nextState.recommendationsVisible ?? recommendationsVisible,
         auditVisible: nextState.auditVisible ?? auditVisible,
         selectedRecommendationId: nextState.selectedRecommendationId ?? selectedRecommendationId,
-        timestamp: new Date().toISOString(),
+        timestamp: "hydrated",
       }
       const newUrl = buildProjectUrl(window.location.pathname, currentSnapshot)
       window.history.replaceState(null, "", newUrl)
@@ -83,6 +87,39 @@ export function ProjectProvider({
       selectedRecommendationId,
     ]
   )
+
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (didRestoreUrl.current) return
+    didRestoreUrl.current = true
+    if (typeof window === "undefined") return
+
+    const snapshot = parseProjectUrl(window.location.search)
+    const parsedProject = snapshot.activeProjectId ? getProjectById(snapshot.activeProjectId) : undefined
+    const nextProjectId = parsedProject?.id ?? initialProjectId
+    const nextProject = parsedProject ?? initialProject ?? getProjectById(nextProjectId)
+
+    if (nextProjectId !== activeProjectId) setActiveProjectId(nextProjectId)
+    if (isValidSection(snapshot.activeSection) && snapshot.activeSection !== activeSection) {
+      setActiveSection(snapshot.activeSection)
+    }
+
+    if (nextProject) {
+      const nextPhase = snapshot.activePhase && snapshot.activePhase === nextProject.currentPhase
+        ? snapshot.activePhase
+        : getPhaseFromProjectStatus(nextProject.status, nextProject.currentPhase)
+      if (nextPhase !== activePhase) setActivePhase(nextPhase)
+    }
+
+    if (snapshot.activeItemId !== undefined && snapshot.activeItemId !== activeItemId) setActiveItemId(snapshot.activeItemId)
+    if (snapshot.inspectorVisible !== undefined && snapshot.inspectorVisible !== inspectorVisible) setInspectorVisible(snapshot.inspectorVisible)
+    if (snapshot.recommendationsVisible !== undefined && snapshot.recommendationsVisible !== recommendationsVisible) setRecommendationsVisible(snapshot.recommendationsVisible)
+    if (snapshot.auditVisible !== undefined && snapshot.auditVisible !== auditVisible) setAuditVisible(snapshot.auditVisible)
+    if (snapshot.selectedRecommendationId !== undefined && snapshot.selectedRecommendationId !== selectedRecommendationId) {
+      setSelectedRecommendationId(snapshot.selectedRecommendationId)
+    }
+  }, [activePhase, activeProjectId, activeSection, activeItemId, auditVisible, initialProject, initialProjectId, inspectorVisible, recommendationsVisible, selectedRecommendationId])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const setProject = useCallback(
     (id: ProjectId) => {
@@ -192,7 +229,7 @@ export function ProjectProvider({
       recommendationsVisible,
       auditVisible,
       selectedRecommendationId,
-      timestamp: new Date().toISOString(),
+      timestamp: "hydrated",
     }
   }, [
     activeProjectId,
@@ -207,11 +244,14 @@ export function ProjectProvider({
 
   const triggerFeedback = (message: string) => {
     setExportFeedback(message)
-    setTimeout(() => setExportFeedback(null), 2500)
   }
 
   const copySnapshot = async () => {
-    const text = JSON.stringify(snapshot, null, 2)
+    const exportedSnapshot = {
+      ...snapshot,
+      timestamp: new Date().toISOString(),
+    }
+    const text = JSON.stringify(exportedSnapshot, null, 2)
     await navigator.clipboard.writeText(text)
     triggerFeedback("Snapshot State copied to clipboard!")
   }

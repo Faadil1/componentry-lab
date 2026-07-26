@@ -1,0 +1,33 @@
+export const FILM_PROJECT_IDS = ["stated", "glow-atelier", "before-bar-one"] as const
+export const FILM_SECTIONS = [
+  "overview",
+  "brief",
+  "narrative",
+  "scenes",
+  "shots",
+  "capture",
+  "broll",
+  "voice",
+  "music",
+  "assets",
+  "timeline",
+  "subtitles",
+  "providers",
+  "budget",
+  "qa",
+  "export",
+] as const
+export const FILM_TRACK_KINDS = [
+  "video",
+  "screen-capture",
+  "b-roll",
+  "motion",
+  "overlay",
+  "typography",
+  "voice-over",
+  "dialogue",
+  "music",
+  "sound-effect",
+  "subtitles",
+  "metadata",
+] as const
