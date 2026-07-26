@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 
 const labLinks = [
   { href: "/library", label: "Library" },
+  { href: "/playbooks", label: "Playbooks" },
   { href: "/", label: "Spotlight Lab" },
   { href: "/split-flap", label: "Split Flap Lab" },
   { href: "/scrub-input", label: "Scrub Input Lab" },
