@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
 
 import {
@@ -21,6 +22,23 @@ type FilmKitProjectPageProps = {
   params: Promise<{
     projectId: string
   }>
+}
+
+function FilmKitWorkspaceFallback() {
+  return (
+    <section
+      aria-label="Loading Film Kit workspace"
+      className="rounded-xl border border-stone-300 bg-white p-6 text-neutral-950"
+    >
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-stone-500">
+        Film Kit
+      </p>
+
+      <p className="mt-3 text-sm text-stone-600">
+        Loading the project film workspace…
+      </p>
+    </section>
+  )
 }
 
 export function generateStaticParams() {
@@ -86,13 +104,15 @@ export default async function FilmKitProjectPage({
       </header>
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-8 md:px-8 md:py-12">
-        <FilmKitProvider initialProjectId={projectId}>
-          <FilmKitWorkspace />
+        <Suspense fallback={<FilmKitWorkspaceFallback />}>
+          <FilmKitProvider initialProjectId={projectId}>
+            <FilmKitWorkspace />
 
-          <FilmKitPacketExport packets={packets} />
+            <FilmKitPacketExport packets={packets} />
 
-          <FilmKitAi33Panel packet={ai33Packet} />
-        </FilmKitProvider>
+            <FilmKitAi33Panel packet={ai33Packet} />
+          </FilmKitProvider>
+        </Suspense>
       </div>
     </main>
   )
