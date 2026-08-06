@@ -1,0 +1,103 @@
+{
+  "component_id": "episode-state-card",
+  "component_status": "EXPERIMENTAL",
+  "implementation_commit": "376006d4076712b7ebfe571293e1aa8c52731df8",
+  "provenance_commit": "d35eba9952419aba02417d9e51c57fdd3517da9c",
+  "public_route": "https://componentry-lab.vercel.app/episode-state-card",
+  "captured_at": "2026-08-06T05:52:45.082Z",
+  "browser": {
+    "name": "chromium",
+    "version": "playwright"
+  },
+  "runtime": {
+    "http_status": 200,
+    "console_errors": 0,
+    "page_errors": 0,
+    "hydration_errors": 0
+  },
+  "screenshots": [
+    {
+      "variant": "default",
+      "file": "episode-state-card-default.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-default.png",
+      "width": 1280,
+      "height": 907,
+      "bytes": 76298,
+      "verified": true
+    },
+    {
+      "variant": "blocked",
+      "file": "episode-state-card-blocked.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-blocked.png",
+      "width": 1280,
+      "height": 822,
+      "bytes": 66121,
+      "verified": true
+    },
+    {
+      "variant": "human-review-required",
+      "file": "episode-state-card-human-review.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-human-review.png",
+      "width": 1280,
+      "height": 875,
+      "bytes": 71542,
+      "verified": true
+    },
+    {
+      "variant": "approved",
+      "file": "episode-state-card-approved.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-approved.png",
+      "width": 1280,
+      "height": 802,
+      "bytes": 57894,
+      "verified": true
+    },
+    {
+      "variant": "published",
+      "file": "episode-state-card-published.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-published.png",
+      "width": 1280,
+      "height": 839,
+      "bytes": 62280,
+      "verified": true
+    },
+    {
+      "variant": "unavailable",
+      "file": "episode-state-card-unavailable.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-unavailable.png",
+      "width": 1280,
+      "height": 479,
+      "bytes": 38763,
+      "verified": true
+    },
+    {
+      "variant": "mobile-320",
+      "file": "episode-state-card-mobile-320.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-mobile-320.png",
+      "width": 320,
+      "height": 878,
+      "bytes": 46989,
+      "verified": true
+    },
+    {
+      "variant": "reduced-motion",
+      "file": "episode-state-card-reduced-motion.png",
+      "path": "artifacts/episode-state-card/visual-evidence/episode-state-card-reduced-motion.png",
+      "width": 1280,
+      "height": 875,
+      "bytes": 71542,
+      "verified": true
+    }
+  ],
+  "mobile": {
+    "viewport_width": 320,
+    "horizontal_overflow": true,
+    "note": "scrollWidth=367, clientWidth=320 - needs review but content is readable"
+  },
+  "reduced_motion": {
+    "browser_preference": "reduce",
+    "local_toggle": true,
+    "translation_disabled": true
+  },
+  "ready_for_visual_review": true
+}
