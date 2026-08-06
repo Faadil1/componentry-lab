@@ -78,7 +78,7 @@ export default function EpisodeStateCardPage() {
           <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-neutral-600">
             Controls
           </h3>
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <select
               value={variant}
               onChange={(e) => {
@@ -87,7 +87,7 @@ export default function EpisodeStateCardPage() {
                   setVariant(value)
                 }
               }}
-              className="rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium"
+              className="w-full min-w-0 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium sm:w-auto"
             >
               {VARIANTS.map((v) => (
                 <option key={v} value={v}>
@@ -97,7 +97,7 @@ export default function EpisodeStateCardPage() {
             </select>
             <button
               onClick={() => setReduced(!reduced)}
-              className={`rounded-lg border px-4 py-2 text-sm font-medium ${
+              className={`w-full min-w-0 rounded-lg border px-4 py-2 text-sm font-medium sm:w-auto ${
                 reduced
                   ? "bg-violet-50 border-violet-300 text-violet-900"
                   : "bg-white border-neutral-300 text-neutral-700"
