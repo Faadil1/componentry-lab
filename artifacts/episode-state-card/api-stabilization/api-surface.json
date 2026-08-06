@@ -1,15 +1,10 @@
 {
   "component": "EpisodeStateCard",
-  "version": "1.0.0",
+  "version": "1.0.0-stable",
   "status": "API_STABILIZED",
-  "stability_date": "2026-08-06T10:00:00Z",
-  "react_version_min": "18.2",
-  "forwarded_ref": {
-    "type": "HTMLDivElement",
-    "supported": true
-  },
+  "stability_date": "2026-08-06",
+  "discriminator": "variant",
   "discriminated_union": {
-    "discriminator": "variant",
     "members": [
       "DefaultEpisodeStateCardProps",
       "BlockedEpisodeStateCardProps",
@@ -19,85 +14,108 @@
       "UnavailableEpisodeStateCardProps"
     ]
   },
-  "base_props": {
-    "className": {
-      "type": "string",
-      "required": false,
-      "description": "Tailwind CSS class override for root container"
-    }
-  },
-  "variants": {
+  "public_props": [
+    "variant",
+    "className",
+    "channelName",
+    "episodeNumber",
+    "title",
+    "workflowState",
+    "workflowStateLabel",
+    "humanReviewStatus",
+    "lastDecision",
+    "blockers",
+    "nextExpectedState",
+    "nextAuthorizedAction",
+    "youtubeVideoId",
+    "publishedAt",
+    "canonicalSource",
+    "manifestVersion",
+    "unavailableReason"
+  ],
+  "human_review_status": [
+    "not-required",
+    "required",
+    "completed"
+  ],
+  "variant_invariants": {
     "default": {
-      "discriminator_value": "default",
-      "description": "In-progress workflow state with optional decision history",
-      "required_props": ["channelName", "title", "workflowState", "humanReviewStatus"],
-      "optional_props": ["episodeNumber", "workflowStateLabel", "lastDecision", "blockers", "nextExpectedState", "nextAuthorizedAction", "canonicalSource", "manifestVersion"],
-      "forbidden_props": ["youtubeVideoId", "publishedAt"]
+      "humanReviewStatus": ["not-required", "completed"]
     },
     "blocked": {
-      "discriminator_value": "blocked",
-      "description": "Episode blocked by one or more conditions (requires non-empty blockers)",
-      "required_props": ["channelName", "title", "workflowState", "humanReviewStatus", "blockers"],
-      "invariant": "blockers must have at least one element",
-      "optional_props": ["episodeNumber", "workflowStateLabel", "lastDecision", "nextAuthorizedAction", "nextExpectedState", "canonicalSource", "manifestVersion"],
-      "forbidden_props": ["youtubeVideoId", "publishedAt"]
+      "blockers": "readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]"
     },
     "human-review-required": {
-      "discriminator_value": "human-review-required",
-      "description": "Awaiting human judgment (humanReviewStatus must be 'required')",
-      "required_props": ["channelName", "title", "workflowState", "humanReviewStatus"],
-      "invariant": "humanReviewStatus === 'required'",
-      "optional_props": ["episodeNumber", "workflowStateLabel", "nextAuthorizedAction", "nextExpectedState", "canonicalSource", "manifestVersion"],
-      "forbidden_props": ["lastDecision", "blockers", "youtubeVideoId", "publishedAt"]
+      "humanReviewStatus": "required",
+      "forbidden": ["lastDecision", "blockers", "youtubeVideoId", "publishedAt"]
     },
     "approved": {
-      "discriminator_value": "approved",
-      "description": "Decision approved and ready to proceed (humanReviewStatus must be 'completed')",
-      "required_props": ["channelName", "title", "workflowState", "humanReviewStatus"],
-      "invariant": "humanReviewStatus === 'completed'",
-      "optional_props": ["episodeNumber", "workflowStateLabel", "lastDecision", "nextExpectedState", "canonicalSource", "manifestVersion"],
-      "forbidden_props": ["blockers", "nextAuthorizedAction", "youtubeVideoId", "publishedAt"]
+      "humanReviewStatus": "completed",
+      "forbidden": ["blockers", "youtubeVideoId", "publishedAt"]
     },
     "published": {
-      "discriminator_value": "published",
-      "description": "Episode live on YouTube (requires youtubeVideoId and publishedAt, humanReviewStatus='completed')",
-      "required_props": ["channelName", "title", "workflowState", "humanReviewStatus", "youtubeVideoId", "publishedAt"],
-      "invariant": "humanReviewStatus === 'completed'",
-      "optional_props": ["episodeNumber", "workflowStateLabel", "nextExpectedState", "canonicalSource", "manifestVersion"],
-      "forbidden_props": ["lastDecision", "blockers", "nextAuthorizedAction"]
+      "humanReviewStatus": "completed",
+      "required": ["youtubeVideoId", "publishedAt"],
+      "forbidden": ["blockers", "nextAuthorizedAction"]
     },
     "unavailable": {
-      "discriminator_value": "unavailable",
-      "description": "Canonical manifest could not be loaded; no workflow action authorized",
-      "required_props": [],
-      "optional_props": ["unavailableReason"],
-      "forbidden_props": ["channelName", "episodeNumber", "title", "workflowState", "workflowStateLabel", "humanReviewStatus", "lastDecision", "blockers", "nextExpectedState", "nextAuthorizedAction", "youtubeVideoId", "publishedAt", "canonicalSource", "manifestVersion"]
+      "optional": ["unavailableReason", "className"],
+      "forbidden": [
+        "channelName",
+        "episodeNumber",
+        "title",
+        "workflowState",
+        "workflowStateLabel",
+        "humanReviewStatus",
+        "lastDecision",
+        "blockers",
+        "nextExpectedState",
+        "nextAuthorizedAction",
+        "youtubeVideoId",
+        "publishedAt",
+        "canonicalSource",
+        "manifestVersion"
+      ]
     }
   },
-  "exported_types": [
-    {"name": "EpisodeStateCardVariant", "kind": "type", "values": ["default", "blocked", "human-review-required", "approved", "published", "unavailable"], "is_public": true},
-    {"name": "HumanReviewStatus", "kind": "type", "values": ["not-required", "required", "completed"], "is_public": true, "note": "Does NOT include 'unavailable'"},
-    {"name": "EpisodeStateDecision", "kind": "interface", "is_public": true},
-    {"name": "EpisodeStateBlocker", "kind": "interface", "is_public": true},
-    {"name": "DefaultEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "BlockedEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "HumanReviewRequiredEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "ApprovedEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "PublishedEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "UnavailableEpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "EpisodeStateCardProps", "kind": "type", "is_public": true},
-    {"name": "EpisodeStateCard", "kind": "component", "is_public": true}
+  "removed_props": [
+    "episodeId",
+    "updatedAt",
+    "reduceMotion"
   ],
-  "removed_in_1_0_0_stable": {
-    "lab_only_controls_removed": ["reduceMotion (motion simulation not part of stable API)"],
-    "dead_props_removed_prior_versions": ["episodeId (never rendered)", "updatedAt (never displayed)"]
+  "motion_contract": {
+    "public_override": false,
+    "system_preference": "prefers-reduced-motion",
+    "implementation": "framer-motion useReducedMotion"
   },
+  "public_exports": [
+    "EpisodeStateCard",
+    "EpisodeStateCardProps",
+    "EpisodeStateCardVariant",
+    "HumanReviewStatus",
+    "EpisodeStateDecision",
+    "EpisodeStateBlocker",
+    "DefaultEpisodeStateCardProps",
+    "BlockedEpisodeStateCardProps",
+    "HumanReviewRequiredEpisodeStateCardProps",
+    "ApprovedEpisodeStateCardProps",
+    "PublishedEpisodeStateCardProps",
+    "UnavailableEpisodeStateCardProps"
+  ],
   "accessibility": {
-    "standard": "WCAG 2.2 AA",
-    "decision": "PASS"
+    "review": "PASS",
+    "baseline_commit": "3de31ebfa3d6001fb633d261de495f862757fc3a",
+    "features": [
+      "React.useId per instance",
+      "aria-labelledby composed accessible name",
+      "sr-only blocker severity text",
+      "decorative icons aria-hidden",
+      "prefers-reduced-motion respected"
+    ]
   },
-  "backwards_compatibility": {
-    "breaking_changes": true,
-    "migration_guide": "docs/migrations/episode-state-card-experimental-to-stable.md"
+  "api_tests": {
+    "expected": 20,
+    "reported_pass": 20,
+    "reported_fail": 0
   }
 }

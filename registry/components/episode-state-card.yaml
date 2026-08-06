@@ -8,132 +8,6 @@ component:
   type: display
   category: workflow
 
-props:
-  - name: variant
-    type: EpisodeStateCardVariant
-    required: true
-    description: Visual variant (default, blocked, human-review-required, approved, published, unavailable)
-
-canonical_props:
-  - name: channelName
-    type: string
-    required: true
-    description: Channel name (e.g., "Wealth Decoded")
-
-  - name: title
-    type: string
-    required: true
-    description: Episode title
-
-  - name: workflowState
-    type: string
-    required: true
-    description: Technical workflow state identifier
-
-  - name: humanReviewStatus
-    type: HumanReviewStatus
-    required: true (for available variants)
-    description: Current human review status
-
-presentation_props:
-  - name: episodeNumber
-    type: number | null
-    required: false
-    description: Episode sequence number
-
-  - name: workflowStateLabel
-    type: string
-    required: false
-    description: Custom label for current workflow state
-
-  - name: lastDecision
-    type: EpisodeStateDecision | null
-    required: false
-    description: Last validated human decision
-
-  - name: blockers
-    type: EpisodeStateBlocker[]
-    required: false
-    description: List of blocking conditions
-
-  - name: nextExpectedState
-    type: string | null
-    required: false
-    description: Expected next workflow state
-
-  - name: nextAuthorizedAction
-    type: string | null
-    required: false
-    description: Human-readable next action
-
-  - name: youtubeVideoId
-    type: string
-    required: false
-    description: YouTube video ID for published episodes
-
-  - name: publishedAt
-    type: string
-    required: false
-    description: Published timestamp ISO8601
-
-  - name: canonicalSource
-    type: string
-    required: false
-    description: Source system identifier
-
-  - name: manifestVersion
-    type: string
-    required: false
-    description: Version of canonical manifest
-
-  - name: unavailableReason
-    type: string
-    required: false
-    description: Reason for unavailable state (unavailable variant only)
-
-layout_props:
-  - name: reduceMotion
-    type: boolean
-    required: false
-    default: false
-    description: Lab demo toggle for prefers-reduced-motion override
-
-  - name: className
-    type: string
-    required: false
-    description: Tailwind CSS class override
-
-variants:
-  - name: default
-    description: Normal workflow state with decision history
-    props:
-      variant: default
-
-  - name: blocked
-    description: Episode blocked by conditions
-    props:
-      variant: blocked
-
-  - name: human-review-required
-    description: Awaiting human judgment
-    props:
-      variant: human-review-required
-
-  - name: approved
-    description: Decision approved, ready to proceed
-    props:
-      variant: approved
-
-  - name: published
-    description: Episode live on YouTube
-    props:
-      variant: published
-
-  - name: unavailable
-    description: Manifest could not be loaded
-    props:
-      variant: unavailable
-
 source:
   repository: Faadil1/componentry-lab
   commit: 41026169529285101a2fcccf7ce63b281142d044
@@ -148,14 +22,11 @@ review_status:
   promoted: false
 
 visual_review:
-  reviewed_at: 2026-08-06T06:50:00Z
-  evidence_commit: 629a9711b62dbe9d4b2565f63d3a258acf195cf5
+  evidence_commit: 4b560a5da97bc414fb338e8298488c3ae66ba09d
   report: docs/reviews/episode-state-card-visual-review.md
-  decision: PASS_WITH_CHANGES
-  overall_score: 3.8
+  decision: PASS
 
 accessibility_review:
-  reviewed_at: 2026-08-06T10:45:00Z
   standard: WCAG 2.2 AA
   implementation_commit: ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff
   evidence_commit: 3de31ebfa3d6001fb633d261de495f862757fc3a
@@ -163,14 +34,6 @@ accessibility_review:
   regression_tests: tests/episode-state-card-accessibility.test.ts
   report: docs/reviews/episode-state-card-accessibility-review.md
   decision: PASS
-  axe_critical: 0
-  axe_serious: 0
-  axe_moderate: 0
-  axe_minor: 0
-  axe_incomplete_total: 1
-  axe_incomplete_unresolved: 0
-  contrast_samples_measured: 98
-  contrast_failures: 0
   regression_tests_pass: 17
   regression_tests_fail: 0
 
@@ -181,6 +44,7 @@ api_stabilization:
   api_surface: artifacts/episode-state-card/api-stabilization/api-surface.json
   api_documentation: docs/components/episode-state-card-api.md
   adr: docs/decisions/ADR-episode-state-card-api-stabilization.md
+  migration: docs/migrations/episode-state-card-experimental-to-stable.md
   api_tests: tests/episode-state-card-api.test.ts
   api_tests_pass: 20
   api_tests_fail: 0
