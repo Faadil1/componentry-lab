@@ -18,6 +18,7 @@ export interface EpisodeStateCardProps {
   workflowState: string
   variant: EpisodeStateCardVariant
   humanReviewStatus: HumanReviewStatus
+  blockers?: EpisodeStateBlocker[]
   className?: string
 }
 
