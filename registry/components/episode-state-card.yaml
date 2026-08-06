@@ -92,7 +92,7 @@ variants:
 
 source:
   repository: Faadil1/componentry-lab
-  commit: f344934a397c8fbdbd04b679df3f0815658b4a58
+  commit: 376006d4076712b7ebfe571293e1aa8c52731df8
   path: components/workflow/episode-state-card.tsx
   branch: master
 
