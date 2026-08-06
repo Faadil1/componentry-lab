@@ -1,0 +1,41 @@
+component_id: episode-state-card
+name: Episode State Card
+version: 0.1.0-experimental
+status: EXPERIMENTAL
+
+source:
+  repository: Faadil1/componentry-lab
+  branch: master
+  path: components/workflow/episode-state-card.tsx
+  commit: null
+
+production_target:
+  repository: Faadil1/youtube-operating-agent
+  application: control-panel
+
+authority:
+  display_state: READ_ONLY
+  state_transition: NONE
+  publication: NONE
+  manifest_write: NONE
+
+variants:
+  - default
+  - blocked
+  - human-review-required
+  - approved
+  - published
+  - unavailable
+
+review_status:
+  visual_review: NOT_STARTED
+  accessibility_review: NOT_STARTED
+  api_stabilized: false
+  approved: false
+  promoted: false
+
+documentation:
+  path: docs/components/episode-state-card.md
+  demo_route: /episode-state-card
+
+created_at: "2026-08-06T02:45:00Z"
