@@ -49,6 +49,7 @@ export interface LabNavigationProps {
   linkClassName?: string
   activeClassName?: string
   inactiveClassName?: string
+  compact?: boolean
 }
 
 function NavLinkButton({
@@ -58,18 +59,21 @@ function NavLinkButton({
   linkClassName,
   activeClassName,
   inactiveClassName,
+  compact,
 }: NavLink & {
   isActive: boolean
   linkClassName?: string
   activeClassName: string
   inactiveClassName: string
+  compact?: boolean
 }) {
   return (
     <Link
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "inline-flex items-center justify-center rounded-full px-3.5 py-2 text-sm font-medium leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70",
+        "inline-flex items-center justify-center rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70",
+        compact ? "px-2.5 py-1 text-xs font-medium" : "px-3.5 py-2 text-sm font-medium leading-none",
         linkClassName,
         isActive ? activeClassName : inactiveClassName,
       )}
@@ -84,12 +88,13 @@ export function LabNavigation({
   linkClassName,
   activeClassName = "bg-neutral-950 text-white shadow-xs",
   inactiveClassName = "border border-stone-300 bg-stone-100/80 text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950",
+  compact = false,
 }: LabNavigationProps) {
   const pathname = usePathname()
 
   return (
-    <div className={cn("flex flex-col gap-3 min-w-0", className)}>
-      <nav className="flex flex-wrap items-center gap-2 text-xs" aria-label="Primary navigation">
+    <div className={cn("flex flex-col min-w-0", compact ? "gap-1.5" : "gap-3", className)}>
+      <nav className="flex flex-wrap items-center gap-1.5 text-xs" aria-label="Primary navigation">
         {primaryLinks.map((link) => {
           const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)
           return (
@@ -101,22 +106,23 @@ export function LabNavigation({
               linkClassName={linkClassName}
               activeClassName={activeClassName}
               inactiveClassName={inactiveClassName}
+              compact={compact}
             />
           )
         })}
       </nav>
 
-      <details className="group rounded-2xl border border-stone-300 bg-white/70 p-3 shadow-xs backdrop-blur-sm">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-1 py-1 text-xs font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
+      <details className={cn("group rounded-xl border border-stone-300 bg-white/70 shadow-xs backdrop-blur-sm", compact ? "p-1.5" : "p-3")}>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
           <span>Labs menu</span>
           <span className="text-[10px] tracking-[0.22em] text-stone-400 group-open:hidden">Open</span>
           <span className="hidden text-[10px] tracking-[0.22em] text-stone-400 group-open:inline">Close</span>
         </summary>
-        <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-2 grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
           {groupedLabLinks.map((group) => (
-            <section key={group.label} className="space-y-2 rounded-xl border border-stone-200 bg-stone-50 p-3">
+            <section key={group.label} className="space-y-1.5 rounded-lg border border-stone-200 bg-stone-50 p-2.5">
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">{group.label}</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {group.links.map((link) => {
                   const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)
                   return (
@@ -128,6 +134,7 @@ export function LabNavigation({
                       linkClassName={cn("text-[11px]", linkClassName)}
                       activeClassName={activeClassName}
                       inactiveClassName={inactiveClassName}
+                      compact={compact}
                     />
                   )
                 })}
