@@ -7,7 +7,7 @@
                     "build":  "next build",
                     "start":  "next start",
                     "lint":  "eslint",
-                    "test:director":  "node --import jiti/register --test tests/director.test.ts"
+                    "test:director": "node --import jiti/register --test tests/director.test.ts tests/director-ui.test.ts"
                 },
     "dependencies":  {
                          "@base-ui/react":  "^1.6.0",
