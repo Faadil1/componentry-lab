@@ -7,265 +7,105 @@ const fs = require("fs")
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require("path")
 
+const componentPath = path.join(__dirname, "../components/workflow/episode-state-card.tsx")
+const fixturesPath = path.join(__dirname, "../lib/fixtures/episode-state-card-fixtures.ts")
+const pagePath = path.join(__dirname, "../app/episode-state-card/page.tsx")
+const apiSurfacePath = path.join(__dirname, "../artifacts/episode-state-card/api-stabilization/api-surface.json")
+
+const component = fs.readFileSync(componentPath, "utf-8")
+const fixtures = fs.readFileSync(fixturesPath, "utf-8")
+const page = fs.readFileSync(pagePath, "utf-8")
+
 describe("Episode State Card — API Stabilization", () => {
-  test("1. Discriminated union: available props only when variant is available", () => {
-    // This test passes TypeScript compile-time checks
-    // Verifying the discriminated union works at runtime via type construction
-    const availableVariants = [
-      "default",
-      "blocked",
-      "human-review-required",
-      "approved",
-      "published",
-    ]
-    assert.strictEqual(availableVariants.length, 5)
-    assert.strictEqual(
-      availableVariants.every((v: string) => typeof v === "string"),
-      true
-    )
+  test("1. public union has six variant-specific members", () => {
+    for (const name of [
+      "DefaultEpisodeStateCardProps",
+      "BlockedEpisodeStateCardProps",
+      "HumanReviewRequiredEpisodeStateCardProps",
+      "ApprovedEpisodeStateCardProps",
+      "PublishedEpisodeStateCardProps",
+      "UnavailableEpisodeStateCardProps",
+    ]) assert.ok(component.includes(name))
   })
 
-  test("2. Unavailable variant does not accept canonical props", () => {
-    // Type-safe test: unavailable props should never include canonical fields
-    const unavailableOnlyProps = ["unavailableReason"]
-    const canonicalProps = [
-      "channelName",
-      "title",
-      "workflowState",
-      "humanReviewStatus",
-    ]
-
-    const intersection = unavailableOnlyProps.filter((p) =>
-      canonicalProps.includes(p)
-    )
-    assert.strictEqual(intersection.length, 0)
+  test("2. default variant is explicit", () => assert.ok(component.includes('variant: "default"')))
+  test("3. blocked variant requires a non-empty blocker tuple", () => {
+    assert.ok(component.includes('variant: "blocked"'))
+    assert.ok(component.includes("readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]"))
   })
-
-  test("3. Canonical props are present in available variant interface", () => {
-    const canonicalProps = [
-      "channelName",
-      "title",
-      "workflowState",
-      "humanReviewStatus",
-    ]
-    assert.strictEqual(canonicalProps.length, 4)
-    assert.strictEqual(
-      canonicalProps.every((p) => typeof p === "string"),
-      true
-    )
+  test("4. human-review-required forces required status", () => {
+    assert.ok(component.includes('variant: "human-review-required"'))
+    assert.ok(component.includes('humanReviewStatus: "required"'))
   })
-
-  test("4. Removed props (episodeId, updatedAt) are not in API surface", () => {
-    const removedProps = ["episodeId", "updatedAt"]
-    const currentProps = [
-      "variant",
-      "channelName",
-      "title",
-      "workflowState",
-      "humanReviewStatus",
-      "episodeNumber",
-      "workflowStateLabel",
-      "lastDecision",
-      "blockers",
-      "nextExpectedState",
-      "nextAuthorizedAction",
-      "youtubeVideoId",
-      "publishedAt",
-      "canonicalSource",
-      "manifestVersion",
-      "unavailableReason",
-      "reduceMotion",
-      "className",
-    ]
-
-    for (const removed of removedProps) {
-      assert.strictEqual(
-        currentProps.includes(removed),
-        false,
-        `${removed} should not be in current props`
-      )
+  test("5. approved forces completed status", () => {
+    const section = component.split("export type ApprovedEpisodeStateCardProps")[1].split("export type PublishedEpisodeStateCardProps")[0]
+    assert.ok(section.includes('humanReviewStatus: "completed"'))
+  })
+  test("6. published forces completed status", () => {
+    const section = component.split("export type PublishedEpisodeStateCardProps")[1].split("export type UnavailableEpisodeStateCardProps")[0]
+    assert.ok(section.includes('humanReviewStatus: "completed"'))
+  })
+  test("7. published requires youtubeVideoId", () => {
+    const section = component.split("export type PublishedEpisodeStateCardProps")[1].split("export type UnavailableEpisodeStateCardProps")[0]
+    assert.ok(section.includes("youtubeVideoId: string"))
+  })
+  test("8. published requires publishedAt", () => {
+    const section = component.split("export type PublishedEpisodeStateCardProps")[1].split("export type UnavailableEpisodeStateCardProps")[0]
+    assert.ok(section.includes("publishedAt: string"))
+  })
+  test("9. unavailable forbids canonical props", () => {
+    const section = component.split("export type UnavailableEpisodeStateCardProps")[1].split("export type EpisodeStateCardProps")[0]
+    for (const prop of ["channelName?: never", "title?: never", "workflowState?: never", "humanReviewStatus?: never"]) {
+      assert.ok(section.includes(prop))
     }
   })
-
-  test("5. Discriminated union enforces humanReviewStatus != 'unavailable' for available variants", () => {
-    const validStatuses = ["not-required", "required", "completed"]
-    const invalidStatus = "unavailable"
-
-    assert.strictEqual(validStatuses.includes(invalidStatus), false)
+  test("10. unavailable forbids action and publication props", () => {
+    const section = component.split("export type UnavailableEpisodeStateCardProps")[1].split("export type EpisodeStateCardProps")[0]
+    for (const prop of ["nextAuthorizedAction?: never", "youtubeVideoId?: never", "publishedAt?: never"]) {
+      assert.ok(section.includes(prop))
+    }
   })
-
-  test("6. Shared props (variant, reduceMotion, className) are always present", () => {
-    const sharedProps = ["variant", "reduceMotion", "className"]
-    assert.strictEqual(sharedProps.length, 3)
+  test("11. reduceMotion is absent from public component contract", () => {
+    assert.strictEqual(component.includes("reduceMotion"), false)
+    assert.strictEqual(page.includes("reduceMotion"), false)
   })
-
-  test("7. Presentation props are all optional", () => {
-    const presentationProps = [
-      "episodeNumber",
-      "workflowStateLabel",
-      "lastDecision",
-      "blockers",
-      "nextExpectedState",
-      "nextAuthorizedAction",
-      "youtubeVideoId",
-      "publishedAt",
-      "canonicalSource",
-      "manifestVersion",
-    ]
-    assert.strictEqual(presentationProps.length, 10)
+  test("12. motion uses system reduced-motion preference", () => {
+    assert.ok(component.includes("useReducedMotion"))
   })
-
-  test("8. Published variant supports youtubeVideoId and publishedAt", () => {
-    const publishedTypicalProps = [
-      "youtubeVideoId",
-      "publishedAt",
-      "nextExpectedState",
-    ]
-    assert.strictEqual(publishedTypicalProps.includes("youtubeVideoId"), true)
-    assert.strictEqual(publishedTypicalProps.includes("publishedAt"), true)
+  test("13. HumanReviewStatus has exactly three values", () => {
+    assert.ok(component.includes('export type HumanReviewStatus = "not-required" | "required" | "completed"'))
+    assert.strictEqual(component.includes('| "unavailable"\n\nexport interface EpisodeStateDecision'), false)
   })
-
-  test("9. Ref forwarding is typed as HTMLDivElement", () => {
-    // Component uses React.forwardRef<HTMLDivElement, EpisodeStateCardProps>
-    // This validates the ref type is declared correctly
-    const refType = "HTMLDivElement"
-    assert.strictEqual(typeof refType, "string")
-    assert.strictEqual(refType.includes("HTML"), true)
+  test("14. removed episodeId is absent from public contract", () => {
+    assert.strictEqual(component.includes("episodeId"), false)
+    assert.strictEqual(fixtures.includes("episodeId:"), false)
   })
-
-  test("10. Export: EpisodeStateCardVariant type includes all 6 variants", () => {
-    const variants = [
-      "default",
-      "blocked",
-      "human-review-required",
-      "approved",
-      "published",
-      "unavailable",
-    ]
-    assert.strictEqual(variants.length, 6)
+  test("15. removed updatedAt is absent from public contract", () => {
+    assert.strictEqual(component.includes("updatedAt"), false)
+    assert.strictEqual(fixtures.includes("updatedAt:"), false)
   })
-
-  test("11. Export: HumanReviewStatus type includes required values", () => {
-    const statuses = ["not-required", "required", "completed", "unavailable"]
-    assert.strictEqual(statuses.length, 4)
+  test("16. human-review fixture contains no lastDecision", () => {
+    const section = fixtures.split("export const episode13HumanReview")[1].split("export const episode13Approved")[0]
+    assert.strictEqual(section.includes("lastDecision"), false)
   })
-
-  test("12. Export: EpisodeStateDecision interface has required 'label' field", () => {
-    const decisionFields = ["label", "outcome", "decidedAt", "decidedBy"]
-    assert.strictEqual(decisionFields.includes("label"), true)
+  test("17. published fixture supplies required publication fields", () => {
+    const section = fixtures.split("export const episode13Published")[1].split("export const episodeUnavailable")[0]
+    assert.ok(section.includes("youtubeVideoId:"))
+    assert.ok(section.includes("publishedAt:"))
   })
-
-  test("13. Export: EpisodeStateBlocker interface has required 'severity' field", () => {
-    const blockerFields = ["id", "label", "severity"]
-    const severityValues = ["info", "warning", "critical"]
-
-    assert.strictEqual(blockerFields.includes("severity"), true)
-    assert.strictEqual(severityValues.length, 3)
+  test("18. unavailable fixture stays isolated", () => {
+    const section = fixtures.split("export const episodeUnavailable")[1]
+    assert.strictEqual(section.includes("channelName:"), false)
+    assert.strictEqual(section.includes("humanReviewStatus:"), false)
   })
-
-  test("14. API surface JSON exists and contains api_surface key", () => {
-    const surfacePath = path.join(
-      __dirname,
-      "../artifacts/episode-state-card/api-stabilization/api-surface.json"
-    )
-    assert.strictEqual(fs.existsSync(surfacePath), true)
-
-    const surface = JSON.parse(fs.readFileSync(surfacePath, "utf-8"))
-    assert.strictEqual(surface.version, "1.0.0-stable")
+  test("19. API surface describes the six-member union", () => {
+    const surface = JSON.parse(fs.readFileSync(apiSurfacePath, "utf-8"))
+    assert.strictEqual(surface.discriminated_union.members.length, 6)
+    assert.strictEqual(surface.public_props.includes("reduceMotion"), false)
+  })
+  test("20. API surface reports stabilized contract", () => {
+    const surface = JSON.parse(fs.readFileSync(apiSurfacePath, "utf-8"))
     assert.strictEqual(surface.status, "API_STABILIZED")
-  })
-
-  test("15. API documentation exists and is comprehensive", () => {
-    const docPath = path.join(
-      __dirname,
-      "../docs/components/episode-state-card-api.md"
-    )
-    assert.strictEqual(fs.existsSync(docPath), true)
-
-    const content = fs.readFileSync(docPath, "utf-8")
-    assert.strictEqual(content.includes("Discriminated Union"), true)
-    assert.strictEqual(content.includes("Canonical Props"), true)
-    assert.strictEqual(content.includes("Migration from Experimental"), true)
-  })
-
-  test("16. ADR document exists and explains the decision", () => {
-    const adrPath = path.join(
-      __dirname,
-      "../docs/decisions/ADR-episode-state-card-api-stabilization.md"
-    )
-    assert.strictEqual(fs.existsSync(adrPath), true)
-
-    const content = fs.readFileSync(adrPath, "utf-8")
-    assert.strictEqual(content.includes("Discriminated Union"), true)
-    assert.strictEqual(content.includes("Breaking Changes"), true)
-  })
-
-  test("17. Migration guide exists and covers breaking changes", () => {
-    const migrationPath = path.join(
-      __dirname,
-      "../docs/migrations/episode-state-card-experimental-to-stable.md"
-    )
-    assert.strictEqual(fs.existsSync(migrationPath), true)
-
-    const content = fs.readFileSync(migrationPath, "utf-8")
-    assert.strictEqual(content.includes("episodeId"), true)
-    assert.strictEqual(content.includes("updatedAt"), true)
-    assert.strictEqual(content.includes("Unavailable Variant"), true)
-  })
-
-  test("18. Variant invariants: human-review-required requires humanReviewStatus='required'", () => {
-    // Document the invariant
-    const variant = "human-review-required"
-    const requiredStatus = "required"
-
-    assert.strictEqual(typeof variant, "string")
-    assert.strictEqual(typeof requiredStatus, "string")
-  })
-
-  test("19. Variant invariants: approved and published require humanReviewStatus='completed'", () => {
-    const completedVariants = ["approved", "published"]
-    const requiredStatus = "completed"
-
-    for (const v of completedVariants) {
-      assert.strictEqual(typeof v, "string")
-    }
-    assert.strictEqual(typeof requiredStatus, "string")
-  })
-
-  test("20. All fixtures validate against new discriminated union types", () => {
-    const fixturesPath = path.join(
-      __dirname,
-      "../lib/fixtures/episode-state-card-fixtures.ts"
-    )
-    assert.strictEqual(fs.existsSync(fixturesPath), true)
-
-    const content = fs.readFileSync(fixturesPath, "utf-8")
-    // Verify removed props are not in fixtures
-    assert.strictEqual(
-      content.includes("episodeId:"),
-      false,
-      "episodeId should not be in fixtures"
-    )
-    assert.strictEqual(
-      content.includes("updatedAt:"),
-      false,
-      "updatedAt should not be in fixtures"
-    )
-
-    // Verify unavailable fixture does not have canonical props
-    const unavailableSection = content.split("episodeUnavailable:")[1]
-    if (unavailableSection) {
-      const unavailableProps = unavailableSection.split("}")[0]
-      assert.strictEqual(
-        unavailableProps.includes("channelName:"),
-        false,
-        "unavailable should not have channelName"
-      )
-      assert.strictEqual(
-        unavailableProps.includes("humanReviewStatus:"),
-        false,
-        "unavailable should not have humanReviewStatus"
-      )
-    }
+    assert.strictEqual(surface.api_tests.expected, 20)
   })
 })
