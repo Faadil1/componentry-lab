@@ -224,7 +224,7 @@ export const EpisodeStateCard = React.forwardRef<
           <motion.p variants={itemVariants} className="text-neutral-600 text-sm">
             No workflow action is authorized until the source is restored.
           </motion.p>
-          {unavailableReason && (
+          {unavailableReason && unavailableReason !== "The canonical episode manifest could not be loaded." && (
             <motion.p variants={itemVariants} className="text-neutral-600 text-xs mt-4 italic">
               Technical details: {unavailableReason}
             </motion.p>

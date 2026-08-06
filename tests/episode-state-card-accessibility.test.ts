@@ -2,10 +2,15 @@
  * Accessibility regression tests for Episode State Card
  * Run: node --experimental-strip-types --test tests/episode-state-card-accessibility.test.ts
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { test, describe } = require('node:test')
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const assert = require('node:assert/strict')
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const fs = require('fs')
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const nodePath = require('path')
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { chromium } = require('playwright')
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -232,6 +237,84 @@ describe('Episode State Card — Accessibility', async () => {
       }
       assert.equal(critical.length, 0)
       assert.equal(serious.length, 0)
+    })
+  })
+
+  // ── 13. Contrast evidence contains no invalid white-on-white samples ───────
+  await test('contrast evidence contains no invalid white-on-white measurements', async () => {
+    const evidencePath = nodePath.join(__dirname, '../artifacts/episode-state-card/accessibility-evidence/contrast-results.json')
+    const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf-8'))
+    const invalid = evidence.samples.filter((s: { foreground_hex: string; background_hex: string; passes: boolean }) =>
+      s.foreground_hex === '#ffffff' && s.background_hex === '#ffffff' && !s.passes
+    )
+    assert.equal(invalid.length, 0,
+      `Found ${invalid.length} invalid white-on-white samples — indicates measurement error`)
+  })
+
+  // ── 14. Every contrast sample has parseable foreground and background ──────
+  await test('every contrast sample has valid hex foreground and background', async () => {
+    const evidencePath = nodePath.join(__dirname, '../artifacts/episode-state-card/accessibility-evidence/contrast-results.json')
+    const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf-8'))
+    const hexPattern = /^#[0-9a-f]{6}$/i
+    const invalid = evidence.samples.filter((s: { foreground_hex: string; background_hex: string }) =>
+      !hexPattern.test(s.foreground_hex) || !hexPattern.test(s.background_hex)
+    )
+    assert.equal(invalid.length, 0,
+      `${invalid.length} samples have invalid hex colors: ${JSON.stringify(invalid.slice(0, 3))}`)
+  })
+
+  // ── 15. All required contrast samples pass their applicable threshold ──────
+  await test('all measured contrast samples pass WCAG 2.2 AA threshold', async () => {
+    const evidencePath = nodePath.join(__dirname, '../artifacts/episode-state-card/accessibility-evidence/contrast-results.json')
+    const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf-8'))
+    const failures = evidence.samples.filter((s: { passes: boolean }) => !s.passes)
+    if (failures.length > 0) {
+      const detail = failures.slice(0, 5).map((f: { variant: string; label: string; ratio: number; threshold: number; foreground_hex: string; background_hex: string }) =>
+        `[${f.variant}] ${f.label}: ${f.ratio}:1 (need ${f.threshold}) fg=${f.foreground_hex} bg=${f.background_hex}`
+      ).join('\n')
+      assert.fail(`${failures.length} contrast failure(s):\n${detail}`)
+    }
+    assert.equal(failures.length, 0)
+    assert.ok(evidence.samples.length > 10, `Expected >10 samples, got ${evidence.samples.length}`)
+  })
+
+  // ── 16. Every axe incomplete rule has a manual resolution ─────────────────
+  await test('every axe incomplete rule has a manual resolution recorded', async () => {
+    const evidencePath = nodePath.join(__dirname, '../artifacts/episode-state-card/accessibility-evidence/axe-incomplete-review.json')
+    const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf-8'))
+    assert.equal(evidence.unresolved_incomplete_rules, 0,
+      `${evidence.unresolved_incomplete_rules} incomplete rules remain unresolved`)
+    for (const [ruleId, rule] of Object.entries(evidence.rules as Record<string, { manual_review: { performed: boolean; result: string } }>)) {
+      assert.ok(rule.manual_review?.performed === true,
+        `Rule ${ruleId} has no manual review recorded`)
+      assert.ok(
+        ['PASS', 'FAIL', 'NOT_APPLICABLE', 'RESOLVED_BY_MEASUREMENT'].includes(rule.manual_review.result),
+        `Rule ${ruleId} manual review result is invalid: ${rule.manual_review.result}`
+      )
+    }
+  })
+
+  // ── 17. Unavailable error text is not duplicated verbatim ─────────────────
+  await test('unavailable variant does not render duplicate error text', async () => {
+    await withPage({}, async (page: any) => {
+      await page.goto(BASE_URL, { waitUntil: 'networkidle' })
+      await page.selectOption('select', 'unavailable')
+      await page.waitForTimeout(600)
+      const texts = await page.evaluate(() => {
+        const region = document.querySelector('[role="region"][aria-labelledby]')
+        if (!region) return []
+        return [...region.querySelectorAll('p')]
+          .map((el: Element) => el.textContent?.trim() || '')
+          .filter(Boolean)
+      })
+      const seen = new Set<string>()
+      const duplicates: string[] = []
+      for (const t of texts) {
+        if (seen.has(t)) duplicates.push(t)
+        seen.add(t)
+      }
+      assert.equal(duplicates.length, 0,
+        `Duplicate paragraph text in unavailable variant: ${JSON.stringify(duplicates)}`)
     })
   })
 

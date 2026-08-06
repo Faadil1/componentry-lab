@@ -112,5 +112,5 @@ export const episodeUnavailable: EpisodeStateCardProps = {
   workflowStateLabel: "EPISODE STATE UNAVAILABLE",
   variant: "unavailable",
   humanReviewStatus: "unavailable",
-  unavailableReason: "The canonical episode manifest could not be loaded.",
+  unavailableReason: "MANIFEST_FETCH_FAILED: upstream returned 404 for episode-014/manifest.json",
 }

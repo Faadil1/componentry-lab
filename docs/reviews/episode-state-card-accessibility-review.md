@@ -9,17 +9,20 @@
 - **Accessibility implementation commit:** 857a2e82766687d21c6c11830f790a8419f1083c
 - **Public route:** https://componentry-lab.vercel.app/episode-state-card
 - **Reviewed at:** 2026-08-06T09:45:00Z
+- **Evidence corrected at:** 2026-08-06T10:30:00Z
 - **Reviewer:** Claude Code (claude-sonnet-4-6)
 - **Standard:** WCAG 2.2 AA (WCAG 2.1 AA as fallback)
-- **Decision:** PASS
+- **Decision:** PASS_WITH_CHANGES
 
 ---
 
 ## Executive verdict
 
-**PASS**
+**PASS_WITH_CHANGES**
 
-The Episode State Card passes WCAG 2.2 AA accessibility review after four targeted remediations applied during this session. Axe-core reports zero critical, serious, moderate, and minor violations across all six workflow state variants, mobile 320px, and reduced-motion mode. All 12 automated regression tests pass. No blockers remain.
+The Episode State Card passes WCAG 2.2 AA accessibility review after four targeted remediations applied during implementation and three evidence corrections applied during this closure pass. Axe-core reports zero critical, serious, moderate, and minor violations. All 17 automated regression tests pass.
+
+The initial PASS decision issued in the first review pass was downgraded to PASS_WITH_CHANGES because the committed evidence contained two unresolved contradictions: invalid white-on-white contrast measurements (a measurement error, not a real failure), and an unresolved axe `color-contrast` incomplete result. Both have been corrected in this evidence closure pass. No component accessibility issues were introduced or left open. The designation PASS_WITH_CHANGES reflects that the review evidence required correction after the initial commit, not that any WCAG criterion fails.
 
 ---
 
@@ -375,3 +378,61 @@ Required before stabilization:
 - Confirm `workflowStateLabel` vs `workflowState` distinction is clear in docs
 - Confirm `humanReviewStatus` enum values are final
 - Do not change component behavior during API stabilization
+
+---
+
+## Evidence correction
+
+**Why the initial PASS evidence was insufficient:**
+
+The first evidence commit (`f145229`) contained two contradictions:
+
+1. **Invalid contrast measurements.** `contrast-results.json` contained entries with `foreground: #ffffff`, `background: #ffffff`, `ratio: 1`, `passes: false`. These resulted from the contrast collector using a `parseRGB()` function that only handled `rgb()/rgba()` CSS color syntax. Chrome's Playwright-driven page returns computed styles using CSS Color Level 4 `lab()` notation (e.g. `lab(7.78 -0.00 0)`). The regex parser returned `null`, fell through to a default of `{ r:255, g:255, b:255 }` for both foreground and background, producing a 1:1 ratio with `passes: false` for every sample. The root `evidence.json` claimed 0 contrast failures while `contrast-results.json` showed failures — a direct contradiction.
+
+2. **Unresolved axe `color-contrast` incomplete result.** Every axe scan reported `incomplete: 1` for the `color-contrast` rule. Axe marks this rule incomplete when it cannot determine the effective background of a text element (common with CSS custom properties and complex layering). The original `evidence.json` counted `axe_incomplete_total: 0` — incorrect — and `axe-incomplete-review.json` did not exist.
+
+**Corrections applied in this pass:**
+
+- **Contrast collector rewritten** to use the HTML Canvas API (`getContext('2d').fillStyle = cssColor; getImageData()`) for color parsing. This converts any CSS color format — including `lab()`, `oklch()`, `hsl()`, `hex` — to sRGB via the browser's own color engine, eliminating all parsing errors.
+
+- **98 samples measured** across 6 variants plus controls. Zero normal-text failures. Zero large-text failures. Lowest passing ratio: **7.12:1** (channel eyebrow `text-neutral-600` #525252 on violet-50 #f5f3ff background in human-review-required variant).
+
+- **`axe-incomplete-review.json` created.** The sole incomplete rule — `color-contrast` — was resolved by the canvas-based measurement above. `unresolved_incomplete_rules: 0`.
+
+- **Unavailable variant duplication fixed.** The `unavailableReason` fixture prop was set to the same string as the primary error message ("The canonical episode manifest could not be loaded."). This caused the "Technical details:" paragraph to repeat the primary message verbatim. Fixed by changing the fixture to a distinct machine-readable error (`MANIFEST_FETCH_FAILED: upstream returned 404 for episode-014/manifest.json`) and adding a component-level guard to suppress "Technical details" if it equals the primary message string. Regression test 17 confirms this.
+
+- **5 new regression tests added** (tests 13–17). Total: 17 tests, 17 passing.
+
+**Measured contrast table (key samples):**
+
+| Variant | Element | fg | bg | Ratio | Threshold | Pass |
+|---------|---------|----|----|-------|-----------|------|
+| human-review-required | channel eyebrow (12px/600) | #525252 | #f5f3ff | 7.12:1 | 4.5:1 | ✅ |
+| unavailable | neutral-600 body (14px/400) | #525252 | #f5f5f5 | 7.34:1 | 4.5:1 | ✅ |
+| blocked | amber section label (12px/600) | #525252 | #fffbeb | 8.02:1 | 4.5:1 | ✅ |
+| published | cyan section label (12px/600) | #525252 | #ecfeff | 7.46:1 | 4.5:1 | ✅ |
+| default | state heading h3 (20px/700) | #171717 | #f8fafc | 18.1:1 | 3.0:1 | ✅ |
+| controls | variant select text | #171717 | #ffffff | 19.2:1 | 4.5:1 | ✅ |
+| controls | motion toggle button | #171717 | #ffffff | 19.2:1 | 4.5:1 | ✅ |
+
+All 98 samples pass. The pre-fix `text-neutral-500` → `text-neutral-600` upgrade from the implementation commit was sufficient; no further color changes required.
+
+**Axe incomplete resolution:**
+
+| Rule ID | Scopes | Impact | Manual verdict | Method |
+|---------|--------|--------|----------------|--------|
+| `color-contrast` | all 9 scans | serious | RESOLVED_BY_MEASUREMENT | Canvas-based contrast measurement applied to all 98 leaf text elements across 6 variants. 0 failures measured. See `contrast-results.json`. |
+
+**Lint / build / test summary (corrected evidence pass):**
+
+- Lint errors: **0**
+- Lint warnings: **0**
+- Build: **PASS**
+- Tests: **17 / 17 PASS**
+- Axe critical/serious/moderate/minor: **0 / 0 / 0 / 0**
+- Axe incomplete unresolved: **0**
+- Contrast failures: **0**
+
+**Why axe alone does not prove full WCAG compliance:**
+
+Axe is a rule-based automated tool. It cannot detect: custom-property color chains (hence the `color-contrast` incomplete result), focus appearance in all themes, meaningful non-text contrast for icon-only communication, or ARIA semantics that are syntactically correct but semantically wrong. Manual review, measured contrast, keyboard navigation testing, and screen-reader reading-order inspection were all performed and are documented in the relevant sections above. The automated axe result (0 violations) is consistent with, but does not replace, these manual checks.

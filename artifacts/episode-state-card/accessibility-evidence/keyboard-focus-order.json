@@ -1,145 +1,148 @@
 {
-  "focus_order": [
+  "tabbable_count": 20,
+  "tabbable_elements": [
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Library",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Playbooks",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Projects",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Film Kit",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Spotlight Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Split Flap Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Scrub Input Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Kinetic Text Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Layouts",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Scroll Choreography Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "WebGL Liquid Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Image Ripple Lab",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Typography",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Foundations",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Interaction Player",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Decision Systems",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Capture Systems",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "A",
-      "role": "",
+      "tag": "a",
+      "id": null,
+      "role": null,
       "text": "Composition Recipes",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     },
     {
-      "tag": "SELECT",
-      "role": "",
-      "text": "DEFAULTBLOCKEDHUMAN-REVIEW-REQUIREDAPPROVEDPUBLISHEDUNAVAILA",
-      "tabindex": null,
-      "type": ""
+      "tag": "select",
+      "id": "variant-select",
+      "role": null,
+      "text": "DEFAULTBLOCKEDHUMAN-REVIEW-REQUIREDAPPRO",
+      "tabindex": null
     },
     {
-      "tag": "BUTTON",
-      "role": "",
+      "tag": "button",
+      "id": null,
+      "role": null,
       "text": "Normal Motion",
-      "tabindex": null,
-      "type": ""
+      "tabindex": null
     }
   ],
-  "trap_detected": false
+  "cards_in_tab_order": 0,
+  "keyboard_traps": 0,
+  "timestamp": "2026-08-06T09:36:01.544Z"
 }

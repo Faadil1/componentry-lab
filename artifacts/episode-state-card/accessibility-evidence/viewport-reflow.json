@@ -1,38 +1,36 @@
-[
-  {
-    "width": 320,
-    "height": 900,
-    "label": "320px",
-    "scrollWidth": 320,
-    "clientWidth": 320,
-    "overflow": false,
-    "text_spacing_overflow": false
-  },
-  {
-    "width": 375,
-    "height": 812,
-    "label": "375px",
-    "scrollWidth": 375,
-    "clientWidth": 375,
-    "overflow": false,
-    "text_spacing_overflow": false
-  },
-  {
-    "width": 768,
-    "height": 1024,
-    "label": "768px",
-    "scrollWidth": 768,
-    "clientWidth": 768,
-    "overflow": false,
-    "text_spacing_overflow": false
-  },
-  {
-    "width": 1280,
-    "height": 800,
-    "label": "1280px",
-    "scrollWidth": 1280,
-    "clientWidth": 1280,
-    "overflow": false,
-    "text_spacing_overflow": false
-  }
-]
+{
+  "viewports_tested": [
+    320,
+    375,
+    768,
+    1280
+  ],
+  "results": [
+    {
+      "viewport_width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflow": false
+    },
+    {
+      "viewport_width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    {
+      "viewport_width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    {
+      "viewport_width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    }
+  ],
+  "any_overflow": false,
+  "timestamp": "2026-08-06T09:36:08.016Z"
+}
