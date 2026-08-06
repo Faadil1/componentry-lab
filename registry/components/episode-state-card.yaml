@@ -97,11 +97,18 @@ source:
   branch: master
 
 review_status:
-  visual_review: NOT_STARTED
+  visual_review: PASS
   accessibility_review: NOT_STARTED
   api_stabilized: false
   approved: false
   promoted: false
+
+visual_review:
+  reviewed_at: 2026-08-06T06:50:00Z
+  evidence_commit: 629a9711b62dbe9d4b2565f63d3a258acf195cf5
+  report: docs/reviews/episode-state-card-visual-review.md
+  decision: PASS
+  overall_score: 4.5
 
 metadata:
   created_at: 2026-08-06T00:47:00Z
