@@ -9,20 +9,16 @@ component:
   category: workflow
 
 props:
+  - name: variant
+    type: EpisodeStateCardVariant
+    required: true
+    description: Visual variant (default, blocked, human-review-required, approved, published, unavailable)
+
+canonical_props:
   - name: channelName
     type: string
     required: true
     description: Channel name (e.g., "Wealth Decoded")
-
-  - name: episodeId
-    type: string
-    required: true
-    description: Unique episode identifier
-
-  - name: episodeNumber
-    type: number | null
-    required: false
-    description: Episode sequence number
 
   - name: title
     type: string
@@ -34,10 +30,21 @@ props:
     required: true
     description: Technical workflow state identifier
 
-  - name: variant
-    type: EpisodeStateCardVariant
-    required: true
-    description: Visual variant (default, blocked, human-review-required, approved, published, unavailable)
+  - name: humanReviewStatus
+    type: HumanReviewStatus
+    required: true (for available variants)
+    description: Current human review status
+
+presentation_props:
+  - name: episodeNumber
+    type: number | null
+    required: false
+    description: Episode sequence number
+
+  - name: workflowStateLabel
+    type: string
+    required: false
+    description: Custom label for current workflow state
 
   - name: lastDecision
     type: EpisodeStateDecision | null
@@ -49,15 +56,52 @@ props:
     required: false
     description: List of blocking conditions
 
-  - name: humanReviewStatus
-    type: HumanReviewStatus
-    required: true
-    description: Current human review status
+  - name: nextExpectedState
+    type: string | null
+    required: false
+    description: Expected next workflow state
+
+  - name: nextAuthorizedAction
+    type: string | null
+    required: false
+    description: Human-readable next action
 
   - name: youtubeVideoId
     type: string
     required: false
     description: YouTube video ID for published episodes
+
+  - name: publishedAt
+    type: string
+    required: false
+    description: Published timestamp ISO8601
+
+  - name: canonicalSource
+    type: string
+    required: false
+    description: Source system identifier
+
+  - name: manifestVersion
+    type: string
+    required: false
+    description: Version of canonical manifest
+
+  - name: unavailableReason
+    type: string
+    required: false
+    description: Reason for unavailable state (unavailable variant only)
+
+layout_props:
+  - name: reduceMotion
+    type: boolean
+    required: false
+    default: false
+    description: Lab demo toggle for prefers-reduced-motion override
+
+  - name: className
+    type: string
+    required: false
+    description: Tailwind CSS class override
 
 variants:
   - name: default
@@ -99,7 +143,7 @@ source:
 review_status:
   visual_review: PASS_WITH_CHANGES
   accessibility_review: PASS
-  api_stabilized: false
+  api_stabilized: true
   approved: false
   promoted: false
 
@@ -130,8 +174,18 @@ accessibility_review:
   regression_tests_pass: 17
   regression_tests_fail: 0
 
+api_stabilization:
+  stabilized_at: 2026-08-06T10:30:00Z
+  decision: PASS
+  api_surface: artifacts/episode-state-card/api-stabilization/api-surface.json
+  api_documentation: docs/components/episode-state-card-api.md
+  adr: docs/decisions/ADR-episode-state-card-api-stabilization.md
+  api_tests: tests/episode-state-card-api.test.ts
+  api_tests_pass: 20
+  api_tests_fail: 0
+
 metadata:
   created_at: 2026-08-06T00:47:00Z
   created_by: claude-code
-  version: 0.1.0-experimental
-  next_phase: API_STABILIZATION
+  version: 1.0.0-stable
+  next_phase: APPROVAL_REVIEW

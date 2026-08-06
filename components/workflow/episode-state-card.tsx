@@ -40,28 +40,37 @@ export interface EpisodeStateBlocker {
   severity: "info" | "warning" | "critical"
 }
 
-export interface EpisodeStateCardProps {
+interface EpisodeStateCardSharedProps {
+  reduceMotion?: boolean
+  className?: string
+}
+
+export type EpisodeStateCardAvailableProps = EpisodeStateCardSharedProps & {
+  variant: Exclude<EpisodeStateCardVariant, "unavailable">
   channelName: string
-  episodeId: string
   episodeNumber?: number | null
   title: string
   workflowState: string
   workflowStateLabel?: string
-  variant: EpisodeStateCardVariant
   lastDecision?: EpisodeStateDecision | null
   blockers?: EpisodeStateBlocker[]
   nextExpectedState?: string | null
   nextAuthorizedAction?: string | null
-  humanReviewStatus: HumanReviewStatus
+  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">
   canonicalSource?: string
   manifestVersion?: string
-  updatedAt?: string
-  unavailableReason?: string
   youtubeVideoId?: string
   publishedAt?: string
-  reduceMotion?: boolean
-  className?: string
 }
+
+export type EpisodeStateCardUnavailableProps = EpisodeStateCardSharedProps & {
+  variant: "unavailable"
+  unavailableReason?: string
+}
+
+export type EpisodeStateCardProps =
+  | EpisodeStateCardAvailableProps
+  | EpisodeStateCardUnavailableProps
 
 function getVariantStyles(variant: EpisodeStateCardVariant): string {
   const base = "rounded-lg overflow-hidden border"
@@ -143,29 +152,9 @@ export const EpisodeStateCard = React.forwardRef<
   HTMLDivElement,
   EpisodeStateCardProps
 >(
-  (
-    {
-      channelName,
-      episodeNumber,
-      title,
-      workflowState,
-      workflowStateLabel,
-      variant,
-      lastDecision,
-      blockers = [],
-      nextExpectedState,
-      nextAuthorizedAction,
-      humanReviewStatus,
-      canonicalSource,
-      manifestVersion,
-      unavailableReason,
-      youtubeVideoId,
-      publishedAt,
-      reduceMotion = false,
-      className,
-    },
-    ref
-  ) => {
+  (props, ref) => {
+    const { variant, reduceMotion = false, className } = props
+
     const shouldReduceMotion =
       reduceMotion ||
       (typeof window !== "undefined"
@@ -198,6 +187,7 @@ export const EpisodeStateCard = React.forwardRef<
     }
 
     if (variant === "unavailable") {
+      const { unavailableReason } = props
       return (
         <motion.div
           ref={ref}
@@ -232,6 +222,23 @@ export const EpisodeStateCard = React.forwardRef<
         </motion.div>
       )
     }
+
+    const {
+      channelName,
+      episodeNumber,
+      title,
+      workflowState,
+      workflowStateLabel,
+      lastDecision,
+      blockers = [],
+      nextExpectedState,
+      nextAuthorizedAction,
+      humanReviewStatus,
+      canonicalSource,
+      manifestVersion,
+      youtubeVideoId,
+      publishedAt,
+    } = props
 
     const stateLabel = workflowStateLabel || getStateLabel(variant)
 
