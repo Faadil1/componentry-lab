@@ -7,7 +7,7 @@ import {
   AlertCircle,
   Ban,
   CheckSquare,
-  Play,
+  ArrowRight,
   HelpCircle,
   AlertOctagon,
 } from "lucide-react"
@@ -264,9 +264,9 @@ export const EpisodeStateCard = React.forwardRef<
         {lastDecision && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-2">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
               Last validated decision
             </p>
             <p className="text-base text-neutral-900 font-medium">
@@ -286,9 +286,9 @@ export const EpisodeStateCard = React.forwardRef<
         {blockers && blockers.length > 0 && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-4">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-4">
               Blocking issues
             </p>
             <div className="space-y-3">
@@ -319,13 +319,13 @@ export const EpisodeStateCard = React.forwardRef<
         {nextAuthorizedAction && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-2">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
               Next authorized action
             </p>
             <div className="flex items-start gap-3">
-              <Play size={16} className="text-neutral-700 flex-shrink-0 mt-1" />
+              <ArrowRight size={16} className="text-neutral-600 flex-shrink-0 mt-0.5" />
               <p className="text-base text-neutral-900">{nextAuthorizedAction}</p>
             </div>
           </motion.div>
@@ -334,9 +334,9 @@ export const EpisodeStateCard = React.forwardRef<
         {nextExpectedState && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-2">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
               Next expected state
             </p>
             <p className="text-base font-medium text-neutral-900">
@@ -348,9 +348,9 @@ export const EpisodeStateCard = React.forwardRef<
         {youtubeVideoId && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-2">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
               YouTube
             </p>
             <p className="text-sm text-neutral-900">
@@ -365,23 +365,38 @@ export const EpisodeStateCard = React.forwardRef<
         {publishedAt && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6"
           >
-            <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide mb-2">
+            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
               Published
             </p>
             <p className="text-xs text-neutral-600">{publishedAt}</p>
           </motion.div>
         )}
 
-        {(canonicalSource || manifestVersion || updatedAt) && (
+        {(canonicalSource || manifestVersion || workflowState) && (
           <motion.div
             variants={itemVariants}
-            className="border-t border-neutral-300 pt-6 space-y-1 text-xs text-neutral-600"
+            className="border-t border-neutral-200/50 pt-6 space-y-1.5 text-xs text-neutral-500"
           >
-            {canonicalSource && <p>Source: {canonicalSource}</p>}
-            {manifestVersion && <p>Version: {manifestVersion}</p>}
-            {updatedAt && <p>Updated: {new Date(updatedAt).toLocaleDateString()}</p>}
+            {canonicalSource && (
+              <p>
+                <span className="text-neutral-600 font-medium">Canonical source</span>
+                {" "}· {canonicalSource}
+              </p>
+            )}
+            {manifestVersion && (
+              <p>
+                <span className="text-neutral-600 font-medium">Version</span>
+                {" "}· {manifestVersion}
+              </p>
+            )}
+            {workflowState && (
+              <p>
+                <span className="text-neutral-600 font-medium">State ID</span>
+                {" "}· <code className="font-mono text-neutral-600">{workflowState}</code>
+              </p>
+            )}
           </motion.div>
         )}
       </motion.div>

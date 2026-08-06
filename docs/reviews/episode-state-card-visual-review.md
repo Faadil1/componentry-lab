@@ -14,9 +14,20 @@
 
 ---
 
-## Executive Verdict
+## Human Review Override
 
-The Episode State Card component is **visually mature and ready for accessibility review**. All six workflow variants are clearly differentiated, states are immediately recognizable, and the component communicates operational workflows with appropriate hierarchy and precision. Mobile rendering at 320px is now flawless following recent overflow fixes. No blockers detected; component demonstrates premium editorial character consistent with Wealth Decoded's visual identity.
+The initial automated visual-review decision of **PASS** was overridden after direct human inspection of the evidence captures.
+
+**Final decision: PASS_WITH_CHANGES**
+
+**Reason:**  
+The component is structurally correct and operationally clear, but still requires targeted visual polish before advancing to accessibility review. Key areas for improvement include Hero Demo framing strength, excessive uppercase label density, redundant separator usage, and general SaaS-generic appearance that obscures its premium editorial positioning.
+
+---
+
+## Executive Verdict (Corrected)
+
+The Episode State Card component is **functionally correct but visually requires targeted polish** before accessibility review. All six workflow variants are clearly differentiated and states are immediately recognizable, but the component's visual presentation still reads as a prototype dashboard rather than a premium Editorial Control Panel. With targeted design refinements—improved Hero framing, reduced uppercase density, streamlined visual hierarchy, and stronger editorial character—the component will be ready for accessibility review and advancement.
 
 ---
 

@@ -64,11 +64,14 @@ export default function EpisodeStateCardPage() {
         </div>
       </section>
 
-      <section className="border-b border-neutral-200 bg-white/30 px-4 py-16 md:px-8 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-10 text-3xl font-bold text-neutral-900">Hero Demo</h2>
+      <section className="border-b border-neutral-200 bg-gradient-to-b from-white via-white to-neutral-50/50 px-4 py-12 md:px-8 md:py-16">
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-neutral-600 uppercase tracking-widest">Workflow State Display</h2>
+            <p className="mt-2 text-base text-neutral-600">Interactive episode workflow editor. Select variant and motion preference below.</p>
+          </div>
           <div className="flex justify-center">
-            <EpisodeStateCard {...current} reduceMotion={reduced} className="shadow-2xl" />
+            <EpisodeStateCard {...current} reduceMotion={reduced} className="shadow-md" />
           </div>
         </div>
       </section>
