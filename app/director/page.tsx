@@ -84,7 +84,7 @@ Blockers: ${result.blockers.length} active`
               <h1 className="text-xl font-bold tracking-tight text-neutral-950 sm:text-2xl lg:text-3xl">
                 Creative Director Workspace
               </h1>
-              <p className="mt-0.5 text-xs sm:text-sm font-medium text-stone-700 max-w-2xl">
+              <p id="director-tagline" className="mt-0.5 text-xs sm:text-sm font-medium text-stone-700 max-w-2xl">
                 One project. One clear next move. Backed by evidence.
               </p>
             </div>
@@ -118,7 +118,7 @@ Blockers: ${result.blockers.length} active`
           {/* Section 1: Project & Mode Selector */}
           <div aria-label="Project Fixture Selection">
             {/* Mobile Selector (< md): Compact Accessible Dropdown */}
-            <div className="md:hidden space-y-1">
+            <div className="md:hidden space-y-1" id="mobile-selector-container">
               <label htmlFor="mobile-scenario-select" className="block text-[11px] font-mono font-bold uppercase tracking-wider text-stone-600">
                 Active Scenario:
               </label>
@@ -140,7 +140,7 @@ Blockers: ${result.blockers.length} active`
             </div>
 
             {/* Desktop Selector (>= md): Compact Grid */}
-            <div className="hidden md:grid gap-2 grid-cols-4">
+            <div className="hidden md:grid gap-2 grid-cols-4" id="desktop-selector-container">
               {fixtureKeys.map((key) => {
                 const isSelected = key === selectedKey
                 const projTheme = getModeVisualTheme(getDirectorProjection(key).result.mode)
@@ -176,13 +176,13 @@ Blockers: ${result.blockers.length} active`
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-bold text-stone-900">{input.project.title}</span>
                 <span className={cn("rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase", modeTheme.badgeBg, modeTheme.badgeText)}>
-                  Mode: {modeTheme.label}
+                  {modeTheme.label}
                 </span>
                 <span className="rounded-full bg-stone-100 border border-stone-200 px-2 py-0.5 text-[10px] text-stone-700">
-                  Phase: {result.resolvedPhase}
+                  {result.resolvedPhase}
                 </span>
                 <span className="rounded-full bg-stone-100 border border-stone-200 px-2 py-0.5 text-[10px] text-stone-700">
-                  Status: {input.project.status}
+                  {input.project.status}
                 </span>
               </div>
               <div className="text-[11px] text-stone-600">
@@ -199,60 +199,84 @@ Blockers: ${result.blockers.length} active`
         {/* Combined First-Viewport Decision Block: HERO DEMO & NEXT AUTHORIZED ACTION */}
         <section className={cn("relative overflow-hidden rounded-3xl border-2 bg-white p-4 sm:p-6 md:p-8 shadow-xl min-w-0 space-y-6", modeTheme.borderAccent)} aria-label="Hero Decision Center">
           
-          {/* Top: Hero Demo Title & Evaluator Context */}
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between border-b border-stone-200/80 pb-5">
-            <div className="space-y-3 max-w-3xl min-w-0">
+          {/* Top Info Header: Mode and Readiness */}
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center rounded-full bg-neutral-950 px-3 py-0.5 text-[10px] font-mono font-bold uppercase tracking-widest text-white">
+                HERO DEMO MOMENT
+              </span>
+              <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-mono font-semibold uppercase",
+                result.heroDemoMoment.readinessStatus === "ready" ? "bg-emerald-100 text-emerald-900 border border-emerald-300" :
+                result.heroDemoMoment.readinessStatus === "blocked" ? "bg-red-100 text-red-900 border border-red-300" :
+                "bg-amber-100 text-amber-900 border border-amber-300"
+              )}>
+                Status: {result.heroDemoMoment.readinessStatus}
+              </span>
+            </div>
+            <div className="text-[11px] text-stone-500 font-mono">
+              Mode: {modeTheme.label} | Phase: {result.resolvedPhase}
+            </div>
+          </div>
+
+          {/* 2. Hero Title & 3. Concise Transformation */}
+          <div className="space-y-3">
+            <h2 className="text-xl font-black tracking-tight text-neutral-950 sm:text-2xl lg:text-3xl">
+              {result.heroDemoMoment.title}
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-700 leading-relaxed max-w-4xl">
+              {result.heroDemoMoment.description}
+            </p>
+            
+            <div className="rounded-xl border border-stone-200 bg-stone-50 p-3.5 text-xs font-medium text-stone-900 leading-normal max-w-4xl">
+              <span className="font-mono font-bold uppercase tracking-wider text-[10px] text-stone-500 block mb-1">
+                Visible Proof & Transformation
+              </span>
+              {result.heroDemoMoment.visibleTransformationOrProof}
+            </div>
+          </div>
+
+          {/* 4. NEXT AUTHORIZED ACTION (Immediate focal point!) */}
+          <div className="rounded-2xl border border-neutral-900 bg-neutral-950 text-white p-4 sm:p-5 shadow-lg space-y-3 min-w-0" id="next-authorized-action-container" aria-label="Authorized Next Action">
+            <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-800 pb-2.5">
+              <span className="inline-flex items-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider">
+                NEXT AUTHORIZED ACTION
+              </span>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-neutral-950 px-3 py-0.5 text-[11px] font-mono font-bold uppercase tracking-widest text-white">
-                  HERO DEMO MOMENT
+                <span className={cn("rounded-md px-2 py-0.5 font-mono text-[10px] font-bold border", actionAuthorityConfig.badgeClass)}>
+                  Authority: {actionAuthorityConfig.label}
                 </span>
-                <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-mono font-semibold uppercase",
-                  result.heroDemoMoment.readinessStatus === "ready" ? "bg-emerald-100 text-emerald-900 border border-emerald-300" :
-                  result.heroDemoMoment.readinessStatus === "blocked" ? "bg-red-100 text-red-900 border border-red-300" :
-                  "bg-amber-100 text-amber-900 border border-amber-300"
-                )}>
-                  Status: {result.heroDemoMoment.readinessStatus}
+                <span className="rounded-md bg-neutral-800 border border-neutral-700 px-2 py-0.5 font-mono text-[10px] text-neutral-300">
+                  Approval: {result.nextAction.approvalStatus}
                 </span>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-black tracking-tight text-neutral-950 sm:text-2xl lg:text-3xl">
-                  {result.heroDemoMoment.title}
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-stone-700 leading-relaxed">
-                  {result.heroDemoMoment.description}
-                </p>
-              </div>
-
-              {/* Transformation Proof & Evaluator Grid */}
-              <div className="grid gap-3 sm:grid-cols-2 pt-1">
-                <div className="rounded-xl border border-stone-200 bg-stone-50 p-3.5 space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-stone-600">
-                    <svg className="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>Transformation & Proof</span>
-                  </div>
-                  <p className="text-xs font-medium text-stone-900">
-                    {result.heroDemoMoment.visibleTransformationOrProof}
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-stone-200 bg-white p-3.5 space-y-1.5 shadow-2xs">
-                  <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-stone-500">
-                    Evaluator Perspective ({result.evaluatorPath.evaluatorType})
-                  </div>
-                  <blockquote className="text-xs italic font-serif text-stone-800 leading-snug border-l-2 border-stone-400 pl-2.5">
-                    &ldquo;{result.heroDemoMoment.evaluatorInterpretation}&rdquo;
-                  </blockquote>
-                </div>
               </div>
             </div>
 
-            {/* Evidence Needed Box */}
-            <div className="w-full lg:w-72 space-y-3 shrink-0 rounded-2xl border border-stone-200 bg-stone-50 p-4">
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-white sm:text-lg">
+                {result.nextAction.title}
+              </h3>
+              <p className="text-xs text-neutral-300 leading-relaxed">
+                {result.nextAction.rationale}
+              </p>
+            </div>
+
+            <div className="grid gap-2.5 sm:grid-cols-2 pt-2 border-t border-neutral-900 text-xs">
+              <div>
+                <span className="text-[9px] font-mono font-bold uppercase text-neutral-400 block">Expected Result</span>
+                <p className="text-emerald-300 font-medium">{result.nextAction.expectedResult}</p>
+              </div>
+              <div>
+                <span className="text-[9px] font-mono font-bold uppercase text-neutral-400 block">Action Boundaries</span>
+                <p className="text-neutral-300">Reversibility: <strong className="text-white uppercase">{result.nextAction.reversibility}</strong></p>
+              </div>
+            </div>
+          </div>
+
+          {/* 5. Supporting Evidence & 6. Technical Context */}
+          <div className="grid gap-4 md:grid-cols-2 pt-2">
+            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 space-y-2">
               <h3 className="text-[11px] font-mono font-bold uppercase tracking-wider text-stone-600">
-                Evidence Needed
+                Evidence needed
               </h3>
               {input.project.evidence.length > 0 ? (
                 <ul className="space-y-1.5">
@@ -270,47 +294,17 @@ Blockers: ${result.blockers.length} active`
                 <p className="text-xs text-stone-500 italic">No evidence item linked.</p>
               )}
             </div>
-          </div>
 
-          {/* Integrated PRIMARY DECISION ANCHOR: Exactly One Authorized Next Action */}
-          <div className="rounded-2xl border border-neutral-900 bg-neutral-950 text-white p-4 sm:p-6 shadow-xl space-y-4 min-w-0" aria-label="Authorized Next Action">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-800 pb-3">
-              <span className="inline-flex items-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-0.5 text-[11px] font-mono font-bold uppercase tracking-wider">
-                NEXT AUTHORIZED ACTION
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className={cn("rounded-md px-2.5 py-0.5 font-mono text-[11px] font-bold border", actionAuthorityConfig.badgeClass)}>
-                  Authority: {actionAuthorityConfig.label}
-                </span>
-                <span className="rounded-md bg-neutral-800 border border-neutral-700 px-2.5 py-0.5 font-mono text-[11px] text-neutral-300">
-                  Approval: {result.nextAction.approvalStatus}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <h3 className="text-lg font-bold text-white sm:text-xl">
-                {result.nextAction.title}
+            <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2.5 shadow-2xs">
+              <h3 className="text-[11px] font-mono font-bold uppercase tracking-wider text-stone-500">
+                Evaluator Context
               </h3>
-              <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-                {result.nextAction.rationale}
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 pt-2 border-t border-neutral-900 text-xs">
-              <div className="rounded-xl border border-neutral-800 bg-neutral-900/90 p-3 space-y-1">
-                <span className="text-[10px] font-mono font-bold uppercase text-neutral-400">Expected Result</span>
-                <p className="text-emerald-300 font-medium">{result.nextAction.expectedResult}</p>
+              <blockquote className="text-xs italic font-serif text-stone-800 leading-snug border-l-2 border-stone-400 pl-3">
+                &ldquo;{result.heroDemoMoment.evaluatorInterpretation}&rdquo;
+              </blockquote>
+              <div className="text-[10px] font-mono text-stone-500 pt-1">
+                Target: <span className="font-bold text-stone-900 uppercase">{result.evaluatorPath.evaluatorType}</span>
               </div>
-
-              <div className="rounded-xl border border-neutral-800 bg-neutral-900/90 p-3 space-y-1">
-                <span className="text-[10px] font-mono font-bold uppercase text-neutral-400">Action Boundaries</span>
-                <p className="text-neutral-300">Reversibility: <strong className="text-white uppercase">{result.nextAction.reversibility}</strong></p>
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-[11px] text-amber-200">
-              <strong>Read-Only Notice:</strong> Projected action for decision review. No external tools, deployment, or automatic mutation will occur.
             </div>
           </div>
         </section>
@@ -610,7 +604,7 @@ Blockers: ${result.blockers.length} active`
           <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-3 min-w-0">
             <div className="flex items-center justify-between border-b border-stone-100 pb-2.5">
               <h2 className="text-base font-bold text-stone-900">
-                Learning Proposals ({result.learningProposals.length})
+                Learning proposals
               </h2>
               <span className="rounded-full bg-stone-100 border border-stone-200 px-2 py-0.5 font-mono text-[10px] text-stone-700">
                 Read-Only Rules
@@ -648,7 +642,7 @@ Blockers: ${result.blockers.length} active`
         <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-3 min-w-0" aria-label="Source and Capabilities">
           <div className="flex items-center justify-between border-b border-stone-100 pb-2.5">
             <h2 className="text-base font-bold text-stone-900">
-              Source & Capabilities
+              Source & capabilities
             </h2>
             <button
               type="button"
@@ -663,7 +657,7 @@ Blockers: ${result.blockers.length} active`
           {/* Active Creative Capabilities (Compressed) */}
           <div className="space-y-2">
             <h3 className="text-xs font-mono font-bold uppercase text-stone-600">
-              Active Creative Capabilities ({result.selectedSkills.length})
+              Active creative capabilities ({result.selectedSkills.length})
             </h3>
             {result.selectedSkills.length > 0 ? (
               result.selectedSkills.map((skill) => (
@@ -686,7 +680,7 @@ Blockers: ${result.blockers.length} active`
           {showDevDetails && (
             <div className="pt-3 border-t border-stone-200 font-mono text-xs text-stone-700 space-y-2">
               <h4 className="text-[10px] font-mono font-bold uppercase text-stone-500">
-                Source Trace & Schema Details
+                Source trace
               </h4>
               <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 space-y-1.5 text-[11px]">
                 <div><span className="text-stone-400">Project Brain Source:</span> {input.project.id}</div>

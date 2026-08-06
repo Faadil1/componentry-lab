@@ -174,3 +174,23 @@ test("empty learning state and skills produce safe default representations", () 
   }
 })
 
+test("Data Story projection is isolated from MARA musicology data", () => {
+  const projections = getAllDirectorProjections()
+  const story = projections["power-bi-service-performance"]
+  const mara = projections["mara-episode"]
+
+  // Confirm independent references
+  assert.notStrictEqual(story.result.heroDemoMoment, mara.result.heroDemoMoment)
+
+  // Verify Data Story domain words
+  const storyText = JSON.stringify(story.result)
+  assert.ok(storyText.includes("Power BI") || storyText.includes("metric") || storyText.includes("operational"))
+  
+  // Verify MARA musicology words are ABSENT from Data Story
+  const forbidden = ["Eight-Bar Hole", "1987-F", "Horn in F", "score edition", "musicology"]
+  for (const word of forbidden) {
+    assert.ok(!storyText.includes(word), `Data Story must not contain MARA word: ${word}`)
+  }
+})
+
+

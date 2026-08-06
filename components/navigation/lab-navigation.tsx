@@ -112,16 +112,16 @@ export function LabNavigation({
         })}
       </nav>
 
-      <details className={cn("group rounded-xl border border-stone-300 bg-white/70 shadow-xs backdrop-blur-sm", compact ? "p-1.5" : "p-3")}>
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
-          <span>Labs menu</span>
-          <span className="text-[10px] tracking-[0.22em] text-stone-400 group-open:hidden">Open</span>
-          <span className="hidden text-[10px] tracking-[0.22em] text-stone-400 group-open:inline">Close</span>
+      <details className={cn("group border border-stone-300 bg-white/70 shadow-xs backdrop-blur-sm", compact ? "rounded-lg p-1.5 text-[11px]" : "rounded-2xl p-3")}>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-0.5 font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
+          <span className={compact ? "text-[10px]" : "text-xs"}>Labs menu</span>
+          <span className="text-[9px] tracking-[0.22em] text-stone-400 group-open:hidden">Open</span>
+          <span className="hidden text-[9px] tracking-[0.22em] text-stone-400 group-open:inline">Close</span>
         </summary>
-        <div className="mt-2 grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
+        <div className={cn("grid gap-2.5 md:grid-cols-2 xl:grid-cols-4", compact ? "mt-1.5 text-xs" : "mt-3")}>
           {groupedLabLinks.map((group) => (
-            <section key={group.label} className="space-y-1.5 rounded-lg border border-stone-200 bg-stone-50 p-2.5">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500">{group.label}</p>
+            <section key={group.label} className={cn("rounded-lg border border-stone-200 bg-stone-50 p-2.5", compact ? "space-y-1 p-2" : "space-y-1.5 p-2.5")}>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-stone-500">{group.label}</p>
               <div className="flex flex-wrap gap-1.5">
                 {group.links.map((link) => {
                   const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)
@@ -131,7 +131,7 @@ export function LabNavigation({
                       href={link.href}
                       label={link.label}
                       isActive={isActive}
-                      linkClassName={cn("text-[11px]", linkClassName)}
+                      linkClassName={cn("text-[10px] px-2 py-0.5", linkClassName)}
                       activeClassName={activeClassName}
                       inactiveClassName={inactiveClassName}
                       compact={compact}
