@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
 
 const OUTPUT_DIR = path.join(__dirname, '../artifacts/episode-state-card/visual-evidence');
