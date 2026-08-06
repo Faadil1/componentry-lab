@@ -177,7 +177,7 @@ Blockers: ${result.blockers.length} active`
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 space-y-10">
 
         {/* Section 3: HERO DEMO MOMENT (The Dominant Centerpiece) */}
-        <section className={cn("relative overflow-hidden rounded-3xl border-2 bg-white p-6 shadow-xl sm:p-8 md:p-10", modeTheme.borderAccent)} aria-label="Hero Demo Moment">
+        <section className={cn("relative overflow-hidden rounded-3xl border-2 bg-white p-4 sm:p-8 md:p-10 shadow-xl min-w-0", modeTheme.borderAccent)} aria-label="Hero Demo Moment">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
             <div className="space-y-4 max-w-3xl">
               <div className="flex flex-wrap items-center gap-3">
@@ -260,7 +260,7 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 6: EXACTLY ONE AUTHORIZED NEXT ACTION (Primary Decision Surface) */}
-        <section className="rounded-3xl border border-neutral-900 bg-neutral-950 text-white p-6 shadow-2xl sm:p-8 md:p-10 space-y-6" aria-label="Authorized Next Action">
+        <section className="rounded-3xl border border-neutral-900 bg-neutral-950 text-white p-4 sm:p-8 md:p-10 shadow-2xl space-y-6 min-w-0" aria-label="Authorized Next Action">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-800 pb-5">
             <div>
               <span className="inline-flex items-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-widest">
@@ -374,9 +374,9 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 2: Central Objective & Evaluator Path */}
-        <section className="grid gap-6 md:grid-cols-2" aria-label="Objective and Evaluator Path">
+        <section className="grid gap-6 md:grid-cols-2 min-w-0" aria-label="Objective and Evaluator Path">
           {/* Objective Statement Card */}
-          <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-stone-600">
                 Central Creative Objective
@@ -401,7 +401,7 @@ Blockers: ${result.blockers.length} active`
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 pt-2">
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 min-w-0">
                 <h4 className="text-[11px] font-mono font-bold uppercase text-stone-500">Active Constraints</h4>
                 <ul className="space-y-1 text-xs text-stone-700">
                   {result.objective.constraints.map((c, i) => (
@@ -412,7 +412,7 @@ Blockers: ${result.blockers.length} active`
                   ))}
                 </ul>
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 min-w-0">
                 <h4 className="text-[11px] font-mono font-bold uppercase text-stone-500">Non-Goals</h4>
                 <ul className="space-y-1 text-xs text-stone-500 italic">
                   {result.objective.nonGoals.map((ng, i) => (
@@ -424,7 +424,7 @@ Blockers: ${result.blockers.length} active`
           </div>
 
           {/* Evaluator Path Card */}
-          <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-stone-600">
                 Evaluator Mental Model
@@ -467,7 +467,7 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 4: Quality Gates */}
-        <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-6" aria-label="Quality Gates">
+        <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-6 min-w-0" aria-label="Quality Gates">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-stone-100 pb-4">
             <div>
               <h2 className="text-lg font-bold text-stone-900">
@@ -479,7 +479,7 @@ Blockers: ${result.blockers.length} active`
             </div>
 
             {/* Gate Filter Pills */}
-            <div className="flex flex-wrap items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-1">
               {["all", "pass", "conditional", "blocked", "fail", "review"].map((status) => {
                 const isActive = gateFilter === status
                 return (
@@ -488,7 +488,7 @@ Blockers: ${result.blockers.length} active`
                     type="button"
                     onClick={() => setGateFilter(status)}
                     className={cn(
-                      "rounded-lg px-2.5 py-1 text-xs font-mono font-medium capitalize transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950",
+                      "rounded-lg px-2 py-0.5 text-[11px] font-mono font-medium capitalize transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950",
                       isActive
                         ? "bg-neutral-950 text-white shadow-xs"
                         : "bg-stone-100 text-stone-600 hover:bg-stone-200"
@@ -507,18 +507,18 @@ Blockers: ${result.blockers.length} active`
               const isExpanded = !!expandedGates[gate.gateId]
               return (
                 <div key={gate.gateId} className="flex flex-col justify-between rounded-xl border border-stone-200 bg-stone-50/60 p-4 space-y-3 transition hover:border-stone-300">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-xs font-bold text-stone-900 truncate">
+                  <div className="space-y-2 min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5 min-w-0">
+                      <span className="font-mono text-xs font-bold text-stone-900 truncate min-w-0 max-w-full">
                         {gate.name}
                       </span>
-                      <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-mono font-bold border shrink-0", gateCfg.badgeClass)}>
+                      <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono font-bold border shrink-0", gateCfg.badgeClass)}>
                         <span className={cn("h-1.5 w-1.5 rounded-full", gateCfg.dotClass)}></span>
                         {gateCfg.label}
                       </span>
                     </div>
 
-                    <div className="text-xs text-stone-600 space-y-1 font-mono">
+                    <div className="text-xs text-stone-600 space-y-1 font-mono min-w-0 break-words">
                       <div><span className="text-stone-400">ID:</span> {gate.gateId}</div>
                       <div><span className="text-stone-400">Evaluator:</span> {gate.evaluator}</div>
                       {gate.controllingEvidence && (
@@ -565,7 +565,7 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 5: Canonical Blockers */}
-        <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4" aria-label="Canonical Blockers">
+        <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0" aria-label="Canonical Blockers">
           <div className="flex items-center justify-between border-b border-stone-100 pb-3">
             <div>
               <h2 className="text-lg font-bold text-stone-900">
@@ -633,9 +633,9 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 7 & 8: Authority State & Governed Learning */}
-        <section className="grid gap-6 md:grid-cols-2" aria-label="Authority and Learning Governance">
+        <section className="grid gap-6 md:grid-cols-2 min-w-0" aria-label="Authority and Learning Governance">
           {/* Authority State Panel */}
-          <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0">
             <h2 className="text-base font-bold text-stone-900 border-b border-stone-100 pb-3">
               Authority State & Scope Boundaries
             </h2>
@@ -668,7 +668,7 @@ Blockers: ${result.blockers.length} active`
           </div>
 
           {/* Governed Learning Panel */}
-          <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">
               <h2 className="text-base font-bold text-stone-900">
                 Governed Learning Proposals ({result.learningProposals.length})
@@ -706,7 +706,7 @@ Blockers: ${result.blockers.length} active`
         </section>
 
         {/* Section 9: Provenance & Metadata */}
-        <section className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm space-y-4" aria-label="Provenance and Selected Skills">
+        <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-6 shadow-sm space-y-4 min-w-0" aria-label="Provenance and Selected Skills">
           <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-stone-600 border-b border-stone-100 pb-3">
             Director Provenance & Selected Skills
           </h2>

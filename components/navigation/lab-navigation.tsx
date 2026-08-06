@@ -88,7 +88,7 @@ export function LabNavigation({
   const pathname = usePathname()
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div className={cn("flex flex-col gap-3 min-w-0", className)}>
       <nav className="flex flex-wrap items-center gap-2 text-xs" aria-label="Primary navigation">
         {primaryLinks.map((link) => {
           const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)

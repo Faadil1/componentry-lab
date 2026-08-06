@@ -4,6 +4,8 @@ import {
   getDirectorFixtureKeys,
   getDirectorProjection,
   getAllDirectorProjections,
+  adaptProjectBrainToDirectorInput,
+  adaptDirectorResult,
 } from "../lib/director"
 import { projectPresets } from "../lib/projects"
 
@@ -26,6 +28,32 @@ test("four fixtures render distinct content", () => {
   assert.ok(evaluatorTypes.size >= 3)
 })
 
+test("the four selected action titles are distinct and semantically appropriate", () => {
+  const projections = getAllDirectorProjections()
+  const titles = new Set(Object.values(projections).map((p) => p.result.nextAction.title))
+  assert.equal(titles.size, 4, "All four selected action titles must be distinct")
+
+  // Scenario 1: DAY_CHALLENGE (The Second Absence)
+  const day = projections["the-second-absence"].result.nextAction
+  assert.equal(day.mode, "DAY_CHALLENGE")
+  assert.ok(day.title.includes("hypothesis") || day.title.includes("proof") || day.title.includes("hero"))
+
+  // Scenario 2: HACKATHON (Cleanverse Build Round 2)
+  const hackathon = projections["cleanverse-build-round-2"].result.nextAction
+  assert.equal(hackathon.mode, "HACKATHON")
+  assert.ok(hackathon.title.includes("hackathon") || hackathon.title.includes("blocker") || hackathon.title.includes("receipt"))
+
+  // Scenario 3: MARA (MARA Episode)
+  const mara = projections["mara-episode"].result.nextAction
+  assert.equal(mara.mode, "MARA")
+  assert.ok(mara.title.includes("Eight-Bar") || mara.title.includes("score") || mara.title.includes("continuity"))
+
+  // Scenario 4: DATA_STORY (Power BI Service Performance)
+  const story = projections["power-bi-service-performance"].result.nextAction
+  assert.equal(story.mode, "DATA_STORY")
+  assert.ok(story.title.includes("Power BI") || story.title.includes("metric") || story.title.includes("analytical"))
+})
+
 test("exactly one action is displayed for each fixture", () => {
   const projections = getAllDirectorProjections()
   for (const [key, proj] of Object.entries(projections)) {
@@ -36,9 +64,11 @@ test("exactly one action is displayed for each fixture", () => {
   }
 })
 
-test("blocked projects show blockers", () => {
+test("blocked projects show blockers and remain safe", () => {
   const proj = getDirectorProjection("cleanverse-build-round-2")
-  assert.ok(proj.result.blockers.length >= 0)
+  assert.ok(proj.result.blockers.length > 0)
+  assert.equal(proj.result.nextAction.actionType, "review-required")
+  assert.equal(proj.result.nextAction.approvalStatus, "not-required")
   for (const blocker of proj.result.blockers) {
     assert.ok(blocker.blockerId)
     assert.ok(blocker.description)
@@ -74,6 +104,48 @@ test("learning proposals remain read-only", () => {
       assert.ok(["pending", "approved", "rejected", "not-required"].includes(proposal.humanApprovalState))
     }
   }
+})
+
+test("deterministic input produces deterministic output", () => {
+  const p1 = getDirectorProjection("the-second-absence")
+  const p2 = getDirectorProjection("the-second-absence")
+  assert.deepEqual(p1.result, p2.result)
+})
+
+test("safe fallback works for an empty candidate set", () => {
+  const emptyProject = {
+    ...projectPresets[0],
+    id: "empty-actions-project",
+    title: "Empty Project",
+    nextActions: [],
+    blockers: [],
+    blockedBy: [],
+  }
+  const input = adaptProjectBrainToDirectorInput(
+    emptyProject,
+    "DAY_CHALLENGE",
+    "build",
+    {
+      authorityLevel: "suggest",
+      requestedAction: "analyze",
+      target: "empty-actions-project",
+      reversibility: "reversible",
+      risk: "low",
+      approvalRequirement: "none",
+      grantedScope: ["analysis"],
+      status: "granted",
+    }
+  )
+  const result = adaptDirectorResult({
+    ...input,
+    availableSkills: [],
+    lockedDecisions: [],
+    learningProposals: [],
+  })
+
+  assert.ok(result.nextAction)
+  assert.equal(result.nextAction.title, "Validate single-day hero proof")
+  assert.equal(result.nextAction.approvalStatus, "not-required")
 })
 
 test("the page does not mutate canonical Project Brain state", () => {
