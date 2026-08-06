@@ -1,6 +1,6 @@
 "use client"
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import {
   AlertTriangle,
   CheckCircle2,
@@ -21,11 +21,7 @@ export type EpisodeStateCardVariant =
   | "published"
   | "unavailable"
 
-export type HumanReviewStatus =
-  | "not-required"
-  | "required"
-  | "completed"
-  | "unavailable"
+export type HumanReviewStatus = "not-required" | "required" | "completed"
 
 export interface EpisodeStateDecision {
   label: string
@@ -40,37 +36,97 @@ export interface EpisodeStateBlocker {
   severity: "info" | "warning" | "critical"
 }
 
-interface EpisodeStateCardSharedProps {
-  reduceMotion?: boolean
+type EpisodeStateCardSharedProps = {
   className?: string
 }
 
-export type EpisodeStateCardAvailableProps = EpisodeStateCardSharedProps & {
-  variant: Exclude<EpisodeStateCardVariant, "unavailable">
+type EpisodeStateCardAvailableBase = EpisodeStateCardSharedProps & {
   channelName: string
   episodeNumber?: number | null
   title: string
   workflowState: string
   workflowStateLabel?: string
-  lastDecision?: EpisodeStateDecision | null
-  blockers?: EpisodeStateBlocker[]
   nextExpectedState?: string | null
-  nextAuthorizedAction?: string | null
-  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">
   canonicalSource?: string
   manifestVersion?: string
-  youtubeVideoId?: string
-  publishedAt?: string
 }
 
-export type EpisodeStateCardUnavailableProps = EpisodeStateCardSharedProps & {
+export type DefaultEpisodeStateCardProps = EpisodeStateCardAvailableBase & {
+  variant: "default"
+  humanReviewStatus: "not-required" | "completed"
+  lastDecision?: EpisodeStateDecision | null
+  blockers?: EpisodeStateBlocker[]
+  nextAuthorizedAction?: string | null
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type BlockedEpisodeStateCardProps = EpisodeStateCardAvailableBase & {
+  variant: "blocked"
+  humanReviewStatus: "not-required" | "required" | "completed"
+  blockers: readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]
+  lastDecision?: EpisodeStateDecision | null
+  nextAuthorizedAction?: string | null
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type HumanReviewRequiredEpisodeStateCardProps = EpisodeStateCardAvailableBase & {
+  variant: "human-review-required"
+  humanReviewStatus: "required"
+  nextAuthorizedAction?: string | null
+  lastDecision?: never
+  blockers?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type ApprovedEpisodeStateCardProps = EpisodeStateCardAvailableBase & {
+  variant: "approved"
+  humanReviewStatus: "completed"
+  lastDecision?: EpisodeStateDecision | null
+  blockers?: never
+  nextAuthorizedAction?: string | null
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type PublishedEpisodeStateCardProps = EpisodeStateCardAvailableBase & {
+  variant: "published"
+  humanReviewStatus: "completed"
+  youtubeVideoId: string
+  publishedAt: string
+  lastDecision?: EpisodeStateDecision | null
+  blockers?: never
+  nextAuthorizedAction?: never
+}
+
+export type UnavailableEpisodeStateCardProps = EpisodeStateCardSharedProps & {
   variant: "unavailable"
   unavailableReason?: string
+  channelName?: never
+  episodeNumber?: never
+  title?: never
+  workflowState?: never
+  workflowStateLabel?: never
+  humanReviewStatus?: never
+  lastDecision?: never
+  blockers?: never
+  nextExpectedState?: never
+  nextAuthorizedAction?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+  canonicalSource?: never
+  manifestVersion?: never
 }
 
 export type EpisodeStateCardProps =
-  | EpisodeStateCardAvailableProps
-  | EpisodeStateCardUnavailableProps
+  | DefaultEpisodeStateCardProps
+  | BlockedEpisodeStateCardProps
+  | HumanReviewRequiredEpisodeStateCardProps
+  | ApprovedEpisodeStateCardProps
+  | PublishedEpisodeStateCardProps
+  | UnavailableEpisodeStateCardProps
 
 function getVariantStyles(variant: EpisodeStateCardVariant): string {
   const base = "rounded-lg overflow-hidden border"
@@ -148,20 +204,11 @@ function getSeverityLabel(severity: "info" | "warning" | "critical"): string {
   }
 }
 
-export const EpisodeStateCard = React.forwardRef<
-  HTMLDivElement,
-  EpisodeStateCardProps
->(
+export const EpisodeStateCard = React.forwardRef<HTMLDivElement, EpisodeStateCardProps>(
   (props, ref) => {
-    const { variant, reduceMotion = false, className } = props
+    const { variant, className } = props
+    const shouldReduceMotion = useReducedMotion() ?? false
 
-    const shouldReduceMotion =
-      reduceMotion ||
-      (typeof window !== "undefined"
-        ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        : false)
-
-    // Unique IDs per instance to prevent duplicate-ID violations
     const generatedId = React.useId()
     const headingId = `${generatedId}-episode-heading`
     const stateHeadingId = `${generatedId}-state-heading`
@@ -198,13 +245,10 @@ export const EpisodeStateCard = React.forwardRef<
           role="region"
           aria-labelledby={`${generatedId}-unavailable-heading`}
         >
-          <div className={cn("h-1 mb-6", getAccentBg(variant))} />
+          <div className={cn("h-1 mb-6", getAccentBg(variant))} aria-hidden="true" />
           <motion.div variants={itemVariants} className="flex gap-3 mb-6">
             {getStateIcon(variant)}
-            <h2
-              id={`${generatedId}-unavailable-heading`}
-              className="text-2xl font-bold text-neutral-900"
-            >
+            <h2 id={`${generatedId}-unavailable-heading`} className="text-2xl font-bold text-neutral-900">
               {getStateLabel(variant)}
             </h2>
           </motion.div>
@@ -255,13 +299,8 @@ export const EpisodeStateCard = React.forwardRef<
         <div className={cn("h-1 mb-6", getAccentBg(variant))} aria-hidden="true" />
 
         <motion.div variants={itemVariants} className="mb-6">
-          <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide">
-            {channelName}
-          </p>
-          <h2
-            id={headingId}
-            className="text-2xl font-bold text-neutral-900 mt-2"
-          >
+          <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide">{channelName}</p>
+          <h2 id={headingId} className="text-2xl font-bold text-neutral-900 mt-2">
             Episode {episodeNumber}
           </h2>
           {title && <p className="text-base text-neutral-700 mt-1">{title}</p>}
@@ -270,41 +309,27 @@ export const EpisodeStateCard = React.forwardRef<
         <motion.div variants={itemVariants} className="mb-8 flex items-start gap-4">
           {getStateIcon(variant)}
           <div className="flex-1">
-            <h3 id={stateHeadingId} className="text-xl font-bold text-neutral-900">
-              {stateLabel}
-            </h3>
+            <h3 id={stateHeadingId} className="text-xl font-bold text-neutral-900">{stateLabel}</h3>
           </div>
         </motion.div>
 
-        {(lastDecision || blockers?.length > 0 || humanReviewStatus === "required" || nextAuthorizedAction || nextExpectedState || youtubeVideoId || publishedAt) && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6 space-y-6"
-          >
+        {(lastDecision || blockers.length > 0 || humanReviewStatus === "required" || nextAuthorizedAction || nextExpectedState || youtubeVideoId || publishedAt) && (
+          <motion.div variants={itemVariants} className="mb-6 border-t border-neutral-200/50 pt-6 space-y-6">
             {lastDecision && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
-                  Last validated decision
-                </p>
-                <p className="text-base text-neutral-900 font-medium">
-                  {lastDecision.label}
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">Last validated decision</p>
+                <p className="text-base text-neutral-900 font-medium">{lastDecision.label}</p>
                 {lastDecision.outcome && (
                   <p className="text-xs text-neutral-600 mt-2">
-                    Outcome:{" "}
-                    <span className="font-semibold text-neutral-900">
-                      {lastDecision.outcome.toUpperCase().replace(/-/g, " ")}
-                    </span>
+                    Outcome: <span className="font-semibold text-neutral-900">{lastDecision.outcome.toUpperCase().replace(/-/g, " ")}</span>
                   </p>
                 )}
               </div>
             )}
 
-            {blockers && blockers.length > 0 && (
+            {blockers.length > 0 && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-4">
-                  Blocking issues
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-4">Blocking issues</p>
                 <div className="space-y-3">
                   {blockers.map((blocker) => (
                     <div key={blocker.id} className="flex gap-3">
@@ -322,17 +347,13 @@ export const EpisodeStateCard = React.forwardRef<
             {humanReviewStatus === "required" && (
               <div className="flex items-start gap-3">
                 <HelpCircle size={16} aria-hidden="true" className="text-violet-700 flex-shrink-0 mt-1" />
-                <p className="text-base font-semibold text-violet-900">
-                  Human review is required before proceeding.
-                </p>
+                <p className="text-base font-semibold text-violet-900">Human review is required before proceeding.</p>
               </div>
             )}
 
             {nextAuthorizedAction && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
-                  Next authorized action
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">Next authorized action</p>
                 <div className="flex items-start gap-3">
                   <ArrowRight size={16} aria-hidden="true" className="text-neutral-600 flex-shrink-0 mt-0.5" />
                   <p className="text-base text-neutral-900">{nextAuthorizedAction}</p>
@@ -342,34 +363,23 @@ export const EpisodeStateCard = React.forwardRef<
 
             {nextExpectedState && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
-                  Next expected state
-                </p>
-                <p className="text-base font-medium text-neutral-900">
-                  {nextExpectedState}
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">Next expected state</p>
+                <p className="text-base font-medium text-neutral-900">{nextExpectedState}</p>
               </div>
             )}
 
             {youtubeVideoId && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
-                  YouTube
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">YouTube</p>
                 <p className="text-sm text-neutral-900">
-                  Video ID:{" "}
-                  <code className="bg-neutral-200 px-2 py-1 rounded text-xs font-mono">
-                    {youtubeVideoId}
-                  </code>
+                  Video ID: <code className="bg-neutral-200 px-2 py-1 rounded text-xs font-mono">{youtubeVideoId}</code>
                 </p>
               </div>
             )}
 
             {publishedAt && (
               <div>
-                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
-                  Published
-                </p>
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">Published</p>
                 <p className="text-xs text-neutral-600">{publishedAt}</p>
               </div>
             )}
@@ -377,28 +387,10 @@ export const EpisodeStateCard = React.forwardRef<
         )}
 
         {(canonicalSource || manifestVersion || workflowState) && (
-          <motion.div
-            variants={itemVariants}
-            className="border-t border-neutral-200/50 pt-6 space-y-1.5 text-xs text-neutral-600"
-          >
-            {canonicalSource && (
-              <p>
-                <span className="font-medium">Canonical source</span>
-                {" "}· {canonicalSource}
-              </p>
-            )}
-            {manifestVersion && (
-              <p>
-                <span className="font-medium">Version</span>
-                {" "}· {manifestVersion}
-              </p>
-            )}
-            {workflowState && (
-              <p>
-                <span className="font-medium">State ID</span>
-                {" "}· <code className="font-mono text-neutral-600">{workflowState}</code>
-              </p>
-            )}
+          <motion.div variants={itemVariants} className="border-t border-neutral-200/50 pt-6 space-y-1.5 text-xs text-neutral-600">
+            {canonicalSource && <p><span className="font-medium">Canonical source</span> · {canonicalSource}</p>}
+            {manifestVersion && <p><span className="font-medium">Version</span> · {manifestVersion}</p>}
+            {workflowState && <p><span className="font-medium">State ID</span> · <code className="font-mono text-neutral-600">{workflowState}</code></p>}
           </motion.div>
         )}
       </motion.div>
