@@ -194,7 +194,7 @@ Blockers: ${result.blockers.length} active`
       </section>
 
       {/* Main Workspace Body */}
-      <div className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8 space-y-8 min-w-0">
+      <div id="active-workspace-content" className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 lg:px-8 space-y-8 min-w-0">
 
         {/* Combined First-Viewport Decision Block: HERO DEMO & NEXT AUTHORIZED ACTION */}
         <section className={cn("relative overflow-hidden rounded-3xl border-2 bg-white p-4 sm:p-6 md:p-8 shadow-xl min-w-0 space-y-6", modeTheme.borderAccent)} aria-label="Hero Decision Center">
@@ -410,7 +410,7 @@ Blockers: ${result.blockers.length} active`
                 Quality & Evidence Gates ({result.gateEvaluations.length})
               </h2>
               <p className="text-xs text-stone-500 mt-0.5">
-                Universal and mode-specific verification gates. Controlling evidence required for pass state.
+                Universal and mode-specific quality gates. Controlling evidence required for pass state.
               </p>
             </div>
 

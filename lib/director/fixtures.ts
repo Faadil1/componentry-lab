@@ -1,5 +1,4 @@
 import type { DirectorFixture, SkillMetadata } from "./types"
-import { projectPresets } from "../projects/presets"
 
 const baseSkills: SkillMetadata[] = [
   {
@@ -26,19 +25,168 @@ const baseSkills: SkillMetadata[] = [
 export const directorFixtures: Record<string, DirectorFixture> = {
   "the-second-absence": {
     project: {
-      ...projectPresets[0],
       id: "the-second-absence",
+      slug: "the-second-absence",
       title: "The Second Absence",
       shortTitle: "Second Absence",
+      description: "An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.",
+      kind: "portfolio-case-study",
+      status: "building",
+      currentPhase: "build",
+      completedPhases: ["intake", "qualify", "research", "position", "differentiate", "concept", "design", "prototype"],
+      blockedPhases: [],
+      nextRecommendedPhase: "build",
+      priority: "high",
+      createdLabel: "2026-08-01",
+      updatedLabel: "2026-08-05",
+      challenge: "Transforming anonymous resolution status into visible responsibility.",
+      problem: "Institutional resolutions often lack human ownership, leaving customers frustrated by anonymous support loops.",
+      audience: "General public and accountability advocates",
+      primaryGoal: "Visualising human accountability by transforming anonymous status notifications into a named responsible owner.",
+      successDefinition: "The customer sees a named accountable contact (Alex) and a clear callback promise for the £149 discrepancy.",
+      constraints: [
+        { id: "tsa_c1", type: "scope", description: "Visual reframe must use the premium observational campaign style." }
+      ],
+      stakeholders: [
+        { id: "tsa_s1", label: "Marcus Aurelius", role: "Creative Director" }
+      ],
+      requirements: [
+        { id: "tsa_r1", label: "Accountable contact display", description: "Show named support agent (Alex) with direct callback options.", priority: "critical" }
+      ],
+      evaluationCriteria: [
+        { id: "tsa_ec1", label: "Accountability perception", description: "Measures stakeholder perception of human ownership.", weight: 0.8 }
+      ],
+      sourceLinks: [
+        { id: "tsa_sl1", label: "Customer Complaint Brief", sourceType: "user-input", description: "The original customer support ticket highlighting the £149 dispute." }
+      ],
+      references: ["Human-centric campaign guidelines"],
+      positioningStatement: "The Second Absence reframes customer-service disputes as a premium campaign about human responsibility.",
+      tension: "Anonymous status versus human ownership.",
+      memoryHook: "No One to Alex.",
+      judgeMemorySentence: "An observational campaign exposing the missing human element in corporate support.",
+      differentiation: "Focuses on explicit names and callback promises instead of ticket status numbers.",
+      categoryClaim: "Accountability reframe.",
+      alternatives: ["Standard status email notification", "Automated phone support line"],
+      rejectedAngles: ["Security locking protocols", "Session loss warning reports"],
+      visualDirection: "Sleek, minimalist editorial layouts. Warm cream backdrops, high-contrast typography, charcoal-black status indicators.",
+      typographyDirection: "Sora for UI typography, Outfit for headings.",
+      colorDirection: "Warm cream, charcoal black, alert orange.",
+      layoutDirection: "Observational chronological timeline layout.",
+      interactionDirection: "Collapsible status disclosure elements.",
+      responsiveStrategy: "Responsive vertical timeline grids.",
+      accessibilityStrategy: "High color contrast ratio.",
+      designPrinciples: ["Ownership is personal, not institutional.", "Show the human behind the ticket."],
+      antiPatterns: ["Vague 'Support Team' labels.", "Hiding callback promises."],
+      rejectedDirections: ["Compliance token generators.", "transposition edition diffs."],
+      primaryClaim: "Anonymous resolution transforms into a named accountable contact.",
+      evidence: [
+        {
+          id: "tsa_ev1",
+          label: "Accountability end frame review",
+          claimSupported: "Anonymous resolution transforms into a named accountable contact.",
+          type: "visual-proof",
+          source: "Observational campaign timeline",
+          strength: "direct",
+          status: "available",
+          routeOrFile: "components/second-absence/accountability.tsx",
+          linkedDecisionId: "tsa_d1"
+        }
+      ],
+      proofMoment: "The transitional screen showing ticket resolution changing to a personal callback card.",
+      technicalProof: "Before/after status timeline comparison.",
+      failureMode: "Unresolved £149 discrepancy remains hidden.",
+      fallback: "Display default general support owner card.",
+      unresolvedProofGaps: [],
+      selectedRegistryIds: ["timeline", "typography"],
+      selectedPlaybookIds: ["campaign-guidelines"],
+      selectedReadingPathIds: [],
+      selectedRecipeIds: [],
+      architectureNotes: "Client-side static campaign display.",
+      implementationConstraints: ["Static copy blocks representing £149 support dispute."],
+      acceptanceCriteria: ["Timeline shows clear transition from 'Resolved' to 'Alex'."],
+      technicalRisks: [],
+      capturePlan: {
+        states: [
+          { id: "timeline-loaded", label: "Timeline Loaded", time: 0, frame: 0, stateType: "setup", isCapturePoint: true, expectedVisualResult: "Timeline showing ticket status.", notes: "Initial load" }
+        ]
+      },
+      signatureStateId: "timeline-loaded",
+      signatureFrame: 0,
+      heroDemoMoment: "The institutional case changes from 'resolved' without ownership to a named accountable human with a callback promise.",
+      cleanViewRoute: "/projects/the-second-absence?clean=true",
+      restoreUrls: {},
+      captureLimitations: [],
+      videoPlan: {
+        purpose: "Expose missing human ownership in corporate support.",
+        audience: "Accountability advocates.",
+        durationSeconds: 45,
+        formats: ["16:9"],
+        narrative: "How corporate tickets dehumanise customers, and how our reframe campaign rebuilds trust.",
+        hook: "When tickets say resolved, who actually took responsibility?",
+        scenes: ["Intro", "Dehumanisation", "The Alex Reframe"],
+        proofMoments: ["Accountability end frame review"],
+        shots: [],
+        transitions: [],
+        voiceover: "",
+        subtitles: "",
+        soundDirection: "",
+        cta: "",
+        outputVariants: [],
+        missingAssets: [],
+        captureDependencies: [],
+        productionReadiness: "draft"
+      },
+      facts: [
+        { id: "tsa_f1", label: "Complaint logs", description: "Represents customer-service transaction highlighting unresolved £149 discrepancy.", category: "context", phase: "intake" }
+      ],
+      assumptions: [],
+      decisions: [
+        {
+          id: "tsa_d1",
+          label: "Named owner display",
+          description: "Explicitly display the name Alex and callback callback parameters directly on the success screen.",
+          status: "approved",
+          rationale: "Fosters instant connection and removes support anonymity.",
+          alternativesConsidered: ["Generic avatar", "Department name"],
+          evidenceIds: ["tsa_ev1"],
+          source: "Creative strategist",
+          phase: "prototype",
+          reversible: true,
+          impact: "medium"
+        }
+      ],
+      rejections: [
+        {
+          id: "tsa_rej1",
+          label: "Generic resolution message",
+          reason: "Anonymous resolutions fail to build brand loyalty.",
+          rejectedPhase: "concept",
+          riskAvoided: "Customer churn",
+          reconsiderCondition: "Never",
+          source: "Executive producer"
+        }
+      ],
+      risks: [],
+      outputs: [],
       nextActions: [
         {
           id: "act-day-1",
-          label: "Validate hypothesis lock proof",
-          description: "Verify the cryptographic commitment lever and client receipt before final single-day demo capture.",
+          label: "Validate accountability reveal proof",
+          description: "Verify the accountability reveal or continuity proof before final film assembly.",
           phase: "build",
           status: "todo",
-        },
+        }
       ],
+      learnings: [],
+      openQuestions: [],
+      blockedBy: [],
+      auditResults: [],
+      currentScore: 90,
+      readiness: 90,
+      blockers: [],
+      warnings: [],
+      publicationGate: true,
+      submissionGate: false
     },
     mode: "DAY_CHALLENGE",
     phaseContext: "build",
@@ -60,11 +208,149 @@ export const directorFixtures: Record<string, DirectorFixture> = {
   },
   "cleanverse-build-round-2": {
     project: {
-      ...projectPresets[0],
       id: "cleanverse-build-round-2",
+      slug: "cleanverse-build-round-2",
       title: "Cleanverse Build Round 2",
       shortTitle: "Cleanverse Build",
-      blockers: ["Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."],
+      description: "A compliance-native financial verification system designed to provide judge-verifiable audit traces and asset state compliance checks.",
+      kind: "hackathon",
+      status: "verifying",
+      currentPhase: "verify",
+      completedPhases: ["intake", "qualify", "research", "position", "differentiate", "concept", "design", "prototype", "build"],
+      blockedPhases: [],
+      nextRecommendedPhase: "verify",
+      priority: "high",
+      createdLabel: "2026-08-02",
+      updatedLabel: "2026-08-05",
+      challenge: "Providing a judge-verifiable audit trace showing clean finance asset verification.",
+      problem: "Hackathon judges need proof of protocol auditability and verification receipts to award compliance points.",
+      audience: "Hackathon judges and protocol evaluators",
+      primaryGoal: "Provide a judge-verifiable audit trace showing clean finance asset verification.",
+      successDefinition: "Verify signed audit trace and output verification receipt with zero session loss warnings.",
+      constraints: [
+        { id: "cv_c1", type: "compliance", description: "Cryptographic signed receipt conforms to compliance-native finance protocols." }
+      ],
+      stakeholders: [
+        { id: "cv_s1", label: "Judges Panel", role: "Sponsor Evaluators" }
+      ],
+      requirements: [
+        { id: "cv_r1", label: "Verification receipt generator", description: "Must issue cryptographically signed state receipt on verification completion.", priority: "critical" }
+      ],
+      evaluationCriteria: [
+        { id: "cv_ec1", label: "Verification auditability", description: "Ease of auditing signed state receipt.", weight: 0.9 }
+      ],
+      sourceLinks: [
+        { id: "cv_sl1", label: "Sponsor API brief", sourceType: "registry", description: "The compliance protocol specifications required by sponsors." }
+      ],
+      references: ["Sponsor native submission guidelines"],
+      positioningStatement: "Cleanverse Build is the compliance-first ledger verification engine built for judge evaluation.",
+      tension: "Decentralised speed versus compliance auditability.",
+      memoryHook: "Compliance-native verification.",
+      judgeMemorySentence: "A protocol demo validating financial assets with a secure verification receipt.",
+      differentiation: "Generates signed audit logs immediately upon block confirmation.",
+      categoryClaim: "Financial protocol verification.",
+      alternatives: ["Manual transaction auditing", "Off-chain verification databases"],
+      rejectedAngles: ["Customer complaints campaign", "Support ticket reframe"],
+      visualDirection: "Secure dashboard layout. Slate grey slate headers, emerald active indicators, monospace audit fields.",
+      typographyDirection: "Monospace for audit keys, Inter for layout.",
+      colorDirection: "Slate grey, emerald green, warning gold.",
+      layoutDirection: "Structured ledger table grid.",
+      interactionDirection: "Log expansion and signature check.",
+      responsiveStrategy: "Stacking database columns.",
+      accessibilityStrategy: "Aria table roles.",
+      designPrinciples: ["Trust requires verifiability.", "Logs must be chronological and signed."],
+      antiPatterns: ["Unsigned ledger edits.", "Hiding transaction history."],
+      rejectedDirections: ["Productivity coaches.", "Editorial transposition codex."],
+      primaryClaim: "Cryptographic audit logs are signed by verification key.",
+      evidence: [
+        {
+          id: "cv_ev1",
+          label: "Cleanverse verification receipt",
+          claimSupported: "Cryptographic audit logs are signed by verification key.",
+          type: "technical-proof",
+          source: "Cleanverse verification ledger",
+          strength: "direct",
+          status: "available",
+          routeOrFile: "components/cleanverse/audit-receipt.tsx",
+          linkedDecisionId: "cv_d1"
+        }
+      ],
+      proofMoment: "The successful production of a cryptographic verification receipt for the transaction ledger.",
+      technicalProof: "Verifiable transaction signature verification.",
+      failureMode: "Unhanded session loss warnings during compilation.",
+      fallback: "Display offline cached verification stub.",
+      unresolvedProofGaps: [],
+      selectedRegistryIds: ["ledger", "tables"],
+      selectedPlaybookIds: ["auditability-guidelines"],
+      selectedReadingPathIds: [],
+      selectedRecipeIds: [],
+      architectureNotes: "Pure ledger verification interface.",
+      implementationConstraints: ["Requires zero unhandled session loss warnings."],
+      acceptanceCriteria: ["Ledger logs verify signature correctly."],
+      technicalRisks: [],
+      capturePlan: {
+        states: [
+          { id: "ledger-loaded", label: "Ledger Loaded", time: 0, frame: 0, stateType: "setup", isCapturePoint: true, expectedVisualResult: "Ledger displaying active transactions.", notes: "Initial load" }
+        ]
+      },
+      signatureStateId: "ledger-loaded",
+      signatureFrame: 0,
+      heroDemoMoment: "Sponsor-native clean build asset verification and live audit receipt generation for judges.",
+      cleanViewRoute: "/projects/cleanverse-build?clean=true",
+      restoreUrls: {},
+      captureLimitations: [],
+      videoPlan: {
+        purpose: "Demonstrate protocol compliance to judges.",
+        audience: "Protocol evaluators.",
+        durationSeconds: 50,
+        formats: ["16:9"],
+        narrative: "Why manual compliance fails, and how Cleanverse automates verification.",
+        hook: "If it's not auditable, it's not compliant.",
+        scenes: ["Intro", "Asset verification", "Signed receipt generation"],
+        proofMoments: ["Cleanverse verification receipt"],
+        shots: [],
+        transitions: [],
+        voiceover: "",
+        subtitles: "",
+        soundDirection: "",
+        cta: "",
+        outputVariants: [],
+        missingAssets: [],
+        captureDependencies: [],
+        productionReadiness: "draft"
+      },
+      facts: [
+        { id: "cv_f1", label: "Sponsor guidelines", description: "Verification receipt template matches hackathon rules.", category: "technical", phase: "intake" }
+      ],
+      assumptions: [],
+      decisions: [
+        {
+          id: "cv_d1",
+          label: "On-chain signature check",
+          description: "Expose verification receipts directly on-screen to allow immediate judge auditing.",
+          status: "approved",
+          rationale: "Fulfills primary sponsor requirement directly in the first UI block.",
+          alternativesConsidered: ["JSON download option", "Command-line logs"],
+          evidenceIds: ["cv_ev1"],
+          source: "Technical lead",
+          phase: "prototype",
+          reversible: true,
+          impact: "high"
+        }
+      ],
+      rejections: [
+        {
+          id: "cv_rej1",
+          label: "Off-chain transaction cache",
+          reason: "Off-chain cache breaks audit integrity requirements.",
+          rejectedPhase: "concept",
+          riskAvoided: "Disqualification",
+          reconsiderCondition: "Never",
+          source: "Sponsor rules"
+        }
+      ],
+      risks: [],
+      outputs: [],
       nextActions: [
         {
           id: "act-hackathon-1",
@@ -72,8 +358,18 @@ export const directorFixtures: Record<string, DirectorFixture> = {
           description: "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
           phase: "verify",
           status: "blocked",
-        },
+        }
       ],
+      learnings: [],
+      openQuestions: [],
+      blockedBy: [],
+      auditResults: [],
+      currentScore: 92,
+      readiness: 92,
+      blockers: ["Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."],
+      warnings: [],
+      publicationGate: true,
+      submissionGate: false
     },
     mode: "HACKATHON",
     phaseContext: "verify",
@@ -95,22 +391,171 @@ export const directorFixtures: Record<string, DirectorFixture> = {
   },
   "mara-episode": {
     project: {
-      ...projectPresets[2],
       id: "mara-episode",
+      slug: "mara-episode",
       title: "MARA Episode",
       shortTitle: "MARA Episode",
+      description: "An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.",
+      kind: "demo-film",
+      status: "verifying",
+      currentPhase: "verify",
+      completedPhases: ["intake", "qualify", "research", "position", "differentiate", "concept", "design", "prototype", "build"],
+      blockedPhases: [],
+      nextRecommendedPhase: "retrospective",
+      priority: "high",
+      createdLabel: "2026-07-15",
+      updatedLabel: "2026-08-05",
+      challenge: "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+      problem: "Cinematic storytelling requires perfect wardrobe, environment, and emotional continuity to prevent breaking reader immersion.",
+      audience: "Cinematic audience and creative stakeholders",
+      primaryGoal: "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+      successDefinition: "Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.",
+      constraints: [
+        { id: "mara_c1", type: "scope", description: "Narrative transitions must prioritize quiet acceptance over productivity cues." }
+      ],
+      stakeholders: [
+        { id: "mara_s1", label: "Mara Keïta", role: "Protagonist" }
+      ],
+      requirements: [
+        { id: "mara_r1", label: "Wardrobe continuity review", description: "Ensure wardrobe details remain consistent between shot cuts.", priority: "high" }
+      ],
+      evaluationCriteria: [
+        { id: "mara_ec1", label: "Emotional authenticity", description: "Measures reader empathy with Mara's narrative beat.", weight: 0.7 }
+      ],
+      sourceLinks: [
+        { id: "mara_sl1", label: "Storyboards draft", sourceType: "project-file", description: "The storyboard layout listing character states." }
+      ],
+      references: ["Episode state card guidelines"],
+      positioningStatement: "MARA Episode captures quiet moments of acceptance, avoiding traditional achievement tropes.",
+      tension: "Productivity expectations versus emotional authenticity.",
+      memoryHook: "Emotional truth over product proof.",
+      judgeMemorySentence: "A cinematic character study highlighting quiet human complexity.",
+      differentiation: "Avoids generic action-hero tropes in favor of quiet, observational continuity.",
+      categoryClaim: "Episodic storytelling.",
+      alternatives: ["Generic corporate branding film", "High-paced product ad"],
+      rejectedAngles: ["Classical orchestral research", "Cryptographic proof systems"],
+      visualDirection: "Warm, cinematic lighting. Natural wood overlays, muted earth tones, soft highlights.",
+      typographyDirection: "Serif for credits, Inter for workspace layout.",
+      colorDirection: "Warm ochre, forest green, deep earth shadows.",
+      layoutDirection: "Widescreen frame sequence.",
+      interactionDirection: "Horizontal sequence scrubbers.",
+      responsiveStrategy: "Letterboxed aspect ratio layouts.",
+      accessibilityStrategy: "Full audio descriptions.",
+      designPrinciples: ["Quietness builds connection.", "Immersion requires uninterrupted continuity."],
+      antiPatterns: ["Faux action sequences.", "Inconsistent wardrobe colors."],
+      rejectedDirections: ["Quantitative metric tables.", "Service scaling checklists."],
+      primaryClaim: "Mara allows task to remain unfinished expressing acceptance theme.",
+      evidence: [
+        {
+          id: "mara_ev1",
+          label: "Continuity safe hero frame",
+          claimSupported: "Mara allows task to remain unfinished expressing acceptance theme.",
+          type: "visual-proof",
+          source: "MARA episode timeline review",
+          strength: "direct",
+          status: "available",
+          routeOrFile: "components/mara/continuity-review.tsx",
+          linkedDecisionId: "mara_d1"
+        }
+      ],
+      proofMoment: "The quiet frame of Mara sitting in the office space with an unfinished task list.",
+      technicalProof: "Shot-to-shot wardrobe color match validation.",
+      failureMode: "Productivity performance markers break the quiet theme.",
+      fallback: "Display default bedroom shot.",
+      unresolvedProofGaps: [],
+      selectedRegistryIds: ["frames", "grids"],
+      selectedPlaybookIds: ["cinematography-guidelines"],
+      selectedReadingPathIds: [],
+      selectedRecipeIds: [],
+      architectureNotes: "Episodic frame review.",
+      implementationConstraints: ["Muted color guidelines only."],
+      acceptanceCriteria: ["Shot timeline matches wardrobe schema exactly."],
+      technicalRisks: [],
+      capturePlan: {
+        states: [
+          { id: "sequence-loaded", label: "Sequence Loaded", time: 0, frame: 0, stateType: "setup", isCapturePoint: true, expectedVisualResult: "Cinematic shot layout active.", notes: "Initial load" }
+        ]
+      },
+      signatureStateId: "sequence-loaded",
+      signatureFrame: 0,
+      heroDemoMoment: "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+      cleanViewRoute: "/projects/mara-episode?clean=true",
+      restoreUrls: {},
+      captureLimitations: [],
+      videoPlan: {
+        purpose: "Review narrative beats with director.",
+        audience: "Creative stakeholders.",
+        durationSeconds: 40,
+        formats: ["16:9"],
+        narrative: "How cinematic continuity reinforces the central emotional reframe.",
+        hook: "When nothing happens, everything changes.",
+        scenes: ["Intro", "The Unfinished Task", "Silence"],
+        proofMoments: ["Continuity safe hero frame"],
+        shots: [],
+        transitions: [],
+        voiceover: "",
+        subtitles: "",
+        soundDirection: "",
+        cta: "",
+        outputVariants: [],
+        missingAssets: [],
+        captureDependencies: [],
+        productionReadiness: "draft"
+      },
+      facts: [
+        { id: "mara_f1", label: "Scene layout", description: "Defines location and environment properties for sequence cuts.", category: "context", phase: "intake" }
+      ],
+      assumptions: [],
+      decisions: [
+        {
+          id: "mara_d1",
+          label: "Incomplete task presentation",
+          description: "Allow the final task list to display one uncompleted checkbox explicitly on screen.",
+          status: "approved",
+          rationale: "Aligns with the theme of quiet acceptance.",
+          alternativesConsidered: ["Fully cleared list", "Hide the task list entirely"],
+          evidenceIds: ["mara_ev1"],
+          source: "Film director",
+          phase: "prototype",
+          reversible: true,
+          impact: "high"
+        }
+      ],
+      rejections: [
+        {
+          id: "mara_rej1",
+          label: "Upbeat background score",
+          reason: "Fast upbeat audio conflicts with the quiet pacing.",
+          rejectedPhase: "concept",
+          riskAvoided: "Narrative break",
+          reconsiderCondition: "Never",
+          source: "Sound designer"
+        }
+      ],
+      risks: [],
+      outputs: [],
       nextActions: [
         {
           id: "act-mara-1",
-          label: "Resolve Eight-Bar Hole score continuity",
-          description: "Review narrative continuity and verify missing letter C score transposition before audience delivery.",
-          phase: "design",
+          label: "Validate episode continuity proof",
+          description: "Verify the episode's emotional and visual continuity before final sequence assembly.",
+          phase: "verify",
           status: "todo",
-        },
+        }
       ],
+      learnings: [],
+      openQuestions: [],
+      blockedBy: [],
+      auditResults: [],
+      currentScore: 94,
+      readiness: 94,
+      blockers: [],
+      warnings: [],
+      publicationGate: true,
+      submissionGate: false
     },
     mode: "MARA",
-    phaseContext: "design",
+    phaseContext: "verify",
     evaluationTimestamp: "2026-08-06T12:00:00Z",
     lockedDecisions: [],
     learningProposals: [],
