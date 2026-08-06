@@ -249,127 +249,103 @@ export const EpisodeStateCard = React.forwardRef<
             <h3 className="text-xl font-bold text-neutral-900">
               {workflowStateLabel || getStateLabel(variant)}
             </h3>
-            {workflowState && workflowState !== workflowStateLabel && (
-              <p className="text-xs text-neutral-600 mt-2">
-                Technical state:{" "}
-                <code className="bg-neutral-200 px-2 py-1 rounded text-xs font-mono">
-                  {workflowState}
-                </code>
-              </p>
-            )}
           </div>
         </motion.div>
 
-        {lastDecision && (
+        {(lastDecision || blockers?.length > 0 || humanReviewStatus === "required" || nextAuthorizedAction || nextExpectedState || youtubeVideoId || publishedAt) && (
           <motion.div
             variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
+            className="mb-6 border-t border-neutral-200/50 pt-6 space-y-6"
           >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
-              Last validated decision
-            </p>
-            <p className="text-base text-neutral-900 font-medium">
-              {lastDecision.label}
-            </p>
-            {lastDecision.outcome && (
-              <p className="text-xs text-neutral-600 mt-2">
-                Outcome:{" "}
-                <span className="font-semibold text-neutral-900">
-                  {lastDecision.outcome.toUpperCase().replace(/-/g, " ")}
-                </span>
-              </p>
+            {lastDecision && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                  Last validated decision
+                </p>
+                <p className="text-base text-neutral-900 font-medium">
+                  {lastDecision.label}
+                </p>
+                {lastDecision.outcome && (
+                  <p className="text-xs text-neutral-600 mt-2">
+                    Outcome:{" "}
+                    <span className="font-semibold text-neutral-900">
+                      {lastDecision.outcome.toUpperCase().replace(/-/g, " ")}
+                    </span>
+                  </p>
+                )}
+              </div>
             )}
-          </motion.div>
-        )}
 
-        {blockers && blockers.length > 0 && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
-          >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-4">
-              Blocking issues
-            </p>
-            <div className="space-y-3">
-              {blockers.map((blocker) => (
-                <div key={blocker.id} className="flex gap-3">
-                  {getSeverityIcon(blocker.severity)}
-                  <span className="text-base text-neutral-900">{blocker.label}</span>
+            {blockers && blockers.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-4">
+                  Blocking issues
+                </p>
+                <div className="space-y-3">
+                  {blockers.map((blocker) => (
+                    <div key={blocker.id} className="flex gap-3">
+                      {getSeverityIcon(blocker.severity)}
+                      <span className="text-base text-neutral-900">{blocker.label}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
+              </div>
+            )}
 
-        {humanReviewStatus === "required" && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-300 pt-6"
-          >
-            <div className="flex items-start gap-3">
-              <HelpCircle size={16} className="text-violet-700 flex-shrink-0 mt-1" />
-              <p className="text-base font-semibold text-violet-900">
-                Human review is required before proceeding.
-              </p>
-            </div>
-          </motion.div>
-        )}
+            {humanReviewStatus === "required" && (
+              <div className="flex items-start gap-3">
+                <HelpCircle size={16} className="text-violet-700 flex-shrink-0 mt-1" />
+                <p className="text-base font-semibold text-violet-900">
+                  Human review is required before proceeding.
+                </p>
+              </div>
+            )}
 
-        {nextAuthorizedAction && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
-          >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
-              Next authorized action
-            </p>
-            <div className="flex items-start gap-3">
-              <ArrowRight size={16} className="text-neutral-600 flex-shrink-0 mt-0.5" />
-              <p className="text-base text-neutral-900">{nextAuthorizedAction}</p>
-            </div>
-          </motion.div>
-        )}
+            {nextAuthorizedAction && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                  Next authorized action
+                </p>
+                <div className="flex items-start gap-3">
+                  <ArrowRight size={16} className="text-neutral-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-base text-neutral-900">{nextAuthorizedAction}</p>
+                </div>
+              </div>
+            )}
 
-        {nextExpectedState && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
-          >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
-              Next expected state
-            </p>
-            <p className="text-base font-medium text-neutral-900">
-              {nextExpectedState}
-            </p>
-          </motion.div>
-        )}
+            {nextExpectedState && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                  Next expected state
+                </p>
+                <p className="text-base font-medium text-neutral-900">
+                  {nextExpectedState}
+                </p>
+              </div>
+            )}
 
-        {youtubeVideoId && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
-          >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
-              YouTube
-            </p>
-            <p className="text-sm text-neutral-900">
-              Video ID:{" "}
-              <code className="bg-neutral-200 px-2 py-1 rounded text-xs font-mono">
-                {youtubeVideoId}
-              </code>
-            </p>
-          </motion.div>
-        )}
+            {youtubeVideoId && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                  YouTube
+                </p>
+                <p className="text-sm text-neutral-900">
+                  Video ID:{" "}
+                  <code className="bg-neutral-200 px-2 py-1 rounded text-xs font-mono">
+                    {youtubeVideoId}
+                  </code>
+                </p>
+              </div>
+            )}
 
-        {publishedAt && (
-          <motion.div
-            variants={itemVariants}
-            className="mb-6 border-t border-neutral-200/50 pt-6"
-          >
-            <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
-              Published
-            </p>
-            <p className="text-xs text-neutral-600">{publishedAt}</p>
+            {publishedAt && (
+              <div>
+                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                  Published
+                </p>
+                <p className="text-xs text-neutral-600">{publishedAt}</p>
+              </div>
+            )}
           </motion.div>
         )}
 
