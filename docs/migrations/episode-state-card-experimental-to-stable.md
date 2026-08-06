@@ -280,7 +280,7 @@ The new API uses TypeScript's discriminated union and `never` type to prevent in
 - **New union members:** 6 (DefaultEpisodeStateCardProps, BlockedEpisodeStateCardProps, HumanReviewRequiredEpisodeStateCardProps, ApprovedEpisodeStateCardProps, PublishedEpisodeStateCardProps, UnavailableEpisodeStateCardProps)
 - **HumanReviewStatus:** `"not-required" | "required" | "completed"` (no "unavailable")
 - **Motion handling:** No public prop. Always respects `prefers-reduced-motion`.
-- **Removed props:** `reduceMotion`, `episodeId`, `updatedAt`
+- **REMOVED props:** `reduceMotion`, `episodeId`, `updatedAt`
 - **Version:** 1.0.0
 
 See:
