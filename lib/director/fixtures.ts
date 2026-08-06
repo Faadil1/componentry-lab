@@ -25,7 +25,21 @@ const baseSkills: SkillMetadata[] = [
 
 export const directorFixtures: Record<string, DirectorFixture> = {
   "the-second-absence": {
-    project: projectPresets[0],
+    project: {
+      ...projectPresets[0],
+      id: "the-second-absence",
+      title: "The Second Absence",
+      shortTitle: "Second Absence",
+      nextActions: [
+        {
+          id: "act-day-1",
+          label: "Validate hypothesis lock proof",
+          description: "Verify the cryptographic commitment lever and client receipt before final single-day demo capture.",
+          phase: "build",
+          status: "todo",
+        },
+      ],
+    },
     mode: "DAY_CHALLENGE",
     phaseContext: "build",
     evaluationTimestamp: "2026-08-06T12:00:00Z",
@@ -45,7 +59,22 @@ export const directorFixtures: Record<string, DirectorFixture> = {
     evidence: [],
   },
   "cleanverse-build-round-2": {
-    project: projectPresets[0],
+    project: {
+      ...projectPresets[0],
+      id: "cleanverse-build-round-2",
+      title: "Cleanverse Build Round 2",
+      shortTitle: "Cleanverse Build",
+      blockers: ["Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."],
+      nextActions: [
+        {
+          id: "act-hackathon-1",
+          label: "Resolve hackathon audit receipt blocker",
+          description: "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+          phase: "verify",
+          status: "blocked",
+        },
+      ],
+    },
     mode: "HACKATHON",
     phaseContext: "verify",
     evaluationTimestamp: "2026-08-06T12:00:00Z",
@@ -65,7 +94,21 @@ export const directorFixtures: Record<string, DirectorFixture> = {
     evidence: [],
   },
   "mara-episode": {
-    project: projectPresets[2],
+    project: {
+      ...projectPresets[2],
+      id: "mara-episode",
+      title: "MARA Episode",
+      shortTitle: "MARA Episode",
+      nextActions: [
+        {
+          id: "act-mara-1",
+          label: "Resolve Eight-Bar Hole score continuity",
+          description: "Review narrative continuity and verify missing letter C score transposition before audience delivery.",
+          phase: "design",
+          status: "todo",
+        },
+      ],
+    },
     mode: "MARA",
     phaseContext: "design",
     evaluationTimestamp: "2026-08-06T12:00:00Z",
@@ -85,7 +128,21 @@ export const directorFixtures: Record<string, DirectorFixture> = {
     evidence: [],
   },
   "power-bi-service-performance": {
-    project: projectPresets[2],
+    project: {
+      ...projectPresets[2],
+      id: "power-bi-service-performance",
+      title: "Power BI Service Performance",
+      shortTitle: "Power BI Service",
+      nextActions: [
+        {
+          id: "act-datastory-1",
+          label: "Validate Power BI metric evidence",
+          description: "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+          phase: "verify",
+          status: "todo",
+        },
+      ],
+    },
     mode: "DATA_STORY",
     phaseContext: "verify",
     evaluationTimestamp: "2026-08-06T12:00:00Z",
@@ -105,5 +162,3 @@ export const directorFixtures: Record<string, DirectorFixture> = {
     evidence: [],
   },
 }
-
-

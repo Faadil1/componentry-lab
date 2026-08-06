@@ -124,6 +124,31 @@ function mapCreativePhase(projectPhase: string): "intake" | "clarify" | "route" 
   }
 }
 
+function getDefaultModeActionFallback(mode: CreativeProjectMode): { title: string; description: string } {
+  switch (mode) {
+    case "DAY_CHALLENGE":
+      return {
+        title: "Validate single-day hero proof",
+        description: "Verify the core hero demo moment and proof moment before timebox expiration.",
+      }
+    case "HACKATHON":
+      return {
+        title: "Prepare hackathon demo review",
+        description: "Review hackathon judge criteria, sponsor requirements, and submission completeness.",
+      }
+    case "MARA":
+      return {
+        title: "Review episodic narrative continuity",
+        description: "Audit narrative continuity, character memory hooks, and audience retention points.",
+      }
+    case "DATA_STORY":
+      return {
+        title: "Inspect analytical proof evidence",
+        description: "Verify quantitative metrics, stakeholder proof points, and executive evidence clarity.",
+      }
+  }
+}
+
 function mapActionCandidate(
   project: ProjectBrain,
   mode: CreativeProjectMode,
@@ -132,19 +157,27 @@ function mapActionCandidate(
   authorityRequirement: string,
   sourceDecisionOrGate: string
 ): AuthorizedAction {
-  const baseAction = project.nextActions[0]
+  const creativePhase = mapCreativePhase(phase)
+  const matchingAction = project.nextActions.find((act) => mapCreativePhase(act.phase) === creativePhase)
+  const baseAction = matchingAction ?? project.nextActions[0]
+  const modeFallback = getDefaultModeActionFallback(mode)
+
+  const title = baseAction?.label ?? (blockers.length > 0 ? `Review ${mode.toLowerCase().replace("_", " ")} blockers` : modeFallback.title)
+  const description = baseAction?.description ?? modeFallback.description
+  const actionType = baseAction?.status === "blocked" || blockers.length > 0 ? "review-required" : "next-action"
+
   return {
-    actionId: baseAction?.id ?? `${project.id}-safe-review`,
-    actionType: baseAction?.status === "blocked" ? "review-required" : "next-action",
-    title: baseAction?.label ?? "Review blockers",
-    description: baseAction?.description ?? "Resolve blockers and review evidence.",
-    rationale: baseAction?.description ?? "Deterministic fallback action.",
+    actionId: baseAction?.id ?? `${project.id}-${mode.toLowerCase()}-safe-action`,
+    actionType,
+    title,
+    description,
+    rationale: description,
     mode,
-    phase: mapCreativePhase(phase),
+    phase: creativePhase,
     authorityRequirement: authorityRequirement as never,
     approvalStatus: canAuthorizeExternalAction({
       authorityLevel: authorityRequirement as never,
-      requestedAction: baseAction?.label ?? "Review blockers",
+      requestedAction: title,
       target: project.id,
       reversibility: "reversible",
       risk: "low",
@@ -156,7 +189,7 @@ function mapActionCandidate(
       : "not-required",
     preconditions: blockers.map((blocker) => blocker.resolutionCondition),
     blockers,
-    expectedResult: baseAction?.label ?? "A safe review step is selected.",
+    expectedResult: description,
     reversibility: "reversible",
     evidenceNeededAfterCompletion: project.evidence.map((item) => item.id),
     sourceDecisionOrGate,
