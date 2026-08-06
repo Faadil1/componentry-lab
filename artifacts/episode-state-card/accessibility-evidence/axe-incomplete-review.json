@@ -1,0 +1,195 @@
+{
+  "generated_at": "2026-08-06T09:35:44.943Z",
+  "all_incomplete_rule_ids": [
+    "color-contrast"
+  ],
+  "scans": [
+    {
+      "scope": "full_page",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "default",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "blocked",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "human-review-required",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "approved",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "published",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "unavailable",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "mobile_320px",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    },
+    {
+      "scope": "reduced_motion",
+      "incomplete_count": 1,
+      "rule_ids": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "rules": {
+    "color-contrast": {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "target": [
+            "a[href$=\"library\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            "a[href$=\"playbooks\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            "a[href$=\"projects\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            "a[href$=\"film-kit\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            "summary > span:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".group-open\\:hidden"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            "h1"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".text-lg"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".tracking-widest"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".mt-2.text-base.text-neutral-600"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".tracking-wider"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".mb-12"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".text-center > .text-neutral-600:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".text-neutral-600:nth-child(1) > .font-semibold"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".text-center > .mt-2.text-neutral-600"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        },
+        {
+          "target": [
+            ".text-center > .mt-2.text-neutral-600 > .font-semibold"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+        }
+      ],
+      "scopes_found": [
+        "full_page",
+        "default",
+        "blocked",
+        "human-review-required",
+        "approved",
+        "published",
+        "unavailable",
+        "mobile_320px",
+        "reduced_motion"
+      ],
+      "manual_review": {
+        "performed": true,
+        "result": "RESOLVED_BY_MEASUREMENT",
+        "method": "Computed rendered colors via window.getComputedStyle with ancestor background resolution; WCAG luminance formula applied to all text elements across all 6 variants.",
+        "notes": "See contrast-results.json for full measured results. Axe marks color-contrast incomplete when it cannot determine background color at analysis time (e.g. CSS custom properties, complex layering). All samples were measured manually and recorded. See contrast section of evidence.json."
+      }
+    }
+  },
+  "unresolved_incomplete_rules": 0
+}
