@@ -110,13 +110,13 @@ export default function EpisodeStateCardPage() {
       </section>
 
       <section className="px-4 py-16 md:px-8 md:py-20">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto w-full max-w-6xl min-w-0">
           <h2 className="mb-12 text-3xl font-bold text-neutral-900">All Variants</h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {VARIANTS.map((v) => (
-              <div key={v} className="rounded-lg border border-neutral-200 bg-white p-6">
+              <div key={v} className="w-full min-w-0 rounded-lg border border-neutral-200 bg-white p-6">
                 <p className="mb-4 text-sm font-bold uppercase text-neutral-600">{v}</p>
-                <div className="bg-neutral-50 p-4 rounded-lg">
+                <div className="min-w-0 bg-neutral-50 p-4 rounded-lg">
                   <EpisodeStateCard
                     {...fixtures[v]}
                     reduceMotion={reduced}
