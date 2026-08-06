@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-08-06T23:34:39.678Z",
+  "portUsed": 3017,
+  "desktopMetrics": {
+    "Second Absence": {
+      "actionRect": {
+        "top": 700.828125,
+        "bottom": 887.328125,
+        "left": 138.5,
+        "right": 1286.5,
+        "width": 1148,
+        "height": 186.5
+      },
+      "isVisibleInFirstViewport": true,
+      "hash": "f13f23c4815fb31ab752a485d1f5c04e4163999c5a7c66e563274b66fa54ecba"
+    },
+    "Cleanverse": {
+      "actionRect": {
+        "top": 678.078125,
+        "bottom": 864.578125,
+        "left": 138.5,
+        "right": 1286.5,
+        "width": 1148,
+        "height": 186.5
+      },
+      "isVisibleInFirstViewport": true,
+      "hash": "4ad0af033f2c858f0397a82164f406a6bf40f9464ed614bdb1a5cd992999f809"
+    },
+    "MARA Episode": {
+      "actionRect": {
+        "top": 700.828125,
+        "bottom": 887.328125,
+        "left": 138.5,
+        "right": 1286.5,
+        "width": 1148,
+        "height": 186.5
+      },
+      "isVisibleInFirstViewport": true,
+      "hash": "3ddd707ca507202cb353f4d1a29556e6c078cac89932a4cd14cd01031de0be02"
+    },
+    "Power BI": {
+      "actionRect": {
+        "top": 700.828125,
+        "bottom": 887.328125,
+        "left": 138.5,
+        "right": 1286.5,
+        "width": 1148,
+        "height": 186.5
+      },
+      "isVisibleInFirstViewport": true,
+      "hash": "297b3cb6b44fa9a2d4d6420c21fc41dbd43663d9d9431f84fc4ef02436b4722b"
+    }
+  },
+  "responsiveMetrics": [
+    {
+      "viewport": "320px",
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "pass": true,
+      "mobileSelectorVisible": true,
+      "desktopSelectorVisible": false,
+      "visibleDesktopCards": 0,
+      "hash": "10f40a411738f258d28a3b9cf95b68bc5ed658dfe4560ebffb93c69f2b4ddb36"
+    },
+    {
+      "viewport": "375px",
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "pass": true,
+      "mobileSelectorVisible": true,
+      "desktopSelectorVisible": false,
+      "visibleDesktopCards": 0,
+      "hash": "672416c291daa3b342fbec642f4f7ba2c03f41e689579c2ebbe480bce5722bd2"
+    }
+  ],
+  "detailsMetrics": {
+    "evidence-expanded.png": {
+      "hash": "5b0860d67175c5a13d9bd2766d30417923f6f674a475db9e5436ad0ac31cc5ab"
+    },
+    "blocker-expanded.png": {
+      "hash": "5b0860d67175c5a13d9bd2766d30417923f6f674a475db9e5436ad0ac31cc5ab"
+    },
+    "authority.png": {
+      "hash": "eeeebf7afd13f7eca1e61c6806198848b37e24dee8798c27d2779f879cd8cc4c"
+    },
+    "learning.png": {
+      "hash": "eeeebf7afd13f7eca1e61c6806198848b37e24dee8798c27d2779f879cd8cc4c"
+    },
+    "provenance.png": {
+      "hash": "eeeebf7afd13f7eca1e61c6806198848b37e24dee8798c27d2779f879cd8cc4c"
+    }
+  }
+}
