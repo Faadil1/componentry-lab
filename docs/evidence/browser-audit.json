@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-08-06T08:46:46.830Z",
+  "viewportResults": [
+    {
+      "viewport": "320px",
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "pass": true
+    },
+    {
+      "viewport": "375px",
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "pass": true
+    },
+    {
+      "viewport": "768px",
+      "width": 768,
+      "scrollWidth": 753,
+      "clientWidth": 753,
+      "pass": true
+    },
+    {
+      "viewport": "1280px",
+      "width": 1280,
+      "scrollWidth": 1265,
+      "clientWidth": 1265,
+      "pass": true
+    }
+  ],
+  "consoleErrorCount": 0,
+  "hydrationErrorCount": 0,
+  "overallPass": true
+}
