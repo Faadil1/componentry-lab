@@ -132,7 +132,7 @@ async function main() {
     await cdp.send("Runtime.enable")
     await cdp.send("DOM.enable")
 
-    const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review")
+    const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review-v2")
     fs.mkdirSync(baseDir, { recursive: true })
 
     const targetUrl = `http://localhost:${PORT}/director`
