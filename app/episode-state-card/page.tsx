@@ -31,7 +31,6 @@ function isVariant(value: unknown): value is VariantType {
 
 export default function EpisodeStateCardPage() {
   const [variant, setVariant] = useState<VariantType>("default")
-  const [reduced, setReduced] = useState(false)
 
   const fixtures = {
     default: episode14EditorialDevelopment,
@@ -50,15 +49,13 @@ export default function EpisodeStateCardPage() {
 
       <section className="border-b border-neutral-200 bg-white/50 px-4 py-12 md:px-8 md:py-16">
         <div className="mx-auto max-w-6xl">
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-900">
-            Episode State Card
-          </h1>
+          <h1 className="text-4xl font-bold tracking-tight text-neutral-900">Episode State Card</h1>
           <p className="mt-3 text-lg text-neutral-600">
             Read-only workflow component for displaying canonical episode state, decisions, and required actions
           </p>
           <div className="mt-6 flex gap-3">
-            <div className="inline-block rounded-full bg-violet-100 px-4 py-2 text-sm font-semibold text-violet-900">
-              EXPERIMENTAL
+            <div className="inline-block rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+              API STABLE
             </div>
           </div>
         </div>
@@ -71,47 +68,29 @@ export default function EpisodeStateCardPage() {
             <p className="mt-2 text-base text-neutral-600">Read-only view of canonical episode state, human-validated decisions, and authorized next steps.</p>
           </div>
           <div className="flex justify-center">
-            <EpisodeStateCard {...current} reduceMotion={reduced} className="shadow-md" />
+            <EpisodeStateCard {...current} className="shadow-md" />
           </div>
         </div>
       </section>
 
       <section className="border-b border-neutral-200 bg-white/50 px-4 py-8 md:px-8 md:py-12">
         <div className="mx-auto max-w-6xl">
-          <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-neutral-600">
-            Controls
-          </h3>
+          <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-neutral-600">Controls</h3>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <label htmlFor="variant-select" className="sr-only">
-              Select episode state variant
-            </label>
+            <label htmlFor="variant-select" className="sr-only">Select episode state variant</label>
             <select
               id="variant-select"
               value={variant}
               onChange={(e) => {
                 const value = e.target.value
-                if (isVariant(value)) {
-                  setVariant(value)
-                }
+                if (isVariant(value)) setVariant(value)
               }}
               className="w-full min-w-0 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium sm:w-auto"
             >
               {VARIANTS.map((v) => (
-                <option key={v} value={v}>
-                  {v.toUpperCase()}
-                </option>
+                <option key={v} value={v}>{v.toUpperCase()}</option>
               ))}
             </select>
-            <button
-              onClick={() => setReduced(!reduced)}
-              className={`w-full min-w-0 rounded-lg border px-4 py-2 text-sm font-medium sm:w-auto ${
-                reduced
-                  ? "bg-violet-50 border-violet-300 text-violet-900"
-                  : "bg-white border-neutral-300 text-neutral-700"
-              }`}
-            >
-              {reduced ? "Reduced Motion" : "Normal Motion"}
-            </button>
           </div>
         </div>
       </section>
@@ -124,11 +103,7 @@ export default function EpisodeStateCardPage() {
               <div key={v} className="w-full min-w-0 rounded-lg border border-neutral-200 bg-white p-6">
                 <p className="mb-4 text-sm font-bold uppercase text-neutral-600">{v}</p>
                 <div className="min-w-0 bg-neutral-50 p-4 rounded-lg">
-                  <EpisodeStateCard
-                    {...fixtures[v]}
-                    reduceMotion={reduced}
-                    className="shadow-none"
-                  />
+                  <EpisodeStateCard {...fixtures[v]} className="shadow-none" />
                 </div>
               </div>
             ))}
@@ -138,12 +113,8 @@ export default function EpisodeStateCardPage() {
 
       <section className="border-t border-neutral-200 bg-white/30 px-4 py-12 md:px-8 md:py-16">
         <div className="mx-auto max-w-6xl text-center">
-          <p className="text-neutral-600">
-            Component status: <span className="font-semibold">EXPERIMENTAL</span>
-          </p>
-          <p className="mt-2 text-neutral-600">
-            Next phase: <span className="font-semibold">VISUAL_REVIEW</span>
-          </p>
+          <p className="text-neutral-600">Component status: <span className="font-semibold">API STABLE</span></p>
+          <p className="mt-2 text-neutral-600">Next phase: <span className="font-semibold">APPROVAL_REVIEW</span></p>
         </div>
       </section>
     </main>
