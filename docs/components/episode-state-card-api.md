@@ -113,9 +113,9 @@ Previously validated deployed accessibility baseline: `3de31ebfa3d6001fb633d261d
 
 Remove the following props from call sites:
 
-- `episodeId`
-- `updatedAt`
-- `reduceMotion`
+- `episodeId` (REMOVED)
+- `updatedAt` (REMOVED)
+- `reduceMotion` (REMOVED)
 
 Replace the old broad available/unavailable union with the appropriate variant-specific branch. In particular:
 
