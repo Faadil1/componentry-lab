@@ -2,7 +2,7 @@
   "component_id": "episode-state-card",
   "visual_evidence_commit": "4b560a5da97bc414fb338e8298488c3ae66ba09d",
   "accessibility_implementation_commit": "ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff",
-  "accessibility_evidence_commit": "PENDING",
+  "accessibility_evidence_commit": "3de31ebfa3d6001fb633d261de495f862757fc3a",
   "public_route": "https://componentry-lab.vercel.app/episode-state-card",
   "standard": "WCAG 2.2 AA",
   "captured_at": "2026-08-06T09:57:14.903Z",

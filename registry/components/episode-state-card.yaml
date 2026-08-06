@@ -114,7 +114,7 @@ accessibility_review:
   reviewed_at: 2026-08-06T10:45:00Z
   standard: WCAG 2.2 AA
   implementation_commit: ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff
-  evidence_commit: PENDING
+  evidence_commit: 3de31ebfa3d6001fb633d261de495f862757fc3a
   evidence: artifacts/episode-state-card/accessibility-evidence/evidence.json
   regression_tests: tests/episode-state-card-accessibility.test.ts
   report: docs/reviews/episode-state-card-accessibility-review.md
