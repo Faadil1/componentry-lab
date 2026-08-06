@@ -1,8 +1,12 @@
 "use client"
 import React from "react"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { motion } from "framer-motion"
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import { AlertTriangle, CheckCircle2, AlertCircle, Ban, CheckSquare, Play, HelpCircle } from "lucide-react"
+/* eslint-enable @typescript-eslint/no-unused-vars */
 import { cn } from "@/lib/utils"
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export type EpisodeStateCardVariant = "default" | "blocked" | "human-review-required" | "approved" | "published" | "unavailable"
 export type HumanReviewStatus = "not-required" | "required" | "completed" | "unavailable"

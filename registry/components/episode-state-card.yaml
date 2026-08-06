@@ -7,7 +7,7 @@ source:
   repository: Faadil1/componentry-lab
   branch: master
   path: components/workflow/episode-state-card.tsx
-  commit: null
+  commit: c142c3809bc449e99dd659f92461d842ca83aba5
 
 production_target:
   repository: Faadil1/youtube-operating-agent
