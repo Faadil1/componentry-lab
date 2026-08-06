@@ -1,0 +1,110 @@
+name: Episode State Card
+description: Read-only workflow component for displaying canonical episode state
+status: EXPERIMENTAL
+
+component:
+  name: EpisodeStateCard
+  path: components/workflow/episode-state-card.tsx
+  type: display
+  category: workflow
+
+props:
+  - name: channelName
+    type: string
+    required: true
+    description: Channel name (e.g., "Wealth Decoded")
+
+  - name: episodeId
+    type: string
+    required: true
+    description: Unique episode identifier
+
+  - name: episodeNumber
+    type: number | null
+    required: false
+    description: Episode sequence number
+
+  - name: title
+    type: string
+    required: true
+    description: Episode title
+
+  - name: workflowState
+    type: string
+    required: true
+    description: Technical workflow state identifier
+
+  - name: variant
+    type: EpisodeStateCardVariant
+    required: true
+    description: Visual variant (default, blocked, human-review-required, approved, published, unavailable)
+
+  - name: lastDecision
+    type: EpisodeStateDecision | null
+    required: false
+    description: Last validated human decision
+
+  - name: blockers
+    type: EpisodeStateBlocker[]
+    required: false
+    description: List of blocking conditions
+
+  - name: humanReviewStatus
+    type: HumanReviewStatus
+    required: true
+    description: Current human review status
+
+  - name: youtubeVideoId
+    type: string
+    required: false
+    description: YouTube video ID for published episodes
+
+variants:
+  - name: default
+    description: Normal workflow state with decision history
+    props:
+      variant: default
+
+  - name: blocked
+    description: Episode blocked by conditions
+    props:
+      variant: blocked
+
+  - name: human-review-required
+    description: Awaiting human judgment
+    props:
+      variant: human-review-required
+
+  - name: approved
+    description: Decision approved, ready to proceed
+    props:
+      variant: approved
+
+  - name: published
+    description: Episode live on YouTube
+    props:
+      variant: published
+
+  - name: unavailable
+    description: Manifest could not be loaded
+    props:
+      variant: unavailable
+
+source:
+  repository: Faadil1/componentry-lab
+  commit: f344934a397c8fbdbd04b679df3f0815658b4a58
+  path: components/workflow/episode-state-card.tsx
+  branch: master
+
+review_status:
+  visual_review: NOT_STARTED
+  accessibility_review: NOT_STARTED
+  api_stabilized: false
+  approved: false
+  promoted: false
+
+metadata:
+  created_at: 2026-08-06T00:47:00Z
+  created_by: claude-code
+  version: 0.1.0-experimental
+  next_phase: VISUAL_REVIEW
