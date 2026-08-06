@@ -137,7 +137,7 @@ async function assertPageText(cdp, mustInclude, mustExclude = [], querySelector 
 }
 
 async function main() {
-  const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review-v3")
+  const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review-v4")
   fs.mkdirSync(baseDir, { recursive: true })
 
   console.log(`Starting next start on port ${PORT}...`)
@@ -147,11 +147,14 @@ async function main() {
     env: { ...process.env, NEXT_FONT_GOOGLE_MOCKED: "1" }
   })
 
+  let browserProc = null
+  let cdp = null
+
   try {
     await waitForUrl(`http://localhost:${PORT}/director`)
     console.log(`Server ready at http://localhost:${PORT}/director`)
 
-    const browserProc = spawn(
+    browserProc = spawn(
       BROWSER_PATH,
       [
         "--headless=new",
@@ -167,7 +170,7 @@ async function main() {
     await new Promise((r) => setTimeout(r, 2000))
 
     const wsUrl = await getCDPWebSocketUrl()
-    const cdp = new SimpleCDPClient(wsUrl)
+    cdp = new SimpleCDPClient(wsUrl)
     await cdp.connect()
 
     await cdp.send("Page.enable")
@@ -201,29 +204,29 @@ async function main() {
         key: "Second Absence",
         file: "desktop/day-challenge.png",
         pageIncludes: ["The Second Absence"],
-        decisionIncludes: ["Validate hypothesis lock proof", "NEXT AUTHORIZED ACTION"],
-        decisionExcludes: ["Eight-Bar Hole", "Cleanverse"]
+        decisionIncludes: ["Validate accountability reveal proof", "NEXT AUTHORIZED ACTION", "accountability", "Alex", "£149"],
+        decisionExcludes: ["Eight-Bar Hole", "Cleanverse", "verification", "audit", "receipt", "musicology", "Power BI", "NPS", "abandoned calls"]
       },
       {
         key: "Cleanverse",
         file: "desktop/hackathon.png",
         pageIncludes: ["Cleanverse Build Round 2"],
-        decisionIncludes: ["Resolve hackathon audit receipt blocker", "NEXT AUTHORIZED ACTION"],
-        decisionExcludes: ["Eight-Bar Hole", "The Second Absence"]
+        decisionIncludes: ["Resolve hackathon audit receipt blocker", "NEXT AUTHORIZED ACTION", "Cleanverse", "verification", "audit", "receipt"],
+        decisionExcludes: ["Eight-Bar Hole", "The Second Absence", "Alex", "£149", "accountability", "musicology", "Power BI", "abandoned calls", "NPS"]
       },
       {
         key: "MARA Episode",
         file: "desktop/mara.png",
         pageIncludes: ["MARA Episode"],
-        decisionIncludes: ["Resolve Eight-Bar Hole score continuity", "NEXT AUTHORIZED ACTION"],
-        decisionExcludes: ["Cleanverse", "The Second Absence"]
+        decisionIncludes: ["Validate episode continuity proof", "NEXT AUTHORIZED ACTION", "Mara", "continuity", "wardrobe"],
+        decisionExcludes: ["Eight-Bar Hole", "Cleanverse", "verification", "audit", "receipt", "£149", "Alex", "Power BI", "abandoned calls", "NPS", "musicology"]
       },
       {
         key: "Power BI",
         file: "desktop/data-story.png",
         pageIncludes: ["Power BI Service Performance"],
-        decisionIncludes: ["Validate Power BI metric evidence", "NEXT AUTHORIZED ACTION"],
-        decisionExcludes: ["Eight-Bar Hole", "1987-F", "Horn in F", "score edition", "musicology"]
+        decisionIncludes: ["Validate Power BI metric evidence", "NEXT AUTHORIZED ACTION", "calls", "abandoned", "answered", "satisfaction"],
+        decisionExcludes: ["Eight-Bar Hole", "Cleanverse", "verification", "receipt", "£149", "Alex", "Mara", "episode", "wardrobe", "musicology"]
       },
     ]
 
@@ -236,7 +239,7 @@ async function main() {
       // Verify page text (like project title)
       await assertPageText(cdp, sc.pageIncludes, [], "body")
       // Verify Decision block text
-      await assertPageText(cdp, sc.decisionIncludes, sc.decisionExcludes, '[aria-label="Hero Decision Center"]')
+      await assertPageText(cdp, sc.decisionIncludes, sc.decisionExcludes, '#active-workspace-content')
 
       // Measure action bounding box
       const rectRes = await cdp.send("Runtime.evaluate", {
@@ -313,6 +316,15 @@ async function main() {
         throw new Error(`Mobile Selector validation failed at ${mv.key}: Mobile container visible = ${vis.mobileVisible}, Desktop container visible = ${vis.desktopVisible}`)
       }
 
+      // Mobile semantic assertions for MARA Episode
+      await assertPageText(cdp, ["MARA Episode"], [], "body")
+      await assertPageText(
+        cdp, 
+        ["Validate episode continuity proof", "continuity", "Mara"], 
+        ["Eight-Bar Hole", "1987-F", "Horn in F", "Cleanverse", "Power BI", "abandoned calls"], 
+        "#active-workspace-content"
+      )
+
       const hash = await captureScreenshot(cdp, path.join(baseDir, mv.file))
 
       mobileMetrics.push({
@@ -363,7 +375,7 @@ async function main() {
     await new Promise((r) => setTimeout(r, 500))
     const detailsHash5 = await captureScreenshot(cdp, path.join(baseDir, "details/provenance.png"))
 
-    // Save V3 metrics.json
+    // Save V4 metrics.json
     fs.writeFileSync(
       path.join(baseDir, "metrics.json"),
       JSON.stringify(
@@ -385,13 +397,22 @@ async function main() {
       )
     )
 
-    console.log("V3 design review screenshots, metrics and assertions completed successfully.")
+    console.log("V4 design review screenshots, metrics and assertions completed successfully.")
 
     cdp.close()
     browserProc.kill()
     serverProc.kill()
   } catch (err) {
     console.error("Capture process failed:", err)
+    try {
+      const textRes = await cdp.send("Runtime.evaluate", {
+        expression: `document.getElementById("active-workspace-content")?.innerText || "NOT FOUND"`,
+        returnByValue: true
+      })
+      console.log("Active Workspace Content innerText:\n", textRes.result.value)
+    } catch (e) {
+      console.error("Failed to log debug text:", e)
+    }
     serverProc.kill()
     process.exit(1)
   }

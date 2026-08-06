@@ -193,4 +193,112 @@ test("Data Story projection is isolated from MARA musicology data", () => {
   }
 })
 
+test("structural independence of all scenario projections", () => {
+  const projections = getAllDirectorProjections()
+  const keys = Object.keys(projections)
+
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = i + 1; j < keys.length; j++) {
+      const pA = projections[keys[i]].result
+      const pB = projections[keys[j]].result
+
+      // Verify that no core sub-objects are shared
+      assert.notStrictEqual(pA.heroDemoMoment, pB.heroDemoMoment, `Shared heroDemoMoment between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(pA.nextAction, pB.nextAction, `Shared nextAction between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(pA.objective, pB.objective, `Shared objective between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(pA.blockers, pB.blockers, `Shared blockers array between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(pA.gateEvaluations, pB.gateEvaluations, `Shared gateEvaluations array between ${keys[i]} and ${keys[j]}`)
+
+      // Verify that no input-level nested arrays are shared
+      const projectA = projections[keys[i]].input.project
+      const projectB = projections[keys[j]].input.project
+      assert.notStrictEqual(projectA.evidence, projectB.evidence, `Shared evidence array in input project between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(projectA.constraints, projectB.constraints, `Shared constraints array in input project between ${keys[i]} and ${keys[j]}`)
+      assert.notStrictEqual(projectA.nextActions, projectB.nextActions, `Shared nextActions array in input project between ${keys[i]} and ${keys[j]}`)
+    }
+  }
+})
+
+test("positive and negative semantic domain integrity", () => {
+  const projections = getAllDirectorProjections()
+
+  const domains = {
+    "the-second-absence": {
+      allowed: ["accountability", "Alex", "£149", "responsible", "callback"],
+      forbidden: ["cryptographic", "commitment", "Cleanverse", "verification", "audit", "judge", "receipt", "Eight-Bar Hole", "1987-F", "Horn in F", "musicology", "Power BI", "abandoned calls", "NPS"]
+    },
+    "cleanverse-build-round-2": {
+      allowed: ["Cleanverse", "verification", "audit", "judge", "receipt", "identity", "asset"],
+      forbidden: ["Alex", "£149", "accountability", "callback", "Eight-Bar Hole", "1987-F", "Horn in F", "musicology", "Power BI", "abandoned calls", "NPS"]
+    },
+    "mara-episode": {
+      allowed: ["Mara", "episode", "continuity", "emotional", "narrative", "wardrobe", "location"],
+      forbidden: ["Eight-Bar Hole", "1987-F", "Horn in F", "musicology", "Cleanverse", "verification", "audit", "receipt", "£149", "Alex", "Power BI", "abandoned calls", "NPS"]
+    },
+    "power-bi-service-performance": {
+      allowed: ["calls", "abandoned", "answered", "service", "NPS", "satisfaction", "DMA", "metric"],
+      forbidden: ["Eight-Bar Hole", "1987-F", "Horn in F", "musicology", "Cleanverse", "verification", "receipt", "£149", "Alex", "Mara", "episode", "wardrobe"]
+    }
+  }
+
+  function getAllStringValues(obj: unknown): string {
+    const values: string[] = []
+    function recurse(val: unknown) {
+      if (typeof val === "string") {
+        values.push(val)
+      } else if (Array.isArray(val)) {
+        val.forEach(recurse)
+      } else if (val && typeof val === "object") {
+        Object.entries(val as Record<string, unknown>).forEach(([k, v]) => {
+          // Skip keys that contain forbidden terms themselves
+          if (k === "selectedSkills" || k === "availableSkills" || k === "provenance") return
+          recurse(v)
+        })
+      }
+    }
+    recurse(obj)
+    return values.join(" ").toLowerCase()
+  }
+
+  for (const [key, rules] of Object.entries(domains)) {
+    const proj = projections[key]
+    const checkObj = {
+      project: proj.input.project,
+      result: proj.result
+    }
+    const text = getAllStringValues(checkObj)
+    
+    // Positive assertions (at least one token must be found)
+    const hasPositive = rules.allowed.some(token => text.includes(token.toLowerCase()))
+    assert.ok(hasPositive, `Scenario ${key} expected to contain at least one of: ${rules.allowed.join(", ")}`)
+
+    // Negative assertions (all forbidden tokens must be absent)
+    for (const token of rules.forbidden) {
+      assert.ok(!text.includes(token.toLowerCase()), `Scenario ${key} contains forbidden token: ${token}. Values: ${text}`)
+    }
+  }
+})
+
+test("cross-scenario semantic snapshot comparison", () => {
+  const projections = getAllDirectorProjections()
+  const snapshot = Object.entries(projections).map(([key, proj]) => ({
+    scenario: key,
+    projectTitle: proj.input.project.title,
+    evaluator: proj.result.evaluatorPath.evaluatorType,
+    heroTitle: proj.result.heroDemoMoment.title,
+    evidenceTitles: proj.input.project.evidence.map(e => e.label),
+    nextActionTitle: proj.result.nextAction.title
+  }))
+
+  // Ensure all project titles, hero titles, and next actions are completely distinct
+  const projectTitles = new Set(snapshot.map(s => s.projectTitle))
+  const heroTitles = new Set(snapshot.map(s => s.heroTitle))
+  const nextActions = new Set(snapshot.map(s => s.nextActionTitle))
+
+  assert.equal(projectTitles.size, 4, "Project titles must be distinct")
+  assert.equal(heroTitles.size, 4, "Hero demo moment titles must be distinct")
+  assert.equal(nextActions.size, 4, "Next action titles must be distinct")
+})
+
+
 
