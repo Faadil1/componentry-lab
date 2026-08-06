@@ -82,7 +82,11 @@ export default function EpisodeStateCardPage() {
             Controls
           </h3>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <label htmlFor="variant-select" className="sr-only">
+              Select episode state variant
+            </label>
             <select
+              id="variant-select"
               value={variant}
               onChange={(e) => {
                 const value = e.target.value

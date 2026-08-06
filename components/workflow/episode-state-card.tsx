@@ -90,7 +90,7 @@ function getAccentBg(variant: EpisodeStateCardVariant): string {
 
 function getStateIcon(variant: EpisodeStateCardVariant): React.ReactNode {
   const size = 20
-  const iconProps = { size, className: "flex-shrink-0" }
+  const iconProps = { size, "aria-hidden": true as const, className: "flex-shrink-0" }
   switch (variant) {
     case "blocked":
       return <Ban {...iconProps} className="text-amber-700" />
@@ -120,7 +120,7 @@ function getStateLabel(variant: EpisodeStateCardVariant): string {
 }
 
 function getSeverityIcon(severity: "info" | "warning" | "critical"): React.ReactNode {
-  const iconProps = { size: 14, className: "flex-shrink-0" }
+  const iconProps = { size: 14, "aria-hidden": true as const, className: "flex-shrink-0" }
   switch (severity) {
     case "critical":
       return <AlertTriangle {...iconProps} className="text-red-600" />
@@ -131,6 +131,14 @@ function getSeverityIcon(severity: "info" | "warning" | "critical"): React.React
   }
 }
 
+function getSeverityLabel(severity: "info" | "warning" | "critical"): string {
+  switch (severity) {
+    case "critical": return "Critical blocker:"
+    case "warning": return "Warning:"
+    default: return "Info:"
+  }
+}
+
 export const EpisodeStateCard = React.forwardRef<
   HTMLDivElement,
   EpisodeStateCardProps
@@ -138,7 +146,6 @@ export const EpisodeStateCard = React.forwardRef<
   (
     {
       channelName,
-      episodeId,
       episodeNumber,
       title,
       workflowState,
@@ -164,6 +171,11 @@ export const EpisodeStateCard = React.forwardRef<
       (typeof window !== "undefined"
         ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
         : false)
+
+    // Unique IDs per instance to prevent duplicate-ID violations
+    const generatedId = React.useId()
+    const headingId = `${generatedId}-episode-heading`
+    const stateHeadingId = `${generatedId}-state-heading`
 
     const containerVariants = {
       hidden: { opacity: 0 },
@@ -193,13 +205,16 @@ export const EpisodeStateCard = React.forwardRef<
           animate="visible"
           variants={containerVariants}
           className={cn("w-full max-w-2xl p-8", getVariantStyles(variant), className)}
-          role="status"
-          aria-label="Episode state unavailable"
+          role="region"
+          aria-labelledby={`${generatedId}-unavailable-heading`}
         >
           <div className={cn("h-1 mb-6", getAccentBg(variant))} />
           <motion.div variants={itemVariants} className="flex gap-3 mb-6">
             {getStateIcon(variant)}
-            <h2 className="text-2xl font-bold text-neutral-900">
+            <h2
+              id={`${generatedId}-unavailable-heading`}
+              className="text-2xl font-bold text-neutral-900"
+            >
               {getStateLabel(variant)}
             </h2>
           </motion.div>
@@ -210,13 +225,15 @@ export const EpisodeStateCard = React.forwardRef<
             No workflow action is authorized until the source is restored.
           </motion.p>
           {unavailableReason && (
-            <motion.p variants={itemVariants} className="text-neutral-500 text-xs mt-4 italic">
+            <motion.p variants={itemVariants} className="text-neutral-600 text-xs mt-4 italic">
               Technical details: {unavailableReason}
             </motion.p>
           )}
         </motion.div>
       )
     }
+
+    const stateLabel = workflowStateLabel || getStateLabel(variant)
 
     return (
       <motion.div
@@ -226,16 +243,16 @@ export const EpisodeStateCard = React.forwardRef<
         variants={containerVariants}
         className={cn("w-full max-w-2xl p-8", getVariantStyles(variant), className)}
         role="region"
-        aria-labelledby={`state-card-${episodeId}`}
+        aria-labelledby={`${headingId} ${stateHeadingId}`}
       >
-        <div className={cn("h-1 mb-6", getAccentBg(variant))} />
+        <div className={cn("h-1 mb-6", getAccentBg(variant))} aria-hidden="true" />
 
         <motion.div variants={itemVariants} className="mb-6">
           <p className="text-xs font-semibold text-neutral-600 uppercase tracking-wide">
             {channelName}
           </p>
           <h2
-            id={`state-card-${episodeId}`}
+            id={headingId}
             className="text-2xl font-bold text-neutral-900 mt-2"
           >
             Episode {episodeNumber}
@@ -246,8 +263,8 @@ export const EpisodeStateCard = React.forwardRef<
         <motion.div variants={itemVariants} className="mb-8 flex items-start gap-4">
           {getStateIcon(variant)}
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-neutral-900">
-              {workflowStateLabel || getStateLabel(variant)}
+            <h3 id={stateHeadingId} className="text-xl font-bold text-neutral-900">
+              {stateLabel}
             </h3>
           </div>
         </motion.div>
@@ -259,7 +276,7 @@ export const EpisodeStateCard = React.forwardRef<
           >
             {lastDecision && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
                   Last validated decision
                 </p>
                 <p className="text-base text-neutral-900 font-medium">
@@ -278,14 +295,17 @@ export const EpisodeStateCard = React.forwardRef<
 
             {blockers && blockers.length > 0 && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-4">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-4">
                   Blocking issues
                 </p>
                 <div className="space-y-3">
                   {blockers.map((blocker) => (
                     <div key={blocker.id} className="flex gap-3">
                       {getSeverityIcon(blocker.severity)}
-                      <span className="text-base text-neutral-900">{blocker.label}</span>
+                      <span className="text-base text-neutral-900">
+                        <span className="sr-only">{getSeverityLabel(blocker.severity)} </span>
+                        {blocker.label}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -294,7 +314,7 @@ export const EpisodeStateCard = React.forwardRef<
 
             {humanReviewStatus === "required" && (
               <div className="flex items-start gap-3">
-                <HelpCircle size={16} className="text-violet-700 flex-shrink-0 mt-1" />
+                <HelpCircle size={16} aria-hidden="true" className="text-violet-700 flex-shrink-0 mt-1" />
                 <p className="text-base font-semibold text-violet-900">
                   Human review is required before proceeding.
                 </p>
@@ -303,11 +323,11 @@ export const EpisodeStateCard = React.forwardRef<
 
             {nextAuthorizedAction && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
                   Next authorized action
                 </p>
                 <div className="flex items-start gap-3">
-                  <ArrowRight size={16} className="text-neutral-600 flex-shrink-0 mt-0.5" />
+                  <ArrowRight size={16} aria-hidden="true" className="text-neutral-600 flex-shrink-0 mt-0.5" />
                   <p className="text-base text-neutral-900">{nextAuthorizedAction}</p>
                 </div>
               </div>
@@ -315,7 +335,7 @@ export const EpisodeStateCard = React.forwardRef<
 
             {nextExpectedState && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
                   Next expected state
                 </p>
                 <p className="text-base font-medium text-neutral-900">
@@ -326,7 +346,7 @@ export const EpisodeStateCard = React.forwardRef<
 
             {youtubeVideoId && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
                   YouTube
                 </p>
                 <p className="text-sm text-neutral-900">
@@ -340,7 +360,7 @@ export const EpisodeStateCard = React.forwardRef<
 
             {publishedAt && (
               <div>
-                <p className="text-xs font-semibold text-neutral-500 tracking-wide mb-2">
+                <p className="text-xs font-semibold text-neutral-600 tracking-wide mb-2">
                   Published
                 </p>
                 <p className="text-xs text-neutral-600">{publishedAt}</p>
@@ -352,23 +372,23 @@ export const EpisodeStateCard = React.forwardRef<
         {(canonicalSource || manifestVersion || workflowState) && (
           <motion.div
             variants={itemVariants}
-            className="border-t border-neutral-200/50 pt-6 space-y-1.5 text-xs text-neutral-500"
+            className="border-t border-neutral-200/50 pt-6 space-y-1.5 text-xs text-neutral-600"
           >
             {canonicalSource && (
               <p>
-                <span className="text-neutral-600 font-medium">Canonical source</span>
+                <span className="font-medium">Canonical source</span>
                 {" "}· {canonicalSource}
               </p>
             )}
             {manifestVersion && (
               <p>
-                <span className="text-neutral-600 font-medium">Version</span>
+                <span className="font-medium">Version</span>
                 {" "}· {manifestVersion}
               </p>
             )}
             {workflowState && (
               <p>
-                <span className="text-neutral-600 font-medium">State ID</span>
+                <span className="font-medium">State ID</span>
                 {" "}· <code className="font-mono text-neutral-600">{workflowState}</code>
               </p>
             )}
