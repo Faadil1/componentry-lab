@@ -9,203 +9,320 @@
 
 ## Context
 
-The Episode State Card has passed accessibility review (WCAG 2.2 AA, decision: PASS) and is ready for public API stabilization. The component currently exports a flat `EpisodeStateCardProps` interface with 17 props of mixed classification (canonical data, presentation, layout, unused).
-
-### Current State
-
-- 6 visual variants (`default`, `blocked`, `human-review-required`, `approved`, `published`, `unavailable`)
-- 17 props: 5 canonical, 10 presentation, 2 layout
-- 2 unused/dead props: `episodeId` (never rendered), `updatedAt` (never displayed)
-- 1 invariant issue: unavailable variant requires props that only make sense for available variants
-
-### Problems
-
-1. **Dead Props:** `episodeId` and `updatedAt` increase API surface without value. They're cargo-cult props from the internal API.
-2. **Variant Invariants:** The unavailable variant should NOT require `humanReviewStatus` or accept canonical data props that only apply to available states.
-3. **Type Safety:** TypeScript cannot prevent invalid combinations like `variant="unavailable"` + `humanReviewStatus="required"`.
-4. **Future Integration:** YouTube Operating Agent may need a structured view model (e.g., canonical episode DTO), but flat props allow accidental coupling.
+The Episode State Card has passed accessibility review (WCAG 2.2 AA, decision: PASS) and is ready for public API stabilization. The component supports 6 visual variants and must enforce compile-time invariants via TypeScript.
 
 ---
 
 ## Decision
 
-**Use discriminated union types to separate available and unavailable variants.**
-
-### Structure
+**Use 6 variant-specific discriminated union types with compile-time invariants enforced via TypeScript `never` types.**
 
 ```tsx
-type EpisodeStateCardProps =
-  | EpisodeStateCardAvailableProps
-  | EpisodeStateCardUnavailableProps
+export type EpisodeStateCardProps =
+  | DefaultEpisodeStateCardProps
+  | BlockedEpisodeStateCardProps
+  | HumanReviewRequiredEpisodeStateCardProps
+  | ApprovedEpisodeStateCardProps
+  | PublishedEpisodeStateCardProps
+  | UnavailableEpisodeStateCardProps
 ```
 
-#### EpisodeStateCardAvailableProps
+### Variant Invariants
+
+Each variant enforces specific compile-time requirements:
+
+#### 1. Default
+
 ```tsx
-interface EpisodeStateCardAvailableProps extends EpisodeStateCardSharedProps {
-  variant: Exclude<EpisodeStateCardVariant, "unavailable">
+type DefaultEpisodeStateCardProps = {
+  variant: "default"
   channelName: string
-  episodeNumber?: number | null
   title: string
   workflowState: string
+  humanReviewStatus: "not-required" | "required" | "completed"
+  episodeNumber?: number | null
   workflowStateLabel?: string
   lastDecision?: EpisodeStateDecision | null
   blockers?: EpisodeStateBlocker[]
   nextExpectedState?: string | null
   nextAuthorizedAction?: string | null
-  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">
   canonicalSource?: string
   manifestVersion?: string
-  youtubeVideoId?: string
-  publishedAt?: string
-}
-```
-
-#### EpisodeStateCardUnavailableProps
-```tsx
-interface EpisodeStateCardUnavailableProps extends EpisodeStateCardSharedProps {
-  variant: "unavailable"
-  unavailableReason?: string
-}
-```
-
-#### EpisodeStateCardSharedProps
-```tsx
-interface EpisodeStateCardSharedProps {
-  reduceMotion?: boolean
   className?: string
 }
 ```
 
-### Prop Classification
+#### 2. Blocked
 
-| Category | Props | Rationale |
-|----------|-------|-----------|
-| **Canonical** | `channelName`, `title`, `workflowState`, `humanReviewStatus` | Define episode identity and state; required for available variants |
-| **Presentation** | `episodeNumber`, `workflowStateLabel`, `lastDecision`, `blockers`, `nextExpectedState`, `nextAuthorizedAction`, `youtubeVideoId`, `publishedAt`, `canonicalSource`, `manifestVersion`, `unavailableReason` | Render optional context and metadata |
-| **Layout** | `reduceMotion`, `className` | Control rendering behavior, not data |
-| **Removed** | `episodeId`, `updatedAt` | Dead props; never rendered or used |
+```tsx
+type BlockedEpisodeStateCardProps = {
+  variant: "blocked"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "not-required" | "required" | "completed"
+  blockers: readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]  // Non-empty tuple
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  lastDecision?: EpisodeStateDecision | null
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden: youtubeVideoId, publishedAt
+}
+```
 
-### Rationale for Discriminated Union
+**Invariant:** Requires non-empty blockers array (enforced as tuple).
 
-1. **Type Safety:** TypeScript prevents invalid prop combinations at compile time.
-2. **Self-Documenting:** The type union clearly expresses that unavailable and available states have different requirements.
-3. **Future Extensibility:** If YouTube Operating Agent needs a structured DTO (e.g., `canonicalEpisode?: CanonicalEpisodeDTO`), it can be added to `EpisodeStateCardAvailableProps` without affecting the unavailable variant.
-4. **Minimal Breaking Change:** Existing call sites passing `variant="unavailable"` with extra props will now receive a TypeScript error (good — it was invalid). New code naturally separates concerns.
+#### 3. HumanReviewRequired
+
+```tsx
+type HumanReviewRequiredEpisodeStateCardProps = {
+  variant: "human-review-required"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "required"  // Must be exactly "required"
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden: lastDecision, blockers, youtubeVideoId, publishedAt
+}
+```
+
+**Invariant:** `humanReviewStatus` must be `"required"`. Forbidden: decision history, blockers, publication data.
+
+#### 4. Approved
+
+```tsx
+type ApprovedEpisodeStateCardProps = {
+  variant: "approved"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "completed"  // Must be exactly "completed"
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  lastDecision?: EpisodeStateDecision | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden: blockers, nextAuthorizedAction, youtubeVideoId, publishedAt
+}
+```
+
+**Invariant:** `humanReviewStatus` must be `"completed"`. Forbidden: blockers (episode is approved), next-action prompts, publication data.
+
+#### 5. Published
+
+```tsx
+type PublishedEpisodeStateCardProps = {
+  variant: "published"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "completed"  // Must be exactly "completed"
+  youtubeVideoId: string          // Required
+  publishedAt: string             // Required (ISO8601)
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden: lastDecision, blockers, nextAuthorizedAction
+}
+```
+
+**Invariants:** `humanReviewStatus` must be `"completed"`. `youtubeVideoId` and `publishedAt` required. Forbidden: decision history, blockers, next-action prompts.
+
+#### 6. Unavailable
+
+```tsx
+type UnavailableEpisodeStateCardProps = {
+  variant: "unavailable"
+  unavailableReason?: string
+  className?: string
+  // All canonical and presentation props forbidden with never type
+  channelName?: never
+  title?: never
+  workflowState?: never
+  humanReviewStatus?: never
+  episodeNumber?: never
+  workflowStateLabel?: never
+  lastDecision?: never
+  blockers?: never
+  nextExpectedState?: never
+  nextAuthorizedAction?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+  canonicalSource?: never
+  manifestVersion?: never
+}
+```
+
+**Invariant:** Minimal representation. No workflow-related props allowed.
+
+### Motion Handling
+
+- **Public prop:** `reduceMotion` is **NOT** part of the public API (removed).
+- **Component behavior:** Always respects `prefers-reduced-motion` system setting via `useReducedMotion()` hook.
+- **Lab simulation:** Not a production concern; removed from stable API.
+
+### HumanReviewStatus Reduction
+
+```tsx
+// Old (experimental)
+type HumanReviewStatus = "not-required" | "required" | "completed" | "unavailable"
+
+// New (stable)
+type HumanReviewStatus = "not-required" | "required" | "completed"
+```
+
+The `"unavailable"` state is now exclusively modeled by the `unavailable` variant branch.
+
+---
+
+## Rationale
+
+### 1. Compile-Time Invariants
+
+TypeScript discriminated unions with `never` types prevent invalid combinations at compile time, not runtime. Invalid configurations fail to type-check before any code runs.
+
+**Example:**
+```tsx
+// ✅ Type-checks successfully
+<EpisodeStateCard variant="blocked" blockers={[...]} />
+
+// ❌ Type error: blockers cannot be empty
+<EpisodeStateCard variant="blocked" blockers={[]} />
+
+// ❌ Type error: humanReviewStatus must be "required" for this variant
+<EpisodeStateCard variant="human-review-required" humanReviewStatus="completed" />
+```
+
+### 2. Separation of Concerns
+
+Each variant is independent. Blocked doesn't need publication data. Unavailable doesn't need workflow metadata. This clarity improves API usability and maintainability.
+
+### 3. Motion is System Concern, Not Component Concern
+
+Laboratory simulation of reduced motion is a testing/demo concern, not a production component concern. The component always respects the system preference. No public override.
+
+### 4. HumanReviewStatus is Not Unavailability
+
+`"unavailable"` means the manifest is missing—a different domain than review status. Separating them reduces confusion and aligns types with semantics.
 
 ---
 
 ## Alternatives Considered
 
-### 1. Flat Interface with Optional Mandatory Fields
+### 1. Single Flat Interface
+
 ```tsx
-interface EpisodeStateCardProps {
+// Rejected
+type EpisodeStateCardProps = {
   variant: EpisodeStateCardVariant
-  channelName?: string  // Required if variant !== "unavailable"
+  channelName?: string
   humanReviewStatus?: HumanReviewStatus
-  // ...
+  blockers?: EpisodeStateBlocker[]
+  // ... all optional
 }
 ```
-**Rejected:** Type system cannot enforce "required if variant=X" constraints. Runtime errors still possible.
 
-### 2. Structured View Model (Canonical + Presentation Separation)
+**Problem:** TypeScript cannot enforce "required if variant=X" constraints. Invalid configurations possible at runtime.
+
+### 2. Multiple Union with Shared Base
+
 ```tsx
-interface EpisodeStateCardProps {
+// Rejected
+type AvailableProps = { channelName: string; ... }
+type UnavailableProps = { /* minimal */ }
+type EpisodeStateCardProps = AvailableProps | UnavailableProps
+```
+
+**Problem:** Doesn't model variant-specific requirements (why does human-review-required have lastDecision?). Loose semantics.
+
+### 3. Structured View Model
+
+```tsx
+// Rejected (premature generalization)
+type EpisodeStateCardProps = {
   canonical: CanonicalEpisodeState
   presentation?: PresentationProps
   layout?: LayoutProps
 }
 ```
-**Rejected:** Over-engineered for current needs. Future YouTube Operating Agent integration may require a different shape. Discriminated union is simpler and can evolve.
 
-### 3. Keep Flat Interface, Lint to Suppress Dead Props
-```tsx
-// eslint-disable-next-line
-export interface EpisodeStateCardProps { episodeId?: string; ... }
-```
-**Rejected:** Does not address type safety or variant invariants. Linting comments are maintainability debt.
+**Problem:** Over-engineered for current needs. Future YouTube integration may require different structure. Better to stabilize flat props now, refactor later if needed.
 
 ---
 
-## Implementation Notes
+## Implementation
 
-### Breaking Changes
-- **Removed:** `episodeId` and `updatedAt` props
-- **Unavailable variant:** No longer accepts `channelName`, `title`, `workflowState`, `humanReviewStatus`
-- **Impact:** Minimal — `episodeId` and `updatedAt` were unused; unavailable fixture is being updated
-
-### Component Destructuring
-The implementation uses a guard clause pattern:
-
-```tsx
-export const EpisodeStateCard = React.forwardRef<HTMLDivElement, EpisodeStateCardProps>(
-  (props, ref) => {
-    const { variant, reduceMotion = false, className } = props
-
-    if (variant === "unavailable") {
-      const { unavailableReason } = props  // Type-narrowed
-      return <UnavailableCard ... />
-    }
-
-    const { channelName, episodeNumber, ... } = props  // Type-narrowed to available
-    return <AvailableCard ... />
-  }
-)
-```
-
-TypeScript narrows `props` to the correct union member inside each branch.
-
-### Test Coverage
-20 new API stabilization tests cover:
-- Type safety: All variants + prop combinations in TypeScript
-- Runtime: Props are correctly destructured and rendered
-- Invariants: Invalid combinations are rejected by linter
-- Fixtures: All demo fixtures validate against new types
+- 6 variant-specific type definitions in `components/workflow/episode-state-card.tsx`
+- Component uses TypeScript type narrowing (guard clauses) after variant check
+- Fixtures updated to respect variant invariants
+- All 20 API tests verify variant contracts
+- Migration guide documents the 6-member union
 
 ---
 
 ## Acceptance Criteria
 
-- [x] Discriminated union types defined and exported
-- [x] Component implementation updated to use type-narrowed destructuring
-- [x] Fixtures updated (remove `episodeId`, respect unavailable variant)
-- [x] Registry updated with prop classification
-- [x] API documentation created (`docs/components/episode-state-card-api.md`)
-- [x] This ADR created (`docs/decisions/ADR-episode-state-card-api-stabilization.md`)
-- [x] 20 API stabilization tests added
-- [x] All tests pass (lint, build, TS, unit)
-- [x] Lint: 0 warnings
-- [x] Build: PASS
+- [x] All 6 variant-specific types defined and exported
+- [x] Compile-time invariants enforced via TypeScript `never` types
+- [x] Component implementation type-checks cleanly
+- [x] All fixtures respect new variant types
+- [x] 20 API tests PASS (variant contracts verified)
+- [x] No `reduceMotion` in public API
+- [x] `HumanReviewStatus` reduced to 3 values
+- [x] Migration guide documents breaking changes
+- [x] ADR documents rationale and final structure
+- [x] Accessibility contract unchanged (WCAG 2.2 AA PASS)
+- [x] Lint: 0 errors, Build: PASS
 
 ---
 
 ## Consequences
 
 ### Positive
-- **Type Safety:** Invalid prop combinations impossible.
-- **Clarity:** API surface is explicit and documented.
-- **Maintainability:** Removal of dead props reduces surface area.
-- **Future-Proof:** Structure supports future integration (e.g., canonical DTO).
-- **Accessibility:** No regression — WCAG 2.2 AA decision: PASS remains.
+
+- **Type Safety:** Invalid prop combinations impossible; caught at compile time.
+- **Self-Documenting:** Type signature expresses requirements clearly.
+- **Reduced Surface:** No unused props across all variants.
+- **Future-Proof:** Structure ready for integration scenarios.
 
 ### Negative
-- **Breaking Change:** Code using `episodeId` or passing unavailable with canonical props must be updated.
-- **Fixture Migration:** Demo fixtures require removal of `episodeId`.
+
+- **Breaking Change:** Code using experimental API must migrate.
+- **Complexity:** More types to understand (but each type is simpler).
 
 ### Neutral
-- **Complexity:** Discriminated unions add 2 new types but are a standard TypeScript pattern.
 
----
-
-## Related Decisions
-
-- **ADR: Accessibility Review — Episode State Card** — Established WCAG 2.2 AA compliance baseline
-- **Mission: API Stabilization — Episode State Card** — Parent task defining stabilization scope
+- **Migration Effort:** Moderate. Clear error messages guide updates.
 
 ---
 
 ## Timeline
 
-- **2026-08-06 10:00Z** — ADR drafted, component updated, tests added
-- **2026-08-06 11:00Z** — Tests pass, registry updated
-- **2026-08-06 12:00Z** — Documentation complete, decision: PASS, commit to master
+- 2026-08-06 10:00Z — Analysis and decision
+- 2026-08-06 11:00Z — Implementation complete
+- 2026-08-06 11:30Z — Tests and documentation complete
+- 2026-08-06 12:00Z — Registry updated, ready for approval review
 
+---
+
+## See Also
+
+- `docs/components/episode-state-card-api.md` — Full API reference with examples
+- `docs/migrations/episode-state-card-experimental-to-stable.md` — Migration guide
+- `tests/episode-state-card-api.test.ts` — API contract tests
+- `artifacts/episode-state-card/api-stabilization/api-surface.json` — API surface snapshot

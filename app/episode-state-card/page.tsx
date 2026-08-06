@@ -71,7 +71,7 @@ export default function EpisodeStateCardPage() {
             <p className="mt-2 text-base text-neutral-600">Read-only view of canonical episode state, human-validated decisions, and authorized next steps.</p>
           </div>
           <div className="flex justify-center">
-            <EpisodeStateCard {...current} reduceMotion={reduced} className="shadow-md" />
+            <EpisodeStateCard {...current} className="shadow-md" />
           </div>
         </div>
       </section>
@@ -126,7 +126,6 @@ export default function EpisodeStateCardPage() {
                 <div className="min-w-0 bg-neutral-50 p-4 rounded-lg">
                   <EpisodeStateCard
                     {...fixtures[v]}
-                    reduceMotion={reduced}
                     className="shadow-none"
                   />
                 </div>

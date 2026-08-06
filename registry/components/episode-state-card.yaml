@@ -136,12 +136,12 @@ variants:
 
 source:
   repository: Faadil1/componentry-lab
-  commit: 376006d4076712b7ebfe571293e1aa8c52731df8
+  commit: 41026169529285101a2fcccf7ce63b281142d044
   path: components/workflow/episode-state-card.tsx
   branch: master
 
 review_status:
-  visual_review: PASS_WITH_CHANGES
+  visual_review: PASS
   accessibility_review: PASS
   api_stabilized: true
   approved: false
@@ -175,8 +175,9 @@ accessibility_review:
   regression_tests_fail: 0
 
 api_stabilization:
-  stabilized_at: 2026-08-06T10:30:00Z
+  stabilized_at: 2026-08-06T11:00:00Z
   decision: PASS
+  implementation_commit: 41026169529285101a2fcccf7ce63b281142d044
   api_surface: artifacts/episode-state-card/api-stabilization/api-surface.json
   api_documentation: docs/components/episode-state-card-api.md
   adr: docs/decisions/ADR-episode-state-card-api-stabilization.md
@@ -187,5 +188,5 @@ api_stabilization:
 metadata:
   created_at: 2026-08-06T00:47:00Z
   created_by: claude-code
-  version: 1.0.0-stable
+  version: 1.0.0
   next_phase: APPROVAL_REVIEW

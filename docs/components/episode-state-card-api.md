@@ -1,6 +1,6 @@
 # Episode State Card — Public API Reference
 
-**Status:** Stable  
+**Status:** Stable (1.0.0)  
 **React Version:** 18.2+  
 **Component Path:** `@/components/workflow/episode-state-card`  
 
@@ -8,232 +8,297 @@
 
 ## Overview
 
-The `EpisodeStateCard` is a read-only workflow component that displays the current state of a video episode through a canonical data source. It supports six visual variants representing different workflow states and is optimized for accessibility (WCAG 2.2 AA) and responsive design.
+The `EpisodeStateCard` is a read-only workflow component that displays episode state through variant-specific discriminated union types. Each of the 6 visual variants enforces compile-time prop requirements via TypeScript's type system.
 
 ---
 
-## Discriminated Union Type
+## Variant-Specific Props
 
-The component uses **discriminated union types** to enforce variant invariants. The `variant` prop discriminates which other props are valid.
+The component uses **discriminated union types** where the `variant` prop determines which other props are valid. This is enforced at compile time by TypeScript.
 
-### Available vs. Unavailable Variants
+### Default Variant
 
 ```tsx
-// Available variants: default, blocked, human-review-required, approved, published
-type EpisodeStateCardAvailableProps = {
-  variant: Exclude<EpisodeStateCardVariant, "unavailable">
+type DefaultEpisodeStateCardProps = {
+  variant: "default"
   channelName: string
-  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">
-  // ... other props
+  title: string
+  workflowState: string
+  humanReviewStatus: HumanReviewStatus
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  lastDecision?: EpisodeStateDecision | null
+  blockers?: EpisodeStateBlocker[]
+  nextExpectedState?: string | null
+  nextAuthorizedAction?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
 }
-
-// Unavailable variant (manifest fetch failed)
-type EpisodeStateCardUnavailableProps = {
-  variant: "unavailable"
-  unavailableReason?: string
-}
-
-type EpisodeStateCardProps = 
-  | EpisodeStateCardAvailableProps 
-  | EpisodeStateCardUnavailableProps
 ```
 
----
+**Usage:** In-progress workflow state with optional decision history.
 
-## Canonical Props (Always Required)
+### Blocked Variant
 
-These props define the episode's core identity and state. They are required for all available variants.
+```tsx
+type BlockedEpisodeStateCardProps = {
+  variant: "blocked"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: HumanReviewStatus
+  blockers: readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]  // REQUIRED, at least 1
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  lastDecision?: EpisodeStateDecision | null
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+}
+```
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `variant` | `EpisodeStateCardVariant` | ✓ | Visual state: `default`, `blocked`, `human-review-required`, `approved`, `published`, or `unavailable` |
-| `channelName` | `string` | ✓ | Channel name (e.g., "Wealth Decoded") |
-| `title` | `string` | ✓ | Episode title |
-| `workflowState` | `string` | ✓ | Technical state identifier (e.g., `EDITORIAL_DEVELOPMENT`) |
-| `humanReviewStatus` | `HumanReviewStatus` | ✓ (available) | `not-required`, `required`, `completed`, or `unavailable` |
+**Compile-time guarantee:** `blockers` must have at least one element (tuple form enforces this).
 
----
+### HumanReviewRequired Variant
 
-## Presentation Props (Optional)
+```tsx
+type HumanReviewRequiredEpisodeStateCardProps = {
+  variant: "human-review-required"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "required"  // Must be exactly "required"
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden:
+  // lastDecision: never
+  // blockers: never
+}
+```
 
-These props render contextual information but are not required for core functionality.
+**Compile-time guarantee:** `humanReviewStatus` must be `"required"`. `lastDecision` and `blockers` forbidden.
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `episodeNumber` | `number \| null` | `undefined` | Episode sequence number for display |
-| `workflowStateLabel` | `string` | Derived from `variant` | Custom label for the current state |
-| `lastDecision` | `EpisodeStateDecision \| null` | `undefined` | Recent human decision and outcome |
-| `blockers` | `EpisodeStateBlocker[]` | `[]` | Critical/warning/info blocking conditions |
-| `nextExpectedState` | `string \| null` | `undefined` | Next anticipated workflow state |
-| `nextAuthorizedAction` | `string \| null` | `undefined` | Next human action required |
-| `youtubeVideoId` | `string` | `undefined` | YouTube video ID (published variant) |
-| `publishedAt` | `string` | `undefined` | ISO8601 publication timestamp |
-| `canonicalSource` | `string` | `undefined` | Source system identifier |
-| `manifestVersion` | `string` | `undefined` | Manifest schema version |
-| `unavailableReason` | `string` | `undefined` | Technical reason for unavailable state |
+### Approved Variant
 
----
+```tsx
+type ApprovedEpisodeStateCardProps = {
+  variant: "approved"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "completed"  // Must be exactly "completed"
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  lastDecision?: EpisodeStateDecision | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden:
+  // blockers: never
+  // nextAuthorizedAction: never
+}
+```
 
-## Layout Props (Optional)
+**Compile-time guarantee:** `humanReviewStatus` must be `"completed"`. Blocking conditions forbidden.
 
-These props control rendering behavior and do not affect data presentation.
+### Published Variant
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `reduceMotion` | `boolean` | `false` | Override `prefers-reduced-motion` system setting (lab demo only) |
-| `className` | `string` | `undefined` | Tailwind CSS class override for root container |
+```tsx
+type PublishedEpisodeStateCardProps = {
+  variant: "published"
+  channelName: string
+  title: string
+  workflowState: string
+  humanReviewStatus: "completed"  // Must be exactly "completed"
+  youtubeVideoId: string          // REQUIRED
+  publishedAt: string             // REQUIRED (ISO8601)
+  episodeNumber?: number | null
+  workflowStateLabel?: string
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  className?: string
+  // Forbidden:
+  // lastDecision: never
+  // blockers: never
+  // nextAuthorizedAction: never
+}
+```
+
+**Compile-time guarantee:** `youtubeVideoId` and `publishedAt` are required strings. `humanReviewStatus` must be `"completed"`.
+
+### Unavailable Variant
+
+```tsx
+type UnavailableEpisodeStateCardProps = {
+  variant: "unavailable"
+  unavailableReason?: string
+  className?: string
+  // Forbidden (all canonical/presentation props):
+  // channelName: never
+  // title: never
+  // workflowState: never
+  // humanReviewStatus: never
+  // episodeNumber: never
+  // workflowStateLabel: never
+  // lastDecision: never
+  // blockers: never
+  // nextExpectedState: never
+  // nextAuthorizedAction: never
+  // youtubeVideoId: never
+  // publishedAt: never
+  // canonicalSource: never
+  // manifestVersion: never
+}
+```
+
+**Compile-time guarantee:** No canonical or presentation props allowed. Minimal representation.
 
 ---
 
 ## Exported Types
 
-### `EpisodeStateCardVariant`
+### Discriminant and Status Types
 
 ```tsx
-type EpisodeStateCardVariant =
-  | "default"           // In-progress workflow
-  | "blocked"           // Blocked by conditions
-  | "human-review-required"  // Awaiting human judgment
-  | "approved"          // Decision approved
-  | "published"         // Live on YouTube
-  | "unavailable"       // Manifest fetch failed
+export type EpisodeStateCardVariant =
+  | "default"
+  | "blocked"
+  | "human-review-required"
+  | "approved"
+  | "published"
+  | "unavailable"
+
+export type HumanReviewStatus =
+  | "not-required"
+  | "required"
+  | "completed"
 ```
 
-### `HumanReviewStatus`
+**Note:** `HumanReviewStatus` does NOT include `"unavailable"`. Only available variants use it.
+
+### Support Types
 
 ```tsx
-type HumanReviewStatus =
-  | "not-required"      // No human judgment needed
-  | "required"          // Awaiting human decision
-  | "completed"         // Human has decided
-  | "unavailable"       // State unknown
-```
-
-### `EpisodeStateDecision`
-
-```tsx
-interface EpisodeStateDecision {
+export interface EpisodeStateDecision {
   label: string
   outcome?: "pass" | "pass-with-conditions" | "rework" | "stop"
   decidedAt?: string    // ISO8601 timestamp
-  decidedBy?: string    // Decision maker identifier
+  decidedBy?: string    // Decision maker ID
 }
-```
 
-### `EpisodeStateBlocker`
-
-```tsx
-interface EpisodeStateBlocker {
+export interface EpisodeStateBlocker {
   id: string
   label: string
   severity: "info" | "warning" | "critical"
 }
 ```
 
----
+### Variant-Specific Props
 
-## Variant Invariants
+```tsx
+export type DefaultEpisodeStateCardProps = { ... }
+export type BlockedEpisodeStateCardProps = { ... }
+export type HumanReviewRequiredEpisodeStateCardProps = { ... }
+export type ApprovedEpisodeStateCardProps = { ... }
+export type PublishedEpisodeStateCardProps = { ... }
+export type UnavailableEpisodeStateCardProps = { ... }
 
-### Default Variant
-- Displays channel, episode number, and title
-- Shows last decision (if provided)
-- Shows blockers with severity indicators
-- State label defaults to "IN PROGRESS"
-
-### Blocked Variant
-- Emphasizes blockers (typically critical or warning)
-- Blocks further workflow progression
-- "BLOCKED" state label
-
-### Human Review Required
-- Awaits human decision
-- Highlights decision-required state
-- "HUMAN REVIEW REQUIRED" state label
-
-### Approved Variant
-- Decision has been made and approved
-- Ready to proceed to next state
-- "APPROVED" state label
-
-### Published Variant
-- Episode is live on YouTube
-- Shows YouTube video ID and publication timestamp
-- "PUBLISHED" state label
-- `nextExpectedState` typically "ANALYTICS_COLLECTING"
-
-### Unavailable Variant
-- Manifest could not be loaded
-- Minimal props required (variant, channelName optional)
-- Cannot proceed with any workflow action
-- Shows optional `unavailableReason` for debugging
+export type EpisodeStateCardProps =
+  | DefaultEpisodeStateCardProps
+  | BlockedEpisodeStateCardProps
+  | HumanReviewRequiredEpisodeStateCardProps
+  | ApprovedEpisodeStateCardProps
+  | PublishedEpisodeStateCardProps
+  | UnavailableEpisodeStateCardProps
+```
 
 ---
 
 ## Accessibility (WCAG 2.2 AA)
 
-- **Semantic Structure:** Each card is a `role="region"` with `aria-labelledby` composed of channel/episode heading + state heading
-- **Unique IDs:** Per-instance React.useId() prevents duplicate-ID violations
-- **Severity Labels:** `aria-hidden` icons paired with screen-reader-only severity text
-- **Motion:** Respects `prefers-reduced-motion: reduce` system setting; stagger and y-offset disabled
-- **Contrast:** All text ≥7:1 contrast ratio on colored backgrounds (WCAG AAA)
-- **SVG Icons:** All hidden via `aria-hidden="true"`
+- **Semantic Structure:** `role="region"` with composed `aria-labelledby`
+- **Unique IDs:** Per-instance via `React.useId()` — no duplicate-ID violations
+- **Screen Reader Labels:** Severity text via `sr-only` span
+- **Motion:** Always respects system `prefers-reduced-motion` setting; never exposes motion override to public API
+- **Contrast:** All text ≥7:1 on colored backgrounds (AAA)
+- **Icons:** All hidden via `aria-hidden="true"`
 
 ---
 
 ## Motion Behavior
 
-Card content animates on entry using Framer Motion:
-- Container: opacity fade-in + staggered children
-- Items: opacity + subtle y-offset (disabled in reduced-motion mode)
-- Durations: 0.3s normal, 0.15s reduced-motion
+The component respects the system `prefers-reduced-motion` setting internally. There is **no public prop** to override this.
 
-Stagger delay: 50ms (normal), 0ms (reduced-motion)
+**Production behavior:**
+- Respects OS/browser reduced-motion preference
+- Stagger and y-offset disabled in reduced-motion mode
+- Durations: 0.3s (normal) → 0.15s (reduced-motion)
 
 ---
 
 ## Styling
 
-The component uses **Tailwind CSS** for all styling. No CSS-in-JS. Color variants map to semantic Tailwind palette:
+**Framework:** Tailwind CSS  
+**Approach:** Utility-first, no CSS-in-JS  
+**Override:** Pass `className` prop for Tailwind overrides
+
+Color variants:
 
 | Variant | Border | Background | Accent |
 |---------|--------|-----------|--------|
-| `default` | `border-slate-300` | `bg-slate-50` | `bg-slate-200` |
-| `blocked` | `border-amber-300` | `bg-amber-50` | `bg-amber-200` |
-| `human-review-required` | `border-violet-300` | `bg-violet-50` | `bg-violet-200` |
-| `approved` | `border-emerald-300` | `bg-emerald-50` | `bg-emerald-200` |
-| `published` | `border-cyan-300` | `bg-cyan-50` | `bg-cyan-200` |
-| `unavailable` | `border-neutral-300` | `bg-neutral-100` | `bg-neutral-200` |
+| default | `border-slate-300` | `bg-slate-50` | `bg-slate-200` |
+| blocked | `border-amber-300` | `bg-amber-50` | `bg-amber-200` |
+| human-review-required | `border-violet-300` | `bg-violet-50` | `bg-violet-200` |
+| approved | `border-emerald-300` | `bg-emerald-50` | `bg-emerald-200` |
+| published | `border-cyan-300` | `bg-cyan-50` | `bg-cyan-200` |
+| unavailable | `border-neutral-300` | `bg-neutral-100` | `bg-neutral-200` |
 
 ---
 
-## Usage Example
+## Usage Examples
 
-### Available Variant (Approved)
+### Default Variant
 
 ```tsx
-import { EpisodeStateCard } from "@/components/workflow/episode-state-card"
+<EpisodeStateCard
+  variant="default"
+  channelName="Wealth Decoded"
+  episodeNumber={14}
+  title="Editorial Development"
+  workflowState="EDITORIAL_DEVELOPMENT"
+  humanReviewStatus="not-required"
+  blockers={[
+    { id: "pkg", label: "Packaging not selected", severity: "warning" }
+  ]}
+  canonicalSource="episode-014 manifest"
+  manifestVersion="draft"
+/>
+```
 
-export function EpisodeStatusPage() {
-  return (
-    <EpisodeStateCard
-      variant="approved"
-      channelName="Wealth Decoded"
-      episodeNumber={13}
-      title="Master Approved"
-      workflowState="MASTER_APPROVED"
-      workflowStateLabel="APPROVED"
-      humanReviewStatus="completed"
-      lastDecision={{
-        label: "PASS",
-        outcome: "pass",
-        decidedBy: "Sarah Chen",
-      }}
-      nextExpectedState="ASSET_REPLACEMENT"
-      canonicalSource="episode-013 manifest"
-      manifestVersion="1.1.0"
-    />
-  )
-}
+### Published Variant
+
+```tsx
+<EpisodeStateCard
+  variant="published"
+  channelName="Wealth Decoded"
+  episodeNumber={13}
+  title="$1,000 a Month in Dividends"
+  workflowState="PUBLISHED"
+  humanReviewStatus="completed"
+  youtubeVideoId="ASluRm71I8o"
+  publishedAt="2026-08-05T02:06:47Z"
+  nextExpectedState="ANALYTICS_COLLECTING"
+/>
 ```
 
 ### Unavailable Variant
@@ -241,56 +306,77 @@ export function EpisodeStatusPage() {
 ```tsx
 <EpisodeStateCard
   variant="unavailable"
-  channelName="Wealth Decoded"
-  workflowState="UNAVAILABLE"
   unavailableReason="MANIFEST_FETCH_FAILED: upstream returned 404"
 />
 ```
 
 ---
 
-## Migration from Experimental API
+## Removed Features
 
-### Removed Props
+### `reduceMotion` — REMOVED
 
-- **`episodeId`** — Was never rendered or used for DOM IDs (now uses React.useId). Remove from all call sites.
-- **`updatedAt`** — Dead prop, never displayed. Remove if present.
+**REMOVED in 1.0.0-stable:** The `reduceMotion` prop was a laboratory demo control. Laboratory simulation is not part of the stable public API. The component always respects the system `prefers-reduced-motion` setting automatically.
 
-### Type Adjustments
+**If you need to simulate reduced motion for testing or demos:**
+- Use your page wrapper's own motion state management
+- Control it separately; do not pass it to the component
+- Example: Set `prefers-reduced-motion: reduce` via browser DevTools
 
-```tsx
-// Before (experimental)
-const props: EpisodeStateCardProps = {
-  episodeId: "14",  // REMOVED
-  updatedAt: "2026-08-06T12:00:00Z",  // REMOVED
-  humanReviewStatus: "unavailable",  // OK if variant !== "unavailable"
-  // ...
-}
+### `episodeId` (REMOVED)
 
-// After (stable)
-const props: EpisodeStateCardProps = {
-  variant: "unavailable",
-  channelName: "Wealth Decoded",
-  workflowState: "UNAVAILABLE",
-  // NO episodeId, NO updatedAt
-  // humanReviewStatus only if variant !== "unavailable"
-}
-```
+Never rendered or used for DOM IDs. Removed in prior stabilization phases.
+
+### `updatedAt` (REMOVED)
+
+Dead prop; never displayed. Removed in prior stabilization phases.
 
 ---
 
 ## Rendering Behavior
 
-- Component is `React.forwardRef<HTMLDivElement>` — ref forwarding supported
-- displayName: "EpisodeStateCard"
-- No external DOM side effects
-- No implicit network requests
-- Motion can be disabled via `prefers-reduced-motion` or `reduceMotion={true}`
+- **Ref forwarding:** Supported (`React.forwardRef<HTMLDivElement>`)
+- **Display name:** `"EpisodeStateCard"`
+- **No side effects:** No network, no DOM writes beyond render
+- **Motion:** Framer Motion with variant stagger (respects reduced-motion)
 
 ---
 
-## Future Considerations
+## Migration from Experimental API
 
-- **YouTube Operating Agent Integration:** Currently supports `youtubeVideoId` and `publishedAt` as presentation props. Full structured integration (canonical view model) may be introduced in a future major version.
-- **Extended Blocking Conditions:** Blocker list is currently flat. Hierarchical blocking (parent/child dependencies) is a candidate for future extension.
+### Breaking Changes
 
+1. **removed:** `reduceMotion` prop (lab demo control) — removed in 1.0.0-stable
+2. **removed:** `episodeId` prop (dead; never rendered)
+3. **removed:** `updatedAt` prop (dead; never displayed)
+4. **Changed:** `HumanReviewStatus` no longer includes `"unavailable"`
+5. **Enforced:** Variant-specific prop contracts via discriminated union
+
+### Type-Safe Migration
+
+```tsx
+// ❌ Before (experimental)
+<EpisodeStateCard
+  variant="unavailable"
+  channelName="..."       // Not allowed anymore
+  humanReviewStatus="..."  // Not allowed anymore
+  reduceMotion={demo}      // removed - not a public prop
+  episodeId="14"           // removed - dead prop
+/>
+
+// ✓ After (stable)
+<EpisodeStateCard
+  variant="unavailable"
+  unavailableReason="..."
+/>
+```
+
+See `docs/migrations/episode-state-card-experimental-to-stable.md` for complete guide.
+
+---
+
+## Reference
+
+- **Architecture Decision Record:** `docs/decisions/ADR-episode-state-card-api-stabilization.md`
+- **API Surface Analysis:** `artifacts/episode-state-card/api-stabilization/api-surface.json`
+- **Migration Guide:** `docs/migrations/episode-state-card-experimental-to-stable.md`

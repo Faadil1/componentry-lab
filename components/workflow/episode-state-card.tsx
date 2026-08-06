@@ -21,11 +21,7 @@ export type EpisodeStateCardVariant =
   | "published"
   | "unavailable"
 
-export type HumanReviewStatus =
-  | "not-required"
-  | "required"
-  | "completed"
-  | "unavailable"
+export type HumanReviewStatus = "not-required" | "required" | "completed"
 
 export interface EpisodeStateDecision {
   label: string
@@ -40,37 +36,126 @@ export interface EpisodeStateBlocker {
   severity: "info" | "warning" | "critical"
 }
 
-interface EpisodeStateCardSharedProps {
-  reduceMotion?: boolean
+interface BaseEpisodeStateCardProps {
   className?: string
 }
 
-export type EpisodeStateCardAvailableProps = EpisodeStateCardSharedProps & {
-  variant: Exclude<EpisodeStateCardVariant, "unavailable">
+export type DefaultEpisodeStateCardProps = BaseEpisodeStateCardProps & {
+  variant: "default"
   channelName: string
   episodeNumber?: number | null
   title: string
   workflowState: string
   workflowStateLabel?: string
+  humanReviewStatus: HumanReviewStatus
   lastDecision?: EpisodeStateDecision | null
   blockers?: EpisodeStateBlocker[]
   nextExpectedState?: string | null
   nextAuthorizedAction?: string | null
-  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">
   canonicalSource?: string
   manifestVersion?: string
-  youtubeVideoId?: string
-  publishedAt?: string
+  youtubeVideoId?: never
+  publishedAt?: never
 }
 
-export type EpisodeStateCardUnavailableProps = EpisodeStateCardSharedProps & {
+export type BlockedEpisodeStateCardProps = BaseEpisodeStateCardProps & {
+  variant: "blocked"
+  channelName: string
+  episodeNumber?: number | null
+  title: string
+  workflowState: string
+  workflowStateLabel?: string
+  humanReviewStatus: HumanReviewStatus
+  blockers: readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]
+  lastDecision?: EpisodeStateDecision | null
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type HumanReviewRequiredEpisodeStateCardProps = BaseEpisodeStateCardProps & {
+  variant: "human-review-required"
+  channelName: string
+  episodeNumber?: number | null
+  title: string
+  workflowState: string
+  workflowStateLabel?: string
+  humanReviewStatus: "required"
+  nextAuthorizedAction?: string | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  lastDecision?: never
+  blockers?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type ApprovedEpisodeStateCardProps = BaseEpisodeStateCardProps & {
+  variant: "approved"
+  channelName: string
+  episodeNumber?: number | null
+  title: string
+  workflowState: string
+  workflowStateLabel?: string
+  humanReviewStatus: "completed"
+  lastDecision?: EpisodeStateDecision | null
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  nextAuthorizedAction?: never
+  blockers?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+}
+
+export type PublishedEpisodeStateCardProps = BaseEpisodeStateCardProps & {
+  variant: "published"
+  channelName: string
+  episodeNumber?: number | null
+  title: string
+  workflowState: string
+  workflowStateLabel?: string
+  humanReviewStatus: "completed"
+  youtubeVideoId: string
+  publishedAt: string
+  nextExpectedState?: string | null
+  canonicalSource?: string
+  manifestVersion?: string
+  lastDecision?: never
+  blockers?: never
+  nextAuthorizedAction?: never
+}
+
+export type UnavailableEpisodeStateCardProps = BaseEpisodeStateCardProps & {
   variant: "unavailable"
   unavailableReason?: string
+  channelName?: never
+  episodeNumber?: never
+  title?: never
+  workflowState?: never
+  workflowStateLabel?: never
+  humanReviewStatus?: never
+  lastDecision?: never
+  blockers?: never
+  nextExpectedState?: never
+  nextAuthorizedAction?: never
+  youtubeVideoId?: never
+  publishedAt?: never
+  canonicalSource?: never
+  manifestVersion?: never
 }
 
 export type EpisodeStateCardProps =
-  | EpisodeStateCardAvailableProps
-  | EpisodeStateCardUnavailableProps
+  | DefaultEpisodeStateCardProps
+  | BlockedEpisodeStateCardProps
+  | HumanReviewRequiredEpisodeStateCardProps
+  | ApprovedEpisodeStateCardProps
+  | PublishedEpisodeStateCardProps
+  | UnavailableEpisodeStateCardProps
 
 function getVariantStyles(variant: EpisodeStateCardVariant): string {
   const base = "rounded-lg overflow-hidden border"
@@ -153,13 +238,12 @@ export const EpisodeStateCard = React.forwardRef<
   EpisodeStateCardProps
 >(
   (props, ref) => {
-    const { variant, reduceMotion = false, className } = props
+    const { variant, className } = props
 
     const shouldReduceMotion =
-      reduceMotion ||
-      (typeof window !== "undefined"
+      typeof window !== "undefined"
         ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        : false)
+        : false
 
     // Unique IDs per instance to prevent duplicate-ID violations
     const generatedId = React.useId()

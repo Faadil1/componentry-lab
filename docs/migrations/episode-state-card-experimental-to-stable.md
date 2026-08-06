@@ -1,32 +1,48 @@
 # Migration Guide: Episode State Card (Experimental → Stable)
 
 **From:** 0.1.0-experimental  
-**To:** 1.0.0-stable  
+**To:** 1.0.0  
 **Date:** 2026-08-06  
 
 ---
 
 ## Overview
 
-The Episode State Card stabilizes its API by removing dead props and enforcing variant invariants through a discriminated union type. This is a **breaking change** with minimal impact — most apps will only need to remove unused props.
+The Episode State Card stabilizes its API through **6 variant-specific discriminated union types** with compile-time invariants. Each variant enforces its own prop requirements via TypeScript's type system.
+
+---
+
+## New API Structure
+
+### The 6 Variant-Specific Types
+
+```tsx
+export type EpisodeStateCardProps =
+  | DefaultEpisodeStateCardProps
+  | BlockedEpisodeStateCardProps
+  | HumanReviewRequiredEpisodeStateCardProps
+  | ApprovedEpisodeStateCardProps
+  | PublishedEpisodeStateCardProps
+  | UnavailableEpisodeStateCardProps
+```
+
+Each type enforces specific invariants at compile time via TypeScript `never` types.
 
 ---
 
 ## Breaking Changes
 
-### 1. Removed Props
+### 1. Removed: `reduceMotion` Prop (REMOVED)
 
-#### `episodeId: string` (REMOVED)
-
-**Why:** Never rendered or used for DOM IDs. React.useId() now handles instance-specific IDs internally.
+**What was:** Lab demo control to simulate reduced motion preference  
+**Why removed:** Laboratory motion simulation is not part of a stable public API. The component always respects the system `prefers-reduced-motion` setting.
 
 **Before:**
 ```tsx
 <EpisodeStateCard
-  episodeId="14"
   variant="default"
-  channelName="Wealth Decoded"
-  // ...
+  channelName="..."
+  reduceMotion={demoMode}  // ❌ REMOVED
 />
 ```
 
@@ -34,419 +50,239 @@ The Episode State Card stabilizes its API by removing dead props and enforcing v
 ```tsx
 <EpisodeStateCard
   variant="default"
-  channelName="Wealth Decoded"
-  // ...
+  channelName="..."
+  // Component automatically respects system preference
 />
 ```
 
-**Search & Replace:** Remove all `episodeId={...}` from your codebase.
+**Motion behavior:** The component uses `useReducedMotion()` hook internally. It always respects the OS/browser `prefers-reduced-motion` setting. There is no public override.
+
+### 2. HumanReviewStatus Now 3 Values (removed "unavailable")
+
+**Before (experimental):** `"not-required" | "required" | "completed" | "unavailable"`
+
+**After (stable):** `"not-required" | "required" | "completed"`
+
+The `"unavailable"` state is now exclusively modeled by the `unavailable` variant branch.
+
+### 3. Variant-Specific Props (not generic available/unavailable)
+
+The old broad `EpisodeStateCardAvailableProps` is gone. Each of the 5 available variants now has its own type with specific invariants:
+
+#### Default Variant
+
+```tsx
+variant: "default"
+// Canonical (required)
+channelName: string
+title: string
+workflowState: string
+humanReviewStatus: HumanReviewStatus  // any of the 3 values
+// Presentation (optional)
+episodeNumber?: number | null
+workflowStateLabel?: string
+lastDecision?: EpisodeStateDecision | null
+blockers?: EpisodeStateBlocker[]
+nextExpectedState?: string | null
+nextAuthorizedAction?: string | null
+canonicalSource?: string
+manifestVersion?: string
+```
+
+#### Blocked Variant
+
+```tsx
+variant: "blocked"
+// Canonical (required)
+channelName: string
+title: string
+workflowState: string
+humanReviewStatus: HumanReviewStatus
+blockers: readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]  // NON-EMPTY
+// Presentation (optional)
+episodeNumber?: number | null
+workflowStateLabel?: string
+lastDecision?: EpisodeStateDecision | null
+nextAuthorizedAction?: string | null
+nextExpectedState?: string | null
+canonicalSource?: string
+manifestVersion?: string
+```
+
+**Invariant:** Blocked variant REQUIRES at least one blocker. Empty array is a compile error.
+
+#### HumanReviewRequired Variant
+
+```tsx
+variant: "human-review-required"
+humanReviewStatus: "required"  // MUST be exactly "required"
+// Canonical
+channelName: string
+title: string
+workflowState: string
+// Presentation (optional, but not lastDecision or blockers)
+episodeNumber?: number | null
+workflowStateLabel?: string
+nextAuthorizedAction?: string | null
+nextExpectedState?: string | null
+canonicalSource?: string
+manifestVersion?: string
+```
+
+**Invariant:** `humanReviewStatus` must be `"required"`. Passing `"completed"` or `"not-required"` is a compile error. `lastDecision` and `blockers` are forbidden.
+
+#### Approved Variant
+
+```tsx
+variant: "approved"
+humanReviewStatus: "completed"  // MUST be exactly "completed"
+// Canonical
+channelName: string
+title: string
+workflowState: string
+// Presentation (optional, but not blockers or nextAuthorizedAction)
+episodeNumber?: number | null
+workflowStateLabel?: string
+lastDecision?: EpisodeStateDecision | null
+nextExpectedState?: string | null
+canonicalSource?: string
+manifestVersion?: string
+```
+
+**Invariant:** `humanReviewStatus` must be `"completed"`. Blocking conditions and next-action prompts forbidden.
+
+#### Published Variant
+
+```tsx
+variant: "published"
+humanReviewStatus: "completed"  // MUST be exactly "completed"
+youtubeVideoId: string          // REQUIRED
+publishedAt: string             // REQUIRED (ISO8601)
+// Canonical
+channelName: string
+title: string
+workflowState: string
+// Presentation (optional)
+episodeNumber?: number | null
+workflowStateLabel?: string
+nextExpectedState?: string | null
+canonicalSource?: string
+manifestVersion?: string
+```
+
+**Invariants:** `youtubeVideoId` and `publishedAt` are required. `humanReviewStatus` must be `"completed"`. `lastDecision`, `blockers`, and `nextAuthorizedAction` forbidden.
+
+#### Unavailable Variant
+
+```tsx
+variant: "unavailable"
+unavailableReason?: string
+className?: string
+// All canonical and presentation props FORBIDDEN
+// channelName: never
+// title: never
+// workflowState: never
+// humanReviewStatus: never
+// episodeNumber: never
+// ... etc
+```
+
+**Invariant:** Unavailable is minimal. All workflow-related props forbidden.
 
 ---
 
-#### `updatedAt: string` (REMOVED)
+## Removed Props (Prior Versions)
 
-**Why:** Dead prop. Never displayed or used.
-
-**Before:**
-```tsx
-<EpisodeStateCard
-  updatedAt="2026-08-06T12:00:00Z"
-  variant="default"
-  // ...
-/>
-```
-
-**After:**
-```tsx
-<EpisodeStateCard
-  variant="default"
-  // ...
-/>
-```
-
-**Search & Replace:** Remove all `updatedAt={...}` from your codebase.
+- **`episodeId`** (0.1.0-experimental) — Dead prop, never rendered. Used React.useId() instead.
+- **`updatedAt`** (0.1.0-experimental) — Dead prop, never displayed.
 
 ---
 
-### 2. Unavailable Variant: Stricter Props
+## Migration Pattern: From One Fixture
 
-The `unavailable` variant no longer accepts canonical or presentation props (except `unavailableReason`).
-
-#### Valid for Unavailable Variant (Only)
-
-- ✓ `variant="unavailable"`
-- ✓ `unavailableReason?: string`
-- ✓ `reduceMotion?: boolean`
-- ✓ `className?: string`
-
-#### Now Invalid for Unavailable Variant
-
-- ✗ `channelName`, `title`, `workflowState`, `humanReviewStatus` (canonical)
-- ✗ `episodeNumber`, `workflowStateLabel`, `lastDecision`, `blockers`, `nextExpectedState`, `nextAuthorizedAction`, `youtubeVideoId`, `publishedAt`, `canonicalSource`, `manifestVersion` (presentation)
-
-**Before (experimental — allowed but confusing):**
+**Before (experimental):**
 ```tsx
-<EpisodeStateCard
-  variant="unavailable"
-  channelName="Wealth Decoded"
-  title="Unknown"
-  workflowState="UNAVAILABLE"
-  humanReviewStatus="unavailable"
-  unavailableReason="Manifest fetch failed"
-/>
-```
-
-**After (stable — stricter, clearer):**
-```tsx
-<EpisodeStateCard
-  variant="unavailable"
-  unavailableReason="Manifest fetch failed"
-/>
-```
-
-**Rationale:** Unavailable state means the manifest is missing. Passing canonical props contradicts this condition. TypeScript now prevents this contradiction at compile time.
-
----
-
-## Type Changes
-
-### New Discriminated Union
-
-The props type is now a discriminated union that enforces variant-specific requirements:
-
-```tsx
-// Before (experimental)
-interface EpisodeStateCardProps {
-  variant: EpisodeStateCardVariant
-  episodeId: string  // ← Required but unused
-  channelName?: string
-  humanReviewStatus: HumanReviewStatus
-  // ... all props optional or loosely typed
-}
-
-// After (stable)
-type EpisodeStateCardProps =
-  | EpisodeStateCardAvailableProps   // variant: default | blocked | ...
-  | EpisodeStateCardUnavailableProps // variant: unavailable
-
-interface EpisodeStateCardAvailableProps {
-  variant: Exclude<EpisodeStateCardVariant, "unavailable">
-  channelName: string  // ← Now required
-  humanReviewStatus: Exclude<HumanReviewStatus, "unavailable">  // ← Stricter
-  // ... other props with clear classification
-}
-
-interface EpisodeStateCardUnavailableProps {
-  variant: "unavailable"
-  unavailableReason?: string
-  reduceMotion?: boolean
-  className?: string
-}
-```
-
-### TypeScript Validation
-
-**Before (experimental):** No type error for invalid combinations
-
-```tsx
-// No TypeScript error, but logically wrong:
-<EpisodeStateCard
-  variant="unavailable"
-  humanReviewStatus="required"  // ← Contradicts unavailability
-  episodeId="14"
-/>
-```
-
-**After (stable):** Type error (excellent!)
-
-```tsx
-// ✗ TypeScript Error:
-// Type '{ variant: "unavailable"; humanReviewStatus: "required"; ... }'
-// is not assignable to type 'EpisodeStateCardUnavailableProps'
-
-<EpisodeStateCard
-  variant="unavailable"
-  humanReviewStatus="required"  // ← Type mismatch!
-/>
-```
-
----
-
-## Migration Checklist
-
-### 1. Remove Dead Props
-
-Search your codebase for `episodeId` and `updatedAt`:
-
-```bash
-# Find all uses
-grep -r "episodeId" src/ --include="*.tsx" --include="*.ts"
-grep -r "updatedAt" src/ --include="*.tsx" --include="*.ts"
-```
-
-Remove the props from all `<EpisodeStateCard>` JSX elements.
-
-### 2. Fix Unavailable Variant Calls
-
-Search for `variant="unavailable"`:
-
-```bash
-grep -r 'variant="unavailable"' src/ --include="*.tsx" --include="*.ts"
-```
-
-For each occurrence, check if canonical or presentation props are passed. Remove them:
-
-```tsx
-// ❌ Before
-const UnavailableCard = () => (
-  <EpisodeStateCard
-    variant="unavailable"
-    channelName="Wealth Decoded"
-    episodeNumber={14}
-    title="Unknown"
-    workflowState="UNAVAILABLE"
-    humanReviewStatus="unavailable"
-    unavailableReason="Manifest not found"
-  />
-)
-
-// ✓ After
-const UnavailableCard = () => (
-  <EpisodeStateCard
-    variant="unavailable"
-    unavailableReason="Manifest not found"
-  />
-)
-```
-
-### 3. Run TypeScript Check
-
-```bash
-npm run build
-# or
-tsc --noEmit
-```
-
-TypeScript will now catch invalid prop combinations. Fix any type errors.
-
-### 4. Run Tests
-
-```bash
-npm test
-```
-
-Existing tests should pass. If you have hardcoded fixtures, update them:
-
-```tsx
-// ❌ Before
 const fixture: EpisodeStateCardProps = {
-  episodeId: "14",
-  episodeNumber: 14,
-  // ...
+  variant: "human-review-required",
+  channelName: "Wealth Decoded",
+  episodeNumber: 13,
+  title: "Master V2",
+  workflowState: "HUMAN_REVIEW_REQUIRED",
+  humanReviewStatus: "required",
+  lastDecision: {  // ❌ Not allowed in human-review-required
+    label: "Automated QA: PASS",
+    outcome: "pass",
+  },
+  nextAuthorizedAction: "Review Master V2",
+  canonicalSource: "episode-013 manifest",
+  manifestVersion: "1.1.0",
+  reduceMotion: false,  // ❌ REMOVED
+  episodeId: "13",      // ❌ REMOVED (prior)
 }
+```
 
-// ✓ After
+**After (stable):**
+```tsx
 const fixture: EpisodeStateCardProps = {
-  episodeNumber: 14,
-  // ...
-}
-```
-
-### 5. Update Storybook or Documentation
-
-If you have Storybook stories or other docs using the component, update them to remove dead props and fix unavailable variant examples.
-
----
-
-## API Reference Changes
-
-### Canonical Props (New Classification)
-
-These props are now **required** for all available variants:
-
-- `channelName`
-- `title`
-- `workflowState`
-- `humanReviewStatus` (but NOT "unavailable")
-
-### Presentation Props (New Classification)
-
-These props are **optional** and enriching:
-
-- `episodeNumber`, `workflowStateLabel`, `lastDecision`, `blockers`
-- `nextExpectedState`, `nextAuthorizedAction`, `youtubeVideoId`, `publishedAt`
-- `canonicalSource`, `manifestVersion`
-
-### Layout Props (New Classification)
-
-These props control rendering, not data:
-
-- `reduceMotion` (lab demo feature)
-- `className` (Tailwind override)
-
-See the full API reference: [`docs/components/episode-state-card-api.md`](../components/episode-state-card-api.md)
-
----
-
-## Common Patterns
-
-### Pattern 1: Building Props Dynamically
-
-**Before:**
-```tsx
-const buildProps = (episode) => ({
-  episodeId: episode.id,  // ← Removed
-  channelName: episode.channelName,
-  episodeNumber: episode.episodeNumber,
-  title: episode.title,
-  workflowState: episode.state,
-  variant: episode.state === 'UNAVAILABLE' ? 'unavailable' : 'default',
-  humanReviewStatus: episode.reviewStatus,
-  updatedAt: episode.lastModified,  // ← Removed
-})
-```
-
-**After:**
-```tsx
-const buildProps = (episode): EpisodeStateCardProps => {
-  if (episode.state === 'UNAVAILABLE') {
-    return {
-      variant: 'unavailable',
-      unavailableReason: episode.error,
-    }
-  }
-
-  return {
-    variant: 'default',  // or determine from episode.state
-    channelName: episode.channelName,
-    episodeNumber: episode.episodeNumber,
-    title: episode.title,
-    workflowState: episode.state,
-    humanReviewStatus: episode.reviewStatus,
-  }
-}
-```
-
-### Pattern 2: Type-Safe Fixture Creation
-
-**Before:**
-```tsx
-const fixture = {
-  episodeId: '14',
-  channelName: 'Wealth Decoded',
-  // ...
-}
-```
-
-**After:**
-```tsx
-const fixture: EpisodeStateCardAvailableProps = {
-  variant: 'default',
-  channelName: 'Wealth Decoded',
-  title: 'Editorial Development',
-  workflowState: 'EDITORIAL_DEVELOPMENT',
-  humanReviewStatus: 'not-required',
-  // ...
-}
-```
-
-### Pattern 3: Conditional Rendering
-
-**Before:**
-```tsx
-if (episode.unavailable) {
-  return (
-    <EpisodeStateCard
-      variant="unavailable"
-      channelName={episode.channelName}  // ← Still allowed
-      unavailableReason={episode.error}
-    />
-  )
-}
-```
-
-**After:**
-```tsx
-if (episode.unavailable) {
-  return (
-    <EpisodeStateCard
-      variant="unavailable"
-      unavailableReason={episode.error}
-    />
-  )
+  variant: "human-review-required",
+  channelName: "Wealth Decoded",
+  episodeNumber: 13,
+  title: "Master V2",
+  workflowState: "HUMAN_REVIEW_REQUIRED",
+  humanReviewStatus: "required",  // ✓ Enforced by type
+  nextAuthorizedAction: "Review Master V2",
+  canonicalSource: "episode-013 manifest",
+  manifestVersion: "1.1.0",
+  // ✓ No reduceMotion (removed)
+  // ✓ No episodeId (removed)
+  // ✓ No lastDecision (forbidden for this variant)
 }
 ```
 
 ---
 
-## Troubleshooting
+## TypeScript Compile-Time Verification
 
-### "Type X is not assignable to type EpisodeStateCardProps"
-
-**Cause:** You're passing props that don't match the variant.
-
-**Fix:** Check your `variant` prop. If it's `"unavailable"`, remove all canonical/presentation props except `unavailableReason`.
+The new API uses TypeScript's discriminated union and `never` type to prevent invalid combinations **at compile time**:
 
 ```tsx
-// ❌ Error
+// ✅ Valid: blocked variant with blocker
 <EpisodeStateCard
-  variant="unavailable"
-  channelName="Wealth Decoded"  // ← Remove this
+  variant="blocked"
+  channelName="..."
+  blockers={[{ id: "1", label: "...", severity: "critical" }]}
 />
 
-// ✓ Correct
+// ❌ Compile Error: blocked without blockers
+<EpisodeStateCard
+  variant="blocked"
+  channelName="..."
+  blockers={[]}  // TYPE ERROR: empty array not allowed
+/>
+
+// ❌ Compile Error: human-review-required with wrong status
+<EpisodeStateCard
+  variant="human-review-required"
+  humanReviewStatus="completed"  // TYPE ERROR: must be "required"
+/>
+
+// ❌ Compile Error: unavailable with workflow props
 <EpisodeStateCard
   variant="unavailable"
-  unavailableReason="Manifest not found"
+  channelName="..."  // TYPE ERROR: not allowed with unavailable
 />
 ```
 
-### "Property 'episodeId' does not exist"
-
-**Cause:** You're using the removed `episodeId` prop.
-
-**Fix:** Remove it. DOM IDs are now handled internally via `React.useId()`.
-
-```tsx
-// ❌ Remove this line
-<EpisodeStateCard episodeId="14" ... />
-
-// ✓ Correct
-<EpisodeStateCard ... />
-```
-
-### "Property 'updatedAt' does not exist"
-
-**Cause:** You're using the removed `updatedAt` prop.
-
-**Fix:** Remove it. It was never displayed or used.
-
-```tsx
-// ❌ Remove this line
-<EpisodeStateCard updatedAt="2026-08-06T12:00:00Z" ... />
-
-// ✓ Correct
-<EpisodeStateCard ... />
-```
-
 ---
 
-## Testing Your Migration
+## Final Reference
 
-After updating your code, run this checklist:
+- **New union members:** 6 (DefaultEpisodeStateCardProps, BlockedEpisodeStateCardProps, HumanReviewRequiredEpisodeStateCardProps, ApprovedEpisodeStateCardProps, PublishedEpisodeStateCardProps, UnavailableEpisodeStateCardProps)
+- **HumanReviewStatus:** `"not-required" | "required" | "completed"` (no "unavailable")
+- **Motion handling:** No public prop. Always respects `prefers-reduced-motion`.
+- **Removed props:** `reduceMotion`, `episodeId`, `updatedAt`
+- **Version:** 1.0.0
 
-- [ ] No TypeScript errors (`npm run build`)
-- [ ] All unit tests pass (`npm test`)
-- [ ] Component renders correctly in all 6 variants
-- [ ] Unavailable variant shows only unavailableReason (if provided)
-- [ ] Available variants show all presentation props correctly
-- [ ] Motion and layout props still work
-
----
-
-## Support & Questions
-
-- **Full API Reference:** `docs/components/episode-state-card-api.md`
-- **Architecture Decision Record:** `docs/decisions/ADR-episode-state-card-api-stabilization.md`
-- **API Surface Analysis:** `artifacts/episode-state-card/api-stabilization/api-surface.json`
-
+See:
+- `docs/components/episode-state-card-api.md` for full reference
+- `docs/decisions/ADR-episode-state-card-api-stabilization.md` for rationale

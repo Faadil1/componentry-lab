@@ -57,10 +57,6 @@ export const episode13HumanReview: EpisodeStateCardProps = {
   workflowStateLabel: "HUMAN REVIEW REQUIRED",
   variant: "human-review-required",
   humanReviewStatus: "required",
-  lastDecision: {
-    label: "Automated QA: PASS",
-    outcome: "pass",
-  },
   nextAuthorizedAction: "Review Master V2",
   canonicalSource: "episode-013 manifest",
   manifestVersion: "1.1.0",
