@@ -68,7 +68,7 @@ export default function EpisodeStateCardPage() {
         <div className="mx-auto max-w-4xl">
           <div className="mb-6">
             <h2 className="text-sm font-semibold text-neutral-600 uppercase tracking-widest">Workflow State Display</h2>
-            <p className="mt-2 text-base text-neutral-600">Interactive episode workflow editor. Select variant and motion preference below.</p>
+            <p className="mt-2 text-base text-neutral-600">Read-only view of canonical episode state, human-validated decisions, and authorized next steps.</p>
           </div>
           <div className="flex justify-center">
             <EpisodeStateCard {...current} reduceMotion={reduced} className="shadow-md" />

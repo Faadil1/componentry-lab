@@ -151,7 +151,6 @@ export const EpisodeStateCard = React.forwardRef<
       humanReviewStatus,
       canonicalSource,
       manifestVersion,
-      updatedAt,
       unavailableReason,
       youtubeVideoId,
       publishedAt,
