@@ -1,6 +1,6 @@
 name: Episode State Card
 description: Read-only workflow component for displaying canonical episode state
-status: API_STABILIZATION
+status: APPROVAL_REVIEW
 
 component:
   name: EpisodeStateCard
