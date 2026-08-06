@@ -129,10 +129,149 @@ export const directorFixtures: Record<string, DirectorFixture> = {
   },
   "power-bi-service-performance": {
     project: {
-      ...projectPresets[2],
       id: "power-bi-service-performance",
+      slug: "power-bi-service-performance",
       title: "Power BI Service Performance",
       shortTitle: "Power BI Service",
+      description: "An interactive data story visualising the relationship between monthly service metrics, answered versus abandoned calls, and operational performance levers.",
+      kind: "data-story",
+      status: "verifying",
+      currentPhase: "verify",
+      completedPhases: ["intake", "qualify", "research", "position", "differentiate", "concept", "design", "prototype", "build"],
+      blockedPhases: [],
+      nextRecommendedPhase: "audit",
+      priority: "medium",
+      createdLabel: "2026-07-20",
+      updatedLabel: "2026-07-25",
+      challenge: "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+      problem: "Stakeholders make incorrect service scaling decisions because raw monthly service metrics hide the critical relationship between answered and abandoned calls.",
+      audience: "Operational stakeholders and business leaders",
+      primaryGoal: "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+      successDefinition: "Stakeholders can instantly locate the primary operational performance irritant and the positive metric signal.",
+      constraints: [
+        { id: "ds_c1", type: "technical", description: "Dashboard rendering must use pure SVG shapes without external database dependencies." }
+      ],
+      stakeholders: [
+        { id: "ds_s1", label: "John Carter", role: "Director of Operations" }
+      ],
+      requirements: [
+        { id: "ds_r1", label: "Interactive call metrics chart", description: "Plot answered and abandoned calls side-by-side with interactive tooltips.", priority: "high" }
+      ],
+      evaluationCriteria: [
+        { id: "ds_ec1", label: "Stakeholder decision speed", description: "Measures the time taken to identify performance irritants.", weight: 0.5 }
+      ],
+      sourceLinks: [
+        { id: "ds_sl1", label: "Operational Call Logs", sourceType: "project-file", description: "The raw CSV log file containing weekly performance metrics." }
+      ],
+      references: ["Call Center Performance Standards", "Data Storytelling best practices"],
+      positioningStatement: "Power BI Service Performance is the decision-ready visual report that clarifies resource allocation before budget cycles begin.",
+      tension: "Raw metrics complexity vs. clear resource decisions.",
+      memoryHook: "See the service trend behind the numbers.",
+      judgeMemorySentence: "An executive performance dashboard revealing answered and abandoned call performance trends.",
+      differentiation: "Unlike general dashboards, this highlights resource gaps directly.",
+      categoryClaim: "Operational performance analysis.",
+      alternatives: ["Static Excel spreadsheets", "Generic Power BI dashboards"],
+      rejectedAngles: ["Real-time database integration", "AI-based forecasting projections"],
+      visualDirection: "Sleek, administrative dashboard styling. Cool stone backgrounds, graphite borders, cyan active indicators, discrete emerald metrics.",
+      typographyDirection: "Inter for UI controls, Satoshi for metric numbers.",
+      colorDirection: "Slate grey, graphite charcoal, cyan metric lines.",
+      layoutDirection: "Executive executive workspace grid format.",
+      interactionDirection: "Metric range selectors, tooltip details.",
+      responsiveStrategy: "Metrics stack on mobile.",
+      accessibilityStrategy: "Screen reader vocalises active metrics values.",
+      designPrinciples: ["Decisions require clarity, not noise.", "Data must tell a story."],
+      antiPatterns: ["Faux loading animations.", "Overcrowded charts."],
+      rejectedDirections: ["Gamified badges.", "Playful fonts."],
+      primaryClaim: "The visual SVG performance chart reveals a clear relationship between response times and satisfaction levels.",
+      evidence: [
+        {
+          id: "ds_ev1",
+          label: "Answered versus abandoned call trend data",
+          claimSupported: "The visual SVG performance chart reveals a clear relationship between response times and satisfaction levels.",
+          type: "technical-proof",
+          source: "Operational call center logs",
+          strength: "direct",
+          status: "available",
+          routeOrFile: "components/datastory/call-metrics.tsx",
+          linkedDecisionId: "ds_d1"
+        }
+      ],
+      proofMoment: "The transition from raw data tables to visual SVG charts displaying call center satisfaction peaks.",
+      technicalProof: "SVG side-by-side metric overlay plotting trend lines.",
+      failureMode: "Metrics filter invalid or unselected.",
+      fallback: "Display default weekly average composite chart.",
+      unresolvedProofGaps: [],
+      selectedRegistryIds: ["kinetic-text", "layouts", "typography"],
+      selectedPlaybookIds: ["system-principles", "color-system", "controlled-visual-risk"],
+      selectedReadingPathIds: ["win-first-five-seconds"],
+      selectedRecipeIds: ["data-story-recipe"],
+      architectureNotes: "Uses pure client-side SVG plotting.",
+      implementationConstraints: ["Offline static dataset stubs only."],
+      acceptanceCriteria: ["Chart plots trends accurately.", "Metrics details display on hover."],
+      technicalRisks: [],
+      capturePlan: {
+        states: [
+          { id: "dashboard-loaded", label: "Dashboard Loaded", time: 0, frame: 0, stateType: "setup", isCapturePoint: true, expectedVisualResult: "Slate dashboard with summary cards.", notes: "Initial load" }
+        ]
+      },
+      signatureStateId: "dashboard-loaded",
+      signatureFrame: 0,
+      heroDemoMoment: "Analyzed the trend of answered versus abandoned calls to pinpoint the primary irritant for operational scaling.",
+      cleanViewRoute: "/projects/power-bi-service-performance?clean=true",
+      restoreUrls: {},
+      captureLimitations: [],
+      videoPlan: {
+        purpose: "Expose operational resource gaps to business leaders.",
+        audience: "Operational stakeholders.",
+        durationSeconds: 60,
+        formats: ["16:9"],
+        narrative: "Why raw call logs hide key resource insights, and how our interactive data story visualises the solution.",
+        hook: "Numbers lie when they hide relationships.",
+        scenes: ["Intro", "The Chart Reveal", "Resource Decision"],
+        proofMoments: ["Interactive call metrics chart"],
+        shots: [],
+        transitions: [],
+        voiceover: "",
+        subtitles: "",
+        soundDirection: "",
+        cta: "",
+        outputVariants: [],
+        missingAssets: [],
+        captureDependencies: [],
+        productionReadiness: "draft"
+      },
+      facts: [
+        { id: "ds_f1", label: "Static performance logs", description: "Historical data stubs represent a typical high-volume operational week.", category: "technical", phase: "intake" }
+      ],
+      assumptions: [],
+      decisions: [
+        {
+          id: "ds_d1",
+          label: "Static SVG rendering",
+          description: "Use inline SVG elements to plot call metrics for zero-latency loading.",
+          status: "approved",
+          rationale: "Guarantees offline reliability during executive pitches.",
+          alternativesConsidered: ["Highcharts library", "Static images"],
+          evidenceIds: ["ds_ev1"],
+          source: "Technical architect",
+          phase: "prototype",
+          reversible: true,
+          impact: "medium"
+        }
+      ],
+      rejections: [
+        {
+          id: "ds_rej1",
+          label: "Real-time database integration",
+          reason: "Real-time DB updates are out of scope for static storytelling.",
+          rejectedPhase: "concept",
+          riskAvoided: "Scope creep",
+          reconsiderCondition: "If backend budget is allocated",
+          source: "Stakeholder brief"
+        }
+      ],
+      risks: [],
+      outputs: [],
       nextActions: [
         {
           id: "act-datastory-1",
@@ -140,8 +279,18 @@ export const directorFixtures: Record<string, DirectorFixture> = {
           description: "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
           phase: "verify",
           status: "todo",
-        },
+        }
       ],
+      learnings: [],
+      openQuestions: [],
+      blockedBy: [],
+      auditResults: [],
+      currentScore: 95,
+      readiness: 95,
+      blockers: [],
+      warnings: [],
+      publicationGate: true,
+      submissionGate: false
     },
     mode: "DATA_STORY",
     phaseContext: "verify",
