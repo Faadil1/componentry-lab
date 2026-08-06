@@ -2,15 +2,16 @@ import { spawn } from "node:child_process"
 import http from "node:http"
 import fs from "node:fs"
 import path from "node:path"
+import crypto from "node:crypto"
 
 const EDGE_PATH = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 const CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
 const BROWSER_PATH = fs.existsSync(EDGE_PATH) ? EDGE_PATH : CHROME_PATH
 
-const PORT = 3009
+const PORT = 3017
 const DEBUG_PORT = 9222
 
-async function waitForUrl(url, timeoutMs = 15000) {
+async function waitForUrl(url, timeoutMs = 20000) {
   const start = Date.now()
   while (Date.now() - start < timeoutMs) {
     try {
@@ -80,29 +81,70 @@ async function captureScreenshot(cdp, filePath) {
   const buf = Buffer.from(res.data, "base64")
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   fs.writeFileSync(filePath, buf)
-  console.log(`Saved screenshot: ${filePath}`)
+  const hash = crypto.createHash("sha256").update(buf).digest("hex")
+  console.log(`Saved screenshot: ${filePath} (sha256: ${hash.substring(0, 8)})`)
+  return hash
 }
 
 async function clickElementByText(cdp, textSubstring) {
-  await cdp.send("Runtime.evaluate", {
+  const res = await cdp.send("Runtime.evaluate", {
     expression: `(() => {
+      // First try desktop switcher buttons
       const buttons = Array.from(document.querySelectorAll('button'));
       const target = buttons.find(b => b.textContent.includes('${textSubstring}'));
-      if (target) {
+      if (target && window.getComputedStyle(target).display !== 'none') {
         target.click();
-        return true;
+        return "clicked-button";
       }
-      return false;
+      // If hidden, try select dropdown option
+      const selectEl = document.getElementById('mobile-scenario-select');
+      if (selectEl && window.getComputedStyle(selectEl).display !== 'none') {
+        const option = Array.from(selectEl.options).find(o => o.text.includes('${textSubstring}'));
+        if (option) {
+          selectEl.value = option.value;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+          return "selected-dropdown";
+        }
+      }
+      return "none";
     })()`,
+    returnByValue: true
   })
-  await new Promise((r) => setTimeout(r, 600))
+  await new Promise((r) => setTimeout(r, 800))
+  return res.result.value
+}
+
+async function assertPageText(cdp, mustInclude, mustExclude = [], querySelector = "body") {
+  const res = await cdp.send("Runtime.evaluate", {
+    expression: `(() => {
+      const el = document.querySelector('${querySelector}');
+      return el ? el.innerText : "";
+    })()`,
+    returnByValue: true
+  })
+  const text = res.result.value
+
+  for (const match of mustInclude) {
+    if (!text.includes(match)) {
+      throw new Error(`Assertion failed: Element "${querySelector}" expected to contain "${match}", but not found.`)
+    }
+  }
+  for (const match of mustExclude) {
+    if (text.includes(match)) {
+      throw new Error(`Assertion failed: Element "${querySelector}" expected to exclude "${match}", but it was found.`)
+    }
+  }
 }
 
 async function main() {
+  const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review-v3")
+  fs.mkdirSync(baseDir, { recursive: true })
+
   console.log(`Starting next start on port ${PORT}...`)
   const serverProc = spawn("npx", ["next", "start", "-p", PORT.toString()], {
     shell: true,
     stdio: "pipe",
+    env: { ...process.env, NEXT_FONT_GOOGLE_MOCKED: "1" }
   })
 
   try {
@@ -132,14 +174,20 @@ async function main() {
     await cdp.send("Runtime.enable")
     await cdp.send("DOM.enable")
 
-    const baseDir = path.join(process.cwd(), "docs", "evidence", "director-design-review-v2")
-    fs.mkdirSync(baseDir, { recursive: true })
-
     const targetUrl = `http://localhost:${PORT}/director`
     await cdp.send("Page.navigate", { url: targetUrl })
     await new Promise((r) => setTimeout(r, 2500))
 
-    // Desktop viewports (1440 x 1000)
+    // Assert correct tagline
+    const taglineRes = await cdp.send("Runtime.evaluate", {
+      expression: `document.getElementById("director-tagline")?.innerText || ""`,
+      returnByValue: true
+    })
+    if (!taglineRes.result.value.includes("One project. One clear next move. Backed by evidence.")) {
+      throw new Error(`Tagline assertion failed: Tagline is "${taglineRes.result.value}"`)
+    }
+
+    // 1. Desktop Scenario Captures (1440 x 1000)
     await cdp.send("Emulation.setDeviceMetricsOverride", {
       width: 1440,
       height: 1000,
@@ -148,22 +196,77 @@ async function main() {
     })
     await new Promise((r) => setTimeout(r, 500))
 
-    // 1. Desktop Scenario Captures
     const desktopScenarios = [
-      { key: "Second Absence", file: "desktop/day-challenge.png" },
-      { key: "Cleanverse", file: "desktop/hackathon.png" },
-      { key: "MARA Episode", file: "desktop/mara.png" },
-      { key: "Power BI", file: "desktop/data-story.png" },
+      {
+        key: "Second Absence",
+        file: "desktop/day-challenge.png",
+        pageIncludes: ["The Second Absence"],
+        decisionIncludes: ["Validate hypothesis lock proof", "NEXT AUTHORIZED ACTION"],
+        decisionExcludes: ["Eight-Bar Hole", "Cleanverse"]
+      },
+      {
+        key: "Cleanverse",
+        file: "desktop/hackathon.png",
+        pageIncludes: ["Cleanverse Build Round 2"],
+        decisionIncludes: ["Resolve hackathon audit receipt blocker", "NEXT AUTHORIZED ACTION"],
+        decisionExcludes: ["Eight-Bar Hole", "The Second Absence"]
+      },
+      {
+        key: "MARA Episode",
+        file: "desktop/mara.png",
+        pageIncludes: ["MARA Episode"],
+        decisionIncludes: ["Resolve Eight-Bar Hole score continuity", "NEXT AUTHORIZED ACTION"],
+        decisionExcludes: ["Cleanverse", "The Second Absence"]
+      },
+      {
+        key: "Power BI",
+        file: "desktop/data-story.png",
+        pageIncludes: ["Power BI Service Performance"],
+        decisionIncludes: ["Validate Power BI metric evidence", "NEXT AUTHORIZED ACTION"],
+        decisionExcludes: ["Eight-Bar Hole", "1987-F", "Horn in F", "score edition", "musicology"]
+      },
     ]
 
+    const desktopMetrics = {}
+
     for (const sc of desktopScenarios) {
-      await clickElementByText(cdp, sc.key)
-      await new Promise((r) => setTimeout(r, 500))
-      await captureScreenshot(cdp, path.join(baseDir, sc.file))
+      const modeClickResult = await clickElementByText(cdp, sc.key)
+      console.log(`Switched to scenario ${sc.key} (Method: ${modeClickResult})`)
+      
+      // Verify page text (like project title)
+      await assertPageText(cdp, sc.pageIncludes, [], "body")
+      // Verify Decision block text
+      await assertPageText(cdp, sc.decisionIncludes, sc.decisionExcludes, '[aria-label="Hero Decision Center"]')
+
+      // Measure action bounding box
+      const rectRes = await cdp.send("Runtime.evaluate", {
+        expression: `(() => {
+          const el = document.getElementById("next-authorized-action-container");
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, width: r.width, height: r.height };
+        })()`,
+        returnByValue: true
+      })
+      const actionRect = rectRes.result.value
+      const isVisibleInFirstViewport = actionRect && actionRect.top < 1000
+
+      desktopMetrics[sc.key] = {
+        actionRect,
+        isVisibleInFirstViewport,
+      }
+
+      if (!isVisibleInFirstViewport) {
+        throw new Error(`Visibility assertion failed for ${sc.key}: Next Authorized Action is not in the first viewport (top: ${actionRect?.top}px)`)
+      }
+
+      const hash = await captureScreenshot(cdp, path.join(baseDir, sc.file))
+      desktopMetrics[sc.key].hash = hash
     }
 
     // 2. Mobile Viewports Captures (320 & 375)
-    await clickElementByText(cdp, "Cleanverse") // Use demanding content length
+    // Use MARA/Cleanverse for demanding length
+    await clickElementByText(cdp, "MARA Episode")
     await new Promise((r) => setTimeout(r, 500))
 
     const mobileViewports = [
@@ -171,7 +274,7 @@ async function main() {
       { width: 375, height: 812, file: "mobile/director-375.png", key: "375px" },
     ]
 
-    const metricsResults = []
+    const mobileMetrics = []
 
     for (const mv of mobileViewports) {
       await cdp.send("Emulation.setDeviceMetricsOverride", {
@@ -188,18 +291,41 @@ async function main() {
           clientWidth: document.documentElement.clientWidth,
           hasOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
         })`,
-        returnByValue: true,
+        returnByValue: true
       })
 
-      metricsResults.push({
+      // Validate selector visibility
+      const visibilityRes = await cdp.send("Runtime.evaluate", {
+        expression: `(() => {
+          const mob = document.getElementById("mobile-selector-container");
+          const desk = document.getElementById("desktop-selector-container");
+          return {
+            mobileVisible: mob ? window.getComputedStyle(mob).display !== "none" : false,
+            desktopVisible: desk ? window.getComputedStyle(desk).display !== "none" : false,
+            desktopButtonsCount: desk ? desk.querySelectorAll('button').length : 0
+          };
+        })()`,
+        returnByValue: true
+      })
+
+      const vis = visibilityRes.result.value
+      if (!vis.mobileVisible || vis.desktopVisible) {
+        throw new Error(`Mobile Selector validation failed at ${mv.key}: Mobile container visible = ${vis.mobileVisible}, Desktop container visible = ${vis.desktopVisible}`)
+      }
+
+      const hash = await captureScreenshot(cdp, path.join(baseDir, mv.file))
+
+      mobileMetrics.push({
         viewport: mv.key,
         width: mv.width,
         scrollWidth: evalRes.result.value.scrollWidth,
         clientWidth: evalRes.result.value.clientWidth,
         pass: evalRes.result.value.scrollWidth <= evalRes.result.value.clientWidth,
+        mobileSelectorVisible: vis.mobileVisible,
+        desktopSelectorVisible: vis.desktopVisible,
+        visibleDesktopCards: vis.desktopVisible ? vis.desktopButtonsCount : 0,
+        hash
       })
-
-      await captureScreenshot(cdp, path.join(baseDir, mv.file))
     }
 
     // Reset Desktop for Detail Captures
@@ -210,55 +336,56 @@ async function main() {
       mobile: false,
     })
     await new Promise((r) => setTimeout(r, 500))
-
-    // 3. Diagnostic Detail Captures
-    // Expanded evidence gate
-    await clickElementByText(cdp, "Expand Gate Details")
+    await clickElementByText(cdp, "Second Absence")
     await new Promise((r) => setTimeout(r, 500))
-    await captureScreenshot(cdp, path.join(baseDir, "details/evidence-expanded.png"))
 
-    // Expanded blocker
-    await clickElementByText(cdp, "View Provenance")
+    // Expand details and capture
+    await clickElementByText(cdp, "View Details") // first gate details
     await new Promise((r) => setTimeout(r, 500))
-    await captureScreenshot(cdp, path.join(baseDir, "details/blocker-expanded.png"))
+    const detailsHash1 = await captureScreenshot(cdp, path.join(baseDir, "details/evidence-expanded.png"))
 
-    // Authority state capture (scroll into view authority section)
+    await clickElementByText(cdp, "View Trace") // blocker details
+    await new Promise((r) => setTimeout(r, 500))
+    const detailsHash2 = await captureScreenshot(cdp, path.join(baseDir, "details/blocker-expanded.png"))
+
+    // Scroll and capture authority
     await cdp.send("Runtime.evaluate", {
       expression: `document.querySelector('[aria-label="Authority and Learning Governance"]').scrollIntoView()`,
     })
     await new Promise((r) => setTimeout(r, 500))
-    await captureScreenshot(cdp, path.join(baseDir, "details/authority.png"))
-    await captureScreenshot(cdp, path.join(baseDir, "details/learning.png"))
+    const detailsHash3 = await captureScreenshot(cdp, path.join(baseDir, "details/authority.png"))
+    const detailsHash4 = await captureScreenshot(cdp, path.join(baseDir, "details/learning.png"))
 
-    // Provenance capture
+    // Scroll and capture provenance
     await cdp.send("Runtime.evaluate", {
-      expression: `document.querySelector('[aria-label="Provenance and Selected Skills"]').scrollIntoView()`,
+      expression: `document.querySelector('[aria-label="Source and Capabilities"]').scrollIntoView()`,
     })
     await new Promise((r) => setTimeout(r, 500))
-    await captureScreenshot(cdp, path.join(baseDir, "details/provenance.png"))
+    const detailsHash5 = await captureScreenshot(cdp, path.join(baseDir, "details/provenance.png"))
 
-    // Save metrics.json
+    // Save V3 metrics.json
     fs.writeFileSync(
       path.join(baseDir, "metrics.json"),
       JSON.stringify(
         {
           timestamp: new Date().toISOString(),
-          responsiveMetrics: metricsResults,
-          scenariosCaptured: desktopScenarios.map((s) => s.key),
-          detailCaptures: [
-            "evidence-expanded.png",
-            "blocker-expanded.png",
-            "authority.png",
-            "learning.png",
-            "provenance.png",
-          ],
+          portUsed: PORT,
+          desktopMetrics,
+          responsiveMetrics: mobileMetrics,
+          detailsMetrics: {
+            "evidence-expanded.png": { hash: detailsHash1 },
+            "blocker-expanded.png": { hash: detailsHash2 },
+            "authority.png": { hash: detailsHash3 },
+            "learning.png": { hash: detailsHash4 },
+            "provenance.png": { hash: detailsHash5 }
+          }
         },
         null,
         2
       )
     )
 
-    console.log("All design review screenshots and metrics generated successfully.")
+    console.log("V3 design review screenshots, metrics and assertions completed successfully.")
 
     cdp.close()
     browserProc.kill()
