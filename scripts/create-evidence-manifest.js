@@ -34,8 +34,10 @@ const manifestData = {
   screenshots: [],
   mobile: {
     viewport_width: 320,
-    horizontal_overflow: true,
-    note: 'scrollWidth=367, clientWidth=320 - needs review but content is readable'
+    scroll_width: 320,
+    client_width: 320,
+    horizontal_overflow: false,
+    note: 'scrollWidth=320, clientWidth=320 - no horizontal overflow, all controls stacked vertically'
   },
   reduced_motion: {
     browser_preference: 'reduce',
