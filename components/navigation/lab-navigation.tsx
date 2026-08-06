@@ -37,6 +37,7 @@ const groupedLabLinks: Array<{ label: string; links: NavLink[] }> = [
       { href: "/foundations", label: "Foundations" },
       { href: "/player", label: "Interaction Player" },
       { href: "/decisions", label: "Decision Systems" },
+      { href: "/director", label: "Creative Director" },
       { href: "/capture", label: "Capture Systems" },
       { href: "/recipes", label: "Composition Recipes" },
     ],
