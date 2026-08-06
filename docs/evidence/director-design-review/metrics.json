@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-08-06T09:28:28.047Z",
+  "responsiveMetrics": [
+    {
+      "viewport": "320px",
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "pass": true
+    },
+    {
+      "viewport": "375px",
+      "width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "pass": true
+    }
+  ],
+  "scenariosCaptured": [
+    "Second Absence",
+    "Cleanverse",
+    "MARA Episode",
+    "Power BI"
+  ],
+  "detailCaptures": [
+    "evidence-expanded.png",
+    "blocker-expanded.png",
+    "authority.png",
+    "learning.png",
+    "provenance.png"
+  ]
+}
