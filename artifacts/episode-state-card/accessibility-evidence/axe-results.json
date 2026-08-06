@@ -1,0 +1,83 @@
+{
+  "full_page": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "default": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "blocked": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "human-review-required": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "approved": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "published": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "unavailable": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "mobile_320": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  },
+  "reduced_motion": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0,
+    "violations": [],
+    "passes": 25,
+    "incomplete": 1
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "component_id": "episode-state-card",
+  "visual_evidence_commit": "4b560a5da97bc414fb338e8298488c3ae66ba09d",
+  "accessibility_implementation_commit": "857a2e82766687d21c6c11830f790a8419f1083c",
+  "public_route": "https://componentry-lab.vercel.app/episode-state-card",
+  "standard": "WCAG 2.2 AA",
+  "captured_at": "2026-08-06T09:45:00.000Z",
+  "runtime": {
+    "http_status": 200,
+    "console_errors": 0,
+    "page_errors": 0,
+    "hydration_errors": 0
+  },
+  "automated": {
+    "axe_critical": 0,
+    "axe_serious": 0,
+    "axe_moderate": 0,
+    "axe_minor": 0,
+    "axe_tags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"],
+    "axe_scope": "full page + all 6 variants + mobile 320px + reduced-motion"
+  },
+  "semantics": {
+    "duplicate_ids": 0,
+    "total_ids": 15,
+    "broken_aria_references": 0,
+    "cards_with_accessible_names": 7,
+    "accessible_names": [
+      "Episode 14 EDITORIAL DEVELOPMENT",
+      "Episode 14 EDITORIAL DEVELOPMENT",
+      "Episode 14 BLOCKED",
+      "Episode 13 HUMAN REVIEW REQUIRED",
+      "Episode 13 APPROVED",
+      "Episode 13 PUBLISHED",
+      "EPISODE STATE UNAVAILABLE"
+    ]
+  },
+  "keyboard": {
+    "keyboard_traps": 0,
+    "unexpected_tabbable_cards": 0,
+    "focusable_element_count": 20,
+    "focus_order_correct": true
+  },
+  "contrast": {
+    "axe_contrast_violations": 0,
+    "failed_normal_text": 0,
+    "failed_large_text": 0,
+    "failed_ui_components": 0,
+    "note": "text-neutral-500 upgraded to text-neutral-600; axe confirms 0 violations across all variants and viewports"
+  },
+  "motion": {
+    "reduced_motion_translation": false,
+    "reduced_motion_stagger": false,
+    "prefers_reduced_motion_detected": true
+  },
+  "reflow": {
+    "mobile_horizontal_overflow": false,
+    "text_spacing_loss": false,
+    "viewports_tested": [320, 375, 768, 1280]
+  },
+  "touch_targets": {
+    "failure_count": 0,
+    "controls_measured": 21,
+    "minimum_dimension_passes_24px": true
+  },
+  "svg": {
+    "total": 16,
+    "potentially_exposed_without_label": 0,
+    "all_aria_hidden": true
+  },
+  "severity_text": {
+    "sr_only_severity_present": true,
+    "values_found": ["Critical blocker:", "Warning:", "Info:"]
+  },
+  "live_regions": {
+    "count": 0,
+    "inappropriate_count": 0
+  },
+  "regression_tests": {
+    "file": "tests/episode-state-card-accessibility.test.ts",
+    "total": 12,
+    "pass": 12,
+    "fail": 0
+  },
+  "decision": "PASS"
+}

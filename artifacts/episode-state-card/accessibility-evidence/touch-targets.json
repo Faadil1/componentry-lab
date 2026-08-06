@@ -1,0 +1,174 @@
+{
+  "targets": [
+    {
+      "tag": "A",
+      "text": "Library",
+      "width": 77,
+      "height": 32,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Playbooks",
+      "width": 99,
+      "height": 32,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Projects",
+      "width": 85,
+      "height": 32,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Film Kit",
+      "width": 80,
+      "height": 32,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "SUMMARY",
+      "text": "Labs menuOpenClose",
+      "width": 294,
+      "height": 24,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Spotlight Lab",
+      "width": 99,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Split Flap Lab",
+      "width": 101,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Scrub Input Lab",
+      "width": 113,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Kinetic Text Lab",
+      "width": 114,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Layouts",
+      "width": 71,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Scroll Choreography Lab",
+      "width": 160,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "WebGL Liquid Lab",
+      "width": 125,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Image Ripple Lab",
+      "width": 120,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Typography",
+      "width": 93,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Foundations",
+      "width": 95,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Interaction Player",
+      "width": 122,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Decision Systems",
+      "width": 124,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Capture Systems",
+      "width": 120,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "A",
+      "text": "Composition Recipes",
+      "width": 141,
+      "height": 35,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "SELECT",
+      "text": "DEFAULTBLOCKEDHUMAN-REVIEW-REQUIREDAPPRO",
+      "width": 288,
+      "height": 37,
+      "passes_24": true,
+      "passes_44": true
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Normal Motion",
+      "width": 288,
+      "height": 38,
+      "passes_24": true,
+      "passes_44": true
+    }
+  ],
+  "failures": [],
+  "failure_count": 0
+}

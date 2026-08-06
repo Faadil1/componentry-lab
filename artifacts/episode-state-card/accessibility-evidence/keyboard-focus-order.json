@@ -1,0 +1,145 @@
+{
+  "focus_order": [
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Library",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Playbooks",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Projects",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Film Kit",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Spotlight Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Split Flap Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Scrub Input Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Kinetic Text Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Layouts",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Scroll Choreography Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "WebGL Liquid Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Image Ripple Lab",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Typography",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Foundations",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Interaction Player",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Decision Systems",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Capture Systems",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "A",
+      "role": "",
+      "text": "Composition Recipes",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "SELECT",
+      "role": "",
+      "text": "DEFAULTBLOCKEDHUMAN-REVIEW-REQUIREDAPPROVEDPUBLISHEDUNAVAILA",
+      "tabindex": null,
+      "type": ""
+    },
+    {
+      "tag": "BUTTON",
+      "role": "",
+      "text": "Normal Motion",
+      "tabindex": null,
+      "type": ""
+    }
+  ],
+  "trap_detected": false
+}

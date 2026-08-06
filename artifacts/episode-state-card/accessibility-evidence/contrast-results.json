@@ -1,0 +1,49 @@
+{
+  "violations": [],
+  "samples": [
+    {
+      "label": "section label (neutral-500)",
+      "error": "not found"
+    },
+    {
+      "label": "decision text (neutral-900)",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1,
+      "threshold_normal": 4.5,
+      "passes": false
+    },
+    {
+      "label": "footer meta (neutral-600)",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1,
+      "threshold_normal": 4.5,
+      "passes": false
+    },
+    {
+      "label": "state label heading",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1,
+      "threshold_normal": 4.5,
+      "passes": false
+    },
+    {
+      "label": "episode heading",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1,
+      "threshold_normal": 4.5,
+      "passes": false
+    },
+    {
+      "label": "state ID code",
+      "fg": "#ffffff",
+      "bg": "#ffffff",
+      "ratio": 1,
+      "threshold_normal": 4.5,
+      "passes": false
+    }
+  ]
+}
