@@ -1,0 +1,130 @@
+{
+  "component_id": "episode-state-card",
+  "component_status": "EXPERIMENTAL",
+  "polish_commit": "dbc7c38",
+  "polish_commit_full": "dbc7c382cfb43af70a29d2a016819b72ca072645",
+  "deployment_verification_commit": "cee25a8",
+  "deployment_verification_commit_full": "cee25a85f37095237bc9d08e4dfe0f8c184782d3",
+  "public_route": "https://componentry-lab.vercel.app/episode-state-card",
+  "captured_at": "2026-08-06T08:10:25.905Z",
+  "browser": {
+    "name": "chromium",
+    "version": "playwright"
+  },
+  "runtime": {
+    "http_status": 200,
+    "console_errors": 0,
+    "page_errors": 0,
+    "hydration_errors": 0
+  },
+  "render_checks": {
+    "inline_technical_state_present": false,
+    "play_icon_present": false,
+    "arrow_right_present": true,
+    "canonical_source_present": true,
+    "state_id_present": true,
+    "default_structural_divider_count": 2
+  },
+  "screenshots": [
+    {
+      "variant": "default",
+      "file": "episode-state-card-default.png",
+      "sha256_new": "774c61749b1a290973c215c4efa625db702408b1a14629ce3216c42b07e0eb37",
+      "sha256_baseline": "342df02fa41f77bd50eef4aa6910707e346b7cc93fa9b7bf9bedc4cdea3b4673",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 825,
+      "bytes": 61777,
+      "visually_opened": true
+    },
+    {
+      "variant": "blocked",
+      "file": "episode-state-card-blocked.png",
+      "sha256_new": "74ad6e085b1f7bf8cbff2dd025cfaa09aa23c836e2a314eef16cfdf251d5e511",
+      "sha256_baseline": "22132303ac6a97657af5267d29b357d65c26c4687605a5d0b44e72558b1e055b",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 765,
+      "bytes": 55083,
+      "visually_opened": true
+    },
+    {
+      "variant": "human-review-required",
+      "file": "episode-state-card-human-review.png",
+      "sha256_new": "5d1b71626656c16875dd6beb1fb98f9979b989819782107de23994d42721d1b3",
+      "sha256_baseline": "79b54fd24953f7599c7ab0b70bcd2dcf5ff9a1966d9ec19a0a508fc34400fbc7",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 793,
+      "bytes": 59354,
+      "visually_opened": true
+    },
+    {
+      "variant": "approved",
+      "file": "episode-state-card-approved.png",
+      "sha256_new": "fb1e2f6431ff8fb05534e894a3e2d41abc028157c09603b8ee06a02701888858",
+      "sha256_baseline": "a21eb352327eb9ebd9a53cd609f1176c885c9603534eef1e71ac40331cf5c8a3",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 745,
+      "bytes": 48875,
+      "visually_opened": true
+    },
+    {
+      "variant": "published",
+      "file": "episode-state-card-published.png",
+      "sha256_new": "952556523ea74dc6efb27b136294472fbbbf8ed57d09ecafb259945a1cf19f73",
+      "sha256_baseline": "f234a56307cad2111e1a42cc951b5ce7d8859176b3156e7067e80759cd9405ce",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 781,
+      "bytes": 55236,
+      "visually_opened": true
+    },
+    {
+      "variant": "unavailable",
+      "file": "episode-state-card-unavailable.png",
+      "sha256_new": "2e28a654c7a7c0b97e02ad4f9333ffaf3c3bb8d770015e6808b2f970ade26005",
+      "sha256_baseline": "12f45ff0282b5ab94b5c3a9f2498d0362a10aecb1637840bdc804385ada01624",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 447,
+      "bytes": 33414,
+      "visually_opened": true
+    },
+    {
+      "variant": "mobile-320",
+      "file": "episode-state-card-mobile-320.png",
+      "sha256_new": "8874fccf36bcf0851c898e31ded3ae7ca61f556c9e26cb60c7c9ef6ee0b60575",
+      "sha256_baseline": "17527d66865235954ba878be9c051a8c30434e19a03fe61569d5294b358cd991",
+      "changed_from_baseline": true,
+      "width": 320,
+      "height": 869,
+      "bytes": 47355,
+      "visually_opened": true
+    },
+    {
+      "variant": "reduced-motion",
+      "file": "episode-state-card-reduced-motion.png",
+      "sha256_new": "5d1b71626656c16875dd6beb1fb98f9979b989819782107de23994d42721d1b3",
+      "sha256_baseline": "79b54fd24953f7599c7ab0b70bcd2dcf5ff9a1966d9ec19a0a508fc34400fbc7",
+      "changed_from_baseline": true,
+      "width": 1280,
+      "height": 793,
+      "bytes": 59354,
+      "visually_opened": true
+    }
+  ],
+  "mobile": {
+    "viewport_width": 320,
+    "scroll_width": 320,
+    "client_width": 320,
+    "horizontal_overflow": false
+  },
+  "reduced_motion": {
+    "browser_preference": "reduce",
+    "local_toggle": true,
+    "translation_disabled": true
+  },
+  "recommended_decision": "PASS_WITH_CHANGES"
+}

@@ -79,20 +79,41 @@ https://componentry-lab.vercel.app/episode-state-card
 - Upgraded Hero demo section with gradient background
 - Reduced uppercase density in secondary labels
 
-### Component Status
-- **Visual Review**: ✅ PASS (per previous review)
-- **Divider Consolidation**: ✅ COMPLETE (this session)
-- **Deployment**: ✅ VERIFIED (this session)
+### Evidence Artifacts
+
+### Final Visual Evidence Directory
+**Location**: `artifacts/episode-state-card/final-visual-evidence/`
+- **8 PNG screenshots** captured from deployed public route
+- **SHA-256 hashes** comparing new vs baseline versions (all changed ✓)
+- **Manifest**: `evidence.json` with render checks and metrics
+
+### Baseline Evidence (Intentionally Stale)
+**Location**: `artifacts/episode-state-card/visual-evidence/`
+- Previous visual evidence for comparison
+- Preserved as historical record
+- Not recommended for review—use final-visual-evidence instead
+
+## Component Status
+- **Visual Review**: ✅ PASS_WITH_CHANGES (per previous review)
+- **Polish Implementation**: ✅ COMPLETE (commit dbc7c38)
+- **Deployment Verification**: ✅ COMPLETE (commit cee25a8)
+- **Final Evidence Commitment**: ✅ COMPLETE (this session)
 - **Accessibility Review**: PENDING
 
-## Ready for Next Phase
-Component is **production-ready** and approved to advance to:
-- ✅ Accessibility review (WCAG 2.1 AA, keyboard navigation, screen readers)
-- ✅ Performance optimization if needed
-- ✅ Documentation generation
+## Next Authorized Phase
+
+**FINAL HUMAN VISUAL REVIEW**
+
+Component requires explicit human sign-off before:
+- Accessibility review
+- Production deployment
+- Documentation finalization
+
+All technical work complete. Awaiting human decision.
 
 ---
 
-**Verification Status**: COMPLETE
+**Final Evidence Status**: COMMITTED TO GIT
 **Verified By**: Claude Code
-**Timestamp**: 2026-08-06T08:10:25Z
+**Final Evidence Captured**: 2026-08-06T08:10:25Z
+**Documentation Updated**: 2026-08-06
