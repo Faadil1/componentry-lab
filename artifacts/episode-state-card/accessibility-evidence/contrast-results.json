@@ -1,7 +1,7 @@
 {
   "standard": "WCAG 2.2 AA",
   "measurement_method": "Canvas-based CSS color parsing (getContext(\"2d\").fillStyle + getImageData) with ancestor-chain background resolution; WCAG 2.1 relative luminance formula. Handles all CSS color formats including lab(), oklch(), rgb(), hsl().",
-  "generated_at": "2026-08-06T09:40:08.284Z",
+  "generated_at": "2026-08-06T09:58:11.471Z",
   "samples": [
     {
       "variant": "default",
@@ -1188,8 +1188,8 @@
     },
     {
       "variant": "unavailable",
-      "label": "p_Technical_details:_The_ca",
-      "text_sample": "Technical details: The canonical episode manifest could not ",
+      "label": "p_Technical_details:_MANIFE",
+      "text_sample": "Technical details: MANIFEST_FETCH_FAILED: upstream returned ",
       "foreground_hex": "#525252",
       "background_hex": "#f5f5f5",
       "font_size_px": 12,

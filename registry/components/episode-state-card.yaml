@@ -1,6 +1,6 @@
 name: Episode State Card
 description: Read-only workflow component for displaying canonical episode state
-status: ACCESSIBILITY_REVIEW
+status: API_STABILIZATION
 
 component:
   name: EpisodeStateCard
@@ -98,7 +98,7 @@ source:
 
 review_status:
   visual_review: PASS_WITH_CHANGES
-  accessibility_review: PASS_WITH_CHANGES
+  accessibility_review: PASS
   api_stabilized: false
   approved: false
   promoted: false
@@ -111,14 +111,14 @@ visual_review:
   overall_score: 3.8
 
 accessibility_review:
-  reviewed_at: 2026-08-06T10:30:00Z
+  reviewed_at: 2026-08-06T10:45:00Z
   standard: WCAG 2.2 AA
-  implementation_commit: 857a2e82766687d21c6c11830f790a8419f1083c
-  evidence_commit: 2e43e38
+  implementation_commit: ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff
+  evidence_commit: PENDING
   evidence: artifacts/episode-state-card/accessibility-evidence/evidence.json
   regression_tests: tests/episode-state-card-accessibility.test.ts
   report: docs/reviews/episode-state-card-accessibility-review.md
-  decision: PASS_WITH_CHANGES
+  decision: PASS
   axe_critical: 0
   axe_serious: 0
   axe_moderate: 0
@@ -129,10 +129,9 @@ accessibility_review:
   contrast_failures: 0
   regression_tests_pass: 17
   regression_tests_fail: 0
-  note: "Evidence gaps closed: contrast remeasured with canvas-based collector (98 samples, 0 failures); axe incomplete color-contrast rule resolved by measurement; unavailable variant duplication fixed."
 
 metadata:
   created_at: 2026-08-06T00:47:00Z
   created_by: claude-code
   version: 0.1.0-experimental
-  next_phase: ACCESSIBILITY_REVIEW
+  next_phase: API_STABILIZATION

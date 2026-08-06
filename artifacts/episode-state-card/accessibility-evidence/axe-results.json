@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06T09:35:44.939Z",
+  "generated_at": "2026-08-06T09:56:50.326Z",
   "url": "https://componentry-lab.vercel.app/episode-state-card",
   "tags": [
     "wcag2a",
@@ -12,7 +12,7 @@
     {
       "scope": "full_page",
       "variant": null,
-      "timestamp": "2026-08-06T09:35:19.293Z",
+      "timestamp": "2026-08-06T09:56:26.334Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -645,7 +645,7 @@
     {
       "scope": "default",
       "variant": "default",
-      "timestamp": "2026-08-06T09:35:23.103Z",
+      "timestamp": "2026-08-06T09:56:29.618Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -1278,7 +1278,7 @@
     {
       "scope": "blocked",
       "variant": "blocked",
-      "timestamp": "2026-08-06T09:35:26.392Z",
+      "timestamp": "2026-08-06T09:56:32.897Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -1911,7 +1911,7 @@
     {
       "scope": "human-review-required",
       "variant": "human-review-required",
-      "timestamp": "2026-08-06T09:35:29.530Z",
+      "timestamp": "2026-08-06T09:56:35.908Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -2544,7 +2544,7 @@
     {
       "scope": "approved",
       "variant": "approved",
-      "timestamp": "2026-08-06T09:35:32.792Z",
+      "timestamp": "2026-08-06T09:56:38.878Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -3177,7 +3177,7 @@
     {
       "scope": "published",
       "variant": "published",
-      "timestamp": "2026-08-06T09:35:35.967Z",
+      "timestamp": "2026-08-06T09:56:42.181Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -3810,7 +3810,7 @@
     {
       "scope": "unavailable",
       "variant": "unavailable",
-      "timestamp": "2026-08-06T09:35:39.405Z",
+      "timestamp": "2026-08-06T09:56:45.391Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -4443,7 +4443,7 @@
     {
       "scope": "mobile_320px",
       "variant": null,
-      "timestamp": "2026-08-06T09:35:42.230Z",
+      "timestamp": "2026-08-06T09:56:47.748Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],
@@ -5076,7 +5076,7 @@
     {
       "scope": "reduced_motion",
       "variant": null,
-      "timestamp": "2026-08-06T09:35:44.933Z",
+      "timestamp": "2026-08-06T09:56:50.318Z",
       "url": "https://componentry-lab.vercel.app/episode-state-card",
       "axe_version": "4.12.1",
       "violations": [],

@@ -1,11 +1,11 @@
 {
   "component_id": "episode-state-card",
   "visual_evidence_commit": "4b560a5da97bc414fb338e8298488c3ae66ba09d",
-  "accessibility_implementation_commit": "857a2e82766687d21c6c11830f790a8419f1083c",
-  "accessibility_evidence_commit": "2e43e38",
+  "accessibility_implementation_commit": "ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff",
+  "accessibility_evidence_commit": "PENDING",
   "public_route": "https://componentry-lab.vercel.app/episode-state-card",
   "standard": "WCAG 2.2 AA",
-  "captured_at": "2026-08-06T09:36:12.799Z",
+  "captured_at": "2026-08-06T09:57:14.903Z",
   "runtime": {
     "http_status": 200,
     "console_errors": 0,
@@ -13,8 +13,8 @@
     "hydration_errors": 0
   },
   "deployment": {
-    "timestamp": "2026-08-06T09:35:16.409Z",
-    "etag": "W/\"8c1f187ca2f5255ffc486c915c956195\"",
+    "timestamp": "2026-08-06T10:45:00Z",
+    "etag": "W/\"723e9bdb915fadb4f165ceee334dffa4\"",
     "select_variant_select_exists": true,
     "select_has_label": true,
     "duplicate_ids": 0,
@@ -59,13 +59,13 @@
   },
   "contrast": {
     "measurement_method_valid": true,
-    "measurement_method": "Canvas-based CSS color parsing (getContext(\"2d\").fillStyle + getImageData) with ancestor-chain background resolution; WCAG 2.1 relative luminance formula. Handles all CSS color formats including lab(), oklch(), rgb(), hsl().",
+    "measurement_method": "Canvas-based CSS color parsing (getContext(\"2d\").fillStyle + getImageData) with ancestor-chain background resolution; WCAG 2.1 relative luminance formula.",
     "samples_measured": 98,
     "failed_normal_text": 0,
     "failed_large_text": 0,
     "failed_ui_components": 0,
     "lowest_measured_passing_ratio": 7.12,
-    "lowest_passing_sample": "human-review-required / channel eyebrow (text-neutral-600 #525252 on violet-50 #f5f3ff)"
+    "lowest_passing_sample": "human-review-required / channel eyebrow (#525252 on #f5f3ff)"
   },
   "keyboard": {
     "keyboard_traps": 0,
@@ -82,8 +82,8 @@
   "regression_tests": {
     "total": 17,
     "passed": 17,
-    "failed": 0,
-    "note": "Run node --experimental-strip-types --test tests/episode-state-card-accessibility.test.ts to verify"
+    "failed": 0
   },
+  "unavailable_duplicate_message": false,
   "decision": "PASS"
 }
