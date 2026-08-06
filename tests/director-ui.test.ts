@@ -154,3 +154,23 @@ test("the page does not mutate canonical Project Brain state", () => {
   const postString = JSON.stringify(projectPresets)
   assert.equal(initialString, postString)
 })
+
+test("primary decision projection contains exactly one authorized action per scenario", () => {
+  const projections = getAllDirectorProjections()
+  for (const [key, proj] of Object.entries(projections)) {
+    assert.ok(proj.result.nextAction, `Action missing for ${key}`)
+    assert.ok(proj.result.heroDemoMoment, `Hero demo missing for ${key}`)
+    assert.ok(proj.result.objective, `Objective missing for ${key}`)
+    // Confirm authority level defaults stay restrictive
+    assert.ok(["suggest", "prepare", "prohibit"].includes(proj.result.nextAction.authorityRequirement))
+  }
+})
+
+test("empty learning state and skills produce safe default representations", () => {
+  const projections = getAllDirectorProjections()
+  for (const proj of Object.values(projections)) {
+    assert.ok(Array.isArray(proj.result.learningProposals))
+    assert.ok(Array.isArray(proj.result.selectedSkills))
+  }
+})
+
