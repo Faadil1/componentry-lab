@@ -1,7 +1,7 @@
 # Episode State Card — Public API Reference
 
 **Status:** Stable  
-**Version:** `1.0.0-stable`  
+**Version:** `1.0.0`  
 **Component:** `@/components/workflow/episode-state-card`
 
 ## Contract
@@ -25,7 +25,7 @@ type EpisodeStateCardProps =
 - `variant` — discriminant
 - `className?` — root styling escape hatch
 
-`reduceMotion` is not public. Motion always respects the user/system `prefers-reduced-motion` preference through Framer Motion `useReducedMotion()`.
+`reduceMotion` has been removed from the public API. Motion always respects the user/system `prefers-reduced-motion` preference through Framer Motion `useReducedMotion()`.
 
 ## HumanReviewStatus
 
