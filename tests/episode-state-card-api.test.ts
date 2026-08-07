@@ -238,7 +238,7 @@ describe("Episode State Card — API Stabilization", () => {
     assert.strictEqual(unavailableDoesNotHaveReviewStatus, true)
   })
 
-  test("20. Public API version is 1.0.0 and registry reflects APPROVAL_REVIEW state", () => {
+  test("20. Public API version is 1.0.0 and registry reflects APPROVED state", () => {
     const registryPath = path.join(
       __dirname,
       "../registry/components/episode-state-card.yaml"
@@ -248,10 +248,12 @@ describe("Episode State Card — API Stabilization", () => {
     const content = fs.readFileSync(registryPath, "utf-8")
     // Version: 1.0.0 (without -stable)
     assert.strictEqual(content.includes("version: 1.0.0"), true)
-    // Final state: APPROVAL_REVIEW after evidence correction
-    assert.strictEqual(content.includes("status: APPROVAL_REVIEW"), true)
-    // Stabilization complete
+    // Final approved state
+    assert.strictEqual(content.includes("status: APPROVED"), true)
+    // Stabilization complete and approved
     assert.strictEqual(content.includes("api_stabilized: true"), true)
+    assert.strictEqual(content.includes("approved: true"), true)
+    assert.strictEqual(content.includes("promoted: false"), true)
     // Correct implementation commit
     assert.strictEqual(content.includes("41026169529285101a2fcccf7ce63b281142d044"), true)
   })
