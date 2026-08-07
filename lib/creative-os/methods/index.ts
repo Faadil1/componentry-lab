@@ -40,27 +40,32 @@ export {
   runSomaticResponseDesign
 } from "./somatic-response-design"
 
-// Stub methods — contracts only, implementations deferred
+// Methods 3–6 implementations
 export {
   RELATIONSHIP_PRESERVING_ABSTRACTION_ID,
   relationshipPreservingAbstractionDefinition,
+  relationshipPreservingAbstractionGates,
   runRelationshipPreservingAbstraction
 } from "./relationship-preserving-abstraction"
 
 export {
   COGNITIVE_METAPHOR_ILLUSTRATOR_ID,
   cognitiveMetaphorIllustratorDefinition,
+  cognitiveMetaphorIllustratorGates,
   runCognitiveMetaphorIllustrator
 } from "./cognitive-metaphor-illustrator"
 
 export {
   PHYSICAL_SITUATION_STORYBOARDER_ID,
   physicalSituationStoryboarderDefinition,
+  physicalSituationStoryboarderGates,
   runPhysicalSituationStoryboarder
 } from "./physical-situation-storyboarder"
 
 export {
   LIBRARY_FIRST_COMPOSITION_ROUTER_ID,
   libraryFirstCompositionRouterDefinition,
+  libraryFirstCompositionRouterGates,
   runLibraryFirstCompositionRouter
 } from "./library-first-composition-router"
+
