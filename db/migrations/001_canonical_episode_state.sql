@@ -55,15 +55,15 @@ CREATE TABLE IF NOT EXISTS episode_events (
   payload JSONB,
 
   -- Idempotency key (for deduplication on retries)
+  -- UNIQUE constraint automatically creates index
   idempotency_key TEXT UNIQUE,
 
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Indexes
+-- Indexes for common queries
 CREATE INDEX IF NOT EXISTS idx_episode_events_episode_time ON episode_events(episode_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_episode_events_type ON episode_events(event_type);
-CREATE INDEX IF NOT EXISTS idx_episode_events_idempotency ON episode_events(idempotency_key);
 
 -- ─────────────────────────────────────────────────────────────
 -- End of migration

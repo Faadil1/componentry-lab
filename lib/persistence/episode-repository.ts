@@ -1,95 +1,119 @@
 // ─────────────────────────────────────────────────────────────
-// Episode Repository
+// Episode Repository (Server-Only)
 // ─────────────────────────────────────────────────────────────
-// Data access boundary for canonical episode state.
-// Handles SQL mapping, type conversion, optimistic locking.
+// Public server-side interface.
+// Live PostgreSQL implementation for Neon or self-hosted.
+// Re-exports core types and mock for tests.
 // ─────────────────────────────────────────────────────────────
+
+import "server-only"
+
+// Core interface and mock are testable without server-only
+export { createMockRepository, type EpisodeRepository } from "./episode-repository-core"
 
 import type {
-  CanonicalEpisode,
   CanonicalEpisodeEvent,
-  OptimisticLockResult,
-  CreateEpisodeInput,
-  UpdateEpisodeStateInput,
   CreateEpisodeEventInput,
-  EpisodeRow,
-  EpisodeEventRow,
+  UpdateEpisodeStateInput,
 } from "./canonical-types"
+import type { EpisodeRepository } from "./episode-repository-core"
 
-export interface EpisodeRepository {
-  getEpisodeById(episodeId: string): Promise<CanonicalEpisode | null>
-  listEpisodes(): Promise<CanonicalEpisode[]>
-  createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode>
-  updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult>
-  createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent>
-  getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]>
+/**
+ * Normalize timestamps to ISO strings.
+ * Handles both Date objects and string values from postgres driver.
+ *
+ * postgres library returns unknown[] from queries, requiring type casting.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function normalizeTimestamp(value: any): string {
+  if (value instanceof Date) {
+    return value.toISOString()
+  }
+  if (typeof value === "string") {
+    return value
+  }
+  return new Date().toISOString()
 }
 
 /**
- * Row-to-domain conversion.
- * Maps snake_case database rows to camelCase domain types.
+ * Row-to-domain conversion for episodes.
+ * Handles type conversions and normalizations.
+ *
+ * postgres library returns unknown[] from queries, requiring type casting.
  */
-function rowToEpisode(row: EpisodeRow): CanonicalEpisode {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToEpisode(row: any): any {
   return {
     episodeId: row.episode_id,
     episodeNumber: row.episode_number ?? undefined,
     channelName: row.channel_name,
     title: row.title,
     workflowState: row.workflow_state,
-    reviewStatus: row.review_status as "not-required" | "pending" | "in-progress" | "completed",
-    blockers: row.blockers || [],
-    latestDecision: row.latest_decision || undefined,
-    youtubeVideoId: row.youtube_video_id || undefined,
-    publishedAt: row.published_at || undefined,
+    reviewStatus: row.review_status,
+    blockers: Array.isArray(row.blockers) ? row.blockers : [],
+    latestDecision: row.latest_decision ?? undefined,
+    youtubeVideoId: row.youtube_video_id ?? undefined,
+    publishedAt: row.published_at ? normalizeTimestamp(row.published_at) : undefined,
     schemaVersion: row.schema_version,
     stateVersion: row.state_version,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: normalizeTimestamp(row.created_at),
+    updatedAt: normalizeTimestamp(row.updated_at),
   }
 }
 
-function rowToEpisodeEvent(row: EpisodeEventRow): CanonicalEpisodeEvent {
+/**
+ * Row-to-domain conversion for events.
+ * Handles type conversions and normalizations.
+ *
+ * postgres library returns unknown[] from queries, requiring type casting.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rowToEpisodeEvent(row: any): CanonicalEpisodeEvent {
   return {
     eventId: row.event_id,
     episodeId: row.episode_id,
     eventType: row.event_type,
     actor: row.actor,
-    fromState: row.from_state || undefined,
-    toState: row.to_state || undefined,
-    payload: row.payload || undefined,
-    idempotencyKey: row.idempotency_key || undefined,
-    createdAt: row.created_at,
+    fromState: row.from_state ?? undefined,
+    toState: row.to_state ?? undefined,
+    payload: row.payload ?? undefined,
+    idempotencyKey: row.idempotency_key ?? undefined,
+    createdAt: normalizeTimestamp(row.created_at),
   }
 }
 
-type PostgresClient = ((strings: TemplateStringsArray, ...values: unknown[]) => Promise<unknown[]>) & {
-  unsafe: (query: string, values: unknown[]) => Promise<Array<{ state_version: number }>>
-}
-
 /**
- * Create a repository instance.
- * Requires a postgres client connection.
+ * Create a live repository backed by PostgreSQL (Neon or self-hosted).
+ * Only available on server-side (import "server-only" enforced above).
+ *
+ * @param sql postgres client (from 'postgres' npm package)
+ * @returns EpisodeRepository implementation
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createEpisodeRepository(sql: any): EpisodeRepository {
   return {
-    async getEpisodeById(episodeId: string): Promise<CanonicalEpisode | null> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async getEpisodeById(episodeId: string): Promise<any> {
       const rows = await sql`
         SELECT * FROM episodes WHERE episode_id = ${episodeId}
       `
       if (rows.length === 0) return null
-      return rowToEpisode(rows[0] as EpisodeRow)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return rowToEpisode(rows[0] as any)
     },
 
-    async listEpisodes(): Promise<CanonicalEpisode[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async listEpisodes(): Promise<any[]> {
       const rows = await sql`
         SELECT * FROM episodes
         ORDER BY episode_number DESC NULLS LAST, episode_id
       `
-      return rows.map((row: EpisodeRow) => rowToEpisode(row))
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return rows.map((row: any) => rowToEpisode(row))
     },
 
-    async createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async createEpisode(input: any): Promise<any> {
       const now = new Date().toISOString()
       const rows = await sql`
         INSERT INTO episodes (
@@ -118,12 +142,13 @@ export function createEpisodeRepository(sql: any): EpisodeRepository {
         )
         RETURNING *
       `
-      return rowToEpisode(rows[0] as EpisodeRow)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return rowToEpisode(rows[0] as any)
     },
 
-    async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<any> {
       const now = new Date().toISOString()
-
       const updates: string[] = []
       const values: unknown[] = []
       let paramIndex = 1
@@ -142,13 +167,15 @@ export function createEpisodeRepository(sql: any): EpisodeRepository {
 
       if (input.blockers !== undefined) {
         updates.push(`blockers = $${paramIndex}`)
-        values.push(JSON.stringify(input.blockers))
+        // Pass as object, postgres driver handles JSON encoding
+        values.push(input.blockers)
         paramIndex++
       }
 
       if (input.latestDecision !== undefined) {
         updates.push(`latest_decision = $${paramIndex}`)
-        values.push(input.latestDecision ? JSON.stringify(input.latestDecision) : null)
+        // Pass as object or null, postgres driver handles JSON encoding
+        values.push(input.latestDecision)
         paramIndex++
       }
 
@@ -156,7 +183,6 @@ export function createEpisodeRepository(sql: any): EpisodeRepository {
       values.push(now)
       paramIndex++
 
-      // Always increment state_version and add WHERE condition
       const updateSQL = `
         UPDATE episodes
         SET
@@ -171,90 +197,98 @@ export function createEpisodeRepository(sql: any): EpisodeRepository {
       values.push(input.episodeId)
       values.push(input.expectedStateVersion)
 
-      try {
-        // Use raw query with positional parameters
-        const result = await sql.unsafe(updateSQL, values)
+      const result = await sql.unsafe(updateSQL, values)
 
-        if (result.length === 0) {
-          // Query executed but no rows updated - conflict
-          // Fetch current version for debugging
-          const currentRows = await sql`
-            SELECT state_version FROM episodes WHERE episode_id = ${input.episodeId}
-          `
-          const actualVersion = currentRows.length > 0 ? currentRows[0].state_version : -1
+      if (result.length === 0) {
+        // Zero rows updated: either episode doesn't exist or version mismatch
+        // Check if episode exists
+        const checkRows = await sql`
+          SELECT state_version FROM episodes WHERE episode_id = ${input.episodeId}
+        `
 
+        if (checkRows.length === 0) {
+          // Episode does not exist
           return {
             success: false,
             expectedVersion: input.expectedStateVersion,
-            actualVersion,
-            reason: "conflict",
-          }
-        }
-
-        // Success - state_version was incremented
-        const newVersion = result[0].state_version
-        return {
-          success: true,
-          expectedVersion: input.expectedStateVersion,
-          actualVersion: newVersion,
-        }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error)
-        if (errorMessage.includes("no rows returned")) {
-          return {
-            success: false,
-            expectedVersion: input.expectedStateVersion,
-            actualVersion: -1,
+            actualVersion: 0,
             reason: "not_found",
           }
         }
-        throw error
+
+        // Episode exists but version mismatch (conflict)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const actualVersion = (checkRows[0] as any).state_version
+        return {
+          success: false,
+          expectedVersion: input.expectedStateVersion,
+          actualVersion,
+          reason: "conflict",
+        }
+      }
+
+      // Success: state_version was incremented
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const newVersion = (result[0] as any).state_version
+      return {
+        success: true,
+        expectedVersion: input.expectedStateVersion,
+        actualVersion: newVersion,
       }
     },
 
     async createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent> {
       const now = new Date().toISOString()
 
-      try {
-        const rows = await sql`
-          INSERT INTO episode_events (
-            episode_id,
-            event_type,
-            actor,
-            from_state,
-            to_state,
-            payload,
-            idempotency_key,
-            created_at
-          )
-          VALUES (
-            ${input.episodeId},
-            ${input.eventType},
-            ${input.actor},
-            ${input.fromState || null},
-            ${input.toState || null},
-            ${input.payload ? JSON.stringify(input.payload) : null},
-            ${input.idempotencyKey || null},
-            ${now}
-          )
-          RETURNING *
-        `
-        return rowToEpisodeEvent(rows[0] as EpisodeEventRow)
-      } catch (error) {
-        // Handle unique constraint violation on idempotency_key
-        const errorMessage = error instanceof Error ? error.message : String(error)
-        if (errorMessage.includes("idempotency_key")) {
-          // Return the existing event
-          const existing = await sql`
-            SELECT * FROM episode_events
-            WHERE idempotency_key = ${input.idempotencyKey}
-          `
-          if (existing.length > 0) {
-            return rowToEpisodeEvent(existing[0] as EpisodeEventRow)
-          }
-        }
-        throw error
+      // INSERT ... ON CONFLICT for idempotency handling
+      // If idempotency_key already exists, return the existing event
+      const rows = await sql`
+        INSERT INTO episode_events (
+          episode_id,
+          event_type,
+          actor,
+          from_state,
+          to_state,
+          payload,
+          idempotency_key,
+          created_at
+        )
+        VALUES (
+          ${input.episodeId},
+          ${input.eventType},
+          ${input.actor},
+          ${input.fromState || null},
+          ${input.toState || null},
+          ${input.payload || null},
+          ${input.idempotencyKey || null},
+          ${now}
+        )
+        ON CONFLICT (idempotency_key) DO NOTHING
+        RETURNING *
+      `
+
+      // If insert was successful, return the new event
+      if (rows.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return rowToEpisodeEvent(rows[0] as any)
       }
+
+      // If idempotencyKey was provided and insert did nothing, fetch existing event
+      if (input.idempotencyKey) {
+        const existing = await sql`
+          SELECT * FROM episode_events
+          WHERE idempotency_key = ${input.idempotencyKey}
+        `
+        if (existing.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return rowToEpisodeEvent(existing[0] as any)
+        }
+      }
+
+      // If no key and still no rows, this is an unexpected state
+      throw new Error(
+        `Failed to create episode event: insert returned no rows and no idempotency key`
+      )
     },
 
     async getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]> {
@@ -263,95 +297,8 @@ export function createEpisodeRepository(sql: any): EpisodeRepository {
         WHERE episode_id = ${episodeId}
         ORDER BY created_at DESC
       `
-      return rows.map((row: EpisodeEventRow) => rowToEpisodeEvent(row))
-    },
-  }
-}
-
-/**
- * Create a no-op repository for development without database.
- * Useful for local testing when DATABASE_URL is not available.
- */
-export function createMockRepository(): EpisodeRepository {
-  const episodes = new Map<string, CanonicalEpisode>()
-  const events: CanonicalEpisodeEvent[] = []
-
-  return {
-    async getEpisodeById(episodeId: string): Promise<CanonicalEpisode | null> {
-      return episodes.get(episodeId) || null
-    },
-
-    async listEpisodes(): Promise<CanonicalEpisode[]> {
-      return Array.from(episodes.values())
-    },
-
-    async createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode> {
-      const now = new Date().toISOString()
-      const episode: CanonicalEpisode = {
-        ...input,
-        blockers: [],
-        schemaVersion: 1,
-        stateVersion: 1,
-        createdAt: now,
-        updatedAt: now,
-      }
-      episodes.set(input.episodeId, episode)
-      return episode
-    },
-
-    async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {
-      const episode = episodes.get(input.episodeId)
-      if (!episode) {
-        return {
-          success: false,
-          expectedVersion: input.expectedStateVersion,
-          actualVersion: -1,
-          reason: "not_found",
-        }
-      }
-
-      if (episode.stateVersion !== input.expectedStateVersion) {
-        return {
-          success: false,
-          expectedVersion: input.expectedStateVersion,
-          actualVersion: episode.stateVersion,
-          reason: "conflict",
-        }
-      }
-
-      const now = new Date().toISOString()
-      const updated: CanonicalEpisode = {
-        ...episode,
-        workflowState: input.workflowState ?? episode.workflowState,
-        reviewStatus: (input.reviewStatus ?? episode.reviewStatus) as "not-required" | "pending" | "in-progress" | "completed",
-        blockers: input.blockers ?? episode.blockers,
-        latestDecision: input.latestDecision !== undefined ? input.latestDecision || undefined : episode.latestDecision,
-        stateVersion: episode.stateVersion + 1,
-        updatedAt: now,
-      }
-      episodes.set(input.episodeId, updated)
-
-      return {
-        success: true,
-        expectedVersion: input.expectedStateVersion,
-        actualVersion: updated.stateVersion,
-      }
-    },
-
-    async createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent> {
-      const event: CanonicalEpisodeEvent = {
-        eventId: Math.random().toString(36).substring(7),
-        ...input,
-        createdAt: new Date().toISOString(),
-      }
-      events.push(event)
-      return event
-    },
-
-    async getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]> {
-      return events.filter((e) => e.episodeId === episodeId).sort((a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return rows.map((row: any) => rowToEpisodeEvent(row))
     },
   }
 }

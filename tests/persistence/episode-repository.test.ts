@@ -3,7 +3,7 @@ import * as assert from "node:assert"
 import {
   createMockRepository,
   type EpisodeRepository,
-} from "../../lib/persistence/episode-repository.ts"
+} from "../../lib/persistence/episode-repository-core.ts"
 import type { CanonicalBlocker } from "../../lib/persistence/canonical-types.ts"
 
 describe("Episode Repository", () => {
@@ -176,8 +176,9 @@ describe("Episode Repository", () => {
         workflowState: "TOPIC",
       })
 
-      assert.strictEqual(result.success, false)
-      assert.strictEqual(result.reason, "not_found")
+      assert.strictEqual(result.success, false, "update should fail")
+      assert.strictEqual(result.reason, "not_found", "should be not_found")
+      assert.strictEqual(result.actualVersion, 0, "unknown episode has version 0")
     })
 
     test("4. updates multiple fields", async () => {
@@ -250,7 +251,7 @@ describe("Episode Repository", () => {
       assert.ok(event.createdAt)
     })
 
-    test("2. idempotency key deduplicates events", async () => {
+    test("2. idempotency key deduplicates events (returns same event)", async () => {
       const repo8 = createMockRepository()
       await repo8.createEpisode({
         episodeId: "idem-1",
@@ -278,10 +279,13 @@ describe("Episode Repository", () => {
         idempotencyKey: key, // Same key
       })
 
-      // Mock doesn't deduplicate; real DB would via unique constraint
-      // This test documents the intended behavior
-      assert.ok(event1.eventId)
-      assert.ok(event2.eventId)
+      // Should return the same event
+      assert.strictEqual(event1.eventId, event2.eventId, "same key should return same event ID")
+      assert.strictEqual(event1.idempotencyKey, event2.idempotencyKey)
+
+      // Verify only one event was actually created
+      const allEvents = await repo8.getEpisodeEvents("idem-1")
+      assert.strictEqual(allEvents.length, 1, "should only have one event despite two calls")
     })
   })
 
