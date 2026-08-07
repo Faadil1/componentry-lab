@@ -342,6 +342,54 @@ export function adaptDirectorResult(input: DirectorInput): DirectorResult {
   }
 }
 
+export function adaptDirectorResultWithAdvisoryEvidence(
+  input: DirectorInput,
+  advisoryEvidence: DirectorEvidenceReference[]
+): DirectorResult {
+  const mergedInput = {
+    ...input,
+    evidence: [...input.evidence, ...advisoryEvidence]
+  }
+
+  const baseResult = adaptDirectorResult(mergedInput)
+
+  if (advisoryEvidence.length > 0) {
+    // Check for failure/contradiction
+    const failEvidence = advisoryEvidence.find(e => e.status === "fail")
+    if (failEvidence) {
+      const newBlocker: CanonicalBlocker = {
+        blockerId: `advisory-fail-${failEvidence.id}`,
+        category: "advisory-contradiction",
+        description: `Advisory evidence failed: ${failEvidence.label}`,
+        severity: "warning",
+        status: "open",
+        source: "AdvisoryEvidence",
+        blockingScope: "project",
+        resolutionCondition: `Resolve contradiction in ${failEvidence.label}`,
+        humanActionRequired: true
+      }
+      baseResult.blockers.push(newBlocker)
+      baseResult.nextAction.blockers.push(newBlocker)
+      baseResult.nextAction.actionType = "review-required"
+      baseResult.nextAction.title = `Resolve contradiction: ${failEvidence.label}`
+      baseResult.nextAction.rationale = `${baseResult.nextAction.rationale} (Contradicts assumption: ${failEvidence.label} failed)`
+    } else {
+      const passEvidences = advisoryEvidence.filter(e => e.status === "pass")
+      const partialEvidences = advisoryEvidence.filter(e => e.status === "partial")
+
+      if (passEvidences.length > 0) {
+        const passLabels = passEvidences.map(e => e.label).join(", ")
+        baseResult.nextAction.rationale = `${baseResult.nextAction.rationale} (Confirmed by validated advisory evidence: ${passLabels})`
+      } else if (partialEvidences.length > 0) {
+        const partialLabels = partialEvidences.map(e => e.label).join(", ")
+        baseResult.nextAction.rationale = `${baseResult.nextAction.rationale} (Acknowledge uncertainty: guided by partial advisory evidence: ${partialLabels})`
+      }
+    }
+  }
+
+  return baseResult
+}
+
 
 
 

@@ -6,3 +6,5 @@ export * from "./activation"
 export * from "./evaluation"
 export * from "./router"
 export * from "./methods"
+export * from "./integration"
+
