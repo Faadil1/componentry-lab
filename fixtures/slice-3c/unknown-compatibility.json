@@ -1,0 +1,9 @@
+{
+  "resourceId": "res_remocn",
+  "compatibilityStatus": "UNKNOWN",
+  "executionStatus": "DISCOVERY_REQUIRED",
+  "missingEvidence": [
+    "Provider compatibility evidence status is UNKNOWN"
+  ],
+  "executionMode": "NOT_EXECUTED"
+}

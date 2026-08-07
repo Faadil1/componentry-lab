@@ -1,0 +1,9 @@
+{
+  "resourceId": "res_gbro_collage_b_roll",
+  "currentAuthority": "EXPLICIT_EXTERNAL",
+  "requiredAuthority": "EXPLICIT_EXTERNAL",
+  "requiredHumanApproval": true,
+  "humanApprovalState": "REQUIRED",
+  "executionStatus": "HUMAN_APPROVAL_REQUIRED",
+  "executionMode": "NOT_EXECUTED"
+}

@@ -1,0 +1,37 @@
+{
+  "resourceId": "res_remocn",
+  "capabilityId": "remocn-render",
+  "decomposedCapabilities": [
+    "MOTION_COMPOSITION",
+    "UI_CAPTURE"
+  ],
+  "requestedArtifact": "web-component-animation",
+  "compatibilityStatus": "UNKNOWN",
+  "compatibilityEvidence": null,
+  "lifecycleState": "TEST_CANDIDATE",
+  "currentAuthority": "LOCAL_REVERSIBLE",
+  "requiredAuthority": "LOCAL_REVERSIBLE",
+  "requiredHumanApproval": false,
+  "humanApprovalState": "NOT_REQUIRED",
+  "costStatus": "UNKNOWN",
+  "estimatedCost": null,
+  "privacyStatus": "UNKNOWN",
+  "licenseStatus": "GPL-3.0",
+  "requiredInputs": [
+    "subjectDescription",
+    "subjectContext"
+  ],
+  "expectedOutputs": [
+    "externalPlanReceipt",
+    "advisoryEvidence"
+  ],
+  "executionMode": "NOT_EXECUTED",
+  "executionStatus": "DISCOVERY_REQUIRED",
+  "blockers": [],
+  "missingEvidence": [
+    "Cost evaluation evidence missing",
+    "Privacy retention policy missing",
+    "Provider compatibility evidence status is UNKNOWN"
+  ],
+  "planFingerprint": "9a8b7c6d5e4f3a2b"
+}

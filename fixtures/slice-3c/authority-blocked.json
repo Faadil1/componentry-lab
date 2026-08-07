@@ -1,0 +1,10 @@
+{
+  "resourceId": "res_remocn",
+  "currentAuthority": "SUGGEST",
+  "requiredAuthority": "LOCAL_REVERSIBLE",
+  "executionStatus": "BLOCKED",
+  "integrationStatus": "INTEGRATION_BLOCKED",
+  "blockers": [
+    "Insufficient authority ceiling: current (SUGGEST) < required (LOCAL_REVERSIBLE)"
+  ]
+}
