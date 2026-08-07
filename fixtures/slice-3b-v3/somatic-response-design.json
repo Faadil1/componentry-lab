@@ -1,0 +1,1592 @@
+{
+  "A": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "premium perfume landing page",
+      "subjectContext": "landing page",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "luxurious"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"luxurious\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nViewing Speed: deliberate, slow (unhurried navigation)\nFocal Duration: extended (1.2s to 2.5s per hero cluster)\nPosture/Approach: slight backward lean (relaxation/absorption)\nMicro-reaction: softening of facial muscles, micro-smile of satisfaction\nTension: low"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Ultra-low density layout with overlapping organic scent imagery\n  Supports: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\n  Fit: High-fit: Perfume brands rely heavily on abstract sensual/spatial luxury cues.\n  Stereotype Risk: [MEDIUM] Commonly used in high-fashion portals, but functionally correct here for olfactory luxury.\n\n- Option: Ultra-low density layout with overlapping organic scent imagery\n  Supports: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\n  Fit: High-fit: Perfume brands rely heavily on abstract sensual/spatial luxury cues.\n  Stereotype Risk: [MEDIUM] Commonly used in high-fashion portals, but functionally correct here for olfactory luxury."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Ultra-low density layout with overlapping organic scent imagery\nBecause: Selected \"Ultra-low density layout with overlapping organic scent imagery\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "luxurious",
+        "observableReaction": "gradual deepening of breath, micro-pause at boundaries, shoulder lowering",
+        "observableViewerBehavior": "lingering gaze, slower swipe speed, tactile-like hovering over elements",
+        "eyePath": "undulating, serpentine path following subtle visual anchors; avoids hard grid lines",
+        "viewingSpeed": "deliberate, slow (unhurried navigation)",
+        "focalDuration": "extended (1.2s to 2.5s per hero cluster)",
+        "postureApproachBehavior": "slight backward lean (relaxation/absorption)",
+        "microReaction": "softening of facial muscles, micro-smile of satisfaction",
+        "tension": "low",
+        "perceptualPrinciples": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation.",
+        "formalOptions": "- Option: Ultra-low density layout with overlapping organic scent imagery\n  Supports: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\n  Fit: High-fit: Perfume brands rely heavily on abstract sensual/spatial luxury cues.\n  Stereotype Risk: [MEDIUM] Commonly used in high-fashion portals, but functionally correct here for olfactory luxury.\n\n- Option: Ultra-low density layout with overlapping organic scent imagery\n  Supports: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\n  Fit: High-fit: Perfume brands rely heavily on abstract sensual/spatial luxury cues.\n  Stereotype Risk: [MEDIUM] Commonly used in high-fashion portals, but functionally correct here for olfactory luxury.",
+        "selectedDirectionChosen": "Ultra-low density layout with overlapping organic scent imagery",
+        "selectedDirectionRationale": "Selected \"Ultra-low density layout with overlapping organic scent imagery\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "MEDIUM",
+        "stereotypeRiskReason": "Commonly used in high-fashion portals, but functionally correct here for olfactory luxury.",
+        "compositionConsequence": "Apply compositional expression: \"Ultra-low density layout with overlapping organic scent imagery\" to satisfy \"Reduced competing focal events\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "expansive padding (35%-50%)",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "high-contrast display serif",
+        "colorTemperatureConsequence": "warm alabaster, linen, gold accents",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"premium perfume landing page\"\nSomatic Descriptor: luxurious\nPhysiological Goal: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nPerceptual Rule: Reduced competing focal events\nChosen Direction: Ultra-low density layout with overlapping organic scent imagery\nTraceability Reason: Selected \"Ultra-low density layout with overlapping organic scent imagery\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\nRisk Profile: MEDIUM (Commonly used in high-fashion portals, but functionally correct here for olfactory luxury.)",
+        "inputFingerprint": "SRD:descriptor=luxurious:subject=premium perfume landing page:context=landing page",
+        "outputFingerprint": "SRD:tension=low:whitespace=medium-high:color=warm-linen:option=Ultra-low density layout with "
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\n",
+      "[Perceptual Principles Derived]: - Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: u",
+      "[Formal Implementation Options Considered]: - Option: Ultra-low density layout with overlapping organic scent imagery\n  Supports: Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.\n  Fit: High-fit: Per",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Ultra-low density layout with overlapping organic scent imagery\nBecause: Selected \"Ultra-low density layout with overlapping organic scent imagery\" because it directly implements th",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: linge"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "B2B SaaS analytics dashboard",
+      "subjectContext": "dashboard",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "bold"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"bold\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: bold\nBody Reaction: micro-startle response, sharp inhale, pupil dilation\nViewer Behavior: direct visual confrontation, rapid scan of center weight, aggressive scrolling\nEye Path: highly linear, central targeting; moves directly from primary weight to secondary details\nViewing Speed: high speed (rapid consumption)\nFocal Duration: short, intense (0.4s to 0.8s per hero cluster)\nPosture/Approach: forward lean (engagement/confrontation)\nMicro-reaction: jaw tightening, brief eyebrow raise\nTension: high"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priority.\n- Target: forward lean / engagement\n  Principle: Unresolved visual question\n  Reasoning: Compacting the space between visual triggers and payoffs induces immediate investigative behavior."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operational users to critical decision paths immediately.\n  Stereotype Risk: [LOW] Avoids generic cluttered dashboard systems by creating a singular operational focal center."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Single anomaly alert highlight against deep slate backdrop\nBecause: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: direct visual confrontation, rapid scan of center weight, aggressive scrolling? Ask: \"What did your eyes track first?\" to verify: \"highly linear, central targeting; moves directly from primary weight to secondary details\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "bold",
+        "observableReaction": "micro-startle response, sharp inhale, pupil dilation",
+        "observableViewerBehavior": "direct visual confrontation, rapid scan of center weight, aggressive scrolling",
+        "eyePath": "highly linear, central targeting; moves directly from primary weight to secondary details",
+        "viewingSpeed": "high speed (rapid consumption)",
+        "focalDuration": "short, intense (0.4s to 0.8s per hero cluster)",
+        "postureApproachBehavior": "forward lean (engagement/confrontation)",
+        "microReaction": "jaw tightening, brief eyebrow raise",
+        "tension": "high",
+        "perceptualPrinciples": "- Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priority.\n- Target: forward lean / engagement\n  Principle: Unresolved visual question\n  Reasoning: Compacting the space between visual triggers and payoffs induces immediate investigative behavior.",
+        "formalOptions": "- Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operational users to critical decision paths immediately.\n  Stereotype Risk: [LOW] Avoids generic cluttered dashboard systems by creating a singular operational focal center.",
+        "selectedDirectionChosen": "Single anomaly alert highlight against deep slate backdrop",
+        "selectedDirectionRationale": "Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Avoids generic cluttered dashboard systems by creating a singular operational focal center.",
+        "compositionConsequence": "Apply compositional expression: \"Single anomaly alert highlight against deep slate backdrop\" to satisfy \"High structural hierarchy contrast\".",
+        "densityConsequence": "high focal density",
+        "whitespaceConsequence": "compressed borders",
+        "scaleConsequence": "oversized display headers",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "obsidian and dark slate with emerald accent",
+        "motionTempoConsequence": "instantaneous snap (150ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: direct visual confrontation, rapid scan of center weight, aggressive scrolling? Ask: \"What did your eyes track first?\" to verify: \"highly linear, central targeting; moves directly from primary weight to secondary details\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"B2B SaaS analytics dashboard\"\nSomatic Descriptor: bold\nPhysiological Goal: micro-startle response, sharp inhale, pupil dilation\nEye Path: highly linear, central targeting; moves directly from primary weight to secondary details\nPerceptual Rule: High structural hierarchy contrast\nChosen Direction: Single anomaly alert highlight against deep slate backdrop\nTraceability Reason: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\nRisk Profile: LOW (Avoids generic cluttered dashboard systems by creating a singular operational focal center.)",
+        "inputFingerprint": "SRD:descriptor=bold:subject=B2B SaaS analytics dashboard:context=dashboard",
+        "outputFingerprint": "SRD:tension=high:whitespace=medium-high:color=warm-linen:option=Single anomaly alert highlight"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: bold\nBody Reaction: micro-startle response, sharp inhale, pupil dilation\nViewer Behavior: direct visual confrontation, rapid scan of center weight, aggressive scrolling\nEye Path: highly li",
+      "[Perceptual Principles Derived]: - Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priori",
+      "[Formal Implementation Options Considered]: - Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operat",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Single anomaly alert highlight against deep slate backdrop\nBecause: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptu",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: direc"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "premium home renovation service",
+      "subjectContext": "renovation service",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "eye-catching"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"eye-catching\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomaly\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nViewing Speed: dynamic (stop-and-scan patterns)\nFocal Duration: medium (0.8s to 1.5s on the anomaly)\nPosture/Approach: head tilt, momentary freeze in movement\nMicro-reaction: widening of eyes, head alignment adjust\nTension: medium"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Oversized, off-grid architectural detail crop\n  Supports: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.\n  Fit: High-fit: Highlights tangible expertise directly to homeowners.\n  Stereotype Risk: [LOW] Differs from neon and flash banners by using raw physical material texture crops.\n\n- Option: Neon-accented animated pointer highlights\n  Supports: Uses saturated chrominance pops to snap attention instantly.\n  Fit: Low-fit: Neon aesthetics conflict with a high-trust, premium home construction service.\n  Stereotype Risk: [HIGH] Classic 'eye-catching = neon' cliché. Can appear cheap or aggressive."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Oversized, off-grid architectural detail crop\nBecause: Selected \"Oversized, off-grid architectural detail crop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.\nRejected Alternatives:\n  - Neon-accented animated pointer highlights"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "eye-catching",
+        "observableReaction": "saccadic capture, rapid eye fixation shift, momentary breathing suspension",
+        "observableViewerBehavior": "immediate stop on visual anomaly, pointer tracking toward the anomaly",
+        "eyePath": "radial outward; initial capture point followed by rapid surrounding context scan",
+        "viewingSpeed": "dynamic (stop-and-scan patterns)",
+        "focalDuration": "medium (0.8s to 1.5s on the anomaly)",
+        "postureApproachBehavior": "head tilt, momentary freeze in movement",
+        "microReaction": "widening of eyes, head alignment adjust",
+        "tension": "medium",
+        "perceptualPrinciples": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+        "formalOptions": "- Option: Oversized, off-grid architectural detail crop\n  Supports: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.\n  Fit: High-fit: Highlights tangible expertise directly to homeowners.\n  Stereotype Risk: [LOW] Differs from neon and flash banners by using raw physical material texture crops.\n\n- Option: Neon-accented animated pointer highlights\n  Supports: Uses saturated chrominance pops to snap attention instantly.\n  Fit: Low-fit: Neon aesthetics conflict with a high-trust, premium home construction service.\n  Stereotype Risk: [HIGH] Classic 'eye-catching = neon' cliché. Can appear cheap or aggressive.",
+        "selectedDirectionChosen": "Oversized, off-grid architectural detail crop",
+        "selectedDirectionRationale": "Selected \"Oversized, off-grid architectural detail crop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.",
+        "selectedDirectionRejected": "Neon-accented animated pointer highlights",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Differs from neon and flash banners by using raw physical material texture crops.",
+        "compositionConsequence": "Apply compositional expression: \"Oversized, off-grid architectural detail crop\" to satisfy \"Isolated visual anomaly\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "compressed borders",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "architectural geometric sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"premium home renovation service\"\nSomatic Descriptor: eye-catching\nPhysiological Goal: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nPerceptual Rule: Isolated visual anomaly\nChosen Direction: Oversized, off-grid architectural detail crop\nTraceability Reason: Selected \"Oversized, off-grid architectural detail crop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.\nRisk Profile: LOW (Differs from neon and flash banners by using raw physical material texture crops.)",
+        "inputFingerprint": "SRD:descriptor=eye-catching:subject=premium home renovation servic:context=renovation service",
+        "outputFingerprint": "SRD:tension=medium:whitespace=medium-high:color=warm-linen:option=Oversized, off-grid architectu"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomal",
+      "[Perceptual Principles Derived]: - Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+      "[Formal Implementation Options Considered]: - Option: Oversized, off-grid architectural detail crop\n  Supports: Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.\n  Fit: High-fit: Highlights tangible expertise",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Oversized, off-grid architectural detail crop\nBecause: Selected \"Oversized, off-grid architectural detail crop\" because it directly implements the perceptual principles while keepin",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immed"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "D": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "witty pet wellness assistant UI",
+      "subjectContext": "mobile application",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "cute and witty"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"cute and witty\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: cute and witty\nBody Reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nViewer Behavior: playful exploration, clicking on interactive Easter eggs, lingering scroll\nEye Path: playful zig-zag; bounces between illustration markers and friendly textual guides\nViewing Speed: moderate (relaxed browsing)\nFocal Duration: extended (1.0s to 2.2s on details)\nPosture/Approach: slight forward lean with relaxed shoulders (playful interest)\nMicro-reaction: soft vocalization (chuckle/sigh), head tilt\nTension: low"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: playful exploration, clicking on interactive Easter eggs, lingering scroll? Ask: \"What did your eyes track first?\" to verify: \"playful zig-zag; bounces between illustration markers and friendly textual guides\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "cute and witty",
+        "observableReaction": "zygomatic major muscle activation (smiling), relaxed shoulder drop",
+        "observableViewerBehavior": "playful exploration, clicking on interactive Easter eggs, lingering scroll",
+        "eyePath": "playful zig-zag; bounces between illustration markers and friendly textual guides",
+        "viewingSpeed": "moderate (relaxed browsing)",
+        "focalDuration": "extended (1.0s to 2.2s on details)",
+        "postureApproachBehavior": "slight forward lean with relaxed shoulders (playful interest)",
+        "microReaction": "soft vocalization (chuckle/sigh), head tilt",
+        "tension": "low",
+        "perceptualPrinciples": "- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation.",
+        "formalOptions": "- Option: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles.",
+        "selectedDirectionChosen": "Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"",
+        "selectedDirectionRationale": "Selected \"Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Provides clean composition without resorting to cliché styles.",
+        "compositionConsequence": "Apply compositional expression: \"Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\" to satisfy \"Controlled expectation violation\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "expansive padding (35%-50%)",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: playful exploration, clicking on interactive Easter eggs, lingering scroll? Ask: \"What did your eyes track first?\" to verify: \"playful zig-zag; bounces between illustration markers and friendly textual guides\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"witty pet wellness assistant UI\"\nSomatic Descriptor: cute and witty\nPhysiological Goal: zygomatic major muscle activation (smiling), relaxed shoulder drop\nEye Path: playful zig-zag; bounces between illustration markers and friendly textual guides\nPerceptual Rule: Controlled expectation violation\nChosen Direction: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\nTraceability Reason: Selected \"Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRisk Profile: LOW (Provides clean composition without resorting to cliché styles.)",
+        "inputFingerprint": "SRD:descriptor=cute and witty:subject=witty pet wellness assistant U:context=mobile application",
+        "outputFingerprint": "SRD:tension=low:whitespace=medium-high:color=warm-linen:option=Muted earth tones with asymmet"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: cute and witty\nBody Reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nViewer Behavior: playful exploration, clicking on interactive Easter eggs, lingering scroll",
+      "[Perceptual Principles Derived]: - Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation.",
+      "[Formal Implementation Options Considered]: - Option: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creati",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"witty pet wellness assistant UI\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"witty pet wellness as",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: playf"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "E": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "mindfulness audio narrative device",
+      "subjectContext": "audio companion app",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "calm / reflective"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"calm / reflective\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: calm / reflective\nBody Reaction: respiratory deceleration, muscle relaxation, neutral brow\nViewer Behavior: passive reading, gentle scrolling, minimal mouse movement\nEye Path: smooth horizontal sweeps, scanning top-to-bottom sequentially\nViewing Speed: slow (meditative reading)\nFocal Duration: long (1.5s to 3.0s per text block)\nPosture/Approach: relaxed lean back (reflective posture)\nMicro-reaction: deep exhalation, quiet focus\nTension: low"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: meditative reading\n  Principle: Stable spatial hierarchy\n  Reasoning: Predictable, balanced alignments allow sequential scanning without visual interruption."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: passive reading, gentle scrolling, minimal mouse movement? Ask: \"What did your eyes track first?\" to verify: \"smooth horizontal sweeps, scanning top-to-bottom sequentially\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "calm / reflective",
+        "observableReaction": "respiratory deceleration, muscle relaxation, neutral brow",
+        "observableViewerBehavior": "passive reading, gentle scrolling, minimal mouse movement",
+        "eyePath": "smooth horizontal sweeps, scanning top-to-bottom sequentially",
+        "viewingSpeed": "slow (meditative reading)",
+        "focalDuration": "long (1.5s to 3.0s per text block)",
+        "postureApproachBehavior": "relaxed lean back (reflective posture)",
+        "microReaction": "deep exhalation, quiet focus",
+        "tension": "low",
+        "perceptualPrinciples": "- Target: meditative reading\n  Principle: Stable spatial hierarchy\n  Reasoning: Predictable, balanced alignments allow sequential scanning without visual interruption.",
+        "formalOptions": "- Option: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles.",
+        "selectedDirectionChosen": "Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"",
+        "selectedDirectionRationale": "Selected \"Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Provides clean composition without resorting to cliché styles.",
+        "compositionConsequence": "Apply compositional expression: \"Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\" to satisfy \"Stable spatial hierarchy\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "expansive padding (35%-50%)",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: passive reading, gentle scrolling, minimal mouse movement? Ask: \"What did your eyes track first?\" to verify: \"smooth horizontal sweeps, scanning top-to-bottom sequentially\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"mindfulness audio narrative device\"\nSomatic Descriptor: calm / reflective\nPhysiological Goal: respiratory deceleration, muscle relaxation, neutral brow\nEye Path: smooth horizontal sweeps, scanning top-to-bottom sequentially\nPerceptual Rule: Stable spatial hierarchy\nChosen Direction: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\nTraceability Reason: Selected \"Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRisk Profile: LOW (Provides clean composition without resorting to cliché styles.)",
+        "inputFingerprint": "SRD:descriptor=calm / reflective:subject=mindfulness audio narrative de:context=audio companion app",
+        "outputFingerprint": "SRD:tension=low:whitespace=medium-high:color=warm-linen:option=Muted earth tones with asymmet"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: calm / reflective\nBody Reaction: respiratory deceleration, muscle relaxation, neutral brow\nViewer Behavior: passive reading, gentle scrolling, minimal mouse movement\nEye Path: smooth horiz",
+      "[Perceptual Principles Derived]: - Target: meditative reading\n  Principle: Stable spatial hierarchy\n  Reasoning: Predictable, balanced alignments allow sequential scanning without visual interruption.",
+      "[Formal Implementation Options Considered]: - Option: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this cre",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"mindfulness audio narrative device\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"mindfulness audio ",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: passi"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "F": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "luxury financial dashboard",
+      "subjectContext": "dashboard",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "luxurious"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"luxurious\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nViewing Speed: deliberate, slow (unhurried navigation)\nFocal Duration: extended (1.2s to 2.5s per hero cluster)\nPosture/Approach: slight backward lean (relaxation/absorption)\nMicro-reaction: softening of facial muscles, micro-smile of satisfaction\nTension: low"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Golden ratio grid with isolated KPI cards and wide padding (35%)\n  Supports: Allows the user to absorb complex data without cognitive crowding, lowering tension.\n  Fit: High-fit: Professional tools must maintain structural clarity and legibility.\n  Stereotype Risk: [LOW] Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium.\n\n- Option: Golden ratio grid with isolated KPI cards and wide padding (35%)\n  Supports: Allows the user to absorb complex data without cognitive crowding, lowering tension.\n  Fit: High-fit: Professional tools must maintain structural clarity and legibility.\n  Stereotype Risk: [LOW] Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Golden ratio grid with isolated KPI cards and wide padding (35%)\nBecause: Selected \"Golden ratio grid with isolated KPI cards and wide padding (35%)\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Allows the user to absorb complex data without cognitive crowding, lowering tension.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "luxurious",
+        "observableReaction": "gradual deepening of breath, micro-pause at boundaries, shoulder lowering",
+        "observableViewerBehavior": "lingering gaze, slower swipe speed, tactile-like hovering over elements",
+        "eyePath": "undulating, serpentine path following subtle visual anchors; avoids hard grid lines",
+        "viewingSpeed": "deliberate, slow (unhurried navigation)",
+        "focalDuration": "extended (1.2s to 2.5s per hero cluster)",
+        "postureApproachBehavior": "slight backward lean (relaxation/absorption)",
+        "microReaction": "softening of facial muscles, micro-smile of satisfaction",
+        "tension": "low",
+        "perceptualPrinciples": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation.",
+        "formalOptions": "- Option: Golden ratio grid with isolated KPI cards and wide padding (35%)\n  Supports: Allows the user to absorb complex data without cognitive crowding, lowering tension.\n  Fit: High-fit: Professional tools must maintain structural clarity and legibility.\n  Stereotype Risk: [LOW] Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium.\n\n- Option: Golden ratio grid with isolated KPI cards and wide padding (35%)\n  Supports: Allows the user to absorb complex data without cognitive crowding, lowering tension.\n  Fit: High-fit: Professional tools must maintain structural clarity and legibility.\n  Stereotype Risk: [LOW] Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium.",
+        "selectedDirectionChosen": "Golden ratio grid with isolated KPI cards and wide padding (35%)",
+        "selectedDirectionRationale": "Selected \"Golden ratio grid with isolated KPI cards and wide padding (35%)\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Allows the user to absorb complex data without cognitive crowding, lowering tension.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium.",
+        "compositionConsequence": "Apply compositional expression: \"Golden ratio grid with isolated KPI cards and wide padding (35%)\" to satisfy \"Reduced competing focal events\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "expansive padding (35%-50%)",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "obsidian and dark slate with emerald accent",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"luxury financial dashboard\"\nSomatic Descriptor: luxurious\nPhysiological Goal: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nPerceptual Rule: Reduced competing focal events\nChosen Direction: Golden ratio grid with isolated KPI cards and wide padding (35%)\nTraceability Reason: Selected \"Golden ratio grid with isolated KPI cards and wide padding (35%)\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Allows the user to absorb complex data without cognitive crowding, lowering tension.\nRisk Profile: LOW (Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium.)",
+        "inputFingerprint": "SRD:descriptor=luxurious:subject=luxury financial dashboard:context=dashboard",
+        "outputFingerprint": "SRD:tension=low:whitespace=medium-high:color=warm-linen:option=Golden ratio grid with isolate"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\n",
+      "[Perceptual Principles Derived]: - Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: u",
+      "[Formal Implementation Options Considered]: - Option: Golden ratio grid with isolated KPI cards and wide padding (35%)\n  Supports: Allows the user to absorb complex data without cognitive crowding, lowering tension.\n  Fit: High-fit: Professiona",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Golden ratio grid with isolated KPI cards and wide padding (35%)\nBecause: Selected \"Golden ratio grid with isolated KPI cards and wide padding (35%)\" because it directly implements ",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: linge"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "G": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "premium architectural consultancy",
+      "subjectContext": "architecture portal",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "luxurious"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"luxurious\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nViewing Speed: deliberate, slow (unhurried navigation)\nFocal Duration: extended (1.2s to 2.5s per hero cluster)\nPosture/Approach: slight backward lean (relaxation/absorption)\nMicro-reaction: softening of facial muscles, micro-smile of satisfaction\nTension: low"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "luxurious",
+        "observableReaction": "gradual deepening of breath, micro-pause at boundaries, shoulder lowering",
+        "observableViewerBehavior": "lingering gaze, slower swipe speed, tactile-like hovering over elements",
+        "eyePath": "undulating, serpentine path following subtle visual anchors; avoids hard grid lines",
+        "viewingSpeed": "deliberate, slow (unhurried navigation)",
+        "focalDuration": "extended (1.2s to 2.5s per hero cluster)",
+        "postureApproachBehavior": "slight backward lean (relaxation/absorption)",
+        "microReaction": "softening of facial muscles, micro-smile of satisfaction",
+        "tension": "low",
+        "perceptualPrinciples": "- Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: unhurried navigation\n  Principle: Lower temporal interruption\n  Reasoning: Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration.\n- Target: playful smile\n  Principle: Controlled expectation violation\n  Reasoning: Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation.",
+        "formalOptions": "- Option: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles.",
+        "selectedDirectionChosen": "Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"",
+        "selectedDirectionRationale": "Selected \"Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Provides clean composition without resorting to cliché styles.",
+        "compositionConsequence": "Apply compositional expression: \"Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\" to satisfy \"Reduced competing focal events\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "expansive padding (35%-50%)",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: lingering gaze, slower swipe speed, tactile-like hovering over elements? Ask: \"What did your eyes track first?\" to verify: \"undulating, serpentine path following subtle visual anchors; avoids hard grid lines\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"premium architectural consultancy\"\nSomatic Descriptor: luxurious\nPhysiological Goal: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nPerceptual Rule: Reduced competing focal events\nChosen Direction: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\nTraceability Reason: Selected \"Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRisk Profile: LOW (Provides clean composition without resorting to cliché styles.)",
+        "inputFingerprint": "SRD:descriptor=luxurious:subject=premium architectural consulta:context=architecture portal",
+        "outputFingerprint": "SRD:tension=low:whitespace=medium-high:color=warm-linen:option=Muted earth tones with asymmet"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\n",
+      "[Perceptual Principles Derived]: - Target: slow viewing\n  Principle: Reduced competing focal events\n  Reasoning: Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection.\n- Target: u",
+      "[Formal Implementation Options Considered]: - Option: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this crea",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"premium architectural consultancy\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"premium architectur",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: linge"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "H": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "fashion campaign",
+      "subjectContext": "editorial container",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "eye-catching"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"eye-catching\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomaly\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nViewing Speed: dynamic (stop-and-scan patterns)\nFocal Duration: medium (0.8s to 1.5s on the anomaly)\nPosture/Approach: head tilt, momentary freeze in movement\nMicro-reaction: widening of eyes, head alignment adjust\nTension: medium"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: High-impact visual asymmetry with extreme layout offsets\n  Supports: Disrupts standard scanning lines to demand immediate engagement.\n  Fit: High-fit: Matches the expressive nature of editorial fashion campaigns.\n  Stereotype Risk: [LOW] Achieves gaze capture structurally without resorting to cheap visual badges."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: High-impact visual asymmetry with extreme layout offsets\nBecause: Selected \"High-impact visual asymmetry with extreme layout offsets\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Disrupts standard scanning lines to demand immediate engagement.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "eye-catching",
+        "observableReaction": "saccadic capture, rapid eye fixation shift, momentary breathing suspension",
+        "observableViewerBehavior": "immediate stop on visual anomaly, pointer tracking toward the anomaly",
+        "eyePath": "radial outward; initial capture point followed by rapid surrounding context scan",
+        "viewingSpeed": "dynamic (stop-and-scan patterns)",
+        "focalDuration": "medium (0.8s to 1.5s on the anomaly)",
+        "postureApproachBehavior": "head tilt, momentary freeze in movement",
+        "microReaction": "widening of eyes, head alignment adjust",
+        "tension": "medium",
+        "perceptualPrinciples": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+        "formalOptions": "- Option: High-impact visual asymmetry with extreme layout offsets\n  Supports: Disrupts standard scanning lines to demand immediate engagement.\n  Fit: High-fit: Matches the expressive nature of editorial fashion campaigns.\n  Stereotype Risk: [LOW] Achieves gaze capture structurally without resorting to cheap visual badges.",
+        "selectedDirectionChosen": "High-impact visual asymmetry with extreme layout offsets",
+        "selectedDirectionRationale": "Selected \"High-impact visual asymmetry with extreme layout offsets\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Disrupts standard scanning lines to demand immediate engagement.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Achieves gaze capture structurally without resorting to cheap visual badges.",
+        "compositionConsequence": "Apply compositional expression: \"High-impact visual asymmetry with extreme layout offsets\" to satisfy \"Isolated visual anomaly\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "compressed borders",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"fashion campaign\"\nSomatic Descriptor: eye-catching\nPhysiological Goal: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nPerceptual Rule: Isolated visual anomaly\nChosen Direction: High-impact visual asymmetry with extreme layout offsets\nTraceability Reason: Selected \"High-impact visual asymmetry with extreme layout offsets\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Disrupts standard scanning lines to demand immediate engagement.\nRisk Profile: LOW (Achieves gaze capture structurally without resorting to cheap visual badges.)",
+        "inputFingerprint": "SRD:descriptor=eye-catching:subject=fashion campaign:context=editorial container",
+        "outputFingerprint": "SRD:tension=medium:whitespace=medium-high:color=warm-linen:option=High-impact visual asymmetry w"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomal",
+      "[Perceptual Principles Derived]: - Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+      "[Formal Implementation Options Considered]: - Option: High-impact visual asymmetry with extreme layout offsets\n  Supports: Disrupts standard scanning lines to demand immediate engagement.\n  Fit: High-fit: Matches the expressive nature of editor",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: High-impact visual asymmetry with extreme layout offsets\nBecause: Selected \"High-impact visual asymmetry with extreme layout offsets\" because it directly implements the perceptual p",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immed"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "I": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "enterprise analytics dashboard",
+      "subjectContext": "dashboard",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "eye-catching"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"eye-catching\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomaly\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nViewing Speed: dynamic (stop-and-scan patterns)\nFocal Duration: medium (0.8s to 1.5s on the anomaly)\nPosture/Approach: head tilt, momentary freeze in movement\nMicro-reaction: widening of eyes, head alignment adjust\nTension: medium"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operational users to critical decision paths immediately.\n  Stereotype Risk: [LOW] Avoids generic cluttered dashboard systems by creating a singular operational focal center."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Single anomaly alert highlight against deep slate backdrop\nBecause: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "eye-catching",
+        "observableReaction": "saccadic capture, rapid eye fixation shift, momentary breathing suspension",
+        "observableViewerBehavior": "immediate stop on visual anomaly, pointer tracking toward the anomaly",
+        "eyePath": "radial outward; initial capture point followed by rapid surrounding context scan",
+        "viewingSpeed": "dynamic (stop-and-scan patterns)",
+        "focalDuration": "medium (0.8s to 1.5s on the anomaly)",
+        "postureApproachBehavior": "head tilt, momentary freeze in movement",
+        "microReaction": "widening of eyes, head alignment adjust",
+        "tension": "medium",
+        "perceptualPrinciples": "- Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+        "formalOptions": "- Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operational users to critical decision paths immediately.\n  Stereotype Risk: [LOW] Avoids generic cluttered dashboard systems by creating a singular operational focal center.",
+        "selectedDirectionChosen": "Single anomaly alert highlight against deep slate backdrop",
+        "selectedDirectionRationale": "Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Avoids generic cluttered dashboard systems by creating a singular operational focal center.",
+        "compositionConsequence": "Apply compositional expression: \"Single anomaly alert highlight against deep slate backdrop\" to satisfy \"Isolated visual anomaly\".",
+        "densityConsequence": "low spatial density",
+        "whitespaceConsequence": "compressed borders",
+        "scaleConsequence": "balanced typographic scale",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "obsidian and dark slate with emerald accent",
+        "motionTempoConsequence": "slow fade (800ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: immediate stop on visual anomaly, pointer tracking toward the anomaly? Ask: \"What did your eyes track first?\" to verify: \"radial outward; initial capture point followed by rapid surrounding context scan\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"enterprise analytics dashboard\"\nSomatic Descriptor: eye-catching\nPhysiological Goal: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nPerceptual Rule: Isolated visual anomaly\nChosen Direction: Single anomaly alert highlight against deep slate backdrop\nTraceability Reason: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\nRisk Profile: LOW (Avoids generic cluttered dashboard systems by creating a singular operational focal center.)",
+        "inputFingerprint": "SRD:descriptor=eye-catching:subject=enterprise analytics dashboard:context=dashboard",
+        "outputFingerprint": "SRD:tension=medium:whitespace=medium-high:color=warm-linen:option=Single anomaly alert highlight"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomal",
+      "[Perceptual Principles Derived]: - Target: immediate gaze capture\n  Principle: Isolated visual anomaly\n  Reasoning: Introducing an off-grid element breaks expectations and forces instant saccadic capture.",
+      "[Formal Implementation Options Considered]: - Option: Single anomaly alert highlight against deep slate backdrop\n  Supports: Monochromatic slate backdrop with a single isolated indicator captures focus instantly.\n  Fit: High-fit: Directs operat",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Single anomaly alert highlight against deep slate backdrop\nBecause: Selected \"Single anomaly alert highlight against deep slate backdrop\" because it directly implements the perceptu",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: immed"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "J": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "quietly unsettling indie video game",
+      "subjectContext": "video game",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "defiant but intimate"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Descriptor",
+          "instruction": "Load target sensory descriptor: \"defiant but intimate\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Derive Physiological Profile",
+          "instruction": "Map observable viewer reactions, posture, and micro-responses.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Extract Perceptual Principles",
+          "instruction": "Derive structural principles from somatic responses.",
+          "outputKey": "perceptual-principles"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Analyze Formal Options",
+          "instruction": "Generate context-sensitive options and analyze stereotype risk.",
+          "outputKey": "formal-options"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Select Direction & Formulate Safeguards",
+          "instruction": "Choose low-stereotype high-fit option. Define accessibility safeguards.",
+          "outputKey": "selected-direction"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: defiant but intimate\nBody Reaction: temporary breath hold, focused narrowing of gaze, facial muscle engagement\nViewer Behavior: focused gaze on structural anomalies, steady reading pace\nEye Path: scanning primary elements sequentially\nViewing Speed: rapid, focused\nFocal Duration: 0.6s to 1.1s\nPosture/Approach: forward lean, focused attention\nMicro-reaction: tightened jaw, narrowed eyelids\nTension: high"
+        },
+        {
+          "sectionKey": "perceptual-principles",
+          "label": "Perceptual Principles Derived",
+          "content": "- Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priority.\n- Target: forward lean / engagement\n  Principle: Unresolved visual question\n  Reasoning: Compacting the space between visual triggers and payoffs induces immediate investigative behavior."
+        },
+        {
+          "sectionKey": "formal-options",
+          "label": "Formal Implementation Options Considered",
+          "content": "- Option: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles."
+        },
+        {
+          "sectionKey": "selected-direction",
+          "label": "Selected Design Direction (Stereotype-Free)",
+          "content": "Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRejected Alternatives:\n"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: focused gaze on structural anomalies, steady reading pace? Ask: \"What did your eyes track first?\" to verify: \"scanning primary elements sequentially\".\nFailure Signals:\nviewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "defiant but intimate",
+        "observableReaction": "temporary breath hold, focused narrowing of gaze, facial muscle engagement",
+        "observableViewerBehavior": "focused gaze on structural anomalies, steady reading pace",
+        "eyePath": "scanning primary elements sequentially",
+        "viewingSpeed": "rapid, focused",
+        "focalDuration": "0.6s to 1.1s",
+        "postureApproachBehavior": "forward lean, focused attention",
+        "microReaction": "tightened jaw, narrowed eyelids",
+        "tension": "high",
+        "perceptualPrinciples": "- Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priority.\n- Target: forward lean / engagement\n  Principle: Unresolved visual question\n  Reasoning: Compacting the space between visual triggers and payoffs induces immediate investigative behavior.",
+        "formalOptions": "- Option: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this creative container.\n  Stereotype Risk: [LOW] Provides clean composition without resorting to cliché styles.",
+        "selectedDirectionChosen": "Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"",
+        "selectedDirectionRationale": "Selected \"Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.",
+        "selectedDirectionRejected": "",
+        "stereotypeRisk": "LOW",
+        "stereotypeRiskReason": "Provides clean composition without resorting to cliché styles.",
+        "compositionConsequence": "Apply compositional expression: \"Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\" to satisfy \"High structural hierarchy contrast\".",
+        "densityConsequence": "high focal density",
+        "whitespaceConsequence": "compressed borders",
+        "scaleConsequence": "oversized display headers",
+        "typographyConsequence": "highly legible sans-serif",
+        "colorTemperatureConsequence": "cool earth tones",
+        "motionTempoConsequence": "instantaneous snap (150ms)",
+        "soundConsequence": "subtle low-frequency atmospheric hums",
+        "accessibilitySafeguard": "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+        "fiveSecondValidationTest": "Show the work for 5 seconds. Does the viewer exhibit: focused gaze on structural anomalies, steady reading pace? Ask: \"What did your eyes track first?\" to verify: \"scanning primary elements sequentially\".",
+        "failureSignals": "viewer scrolls past the anomaly in under 2 seconds\neye path jumps sporadically\nsubject describes design as cliché or noisy",
+        "somaticBrief": "SOMATIC RESPONSE BRIEF — \"quietly unsettling indie video game\"\nSomatic Descriptor: defiant but intimate\nPhysiological Goal: temporary breath hold, focused narrowing of gaze, facial muscle engagement\nEye Path: scanning primary elements sequentially\nPerceptual Rule: High structural hierarchy contrast\nChosen Direction: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\nTraceability Reason: Selected \"Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: Reduces visual friction to support slower viewing speed.\nRisk Profile: LOW (Provides clean composition without resorting to cliché styles.)",
+        "inputFingerprint": "SRD:descriptor=defiant but intimate:subject=quietly unsettling indie video:context=video game",
+        "outputFingerprint": "SRD:tension=high:whitespace=medium-high:color=warm-linen:option=Muted earth tones with asymmet"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.response-to-form-traceable",
+        "label": "Response-To-Form Traceable",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.context-overrides-style-stereotype",
+        "label": "Context Overrides Style Stereotype",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: defiant but intimate\nBody Reaction: temporary breath hold, focused narrowing of gaze, facial muscle engagement\nViewer Behavior: focused gaze on structural anomalies, steady reading pace\nEy",
+      "[Perceptual Principles Derived]: - Target: focused narrowing of gaze\n  Principle: High structural hierarchy contrast\n  Reasoning: Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priori",
+      "[Formal Implementation Options Considered]: - Option: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\n  Supports: Reduces visual friction to support slower viewing speed.\n  Fit: General fit for this cr",
+      "[Selected Design Direction (Stereotype-Free)]: Chosen Expression: Muted earth tones with asymmetrical grid layouts for \"quietly unsettling indie video game\"\nBecause: Selected \"Muted earth tones with asymmetrical grid layouts for \"quietly unsettlin",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout\n5-Second Validation: Show the work for 5 seconds. Does the viewer exhibit: focus"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}

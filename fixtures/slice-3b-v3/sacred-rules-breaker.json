@@ -1,0 +1,1027 @@
+{
+  "A": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Skincare Campaign A",
+      "subjectContext": "skincare",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "create a distinctive premium campaign",
+        "audience": "environmentally conscious skincare buyers",
+        "desiredPosition": "active and culturally relevant rather than quiet naturalism",
+        "trustRequirements": "efficacy, safety, environmental credibility"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"skincare\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"active and culturally relevant rather than quiet naturalism\" and trust requirements [efficacy, safety, environmental credibility].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Protected trust capability: supports \"efficacy\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: efficacy\n  Audience Belief: I believe the product is scientifically formulated and will actually work.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Clinical framework directly supports safety and efficacy beliefs. Breaking it completely destroys trust.\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Protected trust capability: supports \"safety\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: safety\n  Audience Belief: I feel safe using this product on my body without anxiety.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Gentle wellness tone reinforces safety and reduces product anxiety.\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Protected trust capability: supports \"environmental credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: environmental credibility\n  Audience Belief: I believe the brand's environmental claims are true and verifiable.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Third-party certification directly validates self-declared ecological claims."
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": ""
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [wellness-tone] (Action: KEEP): Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nVisual: Soft lighting; muted palette; flowing typography; nature imagery\nVerbal: Soothing, empowering, personal — 'your skin', 'nourish', 'glow'\n\nPRESERVE/ADAPT [aspirational-lifestyle-photography] (Action: KEEP): Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nVisual: Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models\nVerbal: Personal transformation testimonials; 'before/after' language\n\nPRESERVE/ADAPT [benefit-storytelling-over-identity] (Action: KEEP): Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nVisual: Product hero with lifestyle context; focus on personal outcome\nVerbal: First-person transformation narrative; 'I' statements; skin-outcome language\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "No high-confidence strategic inversion identified for \"Skincare Campaign A\" with position \"active and culturally relevant rather than quiet naturalism\". Proceed with quality-based differentiation within category conventions."
+        }
+      ],
+      "rawOutputs": {
+        "category": "skincare",
+        "conventionInventory": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority",
+        "sacredVsHabitClassification": "[NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Protected trust capability: supports \"efficacy\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: efficacy\n  Audience Belief: I believe the product is scientifically formulated and will actually work.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Clinical framework directly supports safety and efficacy beliefs. Breaking it completely destroys trust.\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Protected trust capability: supports \"safety\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: safety\n  Audience Belief: I feel safe using this product on my body without anxiety.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Gentle wellness tone reinforces safety and reduces product anxiety.\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Protected trust capability: supports \"environmental credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: environmental credibility\n  Audience Belief: I believe the brand's environmental claims are true and verifiable.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Third-party certification directly validates self-declared ecological claims.",
+        "breakCandidates": "",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [wellness-tone] (Action: KEEP): Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nVisual: Soft lighting; muted palette; flowing typography; nature imagery\nVerbal: Soothing, empowering, personal — 'your skin', 'nourish', 'glow'\n\nPRESERVE/ADAPT [aspirational-lifestyle-photography] (Action: KEEP): Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nVisual: Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models\nVerbal: Personal transformation testimonials; 'before/after' language\n\nPRESERVE/ADAPT [benefit-storytelling-over-identity] (Action: KEEP): Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nVisual: Product hero with lifestyle context; focus on personal outcome\nVerbal: First-person transformation narrative; 'I' statements; skin-outcome language\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language",
+        "visualImplications": "",
+        "verbalImplications": "",
+        "motionImplications": "No motion implications — no conventions are being disrupted.",
+        "failureRisks": "If breaking a habit convention accidentally erodes a SACRED convention (clinical-efficacy-frame, wellness-tone, sustainability-third-party-validation), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Validation: Confirm the work is legibly positioned in its category AND meaningfully distinct from the three closest category competitors.",
+        "strategicInversion": "No high-confidence strategic inversion identified for \"Skincare Campaign A\" with position \"active and culturally relevant rather than quiet naturalism\". Proceed with quality-based differentiation within category conventions.",
+        "differentiationInsight": "No high-confidence strategic inversion identified for \"Skincare Campaign A\" with position \"active and culturally relevant rather than quiet naturalism\". Proceed with quality-based differentiation within category conventions.",
+        "inputFingerprint": "SRB:cat=skincare:pos=active and culturally relevant rather th:trust=efficacy|safety|environmental credibilit",
+        "outputFingerprint": "SRB:actions=clinical-efficacy-frame=KEEP|wellness-tone=KEEP|aspirational-lifestyle-photography=KEEP|benefit-storytelling-over-identity=KEEP|sustainability-third-party-validation=KEEP:natures=clinical-efficacy-frame=SACRED|wellness-tone=SACRED|aspirational-lifestyle-photography=HABIT|benefit-storytelling-over-identity=HABIT|sustainability-third-party-validation=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": false,
+        "failReasons": [
+          "Break candidates are missing explicit objective links or are too short."
+        ]
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": false,
+        "failReasons": [
+          "System implications on visual, verbal, or motion surfaces are missing or default."
+        ]
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-",
+      "[Sacred vs. Habit Classification]: [NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/afte",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)",
+      "[Selected Strategic Inversion]: No high-confidence strategic inversion identified for \"Skincare Campaign A\" with position \"active and culturally relevant rather than quiet naturalism\". Proceed with quality-based differentiation with"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Dashboard B",
+      "subjectContext": "saas",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "differentiate from generic enterprise dashboards",
+        "audience": "operations leaders",
+        "desiredPosition": "decisive and operational rather than passive reporting",
+        "trustRequirements": "clarity, credibility, legibility"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"saas\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"decisive and operational rather than passive reporting\" and trust requirements [clarity, credibility, legibility].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [data-density-signals-capability] \"Dashboards default to dense data visualization — visible data complexity signals analytical depth\"\n   Why it exists: Enterprise buyers equate visible data complexity with analytical capability; sparse interfaces read as limited\n\n2. [enterprise-visual-restraint] \"Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\"\n   Why it exists: Risk-averse procurement culture selects for safe, institutional aesthetics — bold design reads as startup risk\n\n3. [feature-comparison-transparency] \"Feature comparison tables signal buying transparency and competitive confidence\"\n   Why it exists: B2B buyers must justify decisions to procurement and stakeholders — visible comparison aids defense\n\n4. [social-proof-brand-logos] \"Credibility requires recognized enterprise brand logos and named testimonials\"\n   Why it exists: B2B trust transfers through peer institution credibility — procurement follows recognized adopters\n\n5. [complexity-signals-power] \"Interface complexity signals analytical power — simple interfaces appear under-featured\"\n   Why it exists: Legacy enterprise tooling (BI software) conditioned buyers to associate visual complexity with capability"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: HABIT] [ACTION: BREAK] data-density-signals-capability\nStatement: Dashboards default to dense data visualization — visible data complexity signals analytical depth\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] enterprise-visual-restraint\nStatement: Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] feature-comparison-transparency\nStatement: Feature comparison tables signal buying transparency and competitive confidence\nRationale: Protected trust capability: supports \"credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: credibility\n  Audience Belief: I believe the product features are mature and comparable to competitors.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Transparency in comparisons reinforces feature credibility.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] social-proof-brand-logos\nStatement: Credibility requires recognized enterprise brand logos and named testimonials\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] complexity-signals-power\nStatement: Interface complexity signals analytical power — simple interfaces appear under-featured\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE"
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [complexity-signals-power] action:BREAK challenge-strength:3\nConvention: Interface complexity signals analytical power — simple interfaces appear under-featured\nProposed action: Abandon convention \"complexity-signals-power\" — replace [Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Power user features; API-first framing; custom view builder must be replaced.\nObjective link: Breaking \"complexity-signals-power\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Simplicity requires an explicit narrative reframe — 'decisive intelligence' not 'limited'.\n\n---\n\n#2 [data-density-signals-capability] action:BREAK challenge-strength:2\nConvention: Dashboards default to dense data visualization — visible data complexity signals analytical depth\nProposed action: Abandon convention \"data-density-signals-capability\" — replace [Dense chart grids; multi-metric views; layered data panels] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Feature lists; metric counts; integration breadth claims must be replaced.\nObjective link: Breaking \"data-density-signals-capability\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Simplification reads as 'basic' without a strong operational narrative reframe.\n\n---\n\n#3 [enterprise-visual-restraint] action:BREAK challenge-strength:2\nConvention: Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\nProposed action: Abandon convention \"enterprise-visual-restraint\" — replace [Blue/grey palette; geometric sans-serif; angular grid layouts] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Process language; compliance language; integration counts must be replaced.\nObjective link: Breaking \"enterprise-visual-restraint\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Bold aesthetic signals startup risk unless paired with strong institutional credibility evidence.\n\n---\n\n#4 [social-proof-brand-logos] action:BREAK challenge-strength:2\nConvention: Credibility requires recognized enterprise brand logos and named testimonials\nProposed action: Abandon convention \"social-proof-brand-logos\" — replace [Logo grids; named case study blocks; headshot testimonials] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Brand name drops; ROI statistics; named executive quotes must be replaced.\nObjective link: Breaking \"social-proof-brand-logos\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Removing logos without outcome-based proof triggers a credibility gap."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [feature-comparison-transparency] (Action: KEEP): Feature comparison tables signal buying transparency and competitive confidence\nVisual: Side-by-side comparison tables; feature checkmark grids\nVerbal: Clear feature claims; honest acknowledgement of trade-offs"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Dashboard B\": The convention \"Interface complexity signals analytical power — simple interfaces appear under-featured\" is target for \"BREAK\" because it opposes desired position \"decisive and operational rather than passive reporting\" and has trust impact: NEUTRAL. Action details: replace [Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view] with design language that actively signals \"decisive and operational rather than passive reporting\". Verbal implications: [Power user features; API-first framing; custom view builder] → positioning language that encodes \"decisive and operational rather than passive reporting\" for operations leaders. Motion pacing implications: Complex state transitions; drill-down reveal animations → pacing that embodies the desired position. This directly serves the objective: \"differentiate from generic enterprise dashboards\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "saas",
+        "conventionInventory": "1. [data-density-signals-capability] \"Dashboards default to dense data visualization — visible data complexity signals analytical depth\"\n   Why it exists: Enterprise buyers equate visible data complexity with analytical capability; sparse interfaces read as limited\n\n2. [enterprise-visual-restraint] \"Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\"\n   Why it exists: Risk-averse procurement culture selects for safe, institutional aesthetics — bold design reads as startup risk\n\n3. [feature-comparison-transparency] \"Feature comparison tables signal buying transparency and competitive confidence\"\n   Why it exists: B2B buyers must justify decisions to procurement and stakeholders — visible comparison aids defense\n\n4. [social-proof-brand-logos] \"Credibility requires recognized enterprise brand logos and named testimonials\"\n   Why it exists: B2B trust transfers through peer institution credibility — procurement follows recognized adopters\n\n5. [complexity-signals-power] \"Interface complexity signals analytical power — simple interfaces appear under-featured\"\n   Why it exists: Legacy enterprise tooling (BI software) conditioned buyers to associate visual complexity with capability",
+        "sacredVsHabitClassification": "[NATURE: HABIT] [ACTION: BREAK] data-density-signals-capability\nStatement: Dashboards default to dense data visualization — visible data complexity signals analytical depth\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] enterprise-visual-restraint\nStatement: Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] feature-comparison-transparency\nStatement: Feature comparison tables signal buying transparency and competitive confidence\nRationale: Protected trust capability: supports \"credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: credibility\n  Audience Belief: I believe the product features are mature and comparable to competitors.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Transparency in comparisons reinforces feature credibility.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] social-proof-brand-logos\nStatement: Credibility requires recognized enterprise brand logos and named testimonials\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] complexity-signals-power\nStatement: Interface complexity signals analytical power — simple interfaces appear under-featured\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE",
+        "breakCandidates": "#1 [complexity-signals-power] action:BREAK challenge-strength:3\nConvention: Interface complexity signals analytical power — simple interfaces appear under-featured\nProposed action: Abandon convention \"complexity-signals-power\" — replace [Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Power user features; API-first framing; custom view builder must be replaced.\nObjective link: Breaking \"complexity-signals-power\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Simplicity requires an explicit narrative reframe — 'decisive intelligence' not 'limited'.\n\n---\n\n#2 [data-density-signals-capability] action:BREAK challenge-strength:2\nConvention: Dashboards default to dense data visualization — visible data complexity signals analytical depth\nProposed action: Abandon convention \"data-density-signals-capability\" — replace [Dense chart grids; multi-metric views; layered data panels] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Feature lists; metric counts; integration breadth claims must be replaced.\nObjective link: Breaking \"data-density-signals-capability\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Simplification reads as 'basic' without a strong operational narrative reframe.\n\n---\n\n#3 [enterprise-visual-restraint] action:BREAK challenge-strength:2\nConvention: Enterprise design communicates seriousness through visual restraint, muted palette, and conservative structure\nProposed action: Abandon convention \"enterprise-visual-restraint\" — replace [Blue/grey palette; geometric sans-serif; angular grid layouts] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Process language; compliance language; integration counts must be replaced.\nObjective link: Breaking \"enterprise-visual-restraint\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Bold aesthetic signals startup risk unless paired with strong institutional credibility evidence.\n\n---\n\n#4 [social-proof-brand-logos] action:BREAK challenge-strength:2\nConvention: Credibility requires recognized enterprise brand logos and named testimonials\nProposed action: Abandon convention \"social-proof-brand-logos\" — replace [Logo grids; named case study blocks; headshot testimonials] with design language that directly signals \"decisive and operational rather than passive reporting\" for operations leaders.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"decisive and operational rather than passive reporting\". Brand name drops; ROI statistics; named executive quotes must be replaced.\nObjective link: Breaking \"social-proof-brand-logos\" creates pattern disruption to serve the objective: \"differentiate from generic enterprise dashboards\".\nBreak risk: Removing logos without outcome-based proof triggers a credibility gap.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [feature-comparison-transparency] (Action: KEEP): Feature comparison tables signal buying transparency and competitive confidence\nVisual: Side-by-side comparison tables; feature checkmark grids\nVerbal: Clear feature claims; honest acknowledgement of trade-offs",
+        "visualImplications": "[complexity-signals-power]: Abandon \"Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view\". Signal \"decisive and operational rather than passive reporting\" through visual language that directly encodes the positioning intent.\n\n[data-density-signals-capability]: Abandon \"Dense chart grids; multi-metric views; layered data panels\". Signal \"decisive and operational rather than passive reporting\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[complexity-signals-power]: Replace \"Power user features; API-first framing; custom view builder\" with language that encodes \"decisive and operational rather than passive reporting\" for operations leaders.\n\n[data-density-signals-capability]: Replace \"Feature lists; metric counts; integration breadth claims\" with language that encodes \"decisive and operational rather than passive reporting\" for operations leaders.",
+        "motionImplications": "[complexity-signals-power]: Abandon \"Complex state transitions; drill-down reveal animations\". Motion pacing must actively signal \"decisive and operational rather than passive reporting\" — faster, more decisive cuts and confident state transitions",
+        "failureRisks": "Simplicity requires an explicit narrative reframe — 'decisive intelligence' not 'limited'.\n\nSimplification reads as 'basic' without a strong operational narrative reframe.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (feature-comparison-transparency), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"operations leaders\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"decisive and operational rather than passive reporting\" — NOT standard category language. If the evaluator describes the work using conventional category language [complexity-signals-power, data-density-signals-capability], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Dashboard B\": The convention \"Interface complexity signals analytical power — simple interfaces appear under-featured\" is target for \"BREAK\" because it opposes desired position \"decisive and operational rather than passive reporting\" and has trust impact: NEUTRAL. Action details: replace [Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view] with design language that actively signals \"decisive and operational rather than passive reporting\". Verbal implications: [Power user features; API-first framing; custom view builder] → positioning language that encodes \"decisive and operational rather than passive reporting\" for operations leaders. Motion pacing implications: Complex state transitions; drill-down reveal animations → pacing that embodies the desired position. This directly serves the objective: \"differentiate from generic enterprise dashboards\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Dashboard B\": The convention \"Interface complexity signals analytical power — simple interfaces appear under-featured\" is target for \"BREAK\" because it opposes desired position \"decisive and operational rather than passive reporting\" and has trust impact: NEUTRAL. Action details: replace [Multi-panel layouts; advanced filter controls; drill-down hierarchy visible on first view] with design language that actively signals \"decisive and operational rather than passive reporting\". Verbal implications: [Power user features; API-first framing; custom view builder] → positioning language that encodes \"decisive and operational rather than passive reporting\" for operations leaders. Motion pacing implications: Complex state transitions; drill-down reveal animations → pacing that embodies the desired position. This directly serves the objective: \"differentiate from generic enterprise dashboards\".",
+        "inputFingerprint": "SRB:cat=saas:pos=decisive and operational rather than pas:trust=clarity|credibility|legibility",
+        "outputFingerprint": "SRB:actions=data-density-signals-capability=BREAK|enterprise-visual-restraint=BREAK|feature-comparison-transparency=KEEP|social-proof-brand-logos=BREAK|complexity-signals-power=BREAK:natures=data-density-signals-capability=HABIT|enterprise-visual-restraint=HABIT|feature-comparison-transparency=SACRED|social-proof-brand-logos=HABIT|complexity-signals-power=HABIT"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [data-density-signals-capability] \"Dashboards default to dense data visualization — visible data complexity signals analytical depth\"\n   Why it exists: Enterprise buyers equate visible data complex",
+      "[Sacred vs. Habit Classification]: [NATURE: HABIT] [ACTION: BREAK] data-density-signals-capability\nStatement: Dashboards default to dense data visualization — visible data complexity signals analytical depth\nRationale: Position-driven ",
+      "[Rule-Break Candidates]: #1 [complexity-signals-power] action:BREAK challenge-strength:3\nConvention: Interface complexity signals analytical power — simple interfaces appear under-featured\nProposed action: Abandon convention ",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [feature-comparison-transparency] (Action: KEEP): Feature comparison tables signal buying transparency and competitive confidence\nVisual: Side-by-side comparison tables; feature checkma",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Dashboard B\": The convention \"Interface complexity signals analytical power — simple interfaces appear under-featured\" is target for \"BREAK\" because it opposes desired positio"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Renovation C",
+      "subjectContext": "renovation",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "make expertise and accountability feel tangible",
+        "audience": "homeowners",
+        "desiredPosition": "premium, human, high-trust",
+        "trustRequirements": "reliability, competence, price confidence"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"renovation\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"premium, human, high-trust\" and trust requirements [reliability, competence, price confidence].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Protected trust capability: supports \"reliability\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: reliability\n  Audience Belief: I believe the contractor will complete the work safely and reliably.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Official credentials and longevity reduce execution risk perceptions.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Targeted for disruption: convention actually WEAKENS the \"price confidence\" belief. Position challenge strength is 2.\nTrust Impact Evaluation:\n  Requirement: price confidence\n  Audience Belief: I understand what I am likely to pay and why, without feeling tricked.\n  Convention Effect: WEAKENS\n  Trust Reasoning: Hiding price until qualification increases uncertainty rather than confidence for transparency-focused buyers.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Protected trust capability: supports \"competence\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: competence\n  Audience Belief: I believe the contractor's work is backed by true technical capability.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Explicit satisfaction guarantees back the technical competence claims."
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" directly removes a trust-weakening convention to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Renovation C\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"make expertise and accountability feel tangible\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "renovation",
+        "conventionInventory": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions",
+        "sacredVsHabitClassification": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Protected trust capability: supports \"reliability\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: reliability\n  Audience Belief: I believe the contractor will complete the work safely and reliably.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Official credentials and longevity reduce execution risk perceptions.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Targeted for disruption: convention actually WEAKENS the \"price confidence\" belief. Position challenge strength is 2.\nTrust Impact Evaluation:\n  Requirement: price confidence\n  Audience Belief: I understand what I am likely to pay and why, without feeling tricked.\n  Convention Effect: WEAKENS\n  Trust Reasoning: Hiding price until qualification increases uncertainty rather than confidence for transparency-focused buyers.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Protected trust capability: supports \"competence\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: competence\n  Audience Belief: I believe the contractor's work is backed by true technical capability.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Explicit satisfaction guarantees back the technical competence claims.",
+        "breakCandidates": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" directly removes a trust-weakening convention to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"make expertise and accountability feel tangible\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details",
+        "visualImplications": "[before-after-portfolio]: Abandon \"Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.\n\n[price-opacity]: Abandon \"CTA-only; 'get a quote' flows; no pricing pages\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[before-after-portfolio]: Replace \"Transformation narratives; client success stories; dramatic outcome language\" with language that encodes \"premium, human, high-trust\" for homeowners.\n\n[price-opacity]: Replace \"Custom pricing language; bespoke service framing\" with language that encodes \"premium, human, high-trust\" for homeowners.",
+        "motionImplications": "[before-after-portfolio]: Abandon \"Reveal transitions; time-lapse construction sequences\". Motion pacing must actively signal \"premium, human, high-trust\" — slower, more deliberate pacing with intentional stillness",
+        "failureRisks": "Removing before/after requires strong process visibility to replace the transformation proof signal.\n\nTransparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (certification-years-in-business, explicit-guarantee-prominence), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"homeowners\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"premium, human, high-trust\" — NOT standard category language. If the evaluator describes the work using conventional category language [before-after-portfolio, price-opacity], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Renovation C\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"make expertise and accountability feel tangible\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Renovation C\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"make expertise and accountability feel tangible\".",
+        "inputFingerprint": "SRB:cat=renovation:pos=premium, human, high-trust:trust=reliability|competence|price confidence",
+        "outputFingerprint": "SRB:actions=before-after-portfolio=BREAK|certification-years-in-business=KEEP|price-opacity=BREAK|craftsmanship-artisan-language=BREAK|explicit-guarantee-prominence=KEEP:natures=before-after-portfolio=HABIT|certification-years-in-business=SACRED|price-opacity=HABIT|craftsmanship-artisan-language=HABIT|explicit-guarantee-prominence=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncert",
+      "[Sacred vs. Habit Classification]: [NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit ",
+      "[Rule-Break Candidates]: #1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon ",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVer",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Renovation C\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes d"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "D": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Renovation A (Transparency)",
+      "subjectContext": "renovation",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "renovate",
+        "audience": "homeowners",
+        "desiredPosition": "premium, human, high-trust",
+        "trustRequirements": "price confidence"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"renovation\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"premium, human, high-trust\" and trust requirements [price confidence].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Targeted for disruption: convention actually WEAKENS the \"price confidence\" belief. Position challenge strength is 2.\nTrust Impact Evaluation:\n  Requirement: price confidence\n  Audience Belief: I understand what I am likely to pay and why, without feeling tricked.\n  Convention Effect: WEAKENS\n  Trust Reasoning: Hiding price until qualification increases uncertainty rather than confidence for transparency-focused buyers.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Default category convention.\nTrust Impact: NONE"
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" directly removes a trust-weakening convention to serve the objective: \"renovate\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Renovation A (Transparency)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "renovation",
+        "conventionInventory": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions",
+        "sacredVsHabitClassification": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Targeted for disruption: convention actually WEAKENS the \"price confidence\" belief. Position challenge strength is 2.\nTrust Impact Evaluation:\n  Requirement: price confidence\n  Audience Belief: I understand what I am likely to pay and why, without feeling tricked.\n  Convention Effect: WEAKENS\n  Trust Reasoning: Hiding price until qualification increases uncertainty rather than confidence for transparency-focused buyers.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Default category convention.\nTrust Impact: NONE",
+        "breakCandidates": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" directly removes a trust-weakening convention to serve the objective: \"renovate\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details",
+        "visualImplications": "[before-after-portfolio]: Abandon \"Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.\n\n[price-opacity]: Abandon \"CTA-only; 'get a quote' flows; no pricing pages\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[before-after-portfolio]: Replace \"Transformation narratives; client success stories; dramatic outcome language\" with language that encodes \"premium, human, high-trust\" for homeowners.\n\n[price-opacity]: Replace \"Custom pricing language; bespoke service framing\" with language that encodes \"premium, human, high-trust\" for homeowners.",
+        "motionImplications": "[before-after-portfolio]: Abandon \"Reveal transitions; time-lapse construction sequences\". Motion pacing must actively signal \"premium, human, high-trust\" — slower, more deliberate pacing with intentional stillness",
+        "failureRisks": "Removing before/after requires strong process visibility to replace the transformation proof signal.\n\nTransparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (certification-years-in-business, explicit-guarantee-prominence), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"homeowners\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"premium, human, high-trust\" — NOT standard category language. If the evaluator describes the work using conventional category language [before-after-portfolio, price-opacity], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Renovation A (Transparency)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Renovation A (Transparency)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\".",
+        "inputFingerprint": "SRB:cat=renovation:pos=premium, human, high-trust:trust=price confidence",
+        "outputFingerprint": "SRB:actions=before-after-portfolio=BREAK|certification-years-in-business=KEEP|price-opacity=BREAK|craftsmanship-artisan-language=BREAK|explicit-guarantee-prominence=KEEP:natures=before-after-portfolio=HABIT|certification-years-in-business=SACRED|price-opacity=HABIT|craftsmanship-artisan-language=HABIT|explicit-guarantee-prominence=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncert",
+      "[Sacred vs. Habit Classification]: [NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit ",
+      "[Rule-Break Candidates]: #1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon ",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVer",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Renovation A (Transparency)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" becau"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "E": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Renovation B (Consultation)",
+      "subjectContext": "renovation",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "renovate",
+        "audience": "homeowners",
+        "desiredPosition": "premium, human, high-trust",
+        "trustRequirements": "reliability"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"renovation\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"premium, human, high-trust\" and trust requirements [reliability].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Protected trust capability: supports \"reliability\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: reliability\n  Audience Belief: I believe the contractor will complete the work safely and reliably.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Official credentials and longevity reduce execution risk perceptions.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Default category convention.\nTrust Impact: NONE"
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Renovation B (Consultation)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "renovation",
+        "conventionInventory": "1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncertainty in irreversible, high-cost decisions\n\n2. [certification-years-in-business] \"Trust is established through certification badges and years-in-business claims\"\n   Why it exists: Risk reduction heuristics — buyers use credentialing as a shortcut for competence in unfamiliar domains\n\n3. [price-opacity] \"Pricing transparency is avoided until prospect qualification to allow premium anchoring\"\n   Why it exists: High-ticket services use scarcity and personalization framing to justify price in conversation\n\n4. [craftsmanship-artisan-language] \"Brand identity centres on craftsmanship, artisanship, and trade expertise\"\n   Why it exists: Quality differentiation in a commoditised market — trades compete on perceived craft quality\n\n5. [explicit-guarantee-prominence] \"Service guarantees must be explicit, specific, and featured prominently\"\n   Why it exists: Irreversible purchase anxiety — buyers need contractual assurance to commit to high-cost home decisions",
+        "sacredVsHabitClassification": "[NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] certification-years-in-business\nStatement: Trust is established through certification badges and years-in-business claims\nRationale: Protected trust capability: supports \"reliability\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: reliability\n  Audience Belief: I believe the contractor will complete the work safely and reliably.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Official credentials and longevity reduce execution risk perceptions.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] price-opacity\nStatement: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] craftsmanship-artisan-language\nStatement: Brand identity centres on craftsmanship, artisanship, and trade expertise\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] explicit-guarantee-prominence\nStatement: Service guarantees must be explicit, specific, and featured prominently\nRationale: Default category convention.\nTrust Impact: NONE",
+        "breakCandidates": "#1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon convention \"before-after-portfolio\" — replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Transformation narratives; client success stories; dramatic outcome language must be replaced.\nObjective link: Breaking \"before-after-portfolio\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Removing before/after requires strong process visibility to replace the transformation proof signal.\n\n---\n\n#2 [price-opacity] action:BREAK challenge-strength:2\nConvention: Pricing transparency is avoided until prospect qualification to allow premium anchoring\nProposed action: Abandon convention \"price-opacity\" — replace [CTA-only; 'get a quote' flows; no pricing pages] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"premium, human, high-trust\". Custom pricing language; bespoke service framing must be replaced.\nObjective link: Breaking \"price-opacity\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Transparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\n---\n\n#3 [craftsmanship-artisan-language] action:BREAK challenge-strength:1\nConvention: Brand identity centres on craftsmanship, artisanship, and trade expertise\nProposed action: Abandon convention \"craftsmanship-artisan-language\" — replace [Close-up material textures; hand-tool imagery; workshop photography] with design language that directly signals \"premium, human, high-trust\" for homeowners.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"premium, human, high-trust\". Artisan language; 'hand-crafted'; 'generations of expertise' must be replaced.\nObjective link: Breaking \"craftsmanship-artisan-language\" creates pattern disruption to serve the objective: \"renovate\".\nBreak risk: Abandoning craft framing requires a strong alternative differentiator — process, accountability, or human warmth.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVerbal: Established since; licensed and insured; award-winning\n\nPRESERVE/ADAPT [explicit-guarantee-prominence] (Action: KEEP): Service guarantees must be explicit, specific, and featured prominently\nVisual: Guarantee callouts; satisfaction promise badges\nVerbal: Specific guarantee terms; warranty details",
+        "visualImplications": "[before-after-portfolio]: Abandon \"Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.\n\n[price-opacity]: Abandon \"CTA-only; 'get a quote' flows; no pricing pages\". Signal \"premium, human, high-trust\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[before-after-portfolio]: Replace \"Transformation narratives; client success stories; dramatic outcome language\" with language that encodes \"premium, human, high-trust\" for homeowners.\n\n[price-opacity]: Replace \"Custom pricing language; bespoke service framing\" with language that encodes \"premium, human, high-trust\" for homeowners.",
+        "motionImplications": "[before-after-portfolio]: Abandon \"Reveal transitions; time-lapse construction sequences\". Motion pacing must actively signal \"premium, human, high-trust\" — slower, more deliberate pacing with intentional stillness",
+        "failureRisks": "Removing before/after requires strong process visibility to replace the transformation proof signal.\n\nTransparent pricing signals confidence but self-selects buyers — reduces inbound volume, increases lead quality.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (certification-years-in-business, explicit-guarantee-prominence), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"homeowners\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"premium, human, high-trust\" — NOT standard category language. If the evaluator describes the work using conventional category language [before-after-portfolio, price-opacity], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Renovation B (Consultation)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Renovation B (Consultation)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" because it opposes desired position \"premium, human, high-trust\" and has trust impact: NEUTRAL. Action details: replace [Split-screen photography; dramatic lighting contrast; empty-to-furnished comparisons] with design language that actively signals \"premium, human, high-trust\". Verbal implications: [Transformation narratives; client success stories; dramatic outcome language] → positioning language that encodes \"premium, human, high-trust\" for homeowners. Motion pacing implications: Reveal transitions; time-lapse construction sequences → pacing that embodies the desired position. This directly serves the objective: \"renovate\".",
+        "inputFingerprint": "SRB:cat=renovation:pos=premium, human, high-trust:trust=reliability",
+        "outputFingerprint": "SRB:actions=before-after-portfolio=BREAK|certification-years-in-business=KEEP|price-opacity=BREAK|craftsmanship-artisan-language=BREAK|explicit-guarantee-prominence=KEEP:natures=before-after-portfolio=HABIT|certification-years-in-business=SACRED|price-opacity=HABIT|craftsmanship-artisan-language=HABIT|explicit-guarantee-prominence=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [before-after-portfolio] \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\"\n   Why it exists: Visual transformation proof reduces purchase uncert",
+      "[Sacred vs. Habit Classification]: [NATURE: HABIT] [ACTION: BREAK] before-after-portfolio\nStatement: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nRationale: Position-driven habit ",
+      "[Rule-Break Candidates]: #1 [before-after-portfolio] action:BREAK challenge-strength:2\nConvention: Portfolio photography shows dramatic before/after transformations as the primary proof of capability\nProposed action: Abandon ",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [certification-years-in-business] (Action: KEEP): Trust is established through certification badges and years-in-business claims\nVisual: Badge placements; founding year; award logos\nVer",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Renovation B (Consultation)\": The convention \"Portfolio photography shows dramatic before/after transformations as the primary proof of capability\" is target for \"BREAK\" becau"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "F": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Skincare A (Activism)",
+      "subjectContext": "skincare",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "create a distinctive campaign",
+        "audience": "skincare buyers",
+        "desiredPosition": "youth activism and cultural energy",
+        "trustRequirements": "environmental credibility"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"skincare\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"youth activism and cultural energy\" and trust requirements [environmental credibility].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: SACRED] [ACTION: BEND] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Structurally sacred convention challenged by position. We BEND it to satisfy both constraints.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Protected trust capability: supports \"environmental credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: environmental credibility\n  Audience Belief: I believe the brand's environmental claims are true and verifiable.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Third-party certification directly validates self-declared ecological claims."
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [aspirational-lifestyle-photography] action:BREAK challenge-strength:3\nConvention: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nProposed action: Abandon convention \"aspirational-lifestyle-photography\" — replace [Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"youth activism and cultural energy\". Personal transformation testimonials; 'before/after' language must be replaced.\nObjective link: Breaking \"aspirational-lifestyle-photography\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Documentary or raw photography signals authenticity but risks brand elegance perception.\n\n---\n\n#2 [benefit-storytelling-over-identity] action:BREAK challenge-strength:3\nConvention: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nProposed action: Abandon convention \"benefit-storytelling-over-identity\" — replace [Product hero with lifestyle context; focus on personal outcome] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"youth activism and cultural energy\". First-person transformation narrative; 'I' statements; skin-outcome language must be replaced.\nObjective link: Breaking \"benefit-storytelling-over-identity\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Strong identity positioning wins a niche but risks exiting mainstream — requires deliberate positioning choice.\n\n---\n\n#3 [clinical-efficacy-frame] action:BEND challenge-strength:2\nConvention: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nProposed action: Bend convention \"clinical-efficacy-frame\" — replace [Clean white or sterile environments; clinical photography; ingredient call-outs] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"youth activism and cultural energy\". Technical language; dermatologist endorsements; study references must be replaced.\nObjective link: Bending \"clinical-efficacy-frame\" adapts structural code to serve the objective: \"create a distinctive campaign\".\nBreak risk: Breaking clinical efficacy proof without an alternative trust signal causes category exit — the buyer no longer believes the product works."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: BEND): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [wellness-tone] (Action: KEEP): Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nVisual: Soft lighting; muted palette; flowing typography; nature imagery\nVerbal: Soothing, empowering, personal — 'your skin', 'nourish', 'glow'\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Skincare A (Activism)\": The convention \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\" is target for \"BREAK\" because it opposes desired position \"youth activism and cultural energy\" and has trust impact: NEUTRAL. Action details: replace [Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models] with design language that actively signals \"youth activism and cultural energy\". Verbal implications: [Personal transformation testimonials; 'before/after' language] → positioning language that encodes \"youth activism and cultural energy\" for skincare buyers. Motion pacing implications: Slow beauty reveals; glowing skin close-ups; natural light flares → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "skincare",
+        "conventionInventory": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority",
+        "sacredVsHabitClassification": "[NATURE: SACRED] [ACTION: BEND] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Structurally sacred convention challenged by position. We BEND it to satisfy both constraints.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Protected trust capability: supports \"environmental credibility\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: environmental credibility\n  Audience Belief: I believe the brand's environmental claims are true and verifiable.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Third-party certification directly validates self-declared ecological claims.",
+        "breakCandidates": "#1 [aspirational-lifestyle-photography] action:BREAK challenge-strength:3\nConvention: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nProposed action: Abandon convention \"aspirational-lifestyle-photography\" — replace [Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"youth activism and cultural energy\". Personal transformation testimonials; 'before/after' language must be replaced.\nObjective link: Breaking \"aspirational-lifestyle-photography\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Documentary or raw photography signals authenticity but risks brand elegance perception.\n\n---\n\n#2 [benefit-storytelling-over-identity] action:BREAK challenge-strength:3\nConvention: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nProposed action: Abandon convention \"benefit-storytelling-over-identity\" — replace [Product hero with lifestyle context; focus on personal outcome] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"youth activism and cultural energy\". First-person transformation narrative; 'I' statements; skin-outcome language must be replaced.\nObjective link: Breaking \"benefit-storytelling-over-identity\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Strong identity positioning wins a niche but risks exiting mainstream — requires deliberate positioning choice.\n\n---\n\n#3 [clinical-efficacy-frame] action:BEND challenge-strength:2\nConvention: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nProposed action: Bend convention \"clinical-efficacy-frame\" — replace [Clean white or sterile environments; clinical photography; ingredient call-outs] with design language that directly signals \"youth activism and cultural energy\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 2): Directly aligned with desired position \"youth activism and cultural energy\". Technical language; dermatologist endorsements; study references must be replaced.\nObjective link: Bending \"clinical-efficacy-frame\" adapts structural code to serve the objective: \"create a distinctive campaign\".\nBreak risk: Breaking clinical efficacy proof without an alternative trust signal causes category exit — the buyer no longer believes the product works.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: BEND): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [wellness-tone] (Action: KEEP): Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nVisual: Soft lighting; muted palette; flowing typography; nature imagery\nVerbal: Soothing, empowering, personal — 'your skin', 'nourish', 'glow'\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language",
+        "visualImplications": "[aspirational-lifestyle-photography]: Abandon \"Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models\". Signal \"youth activism and cultural energy\" through visual language that directly encodes the positioning intent.\n\n[benefit-storytelling-over-identity]: Abandon \"Product hero with lifestyle context; focus on personal outcome\". Signal \"youth activism and cultural energy\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[aspirational-lifestyle-photography]: Replace \"Personal transformation testimonials; 'before/after' language\" with language that encodes \"youth activism and cultural energy\" for skincare buyers.\n\n[benefit-storytelling-over-identity]: Replace \"First-person transformation narrative; 'I' statements; skin-outcome language\" with language that encodes \"youth activism and cultural energy\" for skincare buyers.",
+        "motionImplications": "[aspirational-lifestyle-photography]: Abandon \"Slow beauty reveals; glowing skin close-ups; natural light flares\". Motion pacing must actively signal \"youth activism and cultural energy\" — energetic, rhythmic editing — motion that carries cultural forward-motion",
+        "failureRisks": "Documentary or raw photography signals authenticity but risks brand elegance perception.\n\nStrong identity positioning wins a niche but risks exiting mainstream — requires deliberate positioning choice.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (clinical-efficacy-frame, sustainability-third-party-validation), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"skincare buyers\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"youth activism and cultural energy\" — NOT standard category language. If the evaluator describes the work using conventional category language [aspirational-lifestyle-photography, benefit-storytelling-over-identity], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Skincare A (Activism)\": The convention \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\" is target for \"BREAK\" because it opposes desired position \"youth activism and cultural energy\" and has trust impact: NEUTRAL. Action details: replace [Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models] with design language that actively signals \"youth activism and cultural energy\". Verbal implications: [Personal transformation testimonials; 'before/after' language] → positioning language that encodes \"youth activism and cultural energy\" for skincare buyers. Motion pacing implications: Slow beauty reveals; glowing skin close-ups; natural light flares → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Skincare A (Activism)\": The convention \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\" is target for \"BREAK\" because it opposes desired position \"youth activism and cultural energy\" and has trust impact: NEUTRAL. Action details: replace [Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models] with design language that actively signals \"youth activism and cultural energy\". Verbal implications: [Personal transformation testimonials; 'before/after' language] → positioning language that encodes \"youth activism and cultural energy\" for skincare buyers. Motion pacing implications: Slow beauty reveals; glowing skin close-ups; natural light flares → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\".",
+        "inputFingerprint": "SRB:cat=skincare:pos=youth activism and cultural energy:trust=environmental credibility",
+        "outputFingerprint": "SRB:actions=clinical-efficacy-frame=BEND|wellness-tone=KEEP|aspirational-lifestyle-photography=BREAK|benefit-storytelling-over-identity=BREAK|sustainability-third-party-validation=KEEP:natures=clinical-efficacy-frame=SACRED|wellness-tone=HABIT|aspirational-lifestyle-photography=HABIT|benefit-storytelling-over-identity=HABIT|sustainability-third-party-validation=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-",
+      "[Sacred vs. Habit Classification]: [NATURE: SACRED] [ACTION: BEND] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/afte",
+      "[Rule-Break Candidates]: #1 [aspirational-lifestyle-photography] action:BREAK challenge-strength:3\nConvention: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable context",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [clinical-efficacy-frame] (Action: BEND): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Skincare A (Activism)\": The convention \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\" is target for \"BRE"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "G": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "Skincare B (Transparency)",
+      "subjectContext": "skincare",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "objective": "create a distinctive campaign",
+        "audience": "skincare buyers",
+        "desiredPosition": "clinical proof and radical transparency",
+        "trustRequirements": "efficacy"
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"skincare\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"clinical proof and radical transparency\" and trust requirements [efficacy].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Protected trust capability: supports \"efficacy\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: efficacy\n  Audience Belief: I believe the product is scientifically formulated and will actually work.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Clinical framework directly supports safety and efficacy beliefs. Breaking it completely destroys trust.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Default category convention.\nTrust Impact: NONE"
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [wellness-tone] action:BREAK challenge-strength:3\nConvention: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nProposed action: Abandon convention \"wellness-tone\" — replace [Soft lighting; muted palette; flowing typography; nature imagery] with design language that directly signals \"clinical proof and radical transparency\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"clinical proof and radical transparency\". Soothing, empowering, personal — 'your skin', 'nourish', 'glow' must be replaced.\nObjective link: Breaking \"wellness-tone\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Disruption of wellness tone is legible and distinctive if paired with a credible replacement trust signal."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [aspirational-lifestyle-photography] (Action: KEEP): Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nVisual: Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models\nVerbal: Personal transformation testimonials; 'before/after' language\n\nPRESERVE/ADAPT [benefit-storytelling-over-identity] (Action: KEEP): Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nVisual: Product hero with lifestyle context; focus on personal outcome\nVerbal: First-person transformation narrative; 'I' statements; skin-outcome language\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"Skincare B (Transparency)\": The convention \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\" is target for \"BREAK\" because it opposes desired position \"clinical proof and radical transparency\" and has trust impact: NEUTRAL. Action details: replace [Soft lighting; muted palette; flowing typography; nature imagery] with design language that actively signals \"clinical proof and radical transparency\". Verbal implications: [Soothing, empowering, personal — 'your skin', 'nourish', 'glow'] → positioning language that encodes \"clinical proof and radical transparency\" for skincare buyers. Motion pacing implications: Flowing, organic motion; slow dissolves; gentle parallax → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "skincare",
+        "conventionInventory": "1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-first regulatory environment and consumer trust deficit in beauty claims — buyers default to scientific-looking proof\n\n2. [wellness-tone] \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\"\n   Why it exists: Anxiety-reduction is the primary purchase emotion in personal care; urgency triggers skepticism\n\n3. [aspirational-lifestyle-photography] \"Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\"\n   Why it exists: Social comparison drives category desire; achievable aspiration reduces rejection\n\n4. [benefit-storytelling-over-identity] \"Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\"\n   Why it exists: Broad audience appeal: political or cultural positioning risks alienating mainstream buyers\n\n5. [sustainability-third-party-validation] \"Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\"\n   Why it exists: Greenwashing skepticism has trained buyers to require proof from external authority",
+        "sacredVsHabitClassification": "[NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nRationale: Protected trust capability: supports \"efficacy\" belief. Kept as-is.\nTrust Impact Evaluation:\n  Requirement: efficacy\n  Audience Belief: I believe the product is scientifically formulated and will actually work.\n  Convention Effect: SUPPORTS\n  Trust Reasoning: Clinical framework directly supports safety and efficacy beliefs. Breaking it completely destroys trust.\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] wellness-tone\nStatement: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] aspirational-lifestyle-photography\nStatement: Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] benefit-storytelling-over-identity\nStatement: Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] sustainability-third-party-validation\nStatement: Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nRationale: Default category convention.\nTrust Impact: NONE",
+        "breakCandidates": "#1 [wellness-tone] action:BREAK challenge-strength:3\nConvention: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nProposed action: Abandon convention \"wellness-tone\" — replace [Soft lighting; muted palette; flowing typography; nature imagery] with design language that directly signals \"clinical proof and radical transparency\" for skincare buyers.\nStrategic value: POSITION-DRIVEN (strength: 3): Directly aligned with desired position \"clinical proof and radical transparency\". Soothing, empowering, personal — 'your skin', 'nourish', 'glow' must be replaced.\nObjective link: Breaking \"wellness-tone\" creates pattern disruption to serve the objective: \"create a distinctive campaign\".\nBreak risk: Disruption of wellness tone is legible and distinctive if paired with a credible replacement trust signal.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\nVisual: Clean white or sterile environments; clinical photography; ingredient call-outs\nVerbal: Technical language; dermatologist endorsements; study references\n\nPRESERVE/ADAPT [aspirational-lifestyle-photography] (Action: KEEP): Photography depicts aspirational but accessible skin — conventionally attractive models in soft achievable contexts\nVisual: Golden-hour lighting; soft focus; diverse-but-conventionally-beautiful models\nVerbal: Personal transformation testimonials; 'before/after' language\n\nPRESERVE/ADAPT [benefit-storytelling-over-identity] (Action: KEEP): Storytelling centres product benefits and personal transformation — cultural or political identity is avoided\nVisual: Product hero with lifestyle context; focus on personal outcome\nVerbal: First-person transformation narrative; 'I' statements; skin-outcome language\n\nPRESERVE/ADAPT [sustainability-third-party-validation] (Action: KEEP): Sustainability claims require visible certification logos or third-party validation — self-declared claims are not sufficient\nVisual: Certification badge placement; ingredient sourcing documentation\nVerbal: Specific verifiable claims; supply chain transparency language",
+        "visualImplications": "[wellness-tone]: Abandon \"Soft lighting; muted palette; flowing typography; nature imagery\". Signal \"clinical proof and radical transparency\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[wellness-tone]: Replace \"Soothing, empowering, personal — 'your skin', 'nourish', 'glow'\" with language that encodes \"clinical proof and radical transparency\" for skincare buyers.",
+        "motionImplications": "[wellness-tone]: Abandon \"Flowing, organic motion; slow dissolves; gentle parallax\". Motion pacing must actively signal \"clinical proof and radical transparency\" — motion calibrated to the desired audience response rather than the category default",
+        "failureRisks": "Disruption of wellness tone is legible and distinctive if paired with a credible replacement trust signal.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (clinical-efficacy-frame, sustainability-third-party-validation), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"skincare buyers\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"clinical proof and radical transparency\" — NOT standard category language. If the evaluator describes the work using conventional category language [wellness-tone], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"Skincare B (Transparency)\": The convention \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\" is target for \"BREAK\" because it opposes desired position \"clinical proof and radical transparency\" and has trust impact: NEUTRAL. Action details: replace [Soft lighting; muted palette; flowing typography; nature imagery] with design language that actively signals \"clinical proof and radical transparency\". Verbal implications: [Soothing, empowering, personal — 'your skin', 'nourish', 'glow'] → positioning language that encodes \"clinical proof and radical transparency\" for skincare buyers. Motion pacing implications: Flowing, organic motion; slow dissolves; gentle parallax → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"Skincare B (Transparency)\": The convention \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\" is target for \"BREAK\" because it opposes desired position \"clinical proof and radical transparency\" and has trust impact: NEUTRAL. Action details: replace [Soft lighting; muted palette; flowing typography; nature imagery] with design language that actively signals \"clinical proof and radical transparency\". Verbal implications: [Soothing, empowering, personal — 'your skin', 'nourish', 'glow'] → positioning language that encodes \"clinical proof and radical transparency\" for skincare buyers. Motion pacing implications: Flowing, organic motion; slow dissolves; gentle parallax → pacing that embodies the desired position. This directly serves the objective: \"create a distinctive campaign\".",
+        "inputFingerprint": "SRB:cat=skincare:pos=clinical proof and radical transparency:trust=efficacy",
+        "outputFingerprint": "SRB:actions=clinical-efficacy-frame=KEEP|wellness-tone=BREAK|aspirational-lifestyle-photography=KEEP|benefit-storytelling-over-identity=KEEP|sustainability-third-party-validation=KEEP:natures=clinical-efficacy-frame=SACRED|wellness-tone=HABIT|aspirational-lifestyle-photography=HABIT|benefit-storytelling-over-identity=HABIT|sustainability-third-party-validation=SACRED"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [clinical-efficacy-frame] \"Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)\"\n   Why it exists: Safety-",
+      "[Sacred vs. Habit Classification]: [NATURE: SACRED] [ACTION: KEEP] clinical-efficacy-frame\nStatement: Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/afte",
+      "[Rule-Break Candidates]: #1 [wellness-tone] action:BREAK challenge-strength:3\nConvention: Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\nProposed action: Abandon convention \"wellne",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [clinical-efficacy-frame] (Action: KEEP): Efficacy claims must be clinically supported or implied through lab-adjacent aesthetic (white space, scientific language, before/after imagery)",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"Skincare B (Transparency)\": The convention \"Brand tone is gentle, aspirational, and wellness-adjacent — never confrontational or urgent\" is target for \"BREAK\" because it oppos"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}
