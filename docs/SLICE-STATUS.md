@@ -50,3 +50,31 @@
 - **Provider execute calls**: 0
 - **Execution mode**: NOT_EXECUTED (PLAN_ONLY)
 
+## SLICE 3D.1 — Sandbox Execution Infrastructure
+**Status: FROZEN (HUMAN SECURITY APPROVED 2026-08-07)**
+
+- **Sandbox direct tests**: 20 / 20 PASS
+- **Full suite tests**: 179 / 179 PASS
+- **Default production adapters**: 0
+- **Real providers connected**: 0
+- **Real external side effects**: 0
+- **Execution intent fingerprints**: DETERMINISTIC
+- **Approval binding**: ENFORCED (project, brain, plan, resource, capability, provider, authority, fingerprint)
+- **Authority enforcement**: DEFENSE-IN-DEPTH (integration layer + sandbox layer)
+- **Cost governance**: ENFORCED
+- **Lifecycle governance**: TEST_ONLY adapters only
+- **Idempotency**: ENFORCED via receiptStore + executionIntentFingerprint
+- **Project Brain**: IMMUTABLE
+- **Continuation provenance**: RECORDED
+- **Fabricated provider output**: NONE
+
+### Evidence
+| Packet | State |
+|---|---|
+| `creative-os-slice-3d1` | **CURRENT** |
+
+## SLICE 3D.2 — First Real Provider Pilot
+**Status: NOT STARTED**
+
+- Real provider execution: NONE
+- Awaiting explicit human approval before implementation.

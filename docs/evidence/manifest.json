@@ -27,6 +27,13 @@
       "provenanceState": "CURRENT",
       "description": "Creative OS Slice 3C External Capability & Film Kit Planning Layer evidence packet.",
       "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3d1",
+      "path": "docs/evidence/creative-os-slice-3d1",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3D.1 Sandbox Execution Infrastructure security evidence packet. Human Security Approved 2026-08-07. Zero real providers. Zero external side effects.",
+      "version": "v1"
     }
   ],
   "supersededPackets": [
