@@ -35,6 +35,13 @@ export type ProgressiveLoadLevel =
   | "LEVEL_2_OPERATIONAL_INSTRUCTIONS"
   | "LEVEL_3_PROVIDER_MANIFEST"
 
+export type RecommendationLabel =
+  | "APPROVED_RECOMMENDATION"
+  | "VALIDATED_FALLBACK"
+  | "EXPERIMENTAL_CANDIDATE"
+  | "DISCOVERY_ONLY"
+  | "NO_MATCH"
+
 export interface ActivationRule {
   requiredPhase?: CreativeProjectPhase
   requiredEvaluator?: string
@@ -45,6 +52,7 @@ export interface CapabilityMetadata {
   actions: string[]
   artifactTypes: string[]
   capabilityGaps: string[]
+  requiredAuthority: AuthorityCeiling
 }
 
 export interface ResourceMetadata {
@@ -52,14 +60,13 @@ export interface ResourceMetadata {
   name: string
   type: ResourceType
   lifecycleState: ResourceLifecycleState
-  authorityCeiling: AuthorityCeiling
+  maxExecutionAuthority: AuthorityCeiling
   license: string
   provenance: string
   sourceUrl?: string
   modes: CreativeProjectMode[]
   capabilities: CapabilityMetadata
   activationRules: ActivationRule[]
-  // Security levels (LEVEL_2/LEVEL_3 are strictly inaccessible at runtime)
   level2Data?: {
     operationalInstructions: string
   }
@@ -73,12 +80,13 @@ export interface ResourceEvaluation {
   name: string
   type: ResourceType
   lifecycleState: ResourceLifecycleState
-  authorityCeiling: AuthorityCeiling
+  maxExecutionAuthority: AuthorityCeiling
   isRecommendable: boolean
   suitabilityScore: number
   rejectionReason?: string
   matchingCapabilities: string[]
   progressiveLoadLevel: ProgressiveLoadLevel
+  recommendationLabel: RecommendationLabel
 }
 
 export interface RouterInputs {
@@ -89,5 +97,5 @@ export interface RouterInputs {
   capabilityGap?: string
   activationTags?: string[]
   lifecycleState?: ResourceLifecycleState
-  authorityCeiling?: AuthorityCeiling
+  currentAuthority?: AuthorityCeiling
 }
