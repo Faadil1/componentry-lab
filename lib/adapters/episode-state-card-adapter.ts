@@ -39,6 +39,14 @@ export function episodeStateSnapshotToCardProps(
     }
   }
 
+  // Rule 1b: Snapshot with unavailable reason (explicit source failure)
+  if (snapshot.unavailableReason) {
+    return {
+      variant: "unavailable",
+      unavailableReason: snapshot.unavailableReason,
+    }
+  }
+
   // Rule 2: Valid publication (both fields required)
   if (
     snapshot.publication?.youtubeVideoId &&
@@ -60,10 +68,11 @@ export function episodeStateSnapshotToCardProps(
     }
   }
 
-  // Rule 3: Explicit approval (completed review + lastDecision indicating pass)
+  // Rule 3: Explicit approval (completed review + lastDecision indicating pass or pass-with-conditions)
   if (
     snapshot.reviewStatus === "completed" &&
-    snapshot.lastDecision?.outcome === "pass"
+    (snapshot.lastDecision?.outcome === "pass" ||
+      snapshot.lastDecision?.outcome === "pass-with-conditions")
   ) {
     return {
       variant: "approved",
@@ -101,6 +110,10 @@ export function episodeStateSnapshotToCardProps(
   if (snapshot.blockers.length > 0) {
     const unresolvedBlockers = snapshot.blockers.filter((b) => !b.resolvedAt)
     if (unresolvedBlockers.length > 0) {
+      const blockers: readonly [
+        EpisodeWorkflowBlocker,
+        ...EpisodeWorkflowBlocker[]
+      ] = [unresolvedBlockers[0], ...unresolvedBlockers.slice(1)]
       return {
         variant: "blocked" as const,
         channelName: snapshot.channelName,
@@ -108,10 +121,7 @@ export function episodeStateSnapshotToCardProps(
         workflowState: snapshot.workflowState,
         workflowStateLabel: snapshot.workflowStateLabel,
         humanReviewStatus: snapshot.reviewStatus,
-        blockers: unresolvedBlockers as unknown as readonly [
-          EpisodeWorkflowBlocker,
-          ...EpisodeWorkflowBlocker[]
-        ],
+        blockers,
         episodeNumber: snapshot.episodeNumber,
         lastDecision: snapshot.lastDecision,
         nextAuthorizedAction:

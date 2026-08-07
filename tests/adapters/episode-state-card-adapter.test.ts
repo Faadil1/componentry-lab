@@ -1,12 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { test, describe } = require("node:test")
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const assert = require("node:assert/strict")
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { episodeStateSnapshotToCardProps } = require("../../lib/adapters/episode-state-card-adapter")
- 
- 
-const {
+import { test, describe } from "node:test"
+import assert from "node:assert/strict"
+import { episodeStateSnapshotToCardProps } from "@/lib/adapters/episode-state-card-adapter"
+import {
   snapshotDefaultEditorial,
   snapshotDefaultPackaging,
   snapshotDefaultMasterEdit,
@@ -25,8 +20,7 @@ const {
   snapshotMalformedPublicationMissingId,
   snapshotMalformedPublicationMissingDate,
   snapshotReworkDecision,
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-} = require("../../lib/fixtures/episode-state-snapshots")
+} from "@/lib/fixtures/episode-state-snapshots"
 
 describe("episodeStateSnapshotToCardProps", () => {
   // ─── NULL AND UNAVAILABLE ─────────────────────────────────
@@ -36,15 +30,17 @@ describe("episodeStateSnapshotToCardProps", () => {
     assert.strictEqual(result.variant, "unavailable")
   })
 
-  test("2. unavailable reason preserved in output", () => {
+  test("2. unavailableReason input → unavailable + reason preserved", () => {
     const result = episodeStateSnapshotToCardProps(
       snapshotUnavailableManifestFetchFailed
     )
     assert.strictEqual(result.variant, "unavailable")
-    assert.strictEqual(
-      snapshotUnavailableManifestFetchFailed.unavailableReason,
-      "MANIFEST_FETCH_FAILED: upstream returned 404"
-    )
+    if (result.variant === "unavailable") {
+      assert.strictEqual(
+        result.unavailableReason,
+        "MANIFEST_FETCH_FAILED: upstream returned 404"
+      )
+    }
   })
 
   // ─── DEFAULT VARIANT ──────────────────────────────────────
@@ -205,7 +201,7 @@ describe("episodeStateSnapshotToCardProps", () => {
   // ─── INVARIANTS ────────────────────────────────────────────
 
   test("21. adapter does not mutate snapshot", () => {
-    const snapshot = { ...snapshotDefaultEditorial }
+    const snapshot = structuredClone(snapshotDefaultEditorial)
     const original = JSON.stringify(snapshot)
     episodeStateSnapshotToCardProps(snapshot)
     const after = JSON.stringify(snapshot)
@@ -267,15 +263,15 @@ describe("episodeStateSnapshotToCardProps", () => {
     assert(typeof result.publishedAt === "string")
   })
 
-  test("28. variant=unavailable has no required props", () => {
-    const result = episodeStateSnapshotToCardProps(snapshotUnavailableNull)
-    assert(result.variant === "unavailable")
-    assert(
-      !("channelName" in result) || result.channelName === undefined
+  test("28. variant=unavailable with reason", () => {
+    const result = episodeStateSnapshotToCardProps(
+      snapshotUnavailableManifestFetchFailed
     )
+    assert(result.variant === "unavailable")
+    if (result.variant === "unavailable") {
+      assert(result.unavailableReason !== undefined)
+    }
   })
-
-  // ─── PRECEDENCE DOCUMENTATION ──────────────────────────────
 
   test("29. precedence: published > approved > human-review-required > blocked > default", () => {
     assert.strictEqual(
