@@ -199,6 +199,46 @@ const unavailableInvalidTitle: EpisodeStateCardProps = {
   title: "Episode 1",
 }
 
+// Invalid (gap 1/4): approved variant with blockers
+// blockers is `never` in ApprovedEpisodeStateCardProps — @ts-expect-error must be on the property line
+const approvedInvalidBlockers: ApprovedEpisodeStateCardProps = {
+  variant: "approved",
+  channelName: "Wealth Decoded",
+  title: "Episode 1",
+  workflowState: "MASTER_APPROVED",
+  humanReviewStatus: "completed",
+  // @ts-expect-error blockers is never in ApprovedEpisodeStateCardProps
+  blockers: [{ id: "b1", label: "test", severity: "critical" as const }],
+}
+
+// Invalid (gap 2/4): unavailable variant with humanReviewStatus
+// humanReviewStatus is `never` in UnavailableEpisodeStateCardProps
+const unavailableInvalidHumanReview: UnavailableEpisodeStateCardProps = {
+  variant: "unavailable",
+  // @ts-expect-error humanReviewStatus is never in UnavailableEpisodeStateCardProps
+  humanReviewStatus: "required" as const,
+}
+
+// Invalid (gap 3/4): unavailable variant with nextAuthorizedAction
+// nextAuthorizedAction is `never` in UnavailableEpisodeStateCardProps
+const unavailableInvalidNextAction: UnavailableEpisodeStateCardProps = {
+  variant: "unavailable",
+  // @ts-expect-error nextAuthorizedAction is never in UnavailableEpisodeStateCardProps
+  nextAuthorizedAction: "Submit for review",
+}
+
+// Invalid (gap 4/4): any variant with reduceMotion (removed from public API)
+// reduceMotion does not exist on any variant type
+const anyVariantInvalidReduceMotion: DefaultEpisodeStateCardProps = {
+  variant: "default",
+  channelName: "Wealth Decoded",
+  title: "Episode 1",
+  workflowState: "EDITORIAL",
+  humanReviewStatus: "not-required",
+  // @ts-expect-error reduceMotion does not exist on DefaultEpisodeStateCardProps (removed from public API)
+  reduceMotion: true,
+}
+
 // ============================================================================
 // VARIANT DISCRIMINATOR VERIFICATION
 // ============================================================================
