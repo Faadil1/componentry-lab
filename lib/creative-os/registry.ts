@@ -5,7 +5,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_sacred_rules_breaker",
     name: "Sacred Rules Breaker",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE",
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b-v3/)
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:sacred-rules-breaker",
@@ -22,7 +22,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_somatic_response_design",
     name: "Somatic Response Design",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE",
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b-v3/)
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:somatic-response",
@@ -56,7 +56,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_cognitive_metaphor_illustrator",
     name: "Cognitive Metaphor Illustrator",
     type: "CORE_METHOD",
-    lifecycleState: "AUDITED",
+    lifecycleState: "TEST_CANDIDATE", // Reset from AUDITED to TEST_CANDIDATE as requested
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:cognitive-metaphor",
@@ -90,7 +90,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_library_first_composition_router",
     name: "Library-First Composition Router",
     type: "CORE_METHOD",
-    lifecycleState: "AUDITED",
+    lifecycleState: "TEST_CANDIDATE", // Reset from AUDITED to TEST_CANDIDATE as requested
     maxExecutionAuthority: "PREPARE",
     license: "MIT",
     provenance: "internal:method:library-first-router",
