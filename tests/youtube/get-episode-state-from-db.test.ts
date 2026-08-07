@@ -5,11 +5,15 @@ import { resolve } from "path"
 config({ path: resolve(process.cwd(), ".env.local") })
 
 import postgres from "postgres"
+import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
 import { getEpisodeStateFromDb, listEpisodeStatesFromDb } from "../../lib/youtube/get-episode-state-from-db-core.ts"
+import type { EpisodeRepository } from "../../lib/persistence/episode-repository-core.ts"
+import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
 
 const TEST_EPISODE_ID = "db-provider-test-episode-001"
 
 let sql: ReturnType<typeof postgres>
+let repository: EpisodeRepository
 
 describe("Database Provider (Neon)", () => {
   before(async () => {
@@ -22,6 +26,7 @@ describe("Database Provider (Neon)", () => {
     }
 
     sql = postgres(databaseUrl)
+    repository = createEpisodeRepository(sql as unknown as PostgresSql)
 
     // Clean up test data
     await sql`DELETE FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}`
@@ -82,7 +87,7 @@ describe("Database Provider (Neon)", () => {
   })
 
   test("1. get real Neon episode", async () => {
-    const snapshot = await getEpisodeStateFromDb(TEST_EPISODE_ID)
+    const snapshot = await getEpisodeStateFromDb(repository, TEST_EPISODE_ID)
 
     assert.ok(snapshot)
     assert.strictEqual(snapshot!.episodeId, TEST_EPISODE_ID)
@@ -91,29 +96,29 @@ describe("Database Provider (Neon)", () => {
   })
 
   test("2. unknown episode returns null", async () => {
-    const snapshot = await getEpisodeStateFromDb("nonexistent-episode-xyz")
+    const snapshot = await getEpisodeStateFromDb(repository, "nonexistent-episode-xyz")
 
     assert.strictEqual(snapshot, null)
   })
 
   test("3. blockers included in snapshot", async () => {
-    const snapshot = await getEpisodeStateFromDb(TEST_EPISODE_ID)
+    const snapshot = await getEpisodeStateFromDb(repository, TEST_EPISODE_ID)
 
     assert.ok(snapshot)
     assert.ok(snapshot!.blockers.length > 0)
     assert.strictEqual(snapshot!.blockers[0].label, "Test blocker")
   })
 
-  test("4. source indicates database", async () => {
-    const snapshot = await getEpisodeStateFromDb(TEST_EPISODE_ID)
+  test("4. source includes state version", async () => {
+    const snapshot = await getEpisodeStateFromDb(repository, TEST_EPISODE_ID)
 
     assert.ok(snapshot)
     assert.ok(snapshot!.source)
-    assert.strictEqual(snapshot!.source!.version, "database")
+    assert.ok(snapshot!.source!.version)
   })
 
   test("5. list episodes from database", async () => {
-    const snapshots = await listEpisodeStatesFromDb()
+    const snapshots = await listEpisodeStatesFromDb(repository)
 
     assert.ok(snapshots.length > 0)
     const found = snapshots.find((s) => s.episodeId === TEST_EPISODE_ID)

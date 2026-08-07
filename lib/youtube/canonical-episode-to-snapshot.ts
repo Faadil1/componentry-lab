@@ -14,6 +14,7 @@ import type {
   EpisodeStateSnapshot,
   EpisodeWorkflowBlocker,
   EpisodeWorkflowDecision,
+  EpisodeReviewStatus,
 } from "../domain/episode-state.ts"
 
 /**
@@ -41,6 +42,25 @@ function mapDecision(decision: CanonicalDecision): EpisodeWorkflowDecision {
 }
 
 /**
+ * Map canonical review status to domain review status.
+ * Canonical: not-required | pending | in-progress | completed
+ * Domain: not-required | required | completed
+ */
+function mapReviewStatus(
+  canonical: "not-required" | "pending" | "in-progress" | "completed"
+): EpisodeReviewStatus {
+  switch (canonical) {
+    case "not-required":
+      return "not-required"
+    case "pending":
+    case "in-progress":
+      return "required"
+    case "completed":
+      return "completed"
+  }
+}
+
+/**
  * Map canonical episode from persistence layer to domain snapshot for UI.
  *
  * @param canonical episode from Neon
@@ -56,23 +76,22 @@ export function mapCanonicalEpisodeToSnapshot(
     title: canonical.title,
 
     workflowState: canonical.workflowState,
-    reviewStatus: canonical.reviewStatus as "not-required" | "required" | "completed",
+    reviewStatus: mapReviewStatus(canonical.reviewStatus),
 
     blockers: canonical.blockers.map(mapBlocker),
 
     lastDecision: canonical.latestDecision ? mapDecision(canonical.latestDecision) : undefined,
 
     source: {
-      version: "database",
-      fetchedAt: new Date().toISOString(),
+      version: `${canonical.stateVersion}`,
     },
   }
 
-  // Add publication info if published
-  if (canonical.youtubeVideoId) {
+  // Add publication info ONLY if both video ID and timestamp are present
+  if (canonical.youtubeVideoId && canonical.publishedAt) {
     snapshot.publication = {
       youtubeVideoId: canonical.youtubeVideoId,
-      publishedAt: canonical.publishedAt || new Date().toISOString(),
+      publishedAt: canonical.publishedAt,
     }
   }
 

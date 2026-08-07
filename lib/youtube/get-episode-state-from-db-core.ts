@@ -1,32 +1,28 @@
 // ─────────────────────────────────────────────────────────────
 // Episode State Provider (Database-Backed Core)
 // ─────────────────────────────────────────────────────────────
-// INTERNAL - TEST USE ONLY
-// Core database provider logic without server-only boundary.
-// Testable by Node for integration testing.
-// Application code must import from get-episode-state-from-db.ts
+// INTERNAL - Pure provider logic, testable by Node.
+// Accepts EpisodeRepository as dependency (not imported directly).
+// Application code must use get-episode-state-from-db.ts wrapper.
 // ─────────────────────────────────────────────────────────────
 
-import { getDatabase } from "../persistence/db.ts"
-import { createEpisodeRepository, type PostgresSql } from "../persistence/episode-repository-live-core.ts"
+import type { EpisodeRepository } from "../persistence/episode-repository-core.ts"
 import { mapCanonicalEpisodeToSnapshot } from "./canonical-episode-to-snapshot.ts"
 import type { EpisodeStateSnapshot } from "../domain/episode-state.ts"
 
 /**
  * Get episode state from Neon database.
- * Requires DATABASE_URL to be set.
  *
+ * @param repository episode repository instance
  * @param episodeId episode identifier
  * @returns snapshot for rendering, or null if not found
- * @throws if DATABASE_URL is not set
+ * @throws if database operation fails
  */
 export async function getEpisodeStateFromDb(
+  repository: EpisodeRepository,
   episodeId: string
 ): Promise<EpisodeStateSnapshot | null> {
   try {
-    const sql = getDatabase()
-    const repository = createEpisodeRepository(sql as unknown as PostgresSql)
-
     const canonical = await repository.getEpisodeById(episodeId)
     if (!canonical) {
       return null
@@ -43,16 +39,15 @@ export async function getEpisodeStateFromDb(
 
 /**
  * List all episodes from database.
- * Requires DATABASE_URL to be set.
  *
+ * @param repository episode repository instance
  * @returns array of snapshots
- * @throws if DATABASE_URL is not set
+ * @throws if database operation fails
  */
-export async function listEpisodeStatesFromDb(): Promise<EpisodeStateSnapshot[]> {
+export async function listEpisodeStatesFromDb(
+  repository: EpisodeRepository
+): Promise<EpisodeStateSnapshot[]> {
   try {
-    const sql = getDatabase()
-    const repository = createEpisodeRepository(sql as unknown as PostgresSql)
-
     const canonicals = await repository.listEpisodes()
     return canonicals.map(mapCanonicalEpisodeToSnapshot)
   } catch (err) {

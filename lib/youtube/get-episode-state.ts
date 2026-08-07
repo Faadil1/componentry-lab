@@ -20,7 +20,7 @@ import {
 import {
   getEpisodeStateFromDb,
   listEpisodeStatesFromDb,
-} from "./get-episode-state-from-db-core.ts"
+} from "./get-episode-state-from-db.ts"
 
 /**
  * Get the configured episode source.

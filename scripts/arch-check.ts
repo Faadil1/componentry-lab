@@ -18,19 +18,20 @@ const appDirs = [
 const internalModulesPattern = [
   "episode-repository-live-core",
   "episode-repository-live-impl",
+  "db-core",
 ]
 
 // Files that are allowed to import internal modules
 const allowedPaths = [
-  // Public server-only wrapper that enforces the boundary
+  // Public server-only wrappers that enforce the boundary
   "lib/persistence/episode-repository.ts",
-  // The internal module itself
+  "lib/persistence/db.ts",
+  "lib/youtube/get-episode-state-from-db.ts",
+  // The internal modules themselves
   "lib/persistence/episode-repository-live-core.ts",
-  // Database provider core (testable by Node for integration validation)
-  "lib/youtube/get-episode-state-from-db-core.ts",
-  // Live test that directly validates Neon behavior
+  "lib/persistence/db-core.ts",
+  // Live tests that directly validate Neon behavior
   "tests/persistence/episode-repository.live.test.ts",
-  // Database provider test that directly validates Neon behavior
   "tests/youtube/get-episode-state-from-db.test.ts",
   // Migration runner (internal infrastructure)
   "scripts/run-migrations.ts",

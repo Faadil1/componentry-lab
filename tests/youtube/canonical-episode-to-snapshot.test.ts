@@ -171,7 +171,7 @@ describe("Canonical Episode to Snapshot Mapper", () => {
     assert.strictEqual(snapshot.blockers[1].severity, "warning")
   })
 
-  test("7. includes source metadata", () => {
+  test("7. maps review status: not-required", () => {
     const canonical: CanonicalEpisode = {
       episodeId: "ep-007",
       episodeNumber: 7,
@@ -187,9 +187,146 @@ describe("Canonical Episode to Snapshot Mapper", () => {
     }
 
     const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.reviewStatus, "not-required")
+  })
 
+  test("8. maps review status: pending -> required", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-008",
+      episodeNumber: 8,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "TOPIC",
+      reviewStatus: "pending",
+      blockers: [],
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.reviewStatus, "required")
+  })
+
+  test("9. maps review status: in-progress -> required", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-009",
+      episodeNumber: 9,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "TOPIC",
+      reviewStatus: "in-progress",
+      blockers: [],
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.reviewStatus, "required")
+  })
+
+  test("10. maps review status: completed", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-010",
+      episodeNumber: 10,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "TOPIC",
+      reviewStatus: "completed",
+      blockers: [],
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.reviewStatus, "completed")
+  })
+
+  test("11. publication: video ID + timestamp", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-011",
+      episodeNumber: 11,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "PUBLISHED",
+      reviewStatus: "completed",
+      blockers: [],
+      youtubeVideoId: "abc123",
+      publishedAt: "2026-08-07T12:00:00Z",
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.ok(snapshot.publication)
+    assert.strictEqual(snapshot.publication!.youtubeVideoId, "abc123")
+    assert.strictEqual(snapshot.publication!.publishedAt, "2026-08-07T12:00:00Z")
+  })
+
+  test("12. publication: video ID only (no timestamp)", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-012",
+      episodeNumber: 12,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "PUBLISHED",
+      reviewStatus: "completed",
+      blockers: [],
+      youtubeVideoId: "abc123",
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.publication, undefined)
+  })
+
+  test("13. publication: timestamp only (no video ID)", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-013",
+      episodeNumber: 13,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "PUBLISHED",
+      reviewStatus: "completed",
+      blockers: [],
+      publishedAt: "2026-08-07T12:00:00Z",
+      stateVersion: 1,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
+    assert.strictEqual(snapshot.publication, undefined)
+  })
+
+  test("14. includes source version from stateVersion", () => {
+    const canonical: CanonicalEpisode = {
+      episodeId: "ep-014",
+      episodeNumber: 14,
+      channelName: "Ch",
+      title: "T",
+      workflowState: "TOPIC",
+      reviewStatus: "not-required",
+      blockers: [],
+      stateVersion: 5,
+      schemaVersion: 1,
+      createdAt: "2026-08-07T10:00:00Z",
+      updatedAt: "2026-08-07T10:00:00Z",
+    }
+
+    const snapshot = mapCanonicalEpisodeToSnapshot(canonical)
     assert.ok(snapshot.source)
-    assert.strictEqual(snapshot.source!.version, "database")
-    assert.ok(snapshot.source!.fetchedAt)
+    assert.strictEqual(snapshot.source!.version, "5")
   })
 })
