@@ -4,6 +4,7 @@ import { adaptDirectorResult, adaptDirectorResultWithAdvisoryEvidence, adaptProj
 import { routeCapabilities } from "../router"
 import type { DirectorEvidenceReference } from "../../director/types"
 import type { CreativeProjectMode, CreativeProjectPhase } from "../../director/types"
+import type { ResourceEvaluation } from "../types"
 import {
   runSacredRulesBreaker,
   runSomaticResponseDesign,
@@ -12,6 +13,7 @@ import {
   runPhysicalSituationStoryboarder,
   runLibraryFirstCompositionRouter
 } from "../methods"
+import { dispatchExternalCapabilityPlan, type ExternalCapabilityPlan } from "../film-kit"
 import type { CreativeMethodInput, CreativeMethodExecutionResult } from "../methods/types"
 import crypto from "crypto"
 
@@ -126,17 +128,10 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
   const routerResult = routeCapabilities(routerInputs)
   const topSuggestion = routerResult.topSuggestion
 
-  let selectedResource = topSuggestion
+  let selectedResource: ResourceEvaluation | null = topSuggestion
   let methodExecution: CreativeMethodExecutionResult | null = null
-  let methodQualityEvidence: {
-    status: string
-    qualityResults: { gateId: string; passed: boolean; failReasons?: string[] }[]
-    inputSignature?: string
-    outputSignature?: string
-    resourceLifecycle?: string
-    resourceId?: string
-    methodId?: string
-  } | null = null
+  let externalCapabilityPlan: ExternalCapabilityPlan | null = null
+  let methodQualityEvidence: CreativeOSIntegrationResult["methodQualityEvidence"] = null
   let status: IntegrationStatus = "NO_METHOD_REQUIRED"
   let routingDecision: "MATCH" | "NO_MATCH" | "BLOCKED" | "INSUFFICIENT_AUTHORITY" | "NO_GAP" = "NO_MATCH"
 
@@ -233,6 +228,52 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
       } catch {
         status = "METHOD_BLOCKED"
       }
+    } else if (selectedResource.type !== "CORE_METHOD") {
+      // Plan external capability via Film Kit
+      const metadata = ((project as unknown) as { metadata?: Record<string, unknown> }).metadata || {}
+      
+      const planRequest = {
+        capabilityGap: detectedCapabilityGap || undefined,
+        artifactType: (metadata.artifactType as string) || undefined,
+        projectMode: mode,
+        phase: phase,
+        currentAuthority: request.currentAuthority,
+        frameworkOrSurface: (metadata.frameworkOrSurface as string) || (project.constraints?.find(c => c.type === "compliance")?.description),
+        metadata
+      }
+      
+      const plan = dispatchExternalCapabilityPlan(planRequest, selectedResource)
+      externalCapabilityPlan = plan
+
+      if (plan.executionStatus === "BLOCKED") {
+        status = "INTEGRATION_BLOCKED"
+        routingDecision = "INSUFFICIENT_AUTHORITY"
+      } else if (plan.executionStatus === "NO_MATCH") {
+        status = "NO_MATCH"
+      } else if (plan.executionStatus === "DISCOVERY_REQUIRED") {
+        status = "METHOD_PARTIAL"
+      } else if (plan.executionStatus === "HUMAN_APPROVAL_REQUIRED") {
+        status = "METHOD_BLOCKED"
+      } else if (plan.executionStatus === "EXTERNAL_PLAN_READY" || plan.executionStatus === "EXTERNAL_EXPERIMENTAL_CANDIDATE") {
+        status = "COMPLETE"
+      } else {
+        status = "METHOD_BLOCKED"
+      }
+
+      methodQualityEvidence = {
+        status: plan.executionStatus,
+        qualityResults: [
+          { gateId: "gate_plan_constructed", passed: plan.executionStatus !== "BLOCKED" && plan.executionStatus !== "NO_MATCH" },
+          { gateId: "gate_authority_checked", passed: plan.executionStatus !== "BLOCKED" },
+          { gateId: "gate_compatibility_checked", passed: plan.compatibilityStatus !== "INCOMPATIBLE" },
+          { gateId: "gate_human_approval_checked", passed: plan.humanApprovalState !== "REQUIRED" }
+        ],
+        inputSignature: computeFingerprint(planRequest),
+        outputSignature: plan.planFingerprint,
+        resourceLifecycle: selectedResource.lifecycleState,
+        resourceId: selectedResource.resourceId,
+        methodId: plan.capabilityId
+      }
     } else {
       status = "METHOD_BLOCKED"
     }
@@ -242,9 +283,9 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
 
   // 6. Map advisory evidence back to Director input
   const advisoryEvidence: DirectorEvidenceReference[] = []
-  if (methodQualityEvidence && (status === "COMPLETE" || status === "METHOD_PARTIAL") && methodExecution) {
+  if (methodQualityEvidence && (status === "COMPLETE" || status === "METHOD_PARTIAL")) {
     const isPartial = status === "METHOD_PARTIAL"
-    const hasPassedGates = methodExecution.allGatesPassed
+    const hasPassedGates = methodQualityEvidence.qualityResults.every(q => q.passed)
 
     advisoryEvidence.push({
       id: `adv_${projectId}_${methodQualityEvidence.methodId}`,
@@ -270,9 +311,9 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
 
   // Compute fingerprints
   const directorProjectionFingerprint = computeFingerprint(directorBefore)
-  const methodInputFingerprint = methodExecution ? computeFingerprint(methodExecution.input) : null
-  const methodOutputFingerprint = methodExecution ? computeFingerprint(methodExecution.result.rawOutputs) : null
-  const qualitySummary = methodExecution ? JSON.stringify(methodExecution.qualityResults.map(r => `${r.gateId}:${r.passed}`)) : null
+  const methodInputFingerprint = methodQualityEvidence?.inputSignature || null
+  const methodOutputFingerprint = methodQualityEvidence?.outputSignature || null
+  const qualitySummary = methodQualityEvidence ? JSON.stringify(methodQualityEvidence.qualityResults.map(r => `${r.gateId}:${r.passed}`)) : null
   const directorFinalFingerprint = computeFingerprint(directorAfter)
   const authorizedActionFingerprint = computeFingerprint(authorizedNextAction)
 
@@ -317,8 +358,12 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
     methodOutputFingerprint,
     qualitySummary,
     authorizedNextActionFingerprint: authorizedActionFingerprint,
-    provenanceReferences: ["ProjectBrain", "Director", "Router", "MethodRuntime"],
+    provenanceReferences: ["ProjectBrain", "Director", "Router", "FilmKitPlanner"],
     continuationCompatibility: "NONE" as ContinuationCompatibility,
+    selectedExternalResourceId: externalCapabilityPlan?.resourceId || null,
+    externalCapabilityPlanFingerprint: externalCapabilityPlan?.planFingerprint || null,
+    executionRequired: false,
+    humanApprovalRequired: externalCapabilityPlan?.requiredHumanApproval || false,
     resumeSummary,
     currentDecision,
     whyThisIsNext,
@@ -371,6 +416,7 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
     routingDecision,
     selectedResource,
     methodExecution,
+    externalCapabilityPlan: externalCapabilityPlan || null,
     methodQualityEvidence,
     directorAfter,
     authorizedNextAction,

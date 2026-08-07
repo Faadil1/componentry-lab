@@ -7,7 +7,7 @@
                     "build":  "next build",
                     "start":  "next start",
                     "lint":  "eslint",
-                    "test": "node --import jiti/register --test tests/director.test.ts tests/director-ui.test.ts tests/creative-os.test.ts tests/creative-os-methods.test.ts tests/creative-os-integration.test.ts",
+                    "test": "node --import jiti/register --test tests/director.test.ts tests/director-ui.test.ts tests/creative-os.test.ts tests/creative-os-methods.test.ts tests/creative-os-integration.test.ts tests/creative-os-film-kit.test.ts",
                     "test:director": "node --import jiti/register --test tests/director.test.ts tests/director-ui.test.ts"
                 },
     "dependencies":  {

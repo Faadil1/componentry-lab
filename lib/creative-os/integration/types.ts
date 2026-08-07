@@ -45,6 +45,10 @@ export interface CreativeOSContinuationState {
    * Compatibility of this state relative to the previous continuation state, if any.
    */
   continuationCompatibility: ContinuationCompatibility
+  selectedExternalResourceId?: string | null
+  externalCapabilityPlanFingerprint?: string | null
+  executionRequired?: boolean
+  humanApprovalRequired?: boolean
   // Human-readable continuity fields
   resumeSummary: string
   currentDecision: string
@@ -85,6 +89,7 @@ export interface CreativeOSIntegrationResult {
     resourceId?: string
     methodId?: string
   } | null
+  externalCapabilityPlan?: import("../film-kit/types").ExternalCapabilityPlan | null
   directorAfter: DirectorResult
   authorizedNextAction: AuthorizedAction
   integrationProvenance: {
