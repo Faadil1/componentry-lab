@@ -39,7 +39,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_relationship_preserving_abstraction",
     name: "Relationship-Preserving Abstraction",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE",
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b2-v3/)
     maxExecutionAuthority: "PREPARE",
     license: "Apache-2.0",
     provenance: "internal:method:relationship-preserving-abstraction",
@@ -56,7 +56,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_cognitive_metaphor_illustrator",
     name: "Cognitive Metaphor Illustrator",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE", // Reset from AUDITED to TEST_CANDIDATE as requested
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b2-v3/)
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:cognitive-metaphor",
@@ -73,7 +73,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_physical_situation_storyboarder",
     name: "Physical Situation Storyboarder",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE",
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b2-v3/) — V3 transformation reasoning: desiredTransformation→behavioralMeaning→observableEvidenceRequired→actionEvidence→relationshipChange→endingEvidence; materially distinct manifestations for visible ownership, abandonment, repair commitment
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:physical-storyboarder",
@@ -90,7 +90,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_library_first_composition_router",
     name: "Library-First Composition Router",
     type: "CORE_METHOD",
-    lifecycleState: "TEST_CANDIDATE", // Reset from AUDITED to TEST_CANDIDATE as requested
+    lifecycleState: "VALIDATED", // Transitioned via human review (Evidence: docs/evidence/creative-os-slice-3b2-v3/)
     maxExecutionAuthority: "PREPARE",
     license: "MIT",
     provenance: "internal:method:library-first-router",
@@ -155,7 +155,10 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
       capabilityGaps: ["remocn-render", "web-component-animation"],
       requiredAuthority: "SUGGEST"
     },
-    activationRules: []
+    activationRules: [],
+    supportedFrameworks: ["React/NextJS"],
+    supportedCapabilities: ["web-component-animation"],
+    compatibilityEvidenceStatus: "UNKNOWN"
   },
   {
     id: "res_originkit",
@@ -173,7 +176,10 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
       capabilityGaps: ["bootstrap-kit", "web-component-animation"],
       requiredAuthority: "SUGGEST"
     },
-    activationRules: []
+    activationRules: [],
+    supportedFrameworks: ["React/NextJS"],
+    supportedCapabilities: ["web-component-animation"],
+    compatibilityEvidenceStatus: "VERIFIED"
   },
   {
     id: "res_cineprompt",

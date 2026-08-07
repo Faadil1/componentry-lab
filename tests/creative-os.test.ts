@@ -248,7 +248,7 @@ test("MARA gap: narrative-staging -> Physical Situation Storyboarder", () => {
   })
   assert.ok(result.topSuggestion)
   assert.strictEqual(result.topSuggestion.resourceId, "res_physical_situation_storyboarder")
-  assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
+  assert.strictEqual(result.topSuggestion.recommendationLabel, "VALIDATED_FALLBACK")
 })
 
 test("MARA gap: camera-motion-language -> AI Camera Movements", () => {
@@ -294,5 +294,5 @@ test("DATA_STORY gap: editorial-abstraction -> Relationship-Preserving Abstracti
   })
   assert.ok(result.topSuggestion)
   assert.strictEqual(result.topSuggestion.resourceId, "res_relationship_preserving_abstraction")
-  assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
+  assert.strictEqual(result.topSuggestion.recommendationLabel, "VALIDATED_FALLBACK")
 })
