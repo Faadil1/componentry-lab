@@ -9,6 +9,7 @@
         "lint": "eslint",
         "arch:check": "node scripts/arch-check.ts",
         "db:migrate": "node --experimental-strip-types scripts/run-migrations.ts",
+        "db:seed:youtube": "node --experimental-strip-types scripts/seed-youtube-episodes.ts",
         "test:director": "node --experimental-strip-types --test tests/director.test.ts",
         "test:episode-state-adapter": "node --experimental-strip-types --test tests/adapters/episode-state-card-adapter.test.ts",
         "test:youtube-provider": "node --experimental-strip-types --test tests/youtube/episode-state-provider.test.ts",
@@ -16,7 +17,8 @@
         "test:episode-row-mappers": "node --experimental-strip-types --test tests/persistence/episode-row-mappers.test.ts",
         "test:episode-repository:live": "node --experimental-strip-types --test tests/persistence/episode-repository.live.test.ts",
         "test:canonical-mapper": "node --experimental-strip-types --test tests/youtube/canonical-episode-to-snapshot.test.ts",
-        "test:db-provider": "node --experimental-strip-types --test tests/youtube/get-episode-state-from-db.test.ts"
+        "test:db-provider": "node --experimental-strip-types --test tests/youtube/get-episode-state-from-db.test.ts",
+        "test:cutover-readiness": "node --experimental-strip-types --test tests/youtube/cutover-readiness.test.ts"
     },
     "dependencies": {
         "@base-ui/react": "^1.6.0",
