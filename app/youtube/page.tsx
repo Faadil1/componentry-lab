@@ -1,0 +1,67 @@
+"use client"
+
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { listEpisodes } from "@/lib/youtube/get-episode-state"
+
+export default function YouTubeOSPage() {
+  const [episodes, setEpisodes] = useState<
+    Array<{ id: string; title: string; episodeNumber?: number }>
+  >([])
+
+  useEffect(() => {
+    listEpisodes().then(setEpisodes)
+  }, [])
+
+  return (
+    <div className="space-y-8">
+      <section className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
+        <h2 className="text-2xl font-bold text-neutral-900">
+          Episode Operations
+        </h2>
+        <p className="mt-2 text-neutral-600">
+          Real-time workflow state visibility for Wealth Decoded episodes.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-neutral-900">
+          Available episodes
+        </h3>
+        <div className="grid gap-3 md:grid-cols-2">
+          {episodes.map((episode) => (
+            <Link
+              key={episode.id}
+              href={`/youtube/episodes/${episode.id}`}
+              className="group rounded-lg border border-neutral-200 bg-white p-4 transition hover:border-neutral-400 hover:shadow-md"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  {episode.episodeNumber && (
+                    <p className="text-sm font-medium text-neutral-500">
+                      Episode {episode.episodeNumber}
+                    </p>
+                  )}
+                  <h4 className="font-semibold text-neutral-900 group-hover:text-neutral-700">
+                    {episode.title}
+                  </h4>
+                </div>
+                <span className="ml-2 text-neutral-400 transition group-hover:text-neutral-600">
+                  →
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <p className="text-sm text-amber-900">
+          <strong>Development notice:</strong> This is a fixture-backed
+          development surface. Future versions will connect to the canonical
+          YouTube Operating System state source.
+        </p>
+      </section>
+    </div>
+  )
+}
