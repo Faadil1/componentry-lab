@@ -13,7 +13,7 @@ import {
   runPhysicalSituationStoryboarder,
   runLibraryFirstCompositionRouter
 } from "../methods"
-import { dispatchExternalCapabilityPlan, type ExternalCapabilityPlan } from "../film-kit"
+import { dispatchExternalCapabilityPlan, executeSandboxedPlan, type ExternalCapabilityPlan } from "../film-kit"
 import type { CreativeMethodInput, CreativeMethodExecutionResult } from "../methods/types"
 import crypto from "crypto"
 
@@ -244,6 +244,17 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
       
       const plan = dispatchExternalCapabilityPlan(planRequest, selectedResource)
       externalCapabilityPlan = plan
+      
+      // Inject projectId and fingerprint to the plan to allow Sandbox checking
+      plan.projectId = projectId
+      plan.projectBrainFingerprint = projectBrainFingerprint
+
+      // For 3D.1, the humanApprovalDecision from request is no longer a simple string, it should be passed to sandbox
+      let parsedApproval: import("../film-kit/types").HumanApprovalDecision | null = null
+      if (typeof request.humanApprovalDecision === "object" && request.humanApprovalDecision !== null) {
+        // Assume it conforms to HumanApprovalDecision
+        parsedApproval = request.humanApprovalDecision as import("../film-kit/types").HumanApprovalDecision
+      }
 
       if (plan.executionStatus === "BLOCKED") {
         status = "INTEGRATION_BLOCKED"
@@ -252,10 +263,37 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
         status = "NO_MATCH"
       } else if (plan.executionStatus === "DISCOVERY_REQUIRED") {
         status = "METHOD_PARTIAL"
-      } else if (plan.executionStatus === "HUMAN_APPROVAL_REQUIRED") {
-        status = "METHOD_BLOCKED"
-      } else if (plan.executionStatus === "EXTERNAL_PLAN_READY" || plan.executionStatus === "EXTERNAL_EXPERIMENTAL_CANDIDATE") {
-        status = "COMPLETE"
+      } else if (plan.executionStatus === "HUMAN_APPROVAL_REQUIRED" || plan.executionStatus === "EXTERNAL_PLAN_READY" || plan.executionStatus === "EXTERNAL_EXPERIMENTAL_CANDIDATE") {
+        
+        // Let the sandbox handle all execution, approvals, freshness, and authority limits.
+        const sandboxResult = executeSandboxedPlan(plan, projectId, projectBrainFingerprint, parsedApproval, request.currentAuthority)
+        
+        // Update plan executionStatus based on Sandbox result
+        plan.executionStatus = sandboxResult.status
+        if (sandboxResult.receipt) {
+          plan.executionResult = {
+             executionId: sandboxResult.receipt.receiptFingerprint,
+             planFingerprint: plan.planFingerprint,
+             providerUsed: sandboxResult.receipt.providerAdapterId,
+             status: sandboxResult.status as "COMPLETE" | "PARTIAL" | "BLOCKED" | "FAILED",
+             rawOutput: {}, // Handled by providerOutputFingerprint in receipt
+             executionTimeMs: 0,
+             error: sandboxResult.error,
+             receipt: sandboxResult.receipt
+          }
+        }
+
+        if (sandboxResult.status === "EXECUTED" || sandboxResult.status === "ALREADY_EXECUTED") {
+           status = "COMPLETE"
+        } else if (sandboxResult.status === "EXECUTED_PARTIAL") {
+           status = "METHOD_PARTIAL"
+        } else if (sandboxResult.status === "APPROVAL_REQUIRED" || sandboxResult.status === "APPROVAL_INVALID" || sandboxResult.status === "ADAPTER_MISSING" || sandboxResult.status === "ADAPTER_NOT_EXECUTABLE" || sandboxResult.status === "PLAN_STALE" || sandboxResult.status === "PLAN_INCOMPATIBLE") {
+           status = "METHOD_BLOCKED"
+        } else if (sandboxResult.status === "PROVIDER_ERROR") {
+           status = "METHOD_BLOCKED"
+        } else {
+           status = "METHOD_BLOCKED"
+        }
       } else {
         status = "METHOD_BLOCKED"
       }
@@ -264,9 +302,9 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
         status: plan.executionStatus,
         qualityResults: [
           { gateId: "gate_plan_constructed", passed: plan.executionStatus !== "BLOCKED" && plan.executionStatus !== "NO_MATCH" },
-          { gateId: "gate_authority_checked", passed: plan.executionStatus !== "BLOCKED" },
+          { gateId: "gate_authority_checked", passed: plan.executionStatus !== "BLOCKED" && plan.executionStatus !== "AUTHORITY_BLOCKED" },
           { gateId: "gate_compatibility_checked", passed: plan.compatibilityStatus !== "INCOMPATIBLE" },
-          { gateId: "gate_human_approval_checked", passed: plan.humanApprovalState !== "REQUIRED" }
+          { gateId: "gate_human_approval_checked", passed: plan.executionStatus !== "APPROVAL_REQUIRED" && plan.executionStatus !== "APPROVAL_DENIED" && plan.executionStatus !== "APPROVAL_INVALID" }
         ],
         inputSignature: computeFingerprint(planRequest),
         outputSignature: plan.planFingerprint,

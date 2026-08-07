@@ -62,6 +62,7 @@ export interface CreativeOSIntegrationRequest {
   currentAuthority: AuthorityCeiling
   optionalRequestedCapabilityGap?: string
   optionalPreviousContinuationState?: CreativeOSContinuationState
+  humanApprovalDecision?: import("../film-kit/types").HumanApprovalDecision | "GRANTED" | "DENIED" | "NONE"
 }
 
 export type IntegrationStatus =
