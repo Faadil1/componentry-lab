@@ -20,7 +20,9 @@
         "test:db-provider": "node --experimental-strip-types --test tests/youtube/get-episode-state-from-db.test.ts",
         "test:cutover-readiness": "node --experimental-strip-types --test tests/youtube/cutover-readiness.test.ts",
         "test:published-mapper": "node --experimental-strip-types --test tests/youtube/canonical-episode-to-published.test.ts",
-        "test:published-db-provider": "node --experimental-strip-types --test tests/youtube/get-published-episodes-from-db.test.ts"
+        "test:published-db-provider": "node --experimental-strip-types --test tests/youtube/get-published-episodes-from-db.test.ts",
+        "test:episode-history-mapper": "node --experimental-strip-types --test tests/youtube/canonical-episode-event-to-history.test.ts",
+        "test:episode-history-provider": "node --experimental-strip-types --test tests/youtube/get-episode-history-from-db.test.ts"
     },
     "dependencies": {
         "@base-ui/react": "^1.6.0",

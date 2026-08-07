@@ -1,11 +1,13 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { EpisodeStateCard } from "@/components/workflow/episode-state-card"
+import { EpisodeHistoryTimeline } from "@/components/workflow/episode-history-timeline"
 import {
   episodeStateSnapshotToCardProps,
 } from "@/lib/adapters/episode-state-card-adapter"
 import type { EpisodeStateCardProps } from "@/components/workflow/episode-state-card"
 import { getEpisodeState } from "@/lib/youtube/get-episode-state"
+import { getEpisodeHistory } from "@/lib/youtube/get-episode-history"
 
 interface PageProps {
   params: Promise<{ episodeId: string }>
@@ -21,6 +23,8 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
 
   const cardProps: EpisodeStateCardProps =
     episodeStateSnapshotToCardProps(snapshot)
+
+  const history = await getEpisodeHistory(episodeId)
 
   return (
     <div className="space-y-6">
@@ -92,6 +96,8 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
           </dl>
         </section>
       )}
+
+      <EpisodeHistoryTimeline history={history} />
 
       {process.env.YOUTUBE_EPISODE_SOURCE === "fixture" && (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
