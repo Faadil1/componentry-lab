@@ -1,0 +1,48 @@
+{
+  "activePackets": [
+    {
+      "packetId": "director-design-review-v4",
+      "path": "docs/evidence/director-design-review-v4",
+      "provenanceState": "CURRENT",
+      "description": "Verified Slice 2 director design review packet, replacing all prior draft versions.",
+      "version": "v4"
+    },
+    {
+      "packetId": "creative-os-slice-3b2-v3",
+      "path": "docs/evidence/creative-os-slice-3b2-v3",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3B.2 V3 Method Quality Refinement evidence packet.",
+      "version": "v3"
+    }
+  ],
+  "supersededPackets": [
+    {
+      "packetId": "director-design-review",
+      "path": "docs/evidence/director-design-review",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Obsolete Director Slice 2 review packet containing outdated Eight-Bar Hole, musicology MARA, and Power BI evaluator/content."
+    },
+    {
+      "packetId": "director-design-review-v2",
+      "path": "docs/evidence/director-design-review-v2",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Outdated v2 Director Slice 2 review packet."
+    },
+    {
+      "packetId": "director-design-review-v3",
+      "path": "docs/evidence/director-design-review-v3",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Outdated v3 Director Slice 2 review packet."
+    },
+    {
+      "packetId": "creative-os-slice-3b2",
+      "path": "docs/evidence/creative-os-slice-3b2",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "creative-os-slice-3b2-v3",
+      "description": "Outdated initial Slice 3B.2 evidence packet."
+    }
+  ]
+}

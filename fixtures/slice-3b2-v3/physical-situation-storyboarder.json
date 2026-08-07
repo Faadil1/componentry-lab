@@ -1,0 +1,616 @@
+{
+  "A": {
+    "methodId": "method_physical_situation_storyboarder",
+    "resourceId": "res_physical_situation_storyboarder",
+    "input": {
+      "methodId": "method_physical_situation_storyboarder",
+      "projectMode": "MARA",
+      "phase": "build",
+      "subjectDescription": "Mara pottery sequence",
+      "subjectContext": "Short film",
+      "capabilityGap": "narrative-staging",
+      "supplementaryFields": {
+        "projectObjective": "observe and mirror incompleteness",
+        "narrativeBeat": "accepting incompleteness",
+        "subjectOrCharacter": "Mara",
+        "emotionalTension": "existential anxiety / incompleteness",
+        "desiredTransformation": "acceptance",
+        "locationConstraints": "interior pottery studio",
+        "propConstraints": "unfinished clay pot"
+      }
+    },
+    "result": {
+      "methodId": "method_physical_situation_storyboarder",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Narrative Gaps & Tension",
+          "instruction": "Load narrative beat: \"accepting incompleteness\" and emotional tension: \"existential anxiety / incompleteness\".",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Design Physical Metaphor",
+          "instruction": "Map the emotional state onto a physical, non-verbal object relationship.",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Draft Scene Nodes Sequence",
+          "instruction": "Break down the physical actions into a sequence of concrete visual frames.",
+          "outputKey": "storyboard-nodes"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Establish Continuity Controls",
+          "instruction": "Define the physical spatial layout and wardrobe/prop continuity requirements.",
+          "outputKey": "continuity-governance"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Validation Test",
+          "instruction": "Draft a silent validation test to verify that the concept carries without exposition.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-design",
+          "label": "Physical Metaphor Design",
+          "content": "Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"existential anxiety / incompleteness\".\nKey Object/Prop: unfinished clay pot\nEnvironment: interior pottery studio\nUnspoken Subtext: Do not speak or mention \"existential anxiety / incompleteness\" or \"acceptance\" in dialogue. The viewer must infer it solely by observing Mara's posture and her refusal to complete the unfinished clay pot."
+        },
+        {
+          "sectionKey": "storyboard-nodes",
+          "label": "Storyboard Scene Nodes",
+          "content": "BEAT #1: beat_01_setup\n  Narrative Function: Establish the physical state of the unfinished project.\n  Subject State: Focused, slight tension in shoulder posture\n  Object State: An unfinished clay vessel sits off-center on the wheel, showing cracks and irregular edges.\n  Action: Mara places her hands near the clay, hovering but not touching it.\n  Spatial Relationship: Subject is seated 20cm from the object, leaning slightly forward.\n  Visible Change: Light angle shifts, emphasizing the dust and raw clay cracks.\n  Camera: ECU on hands hovering over clay, shallow depth of field.\n  Continuity: Clay model must have exactly three visible cracks on its upper rim. Mara wears grey linen overalls.\n\nBEAT #2: beat_02_tension\n  Narrative Function: Show the resistance to completion and habit of correction.\n  Subject State: Breathing holds momentarily; fingers twitching.\n  Object State: The clay remains static, cracked, and uneven.\n  Action: Mara reaches for a smoothing rib tool, holds it for 3 seconds, then lays it down untouched.\n  Spatial Relationship: Subject stands up, stepping back to 1 meter from the table.\n  Visible Change: The rib tool is placed on the dry side of the bench, away from the clay.\n  Camera: Medium wide, capturing the physical distance between subject and clay.\n  Continuity: Rib tool remains visible in background. No dialogue spoken.\n\nBEAT #3: beat_03_transformation\n  Narrative Function: Visibly demonstrate the transformation to acceptance.\n  Subject State: Deep exhalation, shoulders drop, face muscles relax showing acceptance.\n  Object State: The clay remains cracked and incomplete on the shelf.\n  Action: Mara turns away and walks out of frame, leaving the unfinished pot on display.\n  Spatial Relationship: Distance increases to infinity as subject leaves the scene.\n  Visible Change: The incomplete object sits alone in the center of the frame as light fades.\n  Camera: Locked tripod shot, holding on the empty room with the unfinished object.\n  Continuity: Clay pot remains in original position on the shelf with three cracks."
+        },
+        {
+          "sectionKey": "continuity-governance",
+          "label": "Continuity & Staging Constraints",
+          "content": "Staging Rules: Subject is seated 20cm from the object, leaning slightly forward. | Subject stands up, stepping back to 1 meter from the table. | Distance increases to infinity as subject leaves the scene.\nContinuity: No visual changes in background objects between beats.\nCamera Directives:\nbeat_01_setup: ECU on hands hovering over clay, shallow depth of field.\nbeat_02_tension: Medium wide, capturing the physical distance between subject and clay.\nbeat_03_transformation: Locked tripod shot, holding on the empty room with the unfinished object."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risk Mitigation",
+          "content": "Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or accepting the unfinished vessel, the scene passes.\nFailure Risks: Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object."
+        },
+        {
+          "sectionKey": "brief-summary",
+          "label": "Storyboard Brief Summary",
+          "content": "PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: existential anxiety / incompleteness\nSubject: Mara | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"existential anxiety / incompleteness\".\nScene Nodes:\n  - [beat_01_setup] Action: Mara places her hands near the clay, hovering but not touching it. -> Result: Light angle shifts, emphasizing the dust and raw clay cracks.\n  - [beat_02_tension] Action: Mara reaches for a smoothing rib tool, holds it for 3 seconds, then lays it down untouched. -> Result: The rib tool is placed on the dry side of the bench, away from the clay.\n  - [beat_03_transformation] Action: Mara turns away and walks out of frame, leaving the unfinished pot on display. -> Result: The incomplete object sits alone in the center of the frame as light fades."
+        }
+      ],
+      "rawOutputs": {
+        "narrativeIntent": "Show the transformation of \"Mara\" from \"existential anxiety / incompleteness\" to \"acceptance\" through physical action rather than verbal exposition.",
+        "emotionalTension": "existential anxiety / incompleteness",
+        "desiredTransformation": "acceptance",
+        "observableTransformation": "Transition from Focused, slight tension in shoulder posture with incomplete object to Deep exhalation, shoulders drop, face muscles relax showing acceptance. with object left unfinished.",
+        "physicalMetaphor": "A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"existential anxiety / incompleteness\".",
+        "subject": "Mara",
+        "environment": "interior pottery studio",
+        "keyObject": "unfinished clay pot",
+        "startingPhysicalState": "Focused, slight tension in shoulder posture",
+        "action": "Mara reaches for a smoothing rib tool, holds it for 3 seconds, then lays it down untouched.",
+        "consequence": "The incomplete object sits alone in the center of the frame as light fades.",
+        "endingPhysicalState": "Deep exhalation, shoulders drop, face muscles relax showing acceptance.",
+        "sceneNodes": "[\n  {\n    \"beatId\": \"beat_01_setup\",\n    \"narrativeFunction\": \"Establish the physical state of the unfinished project.\",\n    \"subjectState\": \"Focused, slight tension in shoulder posture\",\n    \"objectState\": \"An unfinished clay vessel sits off-center on the wheel, showing cracks and irregular edges.\",\n    \"physicalAction\": \"Mara places her hands near the clay, hovering but not touching it.\",\n    \"spatialRelationship\": \"Subject is seated 20cm from the object, leaning slightly forward.\",\n    \"visibleChange\": \"Light angle shifts, emphasizing the dust and raw clay cracks.\",\n    \"continuityRequirements\": \"Clay model must have exactly three visible cracks on its upper rim. Mara wears grey linen overalls.\",\n    \"cameraIntent\": \"ECU on hands hovering over clay, shallow depth of field.\"\n  },\n  {\n    \"beatId\": \"beat_02_tension\",\n    \"narrativeFunction\": \"Show the resistance to completion and habit of correction.\",\n    \"subjectState\": \"Breathing holds momentarily; fingers twitching.\",\n    \"objectState\": \"The clay remains static, cracked, and uneven.\",\n    \"physicalAction\": \"Mara reaches for a smoothing rib tool, holds it for 3 seconds, then lays it down untouched.\",\n    \"spatialRelationship\": \"Subject stands up, stepping back to 1 meter from the table.\",\n    \"visibleChange\": \"The rib tool is placed on the dry side of the bench, away from the clay.\",\n    \"continuityRequirements\": \"Rib tool remains visible in background. No dialogue spoken.\",\n    \"cameraIntent\": \"Medium wide, capturing the physical distance between subject and clay.\"\n  },\n  {\n    \"beatId\": \"beat_03_transformation\",\n    \"narrativeFunction\": \"Visibly demonstrate the transformation to acceptance.\",\n    \"subjectState\": \"Deep exhalation, shoulders drop, face muscles relax showing acceptance.\",\n    \"objectState\": \"The clay remains cracked and incomplete on the shelf.\",\n    \"physicalAction\": \"Mara turns away and walks out of frame, leaving the unfinished pot on display.\",\n    \"spatialRelationship\": \"Distance increases to infinity as subject leaves the scene.\",\n    \"visibleChange\": \"The incomplete object sits alone in the center of the frame as light fades.\",\n    \"continuityRequirements\": \"Clay pot remains in original position on the shelf with three cracks.\",\n    \"cameraIntent\": \"Locked tripod shot, holding on the empty room with the unfinished object.\"\n  }\n]",
+        "spatialRelationships": "Subject is seated 20cm from the object, leaning slightly forward. | Subject stands up, stepping back to 1 meter from the table. | Distance increases to infinity as subject leaves the scene.",
+        "continuityConstraints": "No visual changes in background objects between beats.",
+        "cameraIntent": "beat_01_setup: ECU on hands hovering over clay, shallow depth of field.\nbeat_02_tension: Medium wide, capturing the physical distance between subject and clay.\nbeat_03_transformation: Locked tripod shot, holding on the empty room with the unfinished object.",
+        "whatMustRemainUnspoken": "Do not speak or mention \"existential anxiety / incompleteness\" or \"acceptance\" in dialogue. The viewer must infer it solely by observing Mara's posture and her refusal to complete the unfinished clay pot.",
+        "failureRisks": "Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object.",
+        "validationTest": "Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or accepting the unfinished vessel, the scene passes.",
+        "storyboardBrief": "PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: existential anxiety / incompleteness\nSubject: Mara | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"existential anxiety / incompleteness\".\nScene Nodes:\n  - [beat_01_setup] Action: Mara places her hands near the clay, hovering but not touching it. -> Result: Light angle shifts, emphasizing the dust and raw clay cracks.\n  - [beat_02_tension] Action: Mara reaches for a smoothing rib tool, holds it for 3 seconds, then lays it down untouched. -> Result: The rib tool is placed on the dry side of the bench, away from the clay.\n  - [beat_03_transformation] Action: Mara turns away and walks out of frame, leaving the unfinished pot on display. -> Result: The incomplete object sits alone in the center of the frame as light fades.",
+        "transformationEvidence": "{\n  \"desiredTransformation\": \"acceptance\",\n  \"behavioralMeaning\": \"The subject accepts the state of the unfinished clay pot as it is, without attempting to change it.\",\n  \"observableEvidenceRequired\": \"The subject steps back, showing a relaxed posture while leaving the object unfinished.\",\n  \"actionEvidence\": \"Mara steps back and disengages, leaving the unfinished clay pot untouched.\",\n  \"relationshipChange\": \"Subject increases distance from 30cm to 2 meters.\",\n  \"endingEvidence\": \"The unfinished clay pot is left in its unfinished state as a monument to the process.\",\n  \"reasoning\": \"Acceptance is shown by looking at the unfinished object and stepping away with a relaxed, non-frustrated posture at the interior pottery studio.\"\n}",
+        "inputFingerprint": "PSS:tension=existential anxiety / incomple:subject=Mara:obj=observe and mirror incompleten",
+        "outputFingerprint": "PSS:nodes=3:firstBeat=beat_01_setup:lastAction=Mara turns away and walks out "
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "pss.idea-becomes-physical",
+        "label": "Idea Becomes Physical",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.one-beat-one-function",
+        "label": "One Beat One Function",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-visible",
+        "label": "Transformation Visible",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-exposition-dependence",
+        "label": "No Exposition Dependence",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.continuity-protected",
+        "label": "Continuity Protected",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-coaching-drift",
+        "label": "No Coaching Drift",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-input-grounded",
+        "label": "Transformation Input Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.semantic-domain-coherent",
+        "label": "Semantic Domain Coherent",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-generic-placeholder-language",
+        "label": "No Generic Placeholder Language",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-behaviorally-realized",
+        "label": "Transformation Behaviorally Realized",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-contrast-material",
+        "label": "Transformation Contrast Material",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-action-transformation-contradiction",
+        "label": "No Action-Transformation Contradiction",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Physical Metaphor Design]: Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"existential anxiety / incompleteness",
+      "[Storyboard Scene Nodes]: BEAT #1: beat_01_setup\n  Narrative Function: Establish the physical state of the unfinished project.\n  Subject State: Focused, slight tension in shoulder posture\n  Object State: An unfinished clay ves",
+      "[Continuity & Staging Constraints]: Staging Rules: Subject is seated 20cm from the object, leaning slightly forward. | Subject stands up, stepping back to 1 meter from the table. | Distance increases to infinity as subject leaves the sc",
+      "[Validation & Risk Mitigation]: Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or",
+      "[Storyboard Brief Summary]: PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: existential anxiety / incompleteness\nSubject: Mara | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tan"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_physical_situation_storyboarder",
+    "resourceId": "res_physical_situation_storyboarder",
+    "input": {
+      "methodId": "method_physical_situation_storyboarder",
+      "projectMode": "MARA",
+      "phase": "build",
+      "subjectDescription": "Mara pottery sequence",
+      "subjectContext": "Short film",
+      "capabilityGap": "narrative-staging",
+      "supplementaryFields": {
+        "projectObjective": "observe and mirror incompleteness",
+        "narrativeBeat": "labor",
+        "subjectOrCharacter": "Sarah",
+        "emotionalTension": "invisible labor",
+        "desiredTransformation": "acceptance",
+        "locationConstraints": "interior pottery studio",
+        "propConstraints": "unfinished clay pot"
+      }
+    },
+    "result": {
+      "methodId": "method_physical_situation_storyboarder",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Narrative Gaps & Tension",
+          "instruction": "Load narrative beat: \"labor\" and emotional tension: \"invisible labor\".",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Design Physical Metaphor",
+          "instruction": "Map the emotional state onto a physical, non-verbal object relationship.",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Draft Scene Nodes Sequence",
+          "instruction": "Break down the physical actions into a sequence of concrete visual frames.",
+          "outputKey": "storyboard-nodes"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Establish Continuity Controls",
+          "instruction": "Define the physical spatial layout and wardrobe/prop continuity requirements.",
+          "outputKey": "continuity-governance"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Validation Test",
+          "instruction": "Draft a silent validation test to verify that the concept carries without exposition.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-design",
+          "label": "Physical Metaphor Design",
+          "content": "Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"invisible labor\".\nKey Object/Prop: unfinished clay pot\nEnvironment: interior pottery studio\nUnspoken Subtext: Do not speak or mention \"invisible labor\" or \"acceptance\" in dialogue. The viewer must infer it solely by observing Sarah's posture and her refusal to complete the unfinished clay pot."
+        },
+        {
+          "sectionKey": "storyboard-nodes",
+          "label": "Storyboard Scene Nodes",
+          "content": "BEAT #1: beat_01_labor\n  Narrative Function: Introduce the physical tension anchor of invisible labor in service of project objective: observe and mirror incompleteness.\n  Subject State: Tense posture, slight shrug.\n  Object State: A physical representation of the unfinished clay pot showing structural strain within the interior pottery studio\n  Action: Sarah approaches the unfinished clay pot with hesitation, looking at the cracks.\n  Spatial Relationship: Facing the unfinished clay pot directly at a distance of 30cm.\n  Visible Change: The physical state of the unfinished clay pot remains unchanged, mirroring the tension of invisible labor.\n  Camera: Medium shot tracking Sarah's tentative movements.\n  Continuity: Consistent wardrobe and environment. unfinished clay pot state matches initialization.\n\nBEAT #2: beat_02_labor\n  Narrative Function: Observe the physical consequence of the transformation to acceptance.\n  Subject State: Resolved/relaxed posture showing acceptance.\n  Object State: The unfinished clay pot left in its current state within the interior pottery studio as a monument to the process\n  Action: Sarah deliberately steps back and disengages, leaving the unfinished clay pot unfinished.\n  Spatial Relationship: Stepping back to a distance of 2 meters from the unfinished clay pot.\n  Visible Change: The unfinished clay pot is left in its current state as a monument to the process.\n  Camera: Slow pull out wide shot framing both Sarah and the incomplete unfinished clay pot.\n  Continuity: unfinished clay pot state remains consistent with the previous beat."
+        },
+        {
+          "sectionKey": "continuity-governance",
+          "label": "Continuity & Staging Constraints",
+          "content": "Staging Rules: Facing the unfinished clay pot directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the unfinished clay pot.\nContinuity: No visual changes in background objects between beats.\nCamera Directives:\nbeat_01_labor: Medium shot tracking Sarah's tentative movements.\nbeat_02_labor: Slow pull out wide shot framing both Sarah and the incomplete unfinished clay pot."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risk Mitigation",
+          "content": "Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or accepting the unfinished vessel, the scene passes.\nFailure Risks: Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object."
+        },
+        {
+          "sectionKey": "brief-summary",
+          "label": "Storyboard Brief Summary",
+          "content": "PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: invisible labor\nSubject: Sarah | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"invisible labor\".\nScene Nodes:\n  - [beat_01_labor] Action: Sarah approaches the unfinished clay pot with hesitation, looking at the cracks. -> Result: The physical state of the unfinished clay pot remains unchanged, mirroring the tension of invisible labor.\n  - [beat_02_labor] Action: Sarah deliberately steps back and disengages, leaving the unfinished clay pot unfinished. -> Result: The unfinished clay pot is left in its current state as a monument to the process."
+        },
+        {
+          "sectionKey": "transformation-evidence",
+          "label": "Transformation Evidence & Grounding",
+          "content": "### Behavioral Meaning\nThe subject accepts the state of the unfinished clay pot as it is, without attempting to change it.\n\n### Observable Evidence Required\nThe subject steps back, showing a relaxed posture while leaving the object unfinished.\n\n### Action Evidence\nSarah steps back and disengages, leaving the unfinished clay pot untouched.\n\n### Relationship Change\nSubject increases distance from 30cm to 2 meters.\n\n### Ending Evidence\nThe unfinished clay pot is left in its unfinished state as a monument to the process.\n\n### Reasoning\nAcceptance is shown by looking at the unfinished object and stepping away with a relaxed, non-frustrated posture at the interior pottery studio."
+        }
+      ],
+      "rawOutputs": {
+        "narrativeIntent": "Show the transformation of \"Sarah\" from \"invisible labor\" to \"acceptance\" through physical action rather than verbal exposition.",
+        "emotionalTension": "invisible labor",
+        "desiredTransformation": "acceptance",
+        "observableTransformation": "Transition from Tense posture, slight shrug. with incomplete object to Resolved/relaxed posture showing acceptance. with object left unfinished.",
+        "physicalMetaphor": "A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"invisible labor\".",
+        "subject": "Sarah",
+        "environment": "interior pottery studio",
+        "keyObject": "unfinished clay pot",
+        "startingPhysicalState": "Tense posture, slight shrug.",
+        "action": "Sarah deliberately steps back and disengages, leaving the unfinished clay pot unfinished.",
+        "consequence": "The unfinished clay pot is left in its current state as a monument to the process.",
+        "endingPhysicalState": "Resolved/relaxed posture showing acceptance.",
+        "sceneNodes": "[\n  {\n    \"beatId\": \"beat_01_labor\",\n    \"narrativeFunction\": \"Introduce the physical tension anchor of invisible labor in service of project objective: observe and mirror incompleteness.\",\n    \"subjectState\": \"Tense posture, slight shrug.\",\n    \"objectState\": \"A physical representation of the unfinished clay pot showing structural strain within the interior pottery studio\",\n    \"physicalAction\": \"Sarah approaches the unfinished clay pot with hesitation, looking at the cracks.\",\n    \"spatialRelationship\": \"Facing the unfinished clay pot directly at a distance of 30cm.\",\n    \"visibleChange\": \"The physical state of the unfinished clay pot remains unchanged, mirroring the tension of invisible labor.\",\n    \"continuityRequirements\": \"Consistent wardrobe and environment. unfinished clay pot state matches initialization.\",\n    \"cameraIntent\": \"Medium shot tracking Sarah's tentative movements.\"\n  },\n  {\n    \"beatId\": \"beat_02_labor\",\n    \"narrativeFunction\": \"Observe the physical consequence of the transformation to acceptance.\",\n    \"subjectState\": \"Resolved/relaxed posture showing acceptance.\",\n    \"objectState\": \"The unfinished clay pot left in its current state within the interior pottery studio as a monument to the process\",\n    \"physicalAction\": \"Sarah deliberately steps back and disengages, leaving the unfinished clay pot unfinished.\",\n    \"spatialRelationship\": \"Stepping back to a distance of 2 meters from the unfinished clay pot.\",\n    \"visibleChange\": \"The unfinished clay pot is left in its current state as a monument to the process.\",\n    \"continuityRequirements\": \"unfinished clay pot state remains consistent with the previous beat.\",\n    \"cameraIntent\": \"Slow pull out wide shot framing both Sarah and the incomplete unfinished clay pot.\"\n  }\n]",
+        "spatialRelationships": "Facing the unfinished clay pot directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the unfinished clay pot.",
+        "continuityConstraints": "No visual changes in background objects between beats.",
+        "cameraIntent": "beat_01_labor: Medium shot tracking Sarah's tentative movements.\nbeat_02_labor: Slow pull out wide shot framing both Sarah and the incomplete unfinished clay pot.",
+        "whatMustRemainUnspoken": "Do not speak or mention \"invisible labor\" or \"acceptance\" in dialogue. The viewer must infer it solely by observing Sarah's posture and her refusal to complete the unfinished clay pot.",
+        "failureRisks": "Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object.",
+        "validationTest": "Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or accepting the unfinished vessel, the scene passes.",
+        "storyboardBrief": "PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: invisible labor\nSubject: Sarah | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"invisible labor\".\nScene Nodes:\n  - [beat_01_labor] Action: Sarah approaches the unfinished clay pot with hesitation, looking at the cracks. -> Result: The physical state of the unfinished clay pot remains unchanged, mirroring the tension of invisible labor.\n  - [beat_02_labor] Action: Sarah deliberately steps back and disengages, leaving the unfinished clay pot unfinished. -> Result: The unfinished clay pot is left in its current state as a monument to the process.",
+        "transformationEvidence": "{\n  \"desiredTransformation\": \"acceptance\",\n  \"behavioralMeaning\": \"The subject accepts the state of the unfinished clay pot as it is, without attempting to change it.\",\n  \"observableEvidenceRequired\": \"The subject steps back, showing a relaxed posture while leaving the object unfinished.\",\n  \"actionEvidence\": \"Sarah steps back and disengages, leaving the unfinished clay pot untouched.\",\n  \"relationshipChange\": \"Subject increases distance from 30cm to 2 meters.\",\n  \"endingEvidence\": \"The unfinished clay pot is left in its unfinished state as a monument to the process.\",\n  \"reasoning\": \"Acceptance is shown by looking at the unfinished object and stepping away with a relaxed, non-frustrated posture at the interior pottery studio.\"\n}",
+        "inputFingerprint": "PSS:tension=invisible labor:subject=Sarah:obj=observe and mirror incompleten",
+        "outputFingerprint": "PSS:nodes=2:firstBeat=beat_01_labor:lastAction=Sarah deliberately steps back "
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "pss.idea-becomes-physical",
+        "label": "Idea Becomes Physical",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.one-beat-one-function",
+        "label": "One Beat One Function",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-visible",
+        "label": "Transformation Visible",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-exposition-dependence",
+        "label": "No Exposition Dependence",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.continuity-protected",
+        "label": "Continuity Protected",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-coaching-drift",
+        "label": "No Coaching Drift",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-input-grounded",
+        "label": "Transformation Input Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.semantic-domain-coherent",
+        "label": "Semantic Domain Coherent",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-generic-placeholder-language",
+        "label": "No Generic Placeholder Language",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-behaviorally-realized",
+        "label": "Transformation Behaviorally Realized",
+        "passed": false,
+        "failReasons": [
+          "The ending physical behavior does not ground the behavioral transformation."
+        ]
+      },
+      {
+        "gateId": "pss.transformation-contrast-material",
+        "label": "Transformation Contrast Material",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-action-transformation-contradiction",
+        "label": "No Action-Transformation Contradiction",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Physical Metaphor Design]: Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"invisible labor\".\nKey Object/Prop: u",
+      "[Storyboard Scene Nodes]: BEAT #1: beat_01_labor\n  Narrative Function: Introduce the physical tension anchor of invisible labor in service of project objective: observe and mirror incompleteness.\n  Subject State: Tense posture",
+      "[Continuity & Staging Constraints]: Staging Rules: Facing the unfinished clay pot directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the unfinished clay pot.\nContinuity: No visual changes in background object",
+      "[Validation & Risk Mitigation]: Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"acceptance\" or",
+      "[Storyboard Brief Summary]: PHYSICAL STORYBOARD BRIEF — \"Mara pottery sequence\"\nTension: invisible labor\nSubject: Sarah | Environment: interior pottery studio\nPhysical Metaphor: A physical struggle with a tangible, stubborn obje",
+      "[Transformation Evidence & Grounding]: ### Behavioral Meaning\nThe subject accepts the state of the unfinished clay pot as it is, without attempting to change it.\n\n### Observable Evidence Required\nThe subject steps back, showing a relaxed p"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_physical_situation_storyboarder",
+    "resourceId": "res_physical_situation_storyboarder",
+    "input": {
+      "methodId": "method_physical_situation_storyboarder",
+      "projectMode": "MARA",
+      "phase": "build",
+      "subjectDescription": "accountability drift sequence",
+      "subjectContext": "Short film",
+      "capabilityGap": "narrative-staging",
+      "supplementaryFields": {
+        "projectObjective": "make responsibility tangible",
+        "narrativeBeat": "accountability drift",
+        "subjectOrCharacter": "John",
+        "emotionalTension": "accountability drift",
+        "desiredTransformation": "visible ownership",
+        "locationConstraints": "broken office desk",
+        "propConstraints": "broken office desk"
+      }
+    },
+    "result": {
+      "methodId": "method_physical_situation_storyboarder",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Narrative Gaps & Tension",
+          "instruction": "Load narrative beat: \"accountability drift\" and emotional tension: \"accountability drift\".",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Design Physical Metaphor",
+          "instruction": "Map the emotional state onto a physical, non-verbal object relationship.",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Draft Scene Nodes Sequence",
+          "instruction": "Break down the physical actions into a sequence of concrete visual frames.",
+          "outputKey": "storyboard-nodes"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Establish Continuity Controls",
+          "instruction": "Define the physical spatial layout and wardrobe/prop continuity requirements.",
+          "outputKey": "continuity-governance"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Validation Test",
+          "instruction": "Draft a silent validation test to verify that the concept carries without exposition.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-design",
+          "label": "Physical Metaphor Design",
+          "content": "Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"accountability drift\".\nKey Object/Prop: broken office desk\nEnvironment: broken office desk\nUnspoken Subtext: Do not speak or mention \"accountability drift\" or \"visible ownership\" in dialogue. The viewer must infer it solely by observing John's posture and her refusal to complete the broken office desk."
+        },
+        {
+          "sectionKey": "storyboard-nodes",
+          "label": "Storyboard Scene Nodes",
+          "content": "BEAT #1: beat_01_accountability_drift\n  Narrative Function: Introduce the physical tension anchor of accountability drift in service of project objective: make responsibility tangible.\n  Subject State: Tense posture, breathing held in check.\n  Object State: A physical representation of the broken office desk showing structural strain within the broken office desk\n  Action: John approaches the broken office desk with hesitation, tracing the cracks and structural weaknesses with a finger.\n  Spatial Relationship: Facing the broken office desk directly at a distance of 30cm.\n  Visible Change: The physical state of the broken office desk remains unchanged, mirroring the tension of accountability drift.\n  Camera: Medium shot tracking John's tentative movements.\n  Continuity: Consistent wardrobe and environment. broken office desk state matches initialization.\n\nBEAT #2: beat_02_accountability_drift\n  Narrative Function: Observe the physical consequence of the transformation to visible ownership.\n  Subject State: Focused posture, shoulders squared, eyes locked on the stabilized broken office desk.\n  Object State: The broken office desk left in its current state within the broken office desk as a monument to the process\n  Action: John deliberately pulls the broken office desk closer, clears space on the desk, and places both hands firmly on the base to stabilize it.\n  Spatial Relationship: Direct physical contact, leaning over the broken office desk at 0cm.\n  Visible Change: The broken office desk is pulled to the center of the workspace, surrounded by cleared space, visibly claimed.\n  Camera: Slow pull out wide shot framing both John and the incomplete broken office desk.\n  Continuity: broken office desk state remains consistent with the previous beat."
+        },
+        {
+          "sectionKey": "continuity-governance",
+          "label": "Continuity & Staging Constraints",
+          "content": "Staging Rules: Facing the broken office desk directly at a distance of 30cm. | Direct physical contact, leaning over the broken office desk at 0cm.\nContinuity: No visual changes in background objects between beats.\nCamera Directives:\nbeat_01_accountability_drift: Medium shot tracking John's tentative movements.\nbeat_02_accountability_drift: Slow pull out wide shot framing both John and the incomplete broken office desk."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risk Mitigation",
+          "content": "Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"visible ownership\" or accepting the unfinished vessel, the scene passes.\nFailure Risks: Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object."
+        },
+        {
+          "sectionKey": "brief-summary",
+          "label": "Storyboard Brief Summary",
+          "content": "PHYSICAL STORYBOARD BRIEF — \"accountability drift sequence\"\nTension: accountability drift\nSubject: John | Environment: broken office desk\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"accountability drift\".\nScene Nodes:\n  - [beat_01_accountability_drift] Action: John approaches the broken office desk with hesitation, tracing the cracks and structural weaknesses with a finger. -> Result: The physical state of the broken office desk remains unchanged, mirroring the tension of accountability drift.\n  - [beat_02_accountability_drift] Action: John deliberately pulls the broken office desk closer, clears space on the desk, and places both hands firmly on the base to stabilize it. -> Result: The broken office desk is pulled to the center of the workspace, surrounded by cleared space, visibly claimed."
+        },
+        {
+          "sectionKey": "transformation-evidence",
+          "label": "Transformation Evidence & Grounding",
+          "content": "### Behavioral Meaning\nThe subject visibly assumes responsibility for the unresolved problem by physically engaging and claiming the space/object.\n\n### Observable Evidence Required\nA viewer must be able to attribute responsibility to the subject through physical action/state without explanatory text.\n\n### Action Evidence\nJohn pulls the broken office desk closer, inspects the damage, and begins organizing work materials.\n\n### Relationship Change\nSubject moves from a tentative 30cm stance to direct contact, stabilizing the broken office desk.\n\n### Ending Evidence\nJohn remains positioned directly next to the broken office desk, hands resting on the workspace in a posture of ownership.\n\n### Reasoning\nOwnership is demonstrated by direct physical contact, stabilizing actions, and remaining with the prop instead of abandoning it at the broken office desk."
+        }
+      ],
+      "rawOutputs": {
+        "narrativeIntent": "Show the transformation of \"John\" from \"accountability drift\" to \"visible ownership\" through physical action rather than verbal exposition.",
+        "emotionalTension": "accountability drift",
+        "desiredTransformation": "visible ownership",
+        "observableTransformation": "Transition from Tense posture, breathing held in check. with incomplete object to Focused posture, shoulders squared, eyes locked on the stabilized broken office desk. with object left unfinished.",
+        "physicalMetaphor": "A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"accountability drift\".",
+        "subject": "John",
+        "environment": "broken office desk",
+        "keyObject": "broken office desk",
+        "startingPhysicalState": "Tense posture, breathing held in check.",
+        "action": "John deliberately pulls the broken office desk closer, clears space on the desk, and places both hands firmly on the base to stabilize it.",
+        "consequence": "The broken office desk is pulled to the center of the workspace, surrounded by cleared space, visibly claimed.",
+        "endingPhysicalState": "Focused posture, shoulders squared, eyes locked on the stabilized broken office desk.",
+        "sceneNodes": "[\n  {\n    \"beatId\": \"beat_01_accountability_drift\",\n    \"narrativeFunction\": \"Introduce the physical tension anchor of accountability drift in service of project objective: make responsibility tangible.\",\n    \"subjectState\": \"Tense posture, breathing held in check.\",\n    \"objectState\": \"A physical representation of the broken office desk showing structural strain within the broken office desk\",\n    \"physicalAction\": \"John approaches the broken office desk with hesitation, tracing the cracks and structural weaknesses with a finger.\",\n    \"spatialRelationship\": \"Facing the broken office desk directly at a distance of 30cm.\",\n    \"visibleChange\": \"The physical state of the broken office desk remains unchanged, mirroring the tension of accountability drift.\",\n    \"continuityRequirements\": \"Consistent wardrobe and environment. broken office desk state matches initialization.\",\n    \"cameraIntent\": \"Medium shot tracking John's tentative movements.\"\n  },\n  {\n    \"beatId\": \"beat_02_accountability_drift\",\n    \"narrativeFunction\": \"Observe the physical consequence of the transformation to visible ownership.\",\n    \"subjectState\": \"Focused posture, shoulders squared, eyes locked on the stabilized broken office desk.\",\n    \"objectState\": \"The broken office desk left in its current state within the broken office desk as a monument to the process\",\n    \"physicalAction\": \"John deliberately pulls the broken office desk closer, clears space on the desk, and places both hands firmly on the base to stabilize it.\",\n    \"spatialRelationship\": \"Direct physical contact, leaning over the broken office desk at 0cm.\",\n    \"visibleChange\": \"The broken office desk is pulled to the center of the workspace, surrounded by cleared space, visibly claimed.\",\n    \"continuityRequirements\": \"broken office desk state remains consistent with the previous beat.\",\n    \"cameraIntent\": \"Slow pull out wide shot framing both John and the incomplete broken office desk.\"\n  }\n]",
+        "spatialRelationships": "Facing the broken office desk directly at a distance of 30cm. | Direct physical contact, leaning over the broken office desk at 0cm.",
+        "continuityConstraints": "No visual changes in background objects between beats.",
+        "cameraIntent": "beat_01_accountability_drift: Medium shot tracking John's tentative movements.\nbeat_02_accountability_drift: Slow pull out wide shot framing both John and the incomplete broken office desk.",
+        "whatMustRemainUnspoken": "Do not speak or mention \"accountability drift\" or \"visible ownership\" in dialogue. The viewer must infer it solely by observing John's posture and her refusal to complete the broken office desk.",
+        "failureRisks": "Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object.",
+        "validationTest": "Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"visible ownership\" or accepting the unfinished vessel, the scene passes.",
+        "storyboardBrief": "PHYSICAL STORYBOARD BRIEF — \"accountability drift sequence\"\nTension: accountability drift\nSubject: John | Environment: broken office desk\nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"accountability drift\".\nScene Nodes:\n  - [beat_01_accountability_drift] Action: John approaches the broken office desk with hesitation, tracing the cracks and structural weaknesses with a finger. -> Result: The physical state of the broken office desk remains unchanged, mirroring the tension of accountability drift.\n  - [beat_02_accountability_drift] Action: John deliberately pulls the broken office desk closer, clears space on the desk, and places both hands firmly on the base to stabilize it. -> Result: The broken office desk is pulled to the center of the workspace, surrounded by cleared space, visibly claimed.",
+        "transformationEvidence": "{\n  \"desiredTransformation\": \"visible ownership\",\n  \"behavioralMeaning\": \"The subject visibly assumes responsibility for the unresolved problem by physically engaging and claiming the space/object.\",\n  \"observableEvidenceRequired\": \"A viewer must be able to attribute responsibility to the subject through physical action/state without explanatory text.\",\n  \"actionEvidence\": \"John pulls the broken office desk closer, inspects the damage, and begins organizing work materials.\",\n  \"relationshipChange\": \"Subject moves from a tentative 30cm stance to direct contact, stabilizing the broken office desk.\",\n  \"endingEvidence\": \"John remains positioned directly next to the broken office desk, hands resting on the workspace in a posture of ownership.\",\n  \"reasoning\": \"Ownership is demonstrated by direct physical contact, stabilizing actions, and remaining with the prop instead of abandoning it at the broken office desk.\"\n}",
+        "inputFingerprint": "PSS:tension=accountability drift:subject=John:obj=make responsibility tangible",
+        "outputFingerprint": "PSS:nodes=2:firstBeat=beat_01_accountability_drift:lastAction=John deliberately pulls the br"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "pss.idea-becomes-physical",
+        "label": "Idea Becomes Physical",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.one-beat-one-function",
+        "label": "One Beat One Function",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-visible",
+        "label": "Transformation Visible",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-exposition-dependence",
+        "label": "No Exposition Dependence",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.continuity-protected",
+        "label": "Continuity Protected",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-coaching-drift",
+        "label": "No Coaching Drift",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-input-grounded",
+        "label": "Transformation Input Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.semantic-domain-coherent",
+        "label": "Semantic Domain Coherent",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-generic-placeholder-language",
+        "label": "No Generic Placeholder Language",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-behaviorally-realized",
+        "label": "Transformation Behaviorally Realized",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-contrast-material",
+        "label": "Transformation Contrast Material",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-action-transformation-contradiction",
+        "label": "No Action-Transformation Contradiction",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Physical Metaphor Design]: Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Short film\", reflecting the emotional state of \"accountability drift\".\nKey Object/Pr",
+      "[Storyboard Scene Nodes]: BEAT #1: beat_01_accountability_drift\n  Narrative Function: Introduce the physical tension anchor of accountability drift in service of project objective: make responsibility tangible.\n  Subject State",
+      "[Continuity & Staging Constraints]: Staging Rules: Facing the broken office desk directly at a distance of 30cm. | Direct physical contact, leaning over the broken office desk at 0cm.\nContinuity: No visual changes in background objects ",
+      "[Validation & Risk Mitigation]: Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"visible owners",
+      "[Storyboard Brief Summary]: PHYSICAL STORYBOARD BRIEF — \"accountability drift sequence\"\nTension: accountability drift\nSubject: John | Environment: broken office desk\nPhysical Metaphor: A physical struggle with a tangible, stubbo",
+      "[Transformation Evidence & Grounding]: ### Behavioral Meaning\nThe subject visibly assumes responsibility for the unresolved problem by physically engaging and claiming the space/object.\n\n### Observable Evidence Required\nA viewer must be ab"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}

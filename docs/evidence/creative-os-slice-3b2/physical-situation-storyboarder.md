@@ -6,8 +6,8 @@ $$\text{Character/Subject} + \text{Real Object/Environment} + \text{Physical Act
 ---
 
 ## Fixture A: existential anxiety / incompleteness
-* **Subject**: Mara's eight-bar journey
-* **Context**: Short pottery film
+* **Subject**: Mara pottery sequence
+* **Context**: Short film
 * **Physical Metaphor**: A physical struggle with a tangible, stubborn object that resists simple completion.
 * **Nodes**:
   1. `beat_01_setup`: Mara sits 20cm from an unfinished clay vessel on the wheel. She hovers her hands without touching.
@@ -32,5 +32,5 @@ $$\text{Character/Subject} + \text{Real Object/Environment} + \text{Physical Act
 * **Context**: Office/Desktop workspace
 * **Physical Metaphor**: A mechanical breakdown indicating project negligence.
 * **Nodes**:
-  1. `beat_01_generic`: John interacts with the object.
-  2. `beat_02_generic_end`: John disengages, leaving the object unfinished to reflect transformation: "acceptance".
+  1. `beat_01_fading_boundaries`: Introduce the physical tension anchor for maintain scene boundaries under pressure.
+  2. `beat_02_fading_boundaries`: Observe the physical consequence of the transformation to acceptance. Shows John disengaging, leaving the broken office desk unfinished.

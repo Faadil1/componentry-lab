@@ -1,0 +1,476 @@
+{
+  "A": {
+    "methodId": "method_cognitive_metaphor_illustrator",
+    "resourceId": "res_cognitive_metaphor_illustrator",
+    "input": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "invisible technical debt accumulation",
+      "subjectContext": "Developer roadmap",
+      "capabilityGap": "visual-metaphor",
+      "supplementaryFields": {
+        "concept": "technical debt",
+        "projectObjective": "convey structural load instability",
+        "audience": "product managers",
+        "projectSymbols": "granite blocks, wooden support sticks"
+      }
+    },
+    "result": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Concept Anchor",
+          "instruction": "Define the primary cognitive relationship for concept: \"technical debt\".",
+          "outputKey": "metaphor-conceptualization"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Audit Cliché & Literalization Risks",
+          "instruction": "List and reject common visual cliches and literalized versions of concepts.",
+          "outputKey": "cliche-review"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Metaphor Architecture",
+          "instruction": "Choose a physical analogy based on structural/mechanical laws.",
+          "outputKey": "scene-proposition"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Formulate Scene Composition",
+          "instruction": "Define the visual hierarchy and spatial layout for the metaphor.",
+          "outputKey": "visual-hierarchy"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Write Validation Plan",
+          "instruction": "Design a silent comprehension test.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-conceptualization",
+          "label": "Metaphor Conceptualization",
+          "content": "Concept: technical debt\nCognitive Anchor: Understand how decaying architectural foundations models the core relationship of \"technical debt\".\nCore Relationship: The structural relationship of decaying architectural foundations conveying technical debt mechanics."
+        },
+        {
+          "sectionKey": "cliche-review",
+          "label": "Cliché & Literalization Risk Review",
+          "content": "Selected Metaphor Family: decaying architectural foundations\nCliché Assessment:\nIdentified and rejected \"cliche plant / gardening | over-packed cargo boat sailing low\" due to high cliché exposure or literalization risks. Selected \"decaying architectural foundations\".\n\nRejected Alternatives: cliche plant / gardening | over-packed cargo boat sailing low"
+        },
+        {
+          "sectionKey": "scene-proposition",
+          "label": "Visual Scene Proposition",
+          "content": "Scene: Draw: A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.\nActors/Forces: Physical forces matching decaying architectural foundations.\nAction: Interaction matching decaying architectural foundations dynamics.\nConsequence: Physical collapse or block representing the systemic result of technical debt.\nOne Cognitive Action: Exposing the structural limits and consequences of decaying architectural foundations."
+        },
+        {
+          "sectionKey": "visual-hierarchy",
+          "label": "Composition & Staging Guides",
+          "content": "Hierarchy: Primary focus: A heavy granite block supported by a row of pillars where th. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching decaying architectural foundations elements.\nProhibited Symbols: none"
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation Test & Risks",
+          "content": "Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"decaying architectural foundations\", the cognitive action is successful.\nFailure Risks: Risk that the illustrator relies on a literalised description or standard business icons."
+        }
+      ],
+      "rawOutputs": {
+        "conceptSummary": "Explain the mechanics of \"technical debt\" to \"product managers\". (context: Developer roadmap, objective: convey structural load instability)",
+        "cognitiveAnchor": "Understand how decaying architectural foundations models the core relationship of \"technical debt\".",
+        "relationToCommunicate": "The structural relationship of decaying architectural foundations conveying technical debt mechanics.",
+        "candidateMetaphorFamilies": "[{\"family\":\"cliche plant / gardening\",\"clicheRisk\":\"HIGH\",\"riskReason\":\"Growing plants are the default metaphor for any business growth or developmental accumulation.\",\"physicalDescription\":\"A weeds-ridden plant choking fresh growth.\",\"transformationDimension\":\"LOW_TRANSFORMATION\",\"semanticDistance\":3,\"comprehensionStrength\":8,\"distinctivenessStrength\":2,\"literalizationRisk\":3,\"reasoning\":\"Planting weeds represents organic neglect, but it is extremely overused in corporate slide decks.\"},{\"family\":\"decaying architectural foundations\",\"clicheRisk\":\"LOW\",\"riskReason\":\"Focuses on structural load-bearing limits and spatial relationships, showing structural decay under load.\",\"physicalDescription\":\"A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.\",\"transformationDimension\":\"STRUCTURAL_ANALOGY\",\"semanticDistance\":7,\"comprehensionStrength\":9,\"distinctivenessStrength\":8,\"literalizationRisk\":1,\"reasoning\":\"Architectural pillars and load shifting structurally maps the trade-offs of deferring system architecture.\"},{\"family\":\"over-packed cargo boat sailing low\",\"clicheRisk\":\"LOW\",\"riskReason\":\"Represents weight limit exceeding.\",\"physicalDescription\":\"A wooden barge loaded with cargo boxes stack too high, its hull sitting 2 inches below the safety waterline.\",\"transformationDimension\":\"STRUCTURAL_ANALOGY\",\"semanticDistance\":6,\"comprehensionStrength\":8,\"distinctivenessStrength\":7,\"literalizationRisk\":2,\"reasoning\":\"Clear illustration of execution strain and drag for general management audience.\"}]",
+        "clicheRiskAssessment": "Identified and rejected \"cliche plant / gardening | over-packed cargo boat sailing low\" due to high cliché exposure or literalization risks. Selected \"decaying architectural foundations\".",
+        "selectedPhysicalMetaphor": "decaying architectural foundations",
+        "actorForce": "Physical forces matching decaying architectural foundations.",
+        "objectSystem": "A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.",
+        "physicalAction": "Interaction matching decaying architectural foundations dynamics.",
+        "consequence": "Physical collapse or block representing the systemic result of technical debt.",
+        "oneCognitiveAction": "Exposing the structural limits and consequences of decaying architectural foundations.",
+        "sceneProposition": "Draw: A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.",
+        "alternativeRejectedMetaphors": "cliche plant / gardening | over-packed cargo boat sailing low",
+        "projectSpecificSymbols": "granite blocks, wooden support sticks",
+        "visualHierarchy": "Primary focus: A heavy granite block supported by a row of pillars where th. Secondary focus: background contrast.",
+        "labelPolicy": "Minimal annotation matching decaying architectural foundations elements.",
+        "failureRisks": "Risk that the illustrator relies on a literalised description or standard business icons.",
+        "validationTest": "Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"decaying architectural foundations\", the cognitive action is successful.",
+        "inputFingerprint": "CMI:concept=technical debt:aud=product managers:symbols=granite blocks, wood",
+        "outputFingerprint": "CMI:selected=decaying architectural foundations:action=illustrate-one-relation:risk=LOW"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "cmi.one-image-one-cognitive-action",
+        "label": "One Image One Cognitive Action",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.physical-not-verbal",
+        "label": "Physical Not Verbal",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.cliche-risk-reviewed",
+        "label": "Cliché Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.literalization-risk-reviewed",
+        "label": "Literalization Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.comprehension-over-decoration",
+        "label": "Comprehension Over Decoration",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.no-source-style-copy",
+        "label": "No Source Style Copy",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Metaphor Conceptualization]: Concept: technical debt\nCognitive Anchor: Understand how decaying architectural foundations models the core relationship of \"technical debt\".\nCore Relationship: The structural relationship of decaying",
+      "[Cliché & Literalization Risk Review]: Selected Metaphor Family: decaying architectural foundations\nCliché Assessment:\nIdentified and rejected \"cliche plant / gardening | over-packed cargo boat sailing low\" due to high cliché exposure or l",
+      "[Visual Scene Proposition]: Scene: Draw: A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.\nActors/Forces: Physical forces matching decaying a",
+      "[Composition & Staging Guides]: Hierarchy: Primary focus: A heavy granite block supported by a row of pillars where th. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching decaying architectural foundatio",
+      "[Validation Test & Risks]: Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"decaying architectural foundations\", the cog"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_cognitive_metaphor_illustrator",
+    "resourceId": "res_cognitive_metaphor_illustrator",
+    "input": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "trust erosion",
+      "subjectContext": "Brand strategy",
+      "capabilityGap": "visual-metaphor",
+      "supplementaryFields": {
+        "concept": "trust erosion",
+        "projectObjective": "convey gradual breakdown of foundation",
+        "audience": "stakeholders",
+        "projectSymbols": "eroding coastal cliff, unstable sand pillars"
+      }
+    },
+    "result": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Concept Anchor",
+          "instruction": "Define the primary cognitive relationship for concept: \"trust erosion\".",
+          "outputKey": "metaphor-conceptualization"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Audit Cliché & Literalization Risks",
+          "instruction": "List and reject common visual cliches and literalized versions of concepts.",
+          "outputKey": "cliche-review"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Metaphor Architecture",
+          "instruction": "Choose a physical analogy based on structural/mechanical laws.",
+          "outputKey": "scene-proposition"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Formulate Scene Composition",
+          "instruction": "Define the visual hierarchy and spatial layout for the metaphor.",
+          "outputKey": "visual-hierarchy"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Write Validation Plan",
+          "instruction": "Design a silent comprehension test.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-conceptualization",
+          "label": "Metaphor Conceptualization",
+          "content": "Concept: trust erosion\nCognitive Anchor: Understand how sandstone arch under continuous water droplets models the core relationship of \"trust erosion\".\nCore Relationship: The structural relationship of sandstone arch under continuous water droplets conveying trust erosion mechanics."
+        },
+        {
+          "sectionKey": "cliche-review",
+          "label": "Cliché & Literalization Risk Review",
+          "content": "Selected Metaphor Family: sandstone arch under continuous water droplets\nCliché Assessment:\nIdentified and rejected \"cliche shield / lock | weathered coastal cliff face\" due to high cliché exposure or literalization risks. Selected \"sandstone arch under continuous water droplets\".\n\nRejected Alternatives: cliche shield / lock | weathered coastal cliff face"
+        },
+        {
+          "sectionKey": "scene-proposition",
+          "label": "Visual Scene Proposition",
+          "content": "Scene: Draw: A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.\nActors/Forces: Physical forces matching sandstone arch under continuous water droplets.\nAction: Interaction matching sandstone arch under continuous water droplets dynamics.\nConsequence: Physical collapse or block representing the systemic result of trust erosion.\nOne Cognitive Action: Exposing the structural limits and consequences of sandstone arch under continuous water droplets."
+        },
+        {
+          "sectionKey": "visual-hierarchy",
+          "label": "Composition & Staging Guides",
+          "content": "Hierarchy: Primary focus: A solid stone archway showing a deep groove worn into the ca. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching sandstone arch under continuous water droplets elements.\nProhibited Symbols: none"
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation Test & Risks",
+          "content": "Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"sandstone arch under continuous water droplets\", the cognitive action is successful.\nFailure Risks: Risk that the illustrator relies on a literalised description or standard business icons."
+        }
+      ],
+      "rawOutputs": {
+        "conceptSummary": "Explain the mechanics of \"trust erosion\" to \"stakeholders\". (context: Brand strategy, objective: convey gradual breakdown of foundation)",
+        "cognitiveAnchor": "Understand how sandstone arch under continuous water droplets models the core relationship of \"trust erosion\".",
+        "relationToCommunicate": "The structural relationship of sandstone arch under continuous water droplets conveying trust erosion mechanics.",
+        "candidateMetaphorFamilies": "[{\"family\":\"cliche shield / lock\",\"clicheRisk\":\"HIGH\",\"riskReason\":\"Shields, padlocks, and broken hearts are standard clichés for security and trust.\",\"physicalDescription\":\"A cracked shield or a broken padlock.\",\"transformationDimension\":\"LOW_TRANSFORMATION\",\"semanticDistance\":2,\"comprehensionStrength\":7,\"distinctivenessStrength\":2,\"literalizationRisk\":4,\"reasoning\":\"Standard padlock imagery represents access control, not the progressive erosion of relationship trust.\"},{\"family\":\"sandstone arch under continuous water droplets\",\"clicheRisk\":\"LOW\",\"riskReason\":\"Demonstrates physical friction and steady structural deterioration without relying on standard safety badges.\",\"physicalDescription\":\"A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.\",\"transformationDimension\":\"STRUCTURAL_ANALOGY\",\"semanticDistance\":8,\"comprehensionStrength\":9,\"distinctivenessStrength\":9,\"literalizationRisk\":1,\"reasoning\":\"Represents slow, inevitable degradation from a seemingly harmless recurring force.\"},{\"family\":\"weathered coastal cliff face\",\"clicheRisk\":\"LOW\",\"riskReason\":\"Literal physical erosion analogy.\",\"physicalDescription\":\"A vertical soil cliff collapsing into a turbulent ocean wave below.\",\"transformationDimension\":\"DIRECT_LITERALIZATION\",\"semanticDistance\":1,\"comprehensionStrength\":8,\"distinctivenessStrength\":4,\"literalizationRisk\":9,\"reasoning\":\"Literalization risk is high; mapping trust erosion directly to physical dirt erosion offers low conceptual transformation.\"}]",
+        "clicheRiskAssessment": "Identified and rejected \"cliche shield / lock | weathered coastal cliff face\" due to high cliché exposure or literalization risks. Selected \"sandstone arch under continuous water droplets\".",
+        "selectedPhysicalMetaphor": "sandstone arch under continuous water droplets",
+        "actorForce": "Physical forces matching sandstone arch under continuous water droplets.",
+        "objectSystem": "A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.",
+        "physicalAction": "Interaction matching sandstone arch under continuous water droplets dynamics.",
+        "consequence": "Physical collapse or block representing the systemic result of trust erosion.",
+        "oneCognitiveAction": "Exposing the structural limits and consequences of sandstone arch under continuous water droplets.",
+        "sceneProposition": "Draw: A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.",
+        "alternativeRejectedMetaphors": "cliche shield / lock | weathered coastal cliff face",
+        "projectSpecificSymbols": "eroding coastal cliff, unstable sand pillars",
+        "visualHierarchy": "Primary focus: A solid stone archway showing a deep groove worn into the ca. Secondary focus: background contrast.",
+        "labelPolicy": "Minimal annotation matching sandstone arch under continuous water droplets elements.",
+        "failureRisks": "Risk that the illustrator relies on a literalised description or standard business icons.",
+        "validationTest": "Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"sandstone arch under continuous water droplets\", the cognitive action is successful.",
+        "inputFingerprint": "CMI:concept=trust erosion:aud=stakeholders:symbols=eroding coastal clif",
+        "outputFingerprint": "CMI:selected=sandstone arch under continuous water droplets:action=illustrate-one-relation:risk=LOW"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "cmi.one-image-one-cognitive-action",
+        "label": "One Image One Cognitive Action",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.physical-not-verbal",
+        "label": "Physical Not Verbal",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.cliche-risk-reviewed",
+        "label": "Cliché Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.literalization-risk-reviewed",
+        "label": "Literalization Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.comprehension-over-decoration",
+        "label": "Comprehension Over Decoration",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.no-source-style-copy",
+        "label": "No Source Style Copy",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Metaphor Conceptualization]: Concept: trust erosion\nCognitive Anchor: Understand how sandstone arch under continuous water droplets models the core relationship of \"trust erosion\".\nCore Relationship: The structural relationship o",
+      "[Cliché & Literalization Risk Review]: Selected Metaphor Family: sandstone arch under continuous water droplets\nCliché Assessment:\nIdentified and rejected \"cliche shield / lock | weathered coastal cliff face\" due to high cliché exposure or",
+      "[Visual Scene Proposition]: Scene: Draw: A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.\nActors/Forces: Physical forces matching sandstone arch under continuous water dr",
+      "[Composition & Staging Guides]: Hierarchy: Primary focus: A solid stone archway showing a deep groove worn into the ca. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching sandstone arch under continuous ",
+      "[Validation Test & Risks]: Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"sandstone arch under continuous water drople"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_cognitive_metaphor_illustrator",
+    "resourceId": "res_cognitive_metaphor_illustrator",
+    "input": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "operational bottleneck",
+      "subjectContext": "Process diagram",
+      "capabilityGap": "visual-metaphor",
+      "supplementaryFields": {
+        "concept": "operational bottleneck",
+        "projectObjective": "convey flow restriction",
+        "audience": "operations team",
+        "projectSymbols": "converging funnel channels, narrow gate valve"
+      }
+    },
+    "result": {
+      "methodId": "method_cognitive_metaphor_illustrator",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Concept Anchor",
+          "instruction": "Define the primary cognitive relationship for concept: \"operational bottleneck\".",
+          "outputKey": "metaphor-conceptualization"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Audit Cliché & Literalization Risks",
+          "instruction": "List and reject common visual cliches and literalized versions of concepts.",
+          "outputKey": "cliche-review"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Metaphor Architecture",
+          "instruction": "Choose a physical analogy based on structural/mechanical laws.",
+          "outputKey": "scene-proposition"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Formulate Scene Composition",
+          "instruction": "Define the visual hierarchy and spatial layout for the metaphor.",
+          "outputKey": "visual-hierarchy"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Write Validation Plan",
+          "instruction": "Design a silent comprehension test.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-conceptualization",
+          "label": "Metaphor Conceptualization",
+          "content": "Concept: operational bottleneck\nCognitive Anchor: Understand how gravity-fed sphere runway with narrow gate gates models the core relationship of \"operational bottleneck\".\nCore Relationship: The structural relationship of gravity-fed sphere runway with narrow gate gates conveying operational bottleneck mechanics."
+        },
+        {
+          "sectionKey": "cliche-review",
+          "label": "Cliché & Literalization Risk Review",
+          "content": "Selected Metaphor Family: gravity-fed sphere runway with narrow gate gates\nCliché Assessment:\nIdentified and rejected \"cliche funnel / traffic jam | narrow neck glass flask\" due to high cliché exposure or literalization risks. Selected \"gravity-fed sphere runway with narrow gate gates\".\n\nRejected Alternatives: cliche funnel / traffic jam | narrow neck glass flask"
+        },
+        {
+          "sectionKey": "scene-proposition",
+          "label": "Visual Scene Proposition",
+          "content": "Scene: Draw: A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.\nActors/Forces: Physical forces matching gravity-fed sphere runway with narrow gate gates.\nAction: Interaction matching gravity-fed sphere runway with narrow gate gates dynamics.\nConsequence: Physical collapse or block representing the systemic result of operational bottleneck.\nOne Cognitive Action: Exposing the structural limits and consequences of gravity-fed sphere runway with narrow gate gates."
+        },
+        {
+          "sectionKey": "visual-hierarchy",
+          "label": "Composition & Staging Guides",
+          "content": "Hierarchy: Primary focus: A sloping track where metal balls roll down; the track narro. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching gravity-fed sphere runway with narrow gate gates elements.\nProhibited Symbols: none"
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation Test & Risks",
+          "content": "Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"gravity-fed sphere runway with narrow gate gates\", the cognitive action is successful.\nFailure Risks: Risk that the illustrator relies on a literalised description or standard business icons."
+        }
+      ],
+      "rawOutputs": {
+        "conceptSummary": "Explain the mechanics of \"operational bottleneck\" to \"operations team\". (context: Process diagram, objective: convey flow restriction)",
+        "cognitiveAnchor": "Understand how gravity-fed sphere runway with narrow gate gates models the core relationship of \"operational bottleneck\".",
+        "relationToCommunicate": "The structural relationship of gravity-fed sphere runway with narrow gate gates conveying operational bottleneck mechanics.",
+        "candidateMetaphorFamilies": "[{\"family\":\"cliche funnel / traffic jam\",\"clicheRisk\":\"HIGH\",\"riskReason\":\"Funnels and highway traffic jams are used universally for workflow bottlenecks.\",\"physicalDescription\":\"Cars stuck in a bottleneck road structure.\",\"transformationDimension\":\"LOW_TRANSFORMATION\",\"semanticDistance\":3,\"comprehensionStrength\":9,\"distinctivenessStrength\":2,\"literalizationRisk\":5,\"reasoning\":\"Traffic jam is a literal bottleneck description, lacking design distinctiveness.\"},{\"family\":\"gravity-fed sphere runway with narrow gate gates\",\"clicheRisk\":\"LOW\",\"riskReason\":\"Exposes physical speed and mass restrictions through concrete gravity dynamics.\",\"physicalDescription\":\"A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.\",\"transformationDimension\":\"STRUCTURAL_ANALOGY\",\"semanticDistance\":7,\"comprehensionStrength\":9,\"distinctivenessStrength\":8,\"literalizationRisk\":2,\"reasoning\":\"A mechanical track maps queues and transit limits without using highway/traffic cliches.\"},{\"family\":\"narrow neck glass flask\",\"clicheRisk\":\"LOW\",\"riskReason\":\"A literal physical bottleneck.\",\"physicalDescription\":\"An hourglass container where sand grains block each other at the central glass neck.\",\"transformationDimension\":\"DIRECT_LITERALIZATION\",\"semanticDistance\":1,\"comprehensionStrength\":9,\"distinctivenessStrength\":3,\"literalizationRisk\":10,\"reasoning\":\"Highly literalized representation of bottleneck using a literal glass bottle neck. High literalization risk.\"}]",
+        "clicheRiskAssessment": "Identified and rejected \"cliche funnel / traffic jam | narrow neck glass flask\" due to high cliché exposure or literalization risks. Selected \"gravity-fed sphere runway with narrow gate gates\".",
+        "selectedPhysicalMetaphor": "gravity-fed sphere runway with narrow gate gates",
+        "actorForce": "Physical forces matching gravity-fed sphere runway with narrow gate gates.",
+        "objectSystem": "A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.",
+        "physicalAction": "Interaction matching gravity-fed sphere runway with narrow gate gates dynamics.",
+        "consequence": "Physical collapse or block representing the systemic result of operational bottleneck.",
+        "oneCognitiveAction": "Exposing the structural limits and consequences of gravity-fed sphere runway with narrow gate gates.",
+        "sceneProposition": "Draw: A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.",
+        "alternativeRejectedMetaphors": "cliche funnel / traffic jam | narrow neck glass flask",
+        "projectSpecificSymbols": "converging funnel channels, narrow gate valve",
+        "visualHierarchy": "Primary focus: A sloping track where metal balls roll down; the track narro. Secondary focus: background contrast.",
+        "labelPolicy": "Minimal annotation matching gravity-fed sphere runway with narrow gate gates elements.",
+        "failureRisks": "Risk that the illustrator relies on a literalised description or standard business icons.",
+        "validationTest": "Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"gravity-fed sphere runway with narrow gate gates\", the cognitive action is successful.",
+        "inputFingerprint": "CMI:concept=operational bottleneck:aud=operations team:symbols=converging funnel ch",
+        "outputFingerprint": "CMI:selected=gravity-fed sphere runway with narrow gate gates:action=illustrate-one-relation:risk=LOW"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "cmi.one-image-one-cognitive-action",
+        "label": "One Image One Cognitive Action",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.physical-not-verbal",
+        "label": "Physical Not Verbal",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.cliche-risk-reviewed",
+        "label": "Cliché Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.literalization-risk-reviewed",
+        "label": "Literalization Risk Reviewed",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.comprehension-over-decoration",
+        "label": "Comprehension Over Decoration",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "cmi.no-source-style-copy",
+        "label": "No Source Style Copy",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Metaphor Conceptualization]: Concept: operational bottleneck\nCognitive Anchor: Understand how gravity-fed sphere runway with narrow gate gates models the core relationship of \"operational bottleneck\".\nCore Relationship: The struc",
+      "[Cliché & Literalization Risk Review]: Selected Metaphor Family: gravity-fed sphere runway with narrow gate gates\nCliché Assessment:\nIdentified and rejected \"cliche funnel / traffic jam | narrow neck glass flask\" due to high cliché exposur",
+      "[Visual Scene Proposition]: Scene: Draw: A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.\nActors/Forces: Physical forces m",
+      "[Composition & Staging Guides]: Hierarchy: Primary focus: A sloping track where metal balls roll down; the track narro. Secondary focus: background contrast.\nLabel Policy: Minimal annotation matching gravity-fed sphere runway with n",
+      "[Validation Test & Risks]: Validation Test: Show the illustration without text labels or titles. Ask: \"What happens in this system?\" If they identify the mechanical tension matching \"gravity-fed sphere runway with narrow gate g"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}
