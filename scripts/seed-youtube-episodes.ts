@@ -46,15 +46,6 @@ const SEED_EPISODES: EpisodeSeed[] = [
     reviewStatus: "pending",
     description: "How to build a dividend portfolio generating $1k monthly income",
   },
-  {
-    episodeId: "episode-015",
-    episodeNumber: 15,
-    channelName: "Wealth Decoded",
-    title: "Stock Market Fundamentals",
-    workflowState: "TOPIC",
-    reviewStatus: "not-required",
-    description: "Introduction to stock market investing basics",
-  },
 ]
 
 async function seedDatabase() {

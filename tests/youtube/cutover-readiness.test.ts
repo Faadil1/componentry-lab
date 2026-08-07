@@ -40,7 +40,6 @@ describe("Cutover Readiness Validation", () => {
     const ids = new Set(snapshots.map((s) => s.episodeId))
     assert.ok(ids.has("episode-014"), "episode-014 should exist")
     assert.ok(ids.has("episode-013"), "episode-013 should exist")
-    assert.ok(ids.has("episode-015"), "episode-015 should exist")
   })
 
   test("2. episode-014 resolves correctly", async () => {

@@ -51,7 +51,7 @@ export async function closeDatabaseCore(): Promise<void> {
     try {
       await cachedSql.end()
       cachedSql = null
-    } catch (err) {
+    } catch {
       console.error("Warning: Failed to close database connection gracefully")
     }
   }
