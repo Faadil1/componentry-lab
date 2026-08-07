@@ -271,4 +271,97 @@ describe("Episode History Database Provider", () => {
 
     assert.ok(Object.isFrozen(history.events), "Events array should be frozen")
   })
+
+  test("12. deterministic ordering with same-timestamp events", async () => {
+    const sharedTime = "2026-08-10T12:00:00Z"
+    const testEpisodeId = "integration-determinism-test"
+
+    try {
+      // Create episode
+      const now = new Date().toISOString()
+      await sql`
+        INSERT INTO episodes (
+          episode_id,
+          episode_number,
+          channel_name,
+          title,
+          workflow_state,
+          review_status,
+          blockers,
+          schema_version,
+          state_version,
+          created_at,
+          updated_at
+        )
+        VALUES (
+          ${testEpisodeId},
+          888,
+          'Determinism Test',
+          'Same Timestamp Test',
+          'TOPIC',
+          'pending',
+          '[]'::jsonb,
+          1,
+          1,
+          ${now},
+          ${now}
+        )
+        ON CONFLICT (episode_id) DO NOTHING
+      `
+
+      // Insert multiple events with identical timestamps
+      // Order by insertion: evt-a, evt-b, evt-c (but all same timestamp)
+      await sql`
+        INSERT INTO episode_events (
+          episode_id,
+          event_type,
+          actor,
+          created_at
+        )
+        VALUES
+        (${testEpisodeId}, 'state_transition', 'n8n', ${sharedTime}),
+        (${testEpisodeId}, 'state_transition', 'n8n', ${sharedTime}),
+        (${testEpisodeId}, 'state_transition', 'n8n', ${sharedTime})
+      `
+
+      // Read multiple times to verify determinism
+      const read1 = await getEpisodeHistoryFromDb(repository, testEpisodeId)
+      const read2 = await getEpisodeHistoryFromDb(repository, testEpisodeId)
+      const read3 = await getEpisodeHistoryFromDb(repository, testEpisodeId)
+
+      // All reads should return same event count
+      assert.strictEqual(read1.events.length, 3)
+      assert.strictEqual(read2.events.length, 3)
+      assert.strictEqual(read3.events.length, 3)
+
+      // Event IDs should be in same order across all reads
+      const ids1 = read1.events.map((e) => e.eventId)
+      const ids2 = read2.events.map((e) => e.eventId)
+      const ids3 = read3.events.map((e) => e.eventId)
+
+      assert.deepStrictEqual(
+        ids1,
+        ids2,
+        "First and second read should have same event order"
+      )
+      assert.deepStrictEqual(
+        ids2,
+        ids3,
+        "Second and third read should have same event order"
+      )
+    } finally {
+      try {
+        await sql`
+          DELETE FROM episode_events
+          WHERE episode_id = ${testEpisodeId}
+        `
+        await sql`
+          DELETE FROM episodes
+          WHERE episode_id = ${testEpisodeId}
+        `
+      } catch {
+        // Ignore cleanup errors
+      }
+    }
+  })
 })

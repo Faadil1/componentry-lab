@@ -1,5 +1,3 @@
-"use client"
-
 import type { EpisodeHistory, EpisodeHistoryEvent } from "@/lib/domain/episode-history"
 
 interface EpisodeHistoryTimelineProps {

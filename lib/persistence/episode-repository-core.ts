@@ -127,7 +127,15 @@ export function createMockRepository(): EpisodeRepository {
     async getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]> {
       return events
         .filter((e) => e.episodeId === episodeId)
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .sort((a, b) => {
+          const timeA = new Date(b.createdAt).getTime()
+          const timeB = new Date(a.createdAt).getTime()
+          if (timeA !== timeB) {
+            return timeA - timeB
+          }
+          // Tie-break by eventId descending for determinism
+          return b.eventId.localeCompare(a.eventId)
+        })
     },
   }
 }

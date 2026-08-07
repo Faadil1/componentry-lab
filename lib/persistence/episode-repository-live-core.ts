@@ -219,7 +219,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       const rows = await sql`
         SELECT * FROM episode_events
         WHERE episode_id = ${episodeId}
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC, event_id DESC
       `
       return rows.map((row) => mapRowToEpisodeEvent(row as unknown as EpisodeEventRow))
     },
