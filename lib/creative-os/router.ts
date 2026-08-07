@@ -1,13 +1,13 @@
 import type { RouterInputs, ResourceEvaluation } from "./types"
 import { RESOURCE_REGISTRY } from "./registry"
-import { evaluateResource } from "./evaluation"
+import { evaluateResource, MINIMUM_SUITABILITY_THRESHOLD } from "./evaluation"
 
 export interface RouterResult {
   recommendations: ResourceEvaluation[]
   topSuggestion: ResourceEvaluation | null
 }
 
-const SUITABILITY_THRESHOLD = 100
+
 
 /**
  * Route capabilities deterministically based on metadata inputs.
@@ -82,7 +82,7 @@ export function routeCapabilities(inputs: RouterInputs): RouterResult {
   })
 
   const topCandidate = recommendable[0] || null
-  const topSuggestion = (topCandidate && topCandidate.suitabilityScore >= SUITABILITY_THRESHOLD) ? topCandidate : null
+  const topSuggestion = (topCandidate && topCandidate.suitabilityScore >= MINIMUM_SUITABILITY_THRESHOLD) ? topCandidate : null
 
   return {
     recommendations: recommendable,

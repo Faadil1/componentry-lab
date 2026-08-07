@@ -4,6 +4,8 @@ import { isActivated } from "./activation"
 import { getLoadLevelForResource } from "./progressive-loading"
 import type { CreativeProjectMode, CreativeProjectPhase } from "@/lib/director/types"
 
+export const MINIMUM_SUITABILITY_THRESHOLD = 100
+
 const AUTHORITY_HIERARCHY: Record<AuthorityCeiling, number> = {
   READ_ONLY: 1,
   SUGGEST: 2,
