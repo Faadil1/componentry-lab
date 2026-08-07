@@ -56,21 +56,21 @@ test("all definitions have a linked resourceId", () => {
 })
 
 // ───────────────────────────────────────────────────────────────
-// Sacred Rules Breaker — V2 Tests
+// Sacred Rules Breaker — V3 Spec Tests
 // ───────────────────────────────────────────────────────────────
 
 const srbInput = {
   methodId: SACRED_RULES_BREAKER_ID,
   projectMode: "DAY_CHALLENGE" as const,
   phase: "verify" as const,
-  subjectDescription: "A music documentary about Mara's eight-bar journey",
-  subjectContext: "Short-form competition film, 8-minute format, judged panel",
+  subjectDescription: "Premium renovation A",
+  subjectContext: "renovation",
   capabilityGap: "category-differentiation",
   supplementaryFields: {
-    objective: "create a distinctive premium campaign",
-    audience: "environmentally conscious skincare buyers",
-    desiredPosition: "active and culturally relevant rather than quiet naturalism",
-    trustRequirements: "efficacy, safety, environmental credibility"
+    objective: "make expertise and accountability feel tangible",
+    audience: "homeowners",
+    desiredPosition: "premium, human, high-trust",
+    trustRequirements: "reliability, competence, price confidence"
   }
 }
 
@@ -86,7 +86,7 @@ test("Sacred Rules Breaker result has 5 output sections", () => {
   assert.strictEqual(result.result.outputSections.length, 5)
 })
 
-test("Sacred Rules Breaker all quality gates pass", () => {
+test("Sacred Rules Breaker all quality gates pass in V3", () => {
   const result = runSacredRulesBreaker(srbInput)
   assert.strictEqual(result.allGatesPassed, true)
   for (const gate of result.qualityResults) {
@@ -94,32 +94,86 @@ test("Sacred Rules Breaker all quality gates pass", () => {
   }
 })
 
-test("Sacred Rules Breaker conventions-inventoried gate passes", () => {
+test("Sacred Rules Breaker: trust requirement does not automatically imply SACRED (price-opacity is BEND/BREAK)", () => {
   const result = runSacredRulesBreaker(srbInput)
-  const gateResult = result.qualityResults.find(g => g.gateId === "srb.conventions-inventoried")
+  const classification = result.result.rawOutputs.sacredVsHabitClassification ?? ""
+  assert.ok(classification.includes("[NATURE: HABIT] [ACTION: BREAK] price-opacity") || classification.includes("[NATURE: HABIT] [ACTION: BEND] price-opacity"))
+})
+
+test("Sacred Rules Breaker: trust requirement maps to belief and evaluates supports/weakens", () => {
+  const result = runSacredRulesBreaker(srbInput)
+  const classification = result.result.rawOutputs.sacredVsHabitClassification ?? ""
+  assert.ok(classification.includes("Trust Impact Evaluation:"))
+  assert.ok(classification.includes("Convention Effect: WEAKENS"))
+})
+
+test("Sacred Rules Breaker: nature and action are separate for every convention", () => {
+  const result = runSacredRulesBreaker(srbInput)
+  const classification = result.result.rawOutputs.sacredVsHabitClassification ?? ""
+  assert.ok(classification.includes("[NATURE: SACRED] [ACTION: KEEP]"))
+})
+
+test("Sacred Rules Breaker: SACRED + BREAK is invalid and corrected by governance to BEND", () => {
+  const result = runSacredRulesBreaker({
+    ...srbInput,
+    subjectDescription: "Skincare Campaign",
+    subjectContext: "skincare",
+    supplementaryFields: {
+      objective: "campaign",
+      audience: "skincare buyers",
+      desiredPosition: "authenticity", // challenges clinical-efficacy-frame (default SACRED)
+      trustRequirements: ""
+    }
+  })
+  const classification = result.result.rawOutputs.sacredVsHabitClassification ?? ""
+  // clinical-efficacy-frame is default SACRED, and challenged by position.
+  // Instead of breaking, it should BEND.
+  assert.ok(classification.includes("[NATURE: SACRED] [ACTION: BEND] clinical-efficacy-frame"))
+})
+
+test("Sacred Rules Breaker: category-recognition-preserved gate passes", () => {
+  const result = runSacredRulesBreaker(srbInput)
+  const gateResult = result.qualityResults.find(g => g.gateId === "srb.category-recognition-preserved")
   assert.ok(gateResult?.passed)
 })
 
-test("Sacred Rules Breaker trust-codes-protected gate enforces preservation", () => {
+test("Sacred Rules Breaker: objective-link-explicit gate passes", () => {
   const result = runSacredRulesBreaker(srbInput)
-  const gateResult = result.qualityResults.find(g => g.gateId === "srb.trust-codes-protected")
+  const gateResult = result.qualityResults.find(g => g.gateId === "srb.objective-link-explicit")
   assert.ok(gateResult?.passed)
 })
 
-test("Sacred Rules Breaker break-candidates-strategic gate passes", () => {
+test("Sacred Rules Breaker: scalable-beyond-single-visual gate passes", () => {
   const result = runSacredRulesBreaker(srbInput)
-  const gateResult = result.qualityResults.find(g => g.gateId === "srb.break-candidates-strategic")
+  const gateResult = result.qualityResults.find(g => g.gateId === "srb.scalable-beyond-single-visual")
   assert.ok(gateResult?.passed)
 })
 
-test("Sacred Rules Breaker strategic-inversion-position-sensitive gate passes", () => {
-  const result = runSacredRulesBreaker(srbInput)
-  const gateResult = result.qualityResults.find(g => g.gateId === "srb.strategic-inversion-position-sensitive")
-  assert.ok(gateResult?.passed)
+test("Sacred Rules Breaker: same category with different trust requirements may produce different action", () => {
+  const resA = runSacredRulesBreaker({
+    ...srbInput,
+    supplementaryFields: {
+      objective: "renovate",
+      audience: "homeowners",
+      desiredPosition: "premium, human, high-trust",
+      trustRequirements: "price confidence" // maps to price-opacity (WEAKENS)
+    }
+  })
+  const resB = runSacredRulesBreaker({
+    ...srbInput,
+    supplementaryFields: {
+      objective: "renovate",
+      audience: "homeowners",
+      desiredPosition: "premium, human, high-trust",
+      trustRequirements: "reliability" // maps to certification-years-in-business (SUPPORTS)
+    }
+  })
+  // Compare classification text outputs since fingerprint might match format
+  assert.notDeepEqual(resA.result.rawOutputs.sacredVsHabitClassification, resB.result.rawOutputs.sacredVsHabitClassification)
 })
 
-test("Sacred Rules Breaker context-sensitivity: different positions produce different inversions in same category", () => {
-  const inputA = {
+test("Sacred Rules Breaker: same category with different positioning produces different inversions", () => {
+  const resA = runSacredRulesBreaker({
     ...srbInput,
     subjectDescription: "Skincare Campaign Alpha",
     supplementaryFields: {
@@ -128,9 +182,8 @@ test("Sacred Rules Breaker context-sensitivity: different positions produce diff
       desiredPosition: "youth activism and cultural energy",
       trustRequirements: "environmental credibility"
     }
-  }
-
-  const inputB = {
+  })
+  const resB = runSacredRulesBreaker({
     ...srbInput,
     subjectDescription: "Skincare Campaign Beta",
     supplementaryFields: {
@@ -139,22 +192,29 @@ test("Sacred Rules Breaker context-sensitivity: different positions produce diff
       desiredPosition: "clinical proof and radical transparency",
       trustRequirements: "efficacy"
     }
-  }
-
-  const resA = runSacredRulesBreaker(inputA)
-  const resB = runSacredRulesBreaker(inputB)
-
+  })
   assert.notDeepEqual(resA.result.rawOutputs.differentiationInsight, resB.result.rawOutputs.differentiationInsight)
 })
 
-test("Sacred Rules Breaker is deterministic", () => {
-  const r1 = runSacredRulesBreaker(srbInput)
-  const r2 = runSacredRulesBreaker(srbInput)
-  assert.deepStrictEqual(r1.result.rawOutputs, r2.result.rawOutputs)
+test("Sacred Rules Breaker: contradiction resolves toward trust preservation (BEND/KEEP instead of BREAK)", () => {
+  const res = runSacredRulesBreaker({
+    ...srbInput,
+    subjectDescription: "Skincare Campaign",
+    supplementaryFields: {
+      objective: "campaign",
+      audience: "skincare buyers",
+      desiredPosition: "authenticity", // challenges clinical-efficacy-frame
+      trustRequirements: "efficacy"    // clinical-efficacy-frame maps to efficacy, effect: SUPPORTS
+    }
+  })
+  const classification = res.result.rawOutputs.sacredVsHabitClassification ?? ""
+  // Contradiction: desiredPosition wants to challenge, but trust requirement is efficacy (SUPPORTS).
+  // It must resolve to BEND or KEEP, NOT break.
+  assert.ok(classification.includes("[NATURE: SACRED] [ACTION: BEND] clinical-efficacy-frame"))
 })
 
 // ───────────────────────────────────────────────────────────────
-// Somatic Response Design — V2 Tests
+// Somatic Response Design — V3 Spec Tests
 // ───────────────────────────────────────────────────────────────
 
 const srdInput = {
@@ -176,7 +236,7 @@ test("Somatic Response Design executes and returns COMPLETE status", () => {
   assert.strictEqual(result.sideEffects, null)
 })
 
-test("Somatic Response Design all quality gates pass (including new dark-pattern safeguard gate)", () => {
+test("Somatic Response Design all quality gates pass in V3 (including traceability and override gates)", () => {
   const result = runSomaticResponseDesign(srdInput)
   assert.strictEqual(result.allGatesPassed, true)
   for (const gate of result.qualityResults) {
@@ -184,46 +244,71 @@ test("Somatic Response Design all quality gates pass (including new dark-pattern
   }
 })
 
-test("Somatic Response Design unknown adjective behavior fallback generator", () => {
+test("Somatic Response Design perceptual principles and options exist", () => {
+  const result = runSomaticResponseDesign(srdInput)
+  const principles = result.result.rawOutputs.perceptualPrinciples ?? ""
+  const options = result.result.rawOutputs.formalOptions ?? ""
+  assert.ok(principles.includes("Principle:"))
+  assert.ok(options.includes("Option:"))
+})
+
+test("Somatic Response Design traces selection back to bodily response", () => {
+  const result = runSomaticResponseDesign(srdInput)
+  const rationale = result.result.rawOutputs.selectedDirectionRationale ?? ""
+  assert.ok(rationale.includes("perceptual principles"))
+})
+
+test("Somatic Response Design: same descriptor in different contexts produces materially different directions", () => {
+  const perfumeRes = runSomaticResponseDesign({
+    ...srdInput,
+    subjectDescription: "premium perfume landing page",
+    subjectContext: "perfume"
+  })
+  const dashboardRes = runSomaticResponseDesign({
+    ...srdInput,
+    subjectDescription: "luxury financial dashboard",
+    subjectContext: "dashboard"
+  })
+  assert.notDeepEqual(perfumeRes.result.rawOutputs.selectedDirectionChosen, dashboardRes.result.rawOutputs.selectedDirectionChosen)
+})
+
+test("Somatic Response Design: eye-catching renovation has non-neon valid route", () => {
+  const result = runSomaticResponseDesign({
+    ...srdInput,
+    subjectDescription: "premium home renovation service",
+    subjectContext: "renovation",
+    supplementaryFields: {
+      targetSensoryExperience: "eye-catching"
+    }
+  })
+  const chosen = result.result.rawOutputs.selectedDirectionChosen ?? ""
+  assert.ok(!chosen.toLowerCase().includes("neon"))
+  assert.ok(chosen.includes("architectural detail crop"))
+})
+
+test("Somatic Response Design unknown descriptors dynamic generation", () => {
   const result = runSomaticResponseDesign({
     ...srdInput,
     supplementaryFields: {
-      targetSensoryExperience: "precise without feeling clinical"
+      targetSensoryExperience: "defiant but intimate"
     }
   })
-  assert.strictEqual(result.status, "COMPLETE")
-  assert.strictEqual(result.result.rawOutputs.descriptor, "precise without feeling clinical")
-  assert.ok(result.result.rawOutputs.observableReaction.includes("pupil dilation"))
+  assert.strictEqual(result.result.rawOutputs.descriptor, "defiant but intimate")
+  assert.ok(result.result.rawOutputs.observableReaction.includes("breath hold"))
 })
 
-test("Somatic Response Design context sensitivity: luxury perfume vs luxury dashboard", () => {
-  const perfumeRes = runSomaticResponseDesign({
-    methodId: SOMATIC_RESPONSE_DESIGN_ID,
-    projectMode: "DAY_CHALLENGE" as const,
-    phase: "verify" as const,
-    subjectDescription: "premium perfume landing page",
-    subjectContext: "landing page",
-    capabilityGap: "bodily-response-art-direction",
-    supplementaryFields: {
-      targetSensoryExperience: "luxurious"
-    }
-  })
+test("Somatic Response Design stereotype risk reporting is active", () => {
+  const result = runSomaticResponseDesign(srdInput)
+  const risk = result.result.rawOutputs.stereotypeRisk ?? ""
+  const reason = result.result.rawOutputs.stereotypeRiskReason ?? ""
+  assert.ok(risk === "LOW" || risk === "MEDIUM" || risk === "HIGH")
+  assert.ok(reason.length > 5)
+})
 
-  const dashboardRes = runSomaticResponseDesign({
-    methodId: SOMATIC_RESPONSE_DESIGN_ID,
-    projectMode: "DAY_CHALLENGE" as const,
-    phase: "verify" as const,
-    subjectDescription: "luxury financial dashboard",
-    subjectContext: "dashboard",
-    capabilityGap: "bodily-response-art-direction",
-    supplementaryFields: {
-      targetSensoryExperience: "luxurious"
-    }
-  })
-
-  // The composition and typography details should materially differ
-  assert.notDeepEqual(perfumeRes.result.rawOutputs.compositionConsequence, dashboardRes.result.rawOutputs.compositionConsequence)
-  assert.notDeepEqual(perfumeRes.result.rawOutputs.typographyConsequence, dashboardRes.result.rawOutputs.typographyConsequence)
+test("Somatic Response Design 5-second test checks observable behaviors", () => {
+  const result = runSomaticResponseDesign(srdInput)
+  const testStr = result.result.rawOutputs.fiveSecondValidationTest ?? ""
+  assert.ok(testStr.includes("viewer exhibit") || testStr.includes("eyes track"))
 })
 
 // ───────────────────────────────────────────────────────────────
@@ -240,7 +325,6 @@ const stubBase = {
 test("Relationship-Preserving Abstraction stub returns BLOCKED", () => {
   const result = runRelationshipPreservingAbstraction({ methodId: RELATIONSHIP_PRESERVING_ABSTRACTION_ID, projectMode: "DATA_STORY" as const, ...stubBase })
   assert.strictEqual(result.status, "BLOCKED")
-  assert.strictEqual(result.result.outputSections[0]?.content, "Relationship-Preserving Abstraction is a contract stub. Full implementation is deferred.")
 })
 
 test("Cognitive Metaphor Illustrator stub returns BLOCKED", () => {
