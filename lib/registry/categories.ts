@@ -103,6 +103,15 @@ export const registryCategories: Record<string, RegistryCategory> = {
     accent: "red",
     relatedKinds: ["recipe"],
     recommendedAudience: "Livestream Producers, Event Hosts"
+  },
+  workflow: {
+    id: "workflow",
+    label: "Workflow Components",
+    shortDescription: "Read-only state display components for content production pipeline visibility.",
+    order: 12,
+    accent: "indigo",
+    relatedKinds: ["workflow"],
+    recommendedAudience: "Content Operations, Production Coordinators"
   }
 }
 export default registryCategories

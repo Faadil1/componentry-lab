@@ -143,7 +143,8 @@ export function countRegistryFacets(entries: RegistryEntry[] = registryComponent
     foundation: 0,
     layout: 0,
     system: 0,
-    recipe: 0
+    recipe: 0,
+    workflow: 0
   }
 
   const categories: Record<RegistryCategoryId, number> = {
@@ -157,7 +158,8 @@ export function countRegistryFacets(entries: RegistryEntry[] = registryComponent
     "product-composition": 0,
     "operational-composition": 0,
     "editorial-composition": 0,
-    "broadcast-composition": 0
+    "broadcast-composition": 0,
+    workflow: 0
   }
 
   const maturities: Record<RegistryMaturity, number> = {

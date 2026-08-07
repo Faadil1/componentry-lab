@@ -1064,5 +1064,72 @@ export const registryComponents: RegistryEntry[] = [
     limitations: ["Requires large display space to render sidebar map details."],
     recommendedFor: ["Composition studios", "Specimen portfolios index"],
     avoidFor: ["Standard article text pages"]
+  },
+
+  // ── WORKFLOW ───────────────────────────────────────────────
+  {
+    id: "episode-state-card",
+    slug: "episode-state-card",
+    label: "Episode State Card",
+    shortLabel: "Episode State",
+    kind: "workflow",
+    categoryId: "workflow",
+    maturity: "production-candidate",
+    summary: "Read-only card displaying canonical episode workflow state across 6 discriminated variants.",
+    description: "Renders the authoritative production state of a WealthDecoded episode via a 6-member discriminated union on variant. Each variant enforces distinct prop contracts at compile time using TypeScript never types. Respects system prefers-reduced-motion via framer-motion.",
+    route: "/episode-state-card",
+    sourcePaths: ["components/workflow/episode-state-card.tsx"],
+    tags: ["workflow", "state", "episode", "production", "status"],
+    capabilities: ["responsive", "keyboard-accessible", "reduced-motion", "editorial"],
+    runtimes: ["react", "css"],
+    supportedViewports: ["desktop", "laptop", "tablet", "mobile"],
+    deterministic: true,
+    captureReady: true,
+    ssrSafe: true,
+    accessibility: {
+      keyboardNav: "full",
+      ariaRoles: ["article", "status"],
+      screenReaderAnnouncements: true,
+      contrastRatio: "4.5:1"
+    },
+    dependencies: [
+      { name: "react", optional: false },
+      { name: "framer-motion", optional: false },
+      { name: "clsx", optional: false }
+    ],
+    relations: [],
+    usageExamples: [
+      {
+        title: "Default variant",
+        code: `<EpisodeStateCard\n  variant="default"\n  channelName="Wealth Decoded"\n  title="Dividend Investing Explained"\n  workflowState="EDITORIAL"\n  humanReviewStatus="not-required"\n/>`
+      },
+      {
+        title: "Unavailable variant",
+        code: `<EpisodeStateCard variant="unavailable" unavailableReason="Manifest fetch failed" />`
+      }
+    ],
+    limitations: [
+      "Read-only — does not emit workflow transition events.",
+      "workflowState is a free-form string; validation is the caller's responsibility.",
+      "All canonical props (channelName, title, etc.) are forbidden in the unavailable variant."
+    ],
+    recommendedFor: ["Production pipeline dashboards", "Episode status pages", "Ops command views"],
+    avoidFor: ["Editable workflow forms", "Inline editing surfaces"],
+    memoryHook: "Six variants, one source of truth for episode state.",
+    primaryExport: "EpisodeStateCard",
+    componentExports: [
+      "EpisodeStateCard",
+      "EpisodeStateCardProps",
+      "EpisodeStateCardVariant",
+      "HumanReviewStatus",
+      "EpisodeStateDecision",
+      "EpisodeStateBlocker",
+      "DefaultEpisodeStateCardProps",
+      "BlockedEpisodeStateCardProps",
+      "HumanReviewRequiredEpisodeStateCardProps",
+      "ApprovedEpisodeStateCardProps",
+      "PublishedEpisodeStateCardProps",
+      "UnavailableEpisodeStateCardProps"
+    ]
   }
 ]

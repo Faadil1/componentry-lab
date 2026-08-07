@@ -1,6 +1,6 @@
 name: Episode State Card
 description: Read-only workflow component for displaying canonical episode state
-status: APPROVED
+status: PROMOTED
 
 component:
   name: EpisodeStateCard
@@ -19,7 +19,7 @@ review_status:
   accessibility_review: PASS
   api_stabilized: true
   approved: true
-  promoted: false
+  promoted: true
 
 visual_review:
   evidence_commit: 4b560a5da97bc414fb338e8298488c3ae66ba09d
@@ -53,7 +53,7 @@ metadata:
   created_at: 2026-08-06T00:47:00Z
   created_by: claude-code
   version: 1.0.0
-  next_phase: PROMOTION_REVIEW
+  next_phase: INTEGRATION_READY
 
 approval_review:
   approved_at: 2026-08-06T23:00:00Z
@@ -71,3 +71,19 @@ approval_review:
     build: PASS
     api_tests: 20/20 PASS
     remote_deployment: SUCCESS
+
+promotion_review:
+  promoted_at: 2026-08-06T23:30:00Z
+  decision: PROMOTE
+  implementation_commit: 41026169529285101a2fcccf7ce63b281142d044
+  report: docs/reviews/episode-state-card-promotion-review.md
+  registry_entry: lib/registry/components.ts
+  maturity: production-candidate
+  kind: workflow
+  category: workflow
+  gates:
+    typescript: PASS
+    unused_ts_expect_error: 0
+    lint: PASS
+    build: PASS
+    api_tests: 20/20 PASS
