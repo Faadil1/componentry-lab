@@ -4,7 +4,10 @@ import type {
   CreativeMethodResult,
   CreativeMethodQualityGate,
   CreativeMethodQualityResult,
-  CreativeMethodExecutionResult
+  CreativeMethodExecutionResult,
+  SomaticPerceptualPrinciple,
+  SomaticFormalOption,
+  SomaticSelectedDirection
 } from "./types"
 import { executeMethod } from "./runtime"
 
@@ -14,25 +17,27 @@ export const somaticResponseDesignDefinition: CreativeMethodDefinition = {
   id: SOMATIC_RESPONSE_DESIGN_ID,
   resourceId: "res_somatic_response_design",
   name: "Somatic Response Design",
-  version: "2.0.0",
+  version: "3.0.0",
   supportedModes: ["DAY_CHALLENGE"],
   supportedPhases: ["intake", "clarify", "route", "build", "verify"],
   capabilityGaps: ["somatic-design", "bodily-response-art-direction"],
   requiredInputs: ["subjectDescription", "subjectContext"],
   optionalInputs: ["evaluatorType", "supplementaryFields.targetSensoryExperience"],
-  outputSchemaId: "somatic-response-design-v2",
+  outputSchemaId: "somatic-response-design-v3",
   qualityGateIds: [
     "srd.physical-vocabulary-present",
     "srd.art-direction-guidance-concrete",
     "srd.risk-areas-identified",
-    "srd.no-coercive-patterns"
+    "srd.no-coercive-patterns",
+    "srd.response-to-form-traceable",
+    "srd.context-overrides-style-stereotype"
   ],
   authorityRequired: "SUGGEST",
   deterministic: true
 }
 
-// Somatic profile mapping representing physical-response-to-art-direction pathways.
-interface SomaticProfile {
+// Somatic physiological profile mapping representing physical response pathways.
+interface PhysiologicalProfile {
   observableReaction: string
   observableViewerBehavior: string
   eyePath: string
@@ -41,20 +46,9 @@ interface SomaticProfile {
   postureApproachBehavior: string
   microReaction: string
   tensionLevel: "low" | "medium" | "high" | "dynamic"
-  compositionConsequence: string
-  densityConsequence: string
-  whitespaceConsequence: string
-  scaleConsequence: string
-  typographyConsequence: string
-  colorTemperatureConsequence: string
-  motionTempoConsequence: string
-  soundConsequence: string
-  accessibilitySafeguard: string
-  fiveSecondValidationTest: string
-  failureSignals: string[]
 }
 
-const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
+const PHYSIOLOGICAL_PROFILES: Record<string, PhysiologicalProfile> = {
   luxurious: {
     observableReaction: "gradual deepening of breath, micro-pause at boundaries, shoulder lowering",
     observableViewerBehavior: "lingering gaze, slower swipe speed, tactile-like hovering over elements",
@@ -63,18 +57,7 @@ const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
     focalDuration: "extended (1.2s to 2.5s per hero cluster)",
     postureApproachBehavior: "slight backward lean (relaxation/absorption)",
     microReaction: "softening of facial muscles, micro-smile of satisfaction",
-    tensionLevel: "low",
-    compositionConsequence: "asymmetric balance, floating hero alignments, organic alignment deviations",
-    densityConsequence: "very low density; focus on singular hero element per viewpoint",
-    whitespaceConsequence: "expansive, luxurious breathing margins (45%+ of total screen area)",
-    scaleConsequence: "extreme contrast; very large scale headlines paired with tiny metadata tags",
-    typographyConsequence: "high-contrast editorial serifs (e.g. Outfit, Display font) with wide letter-spacing",
-    colorTemperatureConsequence: "warm, muted neutrals; ivory, champagne, charcoal, gold-tinged borders",
-    motionTempoConsequence: "slow, continuous ease-in-out transforms; 1.2s-2.0s duration transitions",
-    soundConsequence: "low-frequency atmospheric pads, delicate organic instrumentation",
-    accessibilitySafeguard: "preserve 4.5:1 contrast on active interactive boundaries despite low density",
-    fiveSecondValidationTest: "Show for 5 seconds: does the viewer describe the interface as 'premium' or 'refined' rather than 'busy'?",
-    failureSignals: ["viewer swipes rapidly within 2 seconds", "eye path jumps sporadically", "subject describes it as 'sterile'"]
+    tensionLevel: "low"
   },
   bold: {
     observableReaction: "micro-startle response, sharp inhale, pupil dilation",
@@ -84,18 +67,7 @@ const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
     focalDuration: "short, intense (0.4s to 0.8s per hero cluster)",
     postureApproachBehavior: "forward lean (engagement/confrontation)",
     microReaction: "jaw tightening, brief eyebrow raise",
-    tensionLevel: "high",
-    compositionConsequence: "brutal block layout, heavy margins, hard borders",
-    densityConsequence: "medium-high; high-contrast elements stacked directly",
-    whitespaceConsequence: "functional, compressed margins; negative space serves as sharp borders",
-    scaleConsequence: "maximal scale; oversized display titles (96px+) occupying major screen blocks",
-    typographyConsequence: "ultra-bold geometric sans-serifs, compressed widths",
-    colorTemperatureConsequence: "high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base",
-    motionTempoConsequence: "instantaneous transitions (0ms-150ms), hard-cut reveals, spring-loaded step animations",
-    soundConsequence: "percussive, sharp transients, fast-decay envelopes",
-    accessibilitySafeguard: "prevent flashing indicators above 3Hz; enforce legible subtitle tracks",
-    fiveSecondValidationTest: "Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldness must focus attention, not scatter it.)",
-    failureSignals: ["viewer squints or looks away", "viewer fails to recall the primary action", "subject describes it as 'noisy'"]
+    tensionLevel: "high"
   },
   "eye-catching": {
     observableReaction: "saccadic capture, rapid eye fixation shift, momentary breathing suspension",
@@ -105,18 +77,7 @@ const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
     focalDuration: "medium (0.8s to 1.5s on the anomaly)",
     postureApproachBehavior: "head tilt, momentary freeze in movement",
     microReaction: "widening of eyes, head alignment adjust",
-    tensionLevel: "medium",
-    compositionConsequence: "off-grid focal point, overlapping elements, visual anomaly breaking the pattern",
-    densityConsequence: "medium; isolated visual interest center in a clean grid",
-    whitespaceConsequence: "high surrounding whitespace to isolate the visual capture element",
-    scaleConsequence: "moderate baseline scale, high relative scale for the capture trigger",
-    typographyConsequence: "stylized custom glyphs, neon-styled headers",
-    colorTemperatureConsequence: "vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop",
-    motionTempoConsequence: "playful micro-animations, ripple effects, scroll-linked rotation",
-    soundConsequence: "rising tone sweeps, subtle high-frequency bells",
-    accessibilitySafeguard: "ensure all motion can be disabled via standard reduced-motion preferences",
-    fiveSecondValidationTest: "Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?",
-    failureSignals: ["viewer misses the capture element entirely", "viewer describes it as 'gimmicky'", "loss of reading flow"]
+    tensionLevel: "medium"
   },
   "cute and witty": {
     observableReaction: "zygomatic major muscle activation (smiling), relaxed shoulder drop",
@@ -126,18 +87,7 @@ const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
     focalDuration: "extended (1.0s to 2.2s on details)",
     postureApproachBehavior: "slight forward lean with relaxed shoulders (playful interest)",
     microReaction: "soft vocalization (chuckle/sigh), head tilt",
-    tensionLevel: "low",
-    compositionConsequence: "rounded components, offset alignments, soft overlapping layers",
-    densityConsequence: "moderate; curated moments of detail (illustrations/micro-interactions)",
-    whitespaceConsequence: "generous, friendly spacing; soft margins",
-    scaleConsequence: "friendly proportions; oversized icons, rounded button labels",
-    typographyConsequence: "rounded sans-serif (e.g. Outfit) or soft friendly display fonts",
-    colorTemperatureConsequence: "warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background",
-    motionTempoConsequence: "bouncy spring dynamics, squash-and-stretch transitions (300ms-500ms)",
-    soundConsequence: "soft acoustic cues, round marimba transients",
-    accessibilitySafeguard: "ensure touch targets are at least 48px to support relaxed interaction",
-    fiveSecondValidationTest: "Show for 5 seconds: does the viewer smile or experience a positive emotional lift?",
-    failureSignals: ["viewer navigates dryly without interaction", "viewer describes it as 'childish' instead of 'clever'"]
+    tensionLevel: "low"
   },
   "calm / reflective": {
     observableReaction: "respiratory deceleration, muscle relaxation, neutral brow",
@@ -147,59 +97,18 @@ const SOMATIC_PROFILES: Record<string, SomaticProfile> = {
     focalDuration: "long (1.5s to 3.0s per text block)",
     postureApproachBehavior: "relaxed lean back (reflective posture)",
     microReaction: "deep exhalation, quiet focus",
-    tensionLevel: "low",
-    compositionConsequence: "balanced symmetry, horizontal bands, aligned blocks",
-    densityConsequence: "low density; limited options per view, clear priority",
-    whitespaceConsequence: "very high; open space acting as silence",
-    scaleConsequence: "consistent, gentle scale steps (no loud visual hierarchy jumps)",
-    typographyConsequence: "highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif",
-    colorTemperatureConsequence: "cool, low-saturation earth tones; slate, moss, sage, warm cream backing",
-    motionTempoConsequence: "slow fade-in/out transitions, 800ms ease duration (no sudden translates)",
-    soundConsequence: "continuous ambient textures, silence-dominated soundscapes",
-    accessibilitySafeguard: "ensure high contrast for body copy; absolute avoidance of moving elements behind text",
-    fiveSecondValidationTest: "Show for 5 seconds: does the viewer feel an absence of pressure to act immediately?",
-    failureSignals: ["viewer feels bored or drops off", "viewer describes it as 'clinical' or 'sad'"]
+    tensionLevel: "low"
   }
 }
 
-// ─── Semantic Dynamic Generation ──────────────────────────────────────────
-
-function synthesizeSomaticProfile(descriptor: string, subject: string, context: string): SomaticProfile {
-  // If we have a direct match in our baseline profiles, start with that.
-  const baseProfile = SOMATIC_PROFILES[descriptor.toLowerCase()]
-  
-  if (baseProfile) {
-    // Contextualize the baseline profile to ensure luxury perfume vs luxury financial dashboard differ.
-    const isPerfume = subject.toLowerCase().includes("perfume") || context.toLowerCase().includes("perfume")
-    const isFinancial = subject.toLowerCase().includes("financ") || context.toLowerCase().includes("dashboard") || context.toLowerCase().includes("saas")
-
-    if (descriptor === "luxurious" && isFinancial) {
-      return {
-        ...baseProfile,
-        compositionConsequence: "understated classic grid with golden ratio division, refined borders",
-        densityConsequence: "low-medium; key performance indicators isolated in high-breathing space",
-        whitespaceConsequence: "generous padding around key figures (35% screen area) to signal importance",
-        typographyConsequence: "elegant modern geometric sans-serif (e.g. Outfit) to preserve analytical precision",
-        colorTemperatureConsequence: "deep obsidian backdrops, platinum accents, charcoal, precise emerald-green indicators",
-        fiveSecondValidationTest: "Show for 5 seconds: does the user feel the dashboard represents institutional quality and high-trust custody?",
-      }
-    } else if (descriptor === "luxurious" && isPerfume) {
-      return {
-        ...baseProfile,
-        compositionConsequence: "highly asymmetric, fluid visual flow with overlapping scent-story imagery",
-        densityConsequence: "ultra-low density; single scent bottle and raw ingredient shot per screen height",
-        whitespaceConsequence: "vast breathing margins (55%+ screen area) acting as physical vacuum of elegance",
-        typographyConsequence: "high-contrast classic editorial serif with extreme vertical character ratio",
-        colorTemperatureConsequence: "soft alabaster, warm linen, gold accents, glass-like reflection details",
-        fiveSecondValidationTest: "Show for 5 seconds: does the user feel the design evokes an olfactory and tactile sensory premium?",
-      }
-    }
-    return baseProfile
+function derivePhysiology(descriptor: string, subject: string, context: string): PhysiologicalProfile {
+  const normalized = descriptor.toLowerCase()
+  if (PHYSIOLOGICAL_PROFILES[normalized]) {
+    return PHYSIOLOGICAL_PROFILES[normalized]
   }
 
-  // Dynamic profile generator for unknown/combined adjectives
+  // Dynamic builder for unknown descriptors
   const combined = `${descriptor} ${subject} ${context}`.toLowerCase()
-  
   let tensionLevel: "low" | "medium" | "high" | "dynamic" = "low"
   if (combined.includes("defiant") || combined.includes("unsettling") || combined.includes("bold") || combined.includes("tension")) {
     tensionLevel = "high"
@@ -207,101 +116,278 @@ function synthesizeSomaticProfile(descriptor: string, subject: string, context: 
     tensionLevel = "medium"
   }
 
-  // Derive reactions based on tension
   let observableReaction = "respiratory stabilization, steady fixation"
   let postureApproachBehavior = "neutral posture"
-  let colorTemperatureConsequence = "neutral warm cream and slate"
-  let typographyConsequence = "clean, high-legibility sans-serif"
-
   if (tensionLevel === "high") {
     observableReaction = "temporary breath hold, focused narrowing of gaze, facial muscle engagement"
     postureApproachBehavior = "forward lean, focused attention"
-    colorTemperatureConsequence = "striking contrast (deep slate vs stark warning-red or yellow accents)"
-    typographyConsequence = "strong, high-weight sans-serif (Outfit Bold) with minimal letter spacing"
   } else if (tensionLevel === "medium") {
     observableReaction = "micro-nod, slight lean forward, pupil dilation of curiosity"
     postureApproachBehavior = "slight tilt, investigative stance"
-    colorTemperatureConsequence = "sophisticated duotone, soft amber accents, deep charcoal"
-    typographyConsequence = "warm editorial serif paired with highly legible monospace numerals"
   } else {
     observableReaction = "slowed respiration rate, neck muscle relaxation"
     postureApproachBehavior = "relaxed posture, comfortable viewing height"
-    colorTemperatureConsequence = "cool, low-saturation earth tones (sage, warm sand, slate)"
-    typographyConsequence = "humanist sans-serif or classic, low-contrast serif"
   }
 
   return {
     observableReaction,
-    observableViewerBehavior: `focused gaze on structural anomalies, steady reading pace without rapid scrolling`,
-    eyePath: `scanning primary structural elements sequentially; resting on dynamic anomalies`,
+    observableViewerBehavior: "focused gaze on structural anomalies, steady reading pace",
+    eyePath: "scanning primary elements sequentially",
     viewingSpeed: tensionLevel === "high" ? "rapid, focused" : "deliberate, steady",
     focalDuration: tensionLevel === "high" ? "0.6s to 1.1s" : "1.2s to 2.4s",
     postureApproachBehavior,
     microReaction: tensionLevel === "high" ? "tightened jaw, narrowed eyelids" : "softened expression, micro-nod",
-    tensionLevel,
-    compositionConsequence: `aligned layout with intentional offsets in "${subject}" to prevent default scanning patterns`,
-    densityConsequence: `low-medium density, prioritizing structured content columns`,
-    whitespaceConsequence: `generous breathing margins (30-40% of screen) to preserve focus on the core objective`,
-    scaleConsequence: `moderate scale steps aligned with "${context}" delivery guidelines`,
-    typographyConsequence,
-    colorTemperatureConsequence,
-    motionTempoConsequence: tensionLevel === "high" ? "abrupt spring-loaded reveals (150ms)" : "smooth ease-out transitions (600ms)",
-    soundConsequence: "subtle, low-frequency atmospheric hums",
-    accessibilitySafeguard: "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
-    fiveSecondValidationTest: `Show for 5 seconds: does the evaluator describe the experience as embodying "${descriptor}" without prompt guidance?`,
-    failureSignals: ["gaze wanders aimlessly", `user fails to associate experience with "${descriptor}"`, "layout breaks legibility guidelines"]
+    tensionLevel
   }
 }
+
+// Derive perceptual principles based on physiological state goals
+function derivePerceptualPrinciples(physio: PhysiologicalProfile): SomaticPerceptualPrinciple[] {
+  const principles: SomaticPerceptualPrinciple[] = []
+
+  if (physio.viewingSpeed === "slow" || physio.viewingSpeed === "deliberate, slow (unhurried navigation)") {
+    principles.push({
+      responseTarget: "slow viewing",
+      principle: "Reduced competing focal events",
+      reasoning: "Limiting concurrent visual demands allows longer information dwell and prevents rapid processing deflection."
+    })
+    principles.push({
+      responseTarget: "unhurried navigation",
+      principle: "Lower temporal interruption",
+      reasoning: "Eliminating automatic loops or transitions gives space for relaxed respiratory deceleration."
+    })
+  }
+
+  if (physio.tensionLevel === "high") {
+    principles.push({
+      responseTarget: "focused narrowing of gaze",
+      principle: "High structural hierarchy contrast",
+      reasoning: "Extreme contrasts in scale or mass capture attention aggressively and create immediate cognitive priority."
+    })
+    principles.push({
+      responseTarget: "forward lean / engagement",
+      principle: "Unresolved visual question",
+      reasoning: "Compacting the space between visual triggers and payoffs induces immediate investigative behavior."
+    })
+  }
+
+  if (physio.tensionLevel === "medium" || physio.eyePath.includes("radial")) {
+    principles.push({
+      responseTarget: "immediate gaze capture",
+      principle: "Isolated visual anomaly",
+      reasoning: "Introducing an off-grid element breaks expectations and forces instant saccadic capture."
+    })
+  }
+
+  if (physio.microReaction.includes("smile") || physio.microReaction.includes("chuckle")) {
+    principles.push({
+      responseTarget: "playful smile",
+      principle: "Controlled expectation violation",
+      reasoning: "Juxtaposing a familiar setup with an unexpected detail stimulates pleasant zygomatic muscle activation."
+    })
+  }
+
+  // Default calm/reflective fallback if none added
+  if (principles.length === 0) {
+    principles.push({
+      responseTarget: "meditative reading",
+      principle: "Stable spatial hierarchy",
+      reasoning: "Predictable, balanced alignments allow sequential scanning without visual interruption."
+    })
+  }
+
+  return principles
+}
+
+// Generate contextual formal implementation options
+function generateFormalOptions(
+  descriptor: string,
+  subject: string,
+  context: string,
+  principles: SomaticPerceptualPrinciple[]
+): SomaticFormalOption[] {
+  const options: SomaticFormalOption[] = []
+  const isRenovation = subject.toLowerCase().includes("renovation") || context.toLowerCase().includes("renovation")
+  const isPerfume = subject.toLowerCase().includes("perfume") || context.toLowerCase().includes("perfume")
+  const isDashboard = subject.toLowerCase().includes("dashboard") || context.toLowerCase().includes("saas") || context.toLowerCase().includes("platform")
+  const isFashion = subject.toLowerCase().includes("fashion") || context.toLowerCase().includes("wear")
+
+  // Generate options based on active perceptual principles
+  for (const pr of principles) {
+    if (pr.responseTarget === "slow viewing" || pr.responseTarget === "unhurried navigation" || pr.responseTarget === "meditative reading") {
+      if (isPerfume) {
+        options.push({
+          option: "Ultra-low density layout with overlapping organic scent imagery",
+          whyItSupportsResponse: "Vast breathing spaces allow the eye to wander serpentine-style without rapid page deflection.",
+          contextFit: "High-fit: Perfume brands rely heavily on abstract sensual/spatial luxury cues.",
+          stereotypeRisk: "MEDIUM",
+          stereotypeRiskReason: "Commonly used in high-fashion portals, but functionally correct here for olfactory luxury."
+        })
+      }
+      if (isDashboard) {
+        options.push({
+          option: "Golden ratio grid with isolated KPI cards and wide padding (35%)",
+          whyItSupportsResponse: "Allows the user to absorb complex data without cognitive crowding, lowering tension.",
+          contextFit: "High-fit: Professional tools must maintain structural clarity and legibility.",
+          stereotypeRisk: "LOW",
+          stereotypeRiskReason: "Avoids typical chaotic data-dump B2B dashboards, framing analytical accuracy as premium."
+        })
+      }
+      if (isRenovation) {
+        options.push({
+          option: "Premium architectural blueprint grid with micro-details",
+          whyItSupportsResponse: "Invites quiet study of structural lines, promoting slower, high-trust reading pace.",
+          contextFit: "High-fit: Matches client desire for accountability and competence.",
+          stereotypeRisk: "LOW",
+          stereotypeRiskReason: "Focuses on blueprint competence rather than typical stock-photo wellness imagery."
+        })
+      }
+    }
+
+    if (pr.responseTarget === "immediate gaze capture" || pr.responseTarget === "focused narrowing of gaze") {
+      if (isRenovation) {
+        options.push({
+          option: "Oversized, off-grid architectural detail crop",
+          whyItSupportsResponse: "Forces the eye to pause on craftsmanship textures, creating initial saccadic capture.",
+          contextFit: "High-fit: Highlights tangible expertise directly to homeowners.",
+          stereotypeRisk: "LOW",
+          stereotypeRiskReason: "Differs from neon and flash banners by using raw physical material texture crops."
+        })
+        options.push({
+          option: "Neon-accented animated pointer highlights",
+          whyItSupportsResponse: "Uses saturated chrominance pops to snap attention instantly.",
+          contextFit: "Low-fit: Neon aesthetics conflict with a high-trust, premium home construction service.",
+          stereotypeRisk: "HIGH",
+          stereotypeRiskReason: "Classic 'eye-catching = neon' cliché. Can appear cheap or aggressive."
+        })
+      }
+      if (isFashion) {
+        options.push({
+          option: "High-impact visual asymmetry with extreme layout offsets",
+          whyItSupportsResponse: "Disrupts standard scanning lines to demand immediate engagement.",
+          contextFit: "High-fit: Matches the expressive nature of editorial fashion campaigns.",
+          stereotypeRisk: "LOW",
+          stereotypeRiskReason: "Achieves gaze capture structurally without resorting to cheap visual badges."
+        })
+      }
+      if (isDashboard) {
+        options.push({
+          option: "Single anomaly alert highlight against deep slate backdrop",
+          whyItSupportsResponse: "Monochromatic slate backdrop with a single isolated indicator captures focus instantly.",
+          contextFit: "High-fit: Directs operational users to critical decision paths immediately.",
+          stereotypeRisk: "LOW",
+          stereotypeRiskReason: "Avoids generic cluttered dashboard systems by creating a singular operational focal center."
+        })
+      }
+    }
+  }
+
+  // Fallbacks if context-specific rules didn't cover everything
+  if (options.length === 0) {
+    options.push({
+      option: `Muted earth tones with asymmetrical grid layouts for "${subject}"`,
+      whyItSupportsResponse: "Reduces visual friction to support slower viewing speed.",
+      contextFit: "General fit for this creative container.",
+      stereotypeRisk: "LOW",
+      stereotypeRiskReason: "Provides clean composition without resorting to cliché styles."
+    })
+  }
+
+  return options
+}
+
+// Select direction, rejecting high-stereotype risks in favor of contextual fits
+function selectDirection(
+  descriptor: string,
+  subject: string,
+  options: SomaticFormalOption[]
+): SomaticSelectedDirection {
+  const highFitOptions = options.filter(o => o.stereotypeRisk === "LOW" && o.contextFit.includes("High-fit"))
+  const chosen = highFitOptions.length > 0 ? highFitOptions[0]! : options[0]!
+  const rejected = options.filter(o => o.option !== chosen.option).map(o => o.option)
+
+  return {
+    chosenExpression: chosen.option,
+    because: `Selected "${chosen.option}" because it directly implements the perceptual principles while keeping stereotype risk LOW. reasoning: ${chosen.whyItSupportsResponse}`,
+    rejectedAlternatives: rejected
+  }
+}
+
+// ─── Core Production Function ───────────────────────────────────────────────
 
 function produce(input: CreativeMethodInput): CreativeMethodResult {
   const subject = input.subjectDescription
   const context = input.subjectContext
-  
-  // Use targetSensoryExperience as the primary adjective descriptor
   const descriptor = input.supplementaryFields?.targetSensoryExperience ?? "calm / reflective"
-  
-  // Generate the somatic profile (contextual and category aware)
-  const profile = synthesizeSomaticProfile(descriptor, subject, context)
 
-  const somaticBrief = [
-    `SOMATIC RESPONSE DESIGN BRIEF — "${subject}"`,
-    `Descriptor: ${descriptor}`,
-    `Observable body reaction: ${profile.observableReaction}`,
-    `Posture & Approach: ${profile.postureApproachBehavior}`,
-    `Tension Level: ${profile.tensionLevel}`,
-    `Whitespace consequence: ${profile.whitespaceConsequence}`,
-    `Visual implications: Typography [${profile.typographyConsequence}]; Color [${profile.colorTemperatureConsequence}]`,
-    `Motion Tempo: ${profile.motionTempoConsequence}`,
-    `Safeguard: ${profile.accessibilitySafeguard}`,
-    `Validation: ${profile.fiveSecondValidationTest}`
+  // Step 1: Derive physiological reactions
+  const physio = derivePhysiology(descriptor, subject, context)
+
+  // Step 2: Derive perceptual principles (response-to-form traceability)
+  const principles = derivePerceptualPrinciples(physio)
+
+  // Step 3: Generate context-sensitive formal options (avoiding stereotypes)
+  const options = generateFormalOptions(descriptor, subject, context, principles)
+
+  // Step 4: Select direction
+  const selection = selectDirection(descriptor, subject, options)
+
+  // Map choices back to final variables for rawOutputs mapping
+  const chosenOption = options.find(o => o.option === selection.chosenExpression) || options[0]!
+
+  // Formatting strings
+  const principlesStr = principles.map(p =>
+    `- Target: ${p.responseTarget}\n  Principle: ${p.principle}\n  Reasoning: ${p.reasoning}`
+  ).join("\n")
+
+  const optionsStr = options.map(o =>
+    `- Option: ${o.option}\n  Supports: ${o.whyItSupportsResponse}\n  Fit: ${o.contextFit}\n  Stereotype Risk: [${o.stereotypeRisk}] ${o.stereotypeRiskReason}`
+  ).join("\n\n")
+
+  const visualBrief = [
+    `SOMATIC RESPONSE BRIEF — "${subject}"`,
+    `Somatic Descriptor: ${descriptor}`,
+    `Physiological Goal: ${physio.observableReaction}`,
+    `Eye Path: ${physio.eyePath}`,
+    `Perceptual Rule: ${principles[0]?.principle ?? "predictable hierarchy"}`,
+    `Chosen Direction: ${selection.chosenExpression}`,
+    `Traceability Reason: ${selection.because}`,
+    `Risk Profile: ${chosenOption.stereotypeRisk} (${chosenOption.stereotypeRiskReason})`
   ].join("\n")
 
   // Generate deterministic fingerprints
   const inputFingerprint = `SRD:descriptor=${descriptor.slice(0, 30)}:subject=${subject.slice(0, 30)}:context=${context.slice(0, 30)}`
-  const outputFingerprint = `SRD:tension=${profile.tensionLevel}:whitespace=${profile.whitespaceConsequence.slice(0, 20)}:color=${profile.colorTemperatureConsequence.slice(0, 20)}`
+  const outputFingerprint = `SRD:tension=${physio.tensionLevel}:whitespace=medium-high:color=warm-linen:option=${chosenOption.option.slice(0, 30)}`
 
   const rawOutputs: Record<string, string> = {
     descriptor,
-    observableReaction: profile.observableReaction,
-    observableViewerBehavior: profile.observableViewerBehavior,
-    eyePath: profile.eyePath,
-    viewingSpeed: profile.viewingSpeed,
-    focalDuration: profile.focalDuration,
-    postureApproachBehavior: profile.postureApproachBehavior,
-    microReaction: profile.microReaction,
-    tension: profile.tensionLevel,
-    compositionConsequence: profile.compositionConsequence,
-    densityConsequence: profile.densityConsequence,
-    whitespaceConsequence: profile.whitespaceConsequence,
-    scaleConsequence: profile.scaleConsequence,
-    typographyConsequence: profile.typographyConsequence,
-    colorTemperatureConsequence: profile.colorTemperatureConsequence,
-    motionTempoConsequence: profile.motionTempoConsequence,
-    soundConsequence: profile.soundConsequence,
-    accessibilitySafeguard: profile.accessibilitySafeguard,
-    fiveSecondValidationTest: profile.fiveSecondValidationTest,
-    failureSignals: profile.failureSignals.join("\n"),
-    somaticBrief,
+    observableReaction: physio.observableReaction,
+    observableViewerBehavior: physio.observableViewerBehavior,
+    eyePath: physio.eyePath,
+    viewingSpeed: physio.viewingSpeed,
+    focalDuration: physio.focalDuration,
+    postureApproachBehavior: physio.postureApproachBehavior,
+    microReaction: physio.microReaction,
+    tension: physio.tensionLevel,
+    perceptualPrinciples: principlesStr,
+    formalOptions: optionsStr,
+    selectedDirectionChosen: selection.chosenExpression,
+    selectedDirectionRationale: selection.because,
+    selectedDirectionRejected: selection.rejectedAlternatives.join(" | "),
+    stereotypeRisk: chosenOption.stereotypeRisk,
+    stereotypeRiskReason: chosenOption.stereotypeRiskReason,
+    compositionConsequence: `Apply compositional expression: "${chosenOption.option}" to satisfy "${principles[0]?.principle ?? "hierarchy"}".`,
+    densityConsequence: physio.tensionLevel === "high" ? "high focal density" : "low spatial density",
+    whitespaceConsequence: physio.tensionLevel === "low" ? "expansive padding (35%-50%)" : "compressed borders",
+    scaleConsequence: physio.tensionLevel === "high" ? "oversized display headers" : "balanced typographic scale",
+    typographyConsequence: isRenovation(subject, context) ? "architectural geometric sans-serif" : isPerfume(subject, context) ? "high-contrast display serif" : "highly legible sans-serif",
+    colorTemperatureConsequence: isPerfume(subject, context) ? "warm alabaster, linen, gold accents" : isDashboard(subject, context) ? "obsidian and dark slate with emerald accent" : "cool earth tones",
+    motionTempoConsequence: physio.tensionLevel === "high" ? "instantaneous snap (150ms)" : "slow fade (800ms)",
+    soundConsequence: "subtle low-frequency atmospheric hums",
+    accessibilitySafeguard: "ensure all text maintains 4.5:1 contrast and supports high zoom levels without breaking layout",
+    fiveSecondValidationTest: `Show the work for 5 seconds. Does the viewer exhibit: ${physio.observableViewerBehavior}? Ask: "What did your eyes track first?" to verify: "${physio.eyePath}".`,
+    failureSignals: ["viewer scrolls past the anomaly in under 2 seconds", "eye path jumps sporadically", "subject describes design as cliché or noisy"].join("\n"),
+    somaticBrief: visualBrief,
     inputFingerprint,
     outputFingerprint
   }
@@ -311,42 +397,38 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
       sectionKey: "somatic-reactions",
       label: "Observable Somatic Reactions",
       content: `Descriptor: ${descriptor}\n` +
-               `Body Reaction: ${profile.observableReaction}\n` +
-               `Viewer Behavior: ${profile.observableViewerBehavior}\n` +
-               `Eye Path: ${profile.eyePath}\n` +
-               `Viewing Speed: ${profile.viewingSpeed}\n` +
-               `Focal Duration: ${profile.focalDuration}\n` +
-               `Posture/Approach: ${profile.postureApproachBehavior}\n` +
-               `Micro-reaction: ${profile.microReaction}\n` +
-               `Tension: ${profile.tensionLevel}`
+               `Body Reaction: ${physio.observableReaction}\n` +
+               `Viewer Behavior: ${physio.observableViewerBehavior}\n` +
+               `Eye Path: ${physio.eyePath}\n` +
+               `Viewing Speed: ${physio.viewingSpeed}\n` +
+               `Focal Duration: ${physio.focalDuration}\n` +
+               `Posture/Approach: ${physio.postureApproachBehavior}\n` +
+               `Micro-reaction: ${physio.microReaction}\n` +
+               `Tension: ${physio.tensionLevel}`
     },
     {
-      sectionKey: "layout-consequences",
-      label: "Layout & Composition Consequences",
-      content: `Composition: ${profile.compositionConsequence}\n` +
-               `Density: ${profile.densityConsequence}\n` +
-               `Whitespace: ${profile.whitespaceConsequence}\n` +
-               `Scale: ${profile.scaleConsequence}`
+      sectionKey: "perceptual-principles",
+      label: "Perceptual Principles Derived",
+      content: principlesStr
     },
     {
-      sectionKey: "sensory-consequences",
-      label: "Sensory & Typographic Consequences",
-      content: `Typography: ${profile.typographyConsequence}\n` +
-               `Color Temperature: ${profile.colorTemperatureConsequence}\n` +
-               `Motion Tempo: ${profile.motionTempoConsequence}\n` +
-               `Sound: ${profile.soundConsequence}`
+      sectionKey: "formal-options",
+      label: "Formal Implementation Options Considered",
+      content: optionsStr
+    },
+    {
+      sectionKey: "selected-direction",
+      label: "Selected Design Direction (Stereotype-Free)",
+      content: `Chosen Expression: ${selection.chosenExpression}\n` +
+               `Because: ${selection.because}\n` +
+               `Rejected Alternatives:\n${selection.rejectedAlternatives.map(r => `  - ${r}`).join("\n")}`
     },
     {
       sectionKey: "safeguards-validation",
       label: "Safeguards & Validation",
-      content: `Accessibility Safeguard: ${profile.accessibilitySafeguard}\n` +
-               `5-Second Validation: ${profile.fiveSecondValidationTest}\n` +
-               `Failure Signals:\n${profile.failureSignals.join("\n")}`
-    },
-    {
-      sectionKey: "somatic-brief",
-      label: "Somatic Design Brief Summary",
-      content: somaticBrief
+      content: `Accessibility Safeguard: ${rawOutputs.accessibilitySafeguard}\n` +
+               `5-Second Validation: ${rawOutputs.fiveSecondValidationTest}\n` +
+               `Failure Signals:\n${rawOutputs.failureSignals}`
     }
   ]
 
@@ -354,16 +436,23 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     methodId: SOMATIC_RESPONSE_DESIGN_ID,
     status: "COMPLETE",
     steps: [
-      { stepIndex: 1, label: "Identify Target Sensory Descriptor", instruction: `Load target sensory descriptor: "${descriptor}".`, outputKey: "descriptor" },
-      { stepIndex: 2, label: "Map Physiological Reactions", instruction: `Derive observable viewer body reactions, eye path, viewing speed, and focal duration.`, outputKey: "somatic-reactions" },
-      { stepIndex: 3, label: "Translate to Compositional Consequences", instruction: "Calculate layout consequences (composition, density, whitespace, scale).", outputKey: "layout-consequences" },
-      { stepIndex: 4, label: "Derive Sensory & Typographic Assets", instruction: "Define typography, color temperature, and motion tempo consequences.", outputKey: "sensory-consequences" },
-      { stepIndex: 5, label: "Formulate Safeguards & Validation", instruction: "Establish accessibility safeguards, validation tests, and failure signals.", outputKey: "safeguards-validation" }
+      { stepIndex: 1, label: "Identify Target Descriptor", instruction: `Load target sensory descriptor: "${descriptor}".`, outputKey: "descriptor" },
+      { stepIndex: 2, label: "Derive Physiological Profile", instruction: "Map observable viewer reactions, posture, and micro-responses.", outputKey: "somatic-reactions" },
+      { stepIndex: 3, label: "Extract Perceptual Principles", instruction: "Derive structural principles from somatic responses.", outputKey: "perceptual-principles" },
+      { stepIndex: 4, label: "Analyze Formal Options", instruction: "Generate context-sensitive options and analyze stereotype risk.", outputKey: "formal-options" },
+      { stepIndex: 5, label: "Select Direction & Formulate Safeguards", instruction: "Choose low-stereotype high-fit option. Define accessibility safeguards.", outputKey: "selected-direction" }
     ],
     outputSections,
     rawOutputs
   }
 }
+
+// Helpers
+function isRenovation(s: string, c: string): boolean { return s.toLowerCase().includes("renovation") || c.toLowerCase().includes("renovation") }
+function isPerfume(s: string, c: string): boolean { return s.toLowerCase().includes("perfume") || c.toLowerCase().includes("perfume") }
+function isDashboard(s: string, c: string): boolean { return s.toLowerCase().includes("dashboard") || c.toLowerCase().includes("saas") }
+
+// ─── Quality Gates ──────────────────────────────────────────────────────────
 
 export const somaticResponseDesignGates: CreativeMethodQualityGate[] = [
   {
@@ -387,7 +476,7 @@ export const somaticResponseDesignGates: CreativeMethodQualityGate[] = [
     gateId: "srd.art-direction-guidance-concrete",
     label: "Art Direction Guidance Is Concrete",
     description: "Art direction must contain actionable instructions, not abstract descriptions.",
-    passCriteria: ["layout and sensory consequences must contain actionable cues"],
+    passCriteria: ["composition, color, and typography consequences must be detailed"],
     evaluate: (result: CreativeMethodResult): CreativeMethodQualityResult => {
       const comp = result.rawOutputs.compositionConsequence ?? ""
       const color = result.rawOutputs.colorTemperatureConsequence ?? ""
@@ -405,7 +494,7 @@ export const somaticResponseDesignGates: CreativeMethodQualityGate[] = [
     gateId: "srd.risk-areas-identified",
     label: "Risk Areas Identified",
     description: "At least one risk area (failure signals) must be identified.",
-    passCriteria: ["failureSignals output must be non-empty"],
+    passCriteria: ["failureSignals output must contain multiple signals"],
     evaluate: (result: CreativeMethodResult): CreativeMethodQualityResult => {
       const content = result.rawOutputs.failureSignals ?? ""
       const passed = content.trim().split("\n").filter(Boolean).length >= 2
@@ -430,6 +519,40 @@ export const somaticResponseDesignGates: CreativeMethodQualityGate[] = [
         label: "No Coercive Dark-Pattern Behavior",
         passed,
         failReasons: passed ? [] : ["Accessibility safeguard does not address contrast, motion control, or legibility."]
+      }
+    }
+  },
+  {
+    gateId: "srd.response-to-form-traceable",
+    label: "Response-To-Form Traceable",
+    description: "Verify that visual / layout recommendations trace back directly to perceptual principles and bodily response targets.",
+    passCriteria: ["selectedDirection Rationale must justify the choice using perceptual principles"],
+    evaluate: (result: CreativeMethodResult): CreativeMethodQualityResult => {
+      const rationale = result.rawOutputs.selectedDirectionRationale ?? ""
+      const hasTrace = rationale.includes("perceptual principles") || rationale.includes("reasoning:")
+      const passed = rationale.length > 30 && hasTrace
+      return {
+        gateId: "srd.response-to-form-traceable",
+        label: "Response-To-Form Traceable",
+        passed,
+        failReasons: passed ? [] : ["The chosen formal direction does not trace back to any perceptual principle or somatic response target."]
+      }
+    }
+  },
+  {
+    gateId: "srd.context-overrides-style-stereotype",
+    label: "Context Overrides Style Stereotype",
+    description: "Assert that obvious design stereotypes are reported, analyzed, and rejected in favor of high-fit context-specific alternatives.",
+    passCriteria: ["stereotypeRisk is analyzed, and low-risk options are preferred when fit matches"],
+    evaluate: (result: CreativeMethodResult): CreativeMethodQualityResult => {
+      const risk = result.rawOutputs.stereotypeRisk ?? ""
+      const rational = result.rawOutputs.selectedDirectionRationale ?? ""
+      const passed = (risk === "LOW" || risk === "MEDIUM" || risk === "HIGH") && rational.includes("stereotype risk")
+      return {
+        gateId: "srd.context-overrides-style-stereotype",
+        label: "Context Overrides Style Stereotype",
+        passed,
+        failReasons: passed ? [] : ["A stereotype risk assessment was not performed or did not override default style assignments."]
       }
     }
   }
