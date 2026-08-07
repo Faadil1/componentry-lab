@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert"
 import { RESOURCE_REGISTRY } from "../lib/creative-os/registry"
 import { enforceProgressiveLoading } from "../lib/creative-os/progressive-loading"
-import { satisfiesAuthority } from "../lib/creative-os/evaluation"
+import { satisfiesAuthority, transitionLifecycle } from "../lib/creative-os/evaluation"
 import { routeCapabilities } from "../lib/creative-os/router"
 
 test("zero initial resources are APPROVED", () => {
@@ -11,15 +11,67 @@ test("zero initial resources are APPROVED", () => {
 })
 
 test("APPROVED transition requires explicit human approval record", () => {
-  // A test proving APPROVED states are locked behind explicit transition authority checks
-  const mockHumanApprovalLogged = false
-  function transitionToApproved(resourceId: string, hasHumanApproval: boolean) {
-    if (!hasHumanApproval) {
-      throw new Error("Rejected: Human architecture review sign-off is required to transition to APPROVED.")
-    }
-    return "APPROVED"
-  }
-  assert.throws(() => transitionToApproved("res_sacred_rules_breaker", mockHumanApprovalLogged), /Human architecture review sign-off/)
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_sacred_rules_breaker", targetState: "APPROVED", hasHumanApprovalRecord: false }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("high score alone cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_sacred_rules_breaker", targetState: "APPROVED", hasHumanApprovalRecord: false, justifications: ["HIGH_SCORE"] }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("successful use alone cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_originkit", targetState: "APPROVED", hasHumanApprovalRecord: false, justifications: ["SUCCESSFUL_USE"] }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("internal origin alone cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_sacred_rules_breaker", targetState: "APPROVED", hasHumanApprovalRecord: false, justifications: ["INTERNAL_ORIGIN"] }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("multi-project presence alone cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_video_shotcraft", targetState: "APPROVED", hasHumanApprovalRecord: false, justifications: ["MULTI_PROJECT_PRESENCE"] }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("agent recommendation alone cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({ resourceId: "res_openmontage", targetState: "APPROVED", hasHumanApprovalRecord: false, justifications: ["AGENT_RECOMMENDATION"] }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("all prohibited justifications combined cannot authorize APPROVED transition", () => {
+  assert.throws(
+    () => transitionLifecycle({
+      resourceId: "res_sacred_rules_breaker",
+      targetState: "APPROVED",
+      hasHumanApprovalRecord: false,
+      justifications: ["HIGH_SCORE", "SUCCESSFUL_USE", "INTERNAL_ORIGIN", "MULTI_PROJECT_PRESENCE", "AGENT_RECOMMENDATION"]
+    }),
+    /requires an explicit human approval record/
+  )
+})
+
+test("explicit human approval record allows APPROVED transition", () => {
+  const result = transitionLifecycle({ resourceId: "res_sacred_rules_breaker", targetState: "APPROVED", hasHumanApprovalRecord: true })
+  assert.strictEqual(result, "APPROVED")
+})
+
+test("non-APPROVED transitions do not require human approval record", () => {
+  const result = transitionLifecycle({ resourceId: "res_sacred_rules_breaker", targetState: "AUDITED", hasHumanApprovalRecord: false })
+  assert.strictEqual(result, "AUDITED")
 })
 
 test("Remocn is not deprecated, CinePrompt is not superseded, AI World Builder is not rejected, OpenMontage is not approved", () => {

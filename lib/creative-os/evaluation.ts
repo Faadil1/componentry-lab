@@ -275,3 +275,39 @@ export function evaluateResource(
     recommendationLabel
   }
 }
+
+/**
+ * Prohibited justifications for APPROVED transition.
+ * None of these alone or combined may authorize a lifecycle transition to APPROVED.
+ */
+export type ProhibitedApprovalJustification =
+  | "HIGH_SCORE"
+  | "SUCCESSFUL_USE"
+  | "INTERNAL_ORIGIN"
+  | "MULTI_PROJECT_PRESENCE"
+  | "AGENT_RECOMMENDATION"
+
+export interface ApprovalTransitionRequest {
+  resourceId: string
+  targetState: ResourceLifecycleState
+  hasHumanApprovalRecord: boolean
+  justifications?: ProhibitedApprovalJustification[]
+}
+
+/**
+ * Governance guard: transitions to APPROVED require an explicit human approval record.
+ * No other justification — high score, successful use, internal origin,
+ * multi-project presence, or agent recommendation — is sufficient.
+ */
+export function transitionLifecycle(request: ApprovalTransitionRequest): ResourceLifecycleState {
+  if (request.targetState === "APPROVED") {
+    if (!request.hasHumanApprovalRecord) {
+      const reasons = request.justifications?.join(", ") || "none"
+      throw new Error(
+        `Rejected: lifecycle transition to APPROVED for ${request.resourceId} requires an explicit human approval record. ` +
+        `Provided justifications (${reasons}) are insufficient.`
+      )
+    }
+  }
+  return request.targetState
+}
