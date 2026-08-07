@@ -1,0 +1,706 @@
+{
+  "A": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "premium perfume landing page",
+      "subjectContext": "landing page",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "luxurious"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Sensory Descriptor",
+          "instruction": "Load target sensory descriptor: \"luxurious\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Map Physiological Reactions",
+          "instruction": "Derive observable viewer body reactions, eye path, viewing speed, and focal duration.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Translate to Compositional Consequences",
+          "instruction": "Calculate layout consequences (composition, density, whitespace, scale).",
+          "outputKey": "layout-consequences"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Derive Sensory & Typographic Assets",
+          "instruction": "Define typography, color temperature, and motion tempo consequences.",
+          "outputKey": "sensory-consequences"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Safeguards & Validation",
+          "instruction": "Establish accessibility safeguards, validation tests, and failure signals.",
+          "outputKey": "safeguards-validation"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\nEye Path: undulating, serpentine path following subtle visual anchors; avoids hard grid lines\nViewing Speed: deliberate, slow (unhurried navigation)\nFocal Duration: extended (1.2s to 2.5s per hero cluster)\nPosture/Approach: slight backward lean (relaxation/absorption)\nMicro-reaction: softening of facial muscles, micro-smile of satisfaction\nTension: low"
+        },
+        {
+          "sectionKey": "layout-consequences",
+          "label": "Layout & Composition Consequences",
+          "content": "Composition: highly asymmetric, fluid visual flow with overlapping scent-story imagery\nDensity: ultra-low density; single scent bottle and raw ingredient shot per screen height\nWhitespace: vast breathing margins (55%+ screen area) acting as physical vacuum of elegance\nScale: extreme contrast; very large scale headlines paired with tiny metadata tags"
+        },
+        {
+          "sectionKey": "sensory-consequences",
+          "label": "Sensory & Typographic Consequences",
+          "content": "Typography: high-contrast classic editorial serif with extreme vertical character ratio\nColor Temperature: soft alabaster, warm linen, gold accents, glass-like reflection details\nMotion Tempo: slow, continuous ease-in-out transforms; 1.2s-2.0s duration transitions\nSound: low-frequency atmospheric pads, delicate organic instrumentation"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: preserve 4.5:1 contrast on active interactive boundaries despite low density\n5-Second Validation: Show for 5 seconds: does the user feel the design evokes an olfactory and tactile sensory premium?\nFailure Signals:\nviewer swipes rapidly within 2 seconds\neye path jumps sporadically\nsubject describes it as 'sterile'"
+        },
+        {
+          "sectionKey": "somatic-brief",
+          "label": "Somatic Design Brief Summary",
+          "content": "SOMATIC RESPONSE DESIGN BRIEF — \"premium perfume landing page\"\nDescriptor: luxurious\nObservable body reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nPosture & Approach: slight backward lean (relaxation/absorption)\nTension Level: low\nWhitespace consequence: vast breathing margins (55%+ screen area) acting as physical vacuum of elegance\nVisual implications: Typography [high-contrast classic editorial serif with extreme vertical character ratio]; Color [soft alabaster, warm linen, gold accents, glass-like reflection details]\nMotion Tempo: slow, continuous ease-in-out transforms; 1.2s-2.0s duration transitions\nSafeguard: preserve 4.5:1 contrast on active interactive boundaries despite low density\nValidation: Show for 5 seconds: does the user feel the design evokes an olfactory and tactile sensory premium?"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "luxurious",
+        "observableReaction": "gradual deepening of breath, micro-pause at boundaries, shoulder lowering",
+        "observableViewerBehavior": "lingering gaze, slower swipe speed, tactile-like hovering over elements",
+        "eyePath": "undulating, serpentine path following subtle visual anchors; avoids hard grid lines",
+        "viewingSpeed": "deliberate, slow (unhurried navigation)",
+        "focalDuration": "extended (1.2s to 2.5s per hero cluster)",
+        "postureApproachBehavior": "slight backward lean (relaxation/absorption)",
+        "microReaction": "softening of facial muscles, micro-smile of satisfaction",
+        "tension": "low",
+        "compositionConsequence": "highly asymmetric, fluid visual flow with overlapping scent-story imagery",
+        "densityConsequence": "ultra-low density; single scent bottle and raw ingredient shot per screen height",
+        "whitespaceConsequence": "vast breathing margins (55%+ screen area) acting as physical vacuum of elegance",
+        "scaleConsequence": "extreme contrast; very large scale headlines paired with tiny metadata tags",
+        "typographyConsequence": "high-contrast classic editorial serif with extreme vertical character ratio",
+        "colorTemperatureConsequence": "soft alabaster, warm linen, gold accents, glass-like reflection details",
+        "motionTempoConsequence": "slow, continuous ease-in-out transforms; 1.2s-2.0s duration transitions",
+        "soundConsequence": "low-frequency atmospheric pads, delicate organic instrumentation",
+        "accessibilitySafeguard": "preserve 4.5:1 contrast on active interactive boundaries despite low density",
+        "fiveSecondValidationTest": "Show for 5 seconds: does the user feel the design evokes an olfactory and tactile sensory premium?",
+        "failureSignals": "viewer swipes rapidly within 2 seconds\neye path jumps sporadically\nsubject describes it as 'sterile'",
+        "somaticBrief": "SOMATIC RESPONSE DESIGN BRIEF — \"premium perfume landing page\"\nDescriptor: luxurious\nObservable body reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nPosture & Approach: slight backward lean (relaxation/absorption)\nTension Level: low\nWhitespace consequence: vast breathing margins (55%+ screen area) acting as physical vacuum of elegance\nVisual implications: Typography [high-contrast classic editorial serif with extreme vertical character ratio]; Color [soft alabaster, warm linen, gold accents, glass-like reflection details]\nMotion Tempo: slow, continuous ease-in-out transforms; 1.2s-2.0s duration transitions\nSafeguard: preserve 4.5:1 contrast on active interactive boundaries despite low density\nValidation: Show for 5 seconds: does the user feel the design evokes an olfactory and tactile sensory premium?",
+        "inputFingerprint": "SRD:descriptor=luxurious:subject=premium perfume landing page:context=landing page",
+        "outputFingerprint": "SRD:tension=low:whitespace=vast breathing margi:color=soft alabaster, warm"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: luxurious\nBody Reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nViewer Behavior: lingering gaze, slower swipe speed, tactile-like hovering over elements\n",
+      "[Layout & Composition Consequences]: Composition: highly asymmetric, fluid visual flow with overlapping scent-story imagery\nDensity: ultra-low density; single scent bottle and raw ingredient shot per screen height\nWhitespace: vast breath",
+      "[Sensory & Typographic Consequences]: Typography: high-contrast classic editorial serif with extreme vertical character ratio\nColor Temperature: soft alabaster, warm linen, gold accents, glass-like reflection details\nMotion Tempo: slow, c",
+      "[Safeguards & Validation]: Accessibility Safeguard: preserve 4.5:1 contrast on active interactive boundaries despite low density\n5-Second Validation: Show for 5 seconds: does the user feel the design evokes an olfactory and tac",
+      "[Somatic Design Brief Summary]: SOMATIC RESPONSE DESIGN BRIEF — \"premium perfume landing page\"\nDescriptor: luxurious\nObservable body reaction: gradual deepening of breath, micro-pause at boundaries, shoulder lowering\nPosture & Appro"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "B2B SaaS analytics dashboard",
+      "subjectContext": "dashboard",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "bold"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Sensory Descriptor",
+          "instruction": "Load target sensory descriptor: \"bold\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Map Physiological Reactions",
+          "instruction": "Derive observable viewer body reactions, eye path, viewing speed, and focal duration.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Translate to Compositional Consequences",
+          "instruction": "Calculate layout consequences (composition, density, whitespace, scale).",
+          "outputKey": "layout-consequences"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Derive Sensory & Typographic Assets",
+          "instruction": "Define typography, color temperature, and motion tempo consequences.",
+          "outputKey": "sensory-consequences"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Safeguards & Validation",
+          "instruction": "Establish accessibility safeguards, validation tests, and failure signals.",
+          "outputKey": "safeguards-validation"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: bold\nBody Reaction: micro-startle response, sharp inhale, pupil dilation\nViewer Behavior: direct visual confrontation, rapid scan of center weight, aggressive scrolling\nEye Path: highly linear, central targeting; moves directly from primary weight to secondary details\nViewing Speed: high speed (rapid consumption)\nFocal Duration: short, intense (0.4s to 0.8s per hero cluster)\nPosture/Approach: forward lean (engagement/confrontation)\nMicro-reaction: jaw tightening, brief eyebrow raise\nTension: high"
+        },
+        {
+          "sectionKey": "layout-consequences",
+          "label": "Layout & Composition Consequences",
+          "content": "Composition: brutal block layout, heavy margins, hard borders\nDensity: medium-high; high-contrast elements stacked directly\nWhitespace: functional, compressed margins; negative space serves as sharp borders\nScale: maximal scale; oversized display titles (96px+) occupying major screen blocks"
+        },
+        {
+          "sectionKey": "sensory-consequences",
+          "label": "Sensory & Typographic Consequences",
+          "content": "Typography: ultra-bold geometric sans-serifs, compressed widths\nColor Temperature: high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base\nMotion Tempo: instantaneous transitions (0ms-150ms), hard-cut reveals, spring-loaded step animations\nSound: percussive, sharp transients, fast-decay envelopes"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: prevent flashing indicators above 3Hz; enforce legible subtitle tracks\n5-Second Validation: Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldness must focus attention, not scatter it.)\nFailure Signals:\nviewer squints or looks away\nviewer fails to recall the primary action\nsubject describes it as 'noisy'"
+        },
+        {
+          "sectionKey": "somatic-brief",
+          "label": "Somatic Design Brief Summary",
+          "content": "SOMATIC RESPONSE DESIGN BRIEF — \"B2B SaaS analytics dashboard\"\nDescriptor: bold\nObservable body reaction: micro-startle response, sharp inhale, pupil dilation\nPosture & Approach: forward lean (engagement/confrontation)\nTension Level: high\nWhitespace consequence: functional, compressed margins; negative space serves as sharp borders\nVisual implications: Typography [ultra-bold geometric sans-serifs, compressed widths]; Color [high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base]\nMotion Tempo: instantaneous transitions (0ms-150ms), hard-cut reveals, spring-loaded step animations\nSafeguard: prevent flashing indicators above 3Hz; enforce legible subtitle tracks\nValidation: Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldness must focus attention, not scatter it.)"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "bold",
+        "observableReaction": "micro-startle response, sharp inhale, pupil dilation",
+        "observableViewerBehavior": "direct visual confrontation, rapid scan of center weight, aggressive scrolling",
+        "eyePath": "highly linear, central targeting; moves directly from primary weight to secondary details",
+        "viewingSpeed": "high speed (rapid consumption)",
+        "focalDuration": "short, intense (0.4s to 0.8s per hero cluster)",
+        "postureApproachBehavior": "forward lean (engagement/confrontation)",
+        "microReaction": "jaw tightening, brief eyebrow raise",
+        "tension": "high",
+        "compositionConsequence": "brutal block layout, heavy margins, hard borders",
+        "densityConsequence": "medium-high; high-contrast elements stacked directly",
+        "whitespaceConsequence": "functional, compressed margins; negative space serves as sharp borders",
+        "scaleConsequence": "maximal scale; oversized display titles (96px+) occupying major screen blocks",
+        "typographyConsequence": "ultra-bold geometric sans-serifs, compressed widths",
+        "colorTemperatureConsequence": "high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base",
+        "motionTempoConsequence": "instantaneous transitions (0ms-150ms), hard-cut reveals, spring-loaded step animations",
+        "soundConsequence": "percussive, sharp transients, fast-decay envelopes",
+        "accessibilitySafeguard": "prevent flashing indicators above 3Hz; enforce legible subtitle tracks",
+        "fiveSecondValidationTest": "Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldness must focus attention, not scatter it.)",
+        "failureSignals": "viewer squints or looks away\nviewer fails to recall the primary action\nsubject describes it as 'noisy'",
+        "somaticBrief": "SOMATIC RESPONSE DESIGN BRIEF — \"B2B SaaS analytics dashboard\"\nDescriptor: bold\nObservable body reaction: micro-startle response, sharp inhale, pupil dilation\nPosture & Approach: forward lean (engagement/confrontation)\nTension Level: high\nWhitespace consequence: functional, compressed margins; negative space serves as sharp borders\nVisual implications: Typography [ultra-bold geometric sans-serifs, compressed widths]; Color [high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base]\nMotion Tempo: instantaneous transitions (0ms-150ms), hard-cut reveals, spring-loaded step animations\nSafeguard: prevent flashing indicators above 3Hz; enforce legible subtitle tracks\nValidation: Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldness must focus attention, not scatter it.)",
+        "inputFingerprint": "SRD:descriptor=bold:subject=B2B SaaS analytics dashboard:context=dashboard",
+        "outputFingerprint": "SRD:tension=high:whitespace=functional, compress:color=high-contrast satura"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": false,
+        "failReasons": [
+          "Accessibility safeguard does not address contrast, motion control, or legibility."
+        ]
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: bold\nBody Reaction: micro-startle response, sharp inhale, pupil dilation\nViewer Behavior: direct visual confrontation, rapid scan of center weight, aggressive scrolling\nEye Path: highly li",
+      "[Layout & Composition Consequences]: Composition: brutal block layout, heavy margins, hard borders\nDensity: medium-high; high-contrast elements stacked directly\nWhitespace: functional, compressed margins; negative space serves as sharp b",
+      "[Sensory & Typographic Consequences]: Typography: ultra-bold geometric sans-serifs, compressed widths\nColor Temperature: high-contrast saturation; pure blacks, acid yellow, vermilion, cool grey base\nMotion Tempo: instantaneous transitions",
+      "[Safeguards & Validation]: Accessibility Safeguard: prevent flashing indicators above 3Hz; enforce legible subtitle tracks\n5-Second Validation: Show for 5 seconds: does the viewer remember the central core claim exactly? (Boldn",
+      "[Somatic Design Brief Summary]: SOMATIC RESPONSE DESIGN BRIEF — \"B2B SaaS analytics dashboard\"\nDescriptor: bold\nObservable body reaction: micro-startle response, sharp inhale, pupil dilation\nPosture & Approach: forward lean (engagem"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "premium home renovation service",
+      "subjectContext": "renovation service",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "eye-catching"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Sensory Descriptor",
+          "instruction": "Load target sensory descriptor: \"eye-catching\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Map Physiological Reactions",
+          "instruction": "Derive observable viewer body reactions, eye path, viewing speed, and focal duration.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Translate to Compositional Consequences",
+          "instruction": "Calculate layout consequences (composition, density, whitespace, scale).",
+          "outputKey": "layout-consequences"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Derive Sensory & Typographic Assets",
+          "instruction": "Define typography, color temperature, and motion tempo consequences.",
+          "outputKey": "sensory-consequences"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Safeguards & Validation",
+          "instruction": "Establish accessibility safeguards, validation tests, and failure signals.",
+          "outputKey": "safeguards-validation"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomaly\nEye Path: radial outward; initial capture point followed by rapid surrounding context scan\nViewing Speed: dynamic (stop-and-scan patterns)\nFocal Duration: medium (0.8s to 1.5s on the anomaly)\nPosture/Approach: head tilt, momentary freeze in movement\nMicro-reaction: widening of eyes, head alignment adjust\nTension: medium"
+        },
+        {
+          "sectionKey": "layout-consequences",
+          "label": "Layout & Composition Consequences",
+          "content": "Composition: off-grid focal point, overlapping elements, visual anomaly breaking the pattern\nDensity: medium; isolated visual interest center in a clean grid\nWhitespace: high surrounding whitespace to isolate the visual capture element\nScale: moderate baseline scale, high relative scale for the capture trigger"
+        },
+        {
+          "sectionKey": "sensory-consequences",
+          "label": "Sensory & Typographic Consequences",
+          "content": "Typography: stylized custom glyphs, neon-styled headers\nColor Temperature: vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop\nMotion Tempo: playful micro-animations, ripple effects, scroll-linked rotation\nSound: rising tone sweeps, subtle high-frequency bells"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure all motion can be disabled via standard reduced-motion preferences\n5-Second Validation: Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?\nFailure Signals:\nviewer misses the capture element entirely\nviewer describes it as 'gimmicky'\nloss of reading flow"
+        },
+        {
+          "sectionKey": "somatic-brief",
+          "label": "Somatic Design Brief Summary",
+          "content": "SOMATIC RESPONSE DESIGN BRIEF — \"premium home renovation service\"\nDescriptor: eye-catching\nObservable body reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nPosture & Approach: head tilt, momentary freeze in movement\nTension Level: medium\nWhitespace consequence: high surrounding whitespace to isolate the visual capture element\nVisual implications: Typography [stylized custom glyphs, neon-styled headers]; Color [vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop]\nMotion Tempo: playful micro-animations, ripple effects, scroll-linked rotation\nSafeguard: ensure all motion can be disabled via standard reduced-motion preferences\nValidation: Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "eye-catching",
+        "observableReaction": "saccadic capture, rapid eye fixation shift, momentary breathing suspension",
+        "observableViewerBehavior": "immediate stop on visual anomaly, pointer tracking toward the anomaly",
+        "eyePath": "radial outward; initial capture point followed by rapid surrounding context scan",
+        "viewingSpeed": "dynamic (stop-and-scan patterns)",
+        "focalDuration": "medium (0.8s to 1.5s on the anomaly)",
+        "postureApproachBehavior": "head tilt, momentary freeze in movement",
+        "microReaction": "widening of eyes, head alignment adjust",
+        "tension": "medium",
+        "compositionConsequence": "off-grid focal point, overlapping elements, visual anomaly breaking the pattern",
+        "densityConsequence": "medium; isolated visual interest center in a clean grid",
+        "whitespaceConsequence": "high surrounding whitespace to isolate the visual capture element",
+        "scaleConsequence": "moderate baseline scale, high relative scale for the capture trigger",
+        "typographyConsequence": "stylized custom glyphs, neon-styled headers",
+        "colorTemperatureConsequence": "vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop",
+        "motionTempoConsequence": "playful micro-animations, ripple effects, scroll-linked rotation",
+        "soundConsequence": "rising tone sweeps, subtle high-frequency bells",
+        "accessibilitySafeguard": "ensure all motion can be disabled via standard reduced-motion preferences",
+        "fiveSecondValidationTest": "Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?",
+        "failureSignals": "viewer misses the capture element entirely\nviewer describes it as 'gimmicky'\nloss of reading flow",
+        "somaticBrief": "SOMATIC RESPONSE DESIGN BRIEF — \"premium home renovation service\"\nDescriptor: eye-catching\nObservable body reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nPosture & Approach: head tilt, momentary freeze in movement\nTension Level: medium\nWhitespace consequence: high surrounding whitespace to isolate the visual capture element\nVisual implications: Typography [stylized custom glyphs, neon-styled headers]; Color [vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop]\nMotion Tempo: playful micro-animations, ripple effects, scroll-linked rotation\nSafeguard: ensure all motion can be disabled via standard reduced-motion preferences\nValidation: Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?",
+        "inputFingerprint": "SRD:descriptor=eye-catching:subject=premium home renovation servic:context=renovation service",
+        "outputFingerprint": "SRD:tension=medium:whitespace=high surrounding whi:color=vibrant accent pops "
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: eye-catching\nBody Reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nViewer Behavior: immediate stop on visual anomaly, pointer tracking toward the anomal",
+      "[Layout & Composition Consequences]: Composition: off-grid focal point, overlapping elements, visual anomaly breaking the pattern\nDensity: medium; isolated visual interest center in a clean grid\nWhitespace: high surrounding whitespace to",
+      "[Sensory & Typographic Consequences]: Typography: stylized custom glyphs, neon-styled headers\nColor Temperature: vibrant accent pops (electric blue, lime green) against dark slate or deep grey backdrop\nMotion Tempo: playful micro-animatio",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure all motion can be disabled via standard reduced-motion preferences\n5-Second Validation: Show for 5 seconds: does the visual anomaly capture the first 2 seconds of gaze?",
+      "[Somatic Design Brief Summary]: SOMATIC RESPONSE DESIGN BRIEF — \"premium home renovation service\"\nDescriptor: eye-catching\nObservable body reaction: saccadic capture, rapid eye fixation shift, momentary breathing suspension\nPosture "
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "D": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "witty pet wellness assistant UI",
+      "subjectContext": "mobile application",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "cute and witty"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Sensory Descriptor",
+          "instruction": "Load target sensory descriptor: \"cute and witty\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Map Physiological Reactions",
+          "instruction": "Derive observable viewer body reactions, eye path, viewing speed, and focal duration.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Translate to Compositional Consequences",
+          "instruction": "Calculate layout consequences (composition, density, whitespace, scale).",
+          "outputKey": "layout-consequences"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Derive Sensory & Typographic Assets",
+          "instruction": "Define typography, color temperature, and motion tempo consequences.",
+          "outputKey": "sensory-consequences"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Safeguards & Validation",
+          "instruction": "Establish accessibility safeguards, validation tests, and failure signals.",
+          "outputKey": "safeguards-validation"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: cute and witty\nBody Reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nViewer Behavior: playful exploration, clicking on interactive Easter eggs, lingering scroll\nEye Path: playful zig-zag; bounces between illustration markers and friendly textual guides\nViewing Speed: moderate (relaxed browsing)\nFocal Duration: extended (1.0s to 2.2s on details)\nPosture/Approach: slight forward lean with relaxed shoulders (playful interest)\nMicro-reaction: soft vocalization (chuckle/sigh), head tilt\nTension: low"
+        },
+        {
+          "sectionKey": "layout-consequences",
+          "label": "Layout & Composition Consequences",
+          "content": "Composition: rounded components, offset alignments, soft overlapping layers\nDensity: moderate; curated moments of detail (illustrations/micro-interactions)\nWhitespace: generous, friendly spacing; soft margins\nScale: friendly proportions; oversized icons, rounded button labels"
+        },
+        {
+          "sectionKey": "sensory-consequences",
+          "label": "Sensory & Typographic Consequences",
+          "content": "Typography: rounded sans-serif (e.g. Outfit) or soft friendly display fonts\nColor Temperature: warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background\nMotion Tempo: bouncy spring dynamics, squash-and-stretch transitions (300ms-500ms)\nSound: soft acoustic cues, round marimba transients"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure touch targets are at least 48px to support relaxed interaction\n5-Second Validation: Show for 5 seconds: does the viewer smile or experience a positive emotional lift?\nFailure Signals:\nviewer navigates dryly without interaction\nviewer describes it as 'childish' instead of 'clever'"
+        },
+        {
+          "sectionKey": "somatic-brief",
+          "label": "Somatic Design Brief Summary",
+          "content": "SOMATIC RESPONSE DESIGN BRIEF — \"witty pet wellness assistant UI\"\nDescriptor: cute and witty\nObservable body reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nPosture & Approach: slight forward lean with relaxed shoulders (playful interest)\nTension Level: low\nWhitespace consequence: generous, friendly spacing; soft margins\nVisual implications: Typography [rounded sans-serif (e.g. Outfit) or soft friendly display fonts]; Color [warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background]\nMotion Tempo: bouncy spring dynamics, squash-and-stretch transitions (300ms-500ms)\nSafeguard: ensure touch targets are at least 48px to support relaxed interaction\nValidation: Show for 5 seconds: does the viewer smile or experience a positive emotional lift?"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "cute and witty",
+        "observableReaction": "zygomatic major muscle activation (smiling), relaxed shoulder drop",
+        "observableViewerBehavior": "playful exploration, clicking on interactive Easter eggs, lingering scroll",
+        "eyePath": "playful zig-zag; bounces between illustration markers and friendly textual guides",
+        "viewingSpeed": "moderate (relaxed browsing)",
+        "focalDuration": "extended (1.0s to 2.2s on details)",
+        "postureApproachBehavior": "slight forward lean with relaxed shoulders (playful interest)",
+        "microReaction": "soft vocalization (chuckle/sigh), head tilt",
+        "tension": "low",
+        "compositionConsequence": "rounded components, offset alignments, soft overlapping layers",
+        "densityConsequence": "moderate; curated moments of detail (illustrations/micro-interactions)",
+        "whitespaceConsequence": "generous, friendly spacing; soft margins",
+        "scaleConsequence": "friendly proportions; oversized icons, rounded button labels",
+        "typographyConsequence": "rounded sans-serif (e.g. Outfit) or soft friendly display fonts",
+        "colorTemperatureConsequence": "warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background",
+        "motionTempoConsequence": "bouncy spring dynamics, squash-and-stretch transitions (300ms-500ms)",
+        "soundConsequence": "soft acoustic cues, round marimba transients",
+        "accessibilitySafeguard": "ensure touch targets are at least 48px to support relaxed interaction",
+        "fiveSecondValidationTest": "Show for 5 seconds: does the viewer smile or experience a positive emotional lift?",
+        "failureSignals": "viewer navigates dryly without interaction\nviewer describes it as 'childish' instead of 'clever'",
+        "somaticBrief": "SOMATIC RESPONSE DESIGN BRIEF — \"witty pet wellness assistant UI\"\nDescriptor: cute and witty\nObservable body reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nPosture & Approach: slight forward lean with relaxed shoulders (playful interest)\nTension Level: low\nWhitespace consequence: generous, friendly spacing; soft margins\nVisual implications: Typography [rounded sans-serif (e.g. Outfit) or soft friendly display fonts]; Color [warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background]\nMotion Tempo: bouncy spring dynamics, squash-and-stretch transitions (300ms-500ms)\nSafeguard: ensure touch targets are at least 48px to support relaxed interaction\nValidation: Show for 5 seconds: does the viewer smile or experience a positive emotional lift?",
+        "inputFingerprint": "SRD:descriptor=cute and witty:subject=witty pet wellness assistant U:context=mobile application",
+        "outputFingerprint": "SRD:tension=low:whitespace=generous, friendly s:color=warm, pastel-infused"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": false,
+        "failReasons": [
+          "Accessibility safeguard does not address contrast, motion control, or legibility."
+        ]
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: cute and witty\nBody Reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nViewer Behavior: playful exploration, clicking on interactive Easter eggs, lingering scroll",
+      "[Layout & Composition Consequences]: Composition: rounded components, offset alignments, soft overlapping layers\nDensity: moderate; curated moments of detail (illustrations/micro-interactions)\nWhitespace: generous, friendly spacing; soft",
+      "[Sensory & Typographic Consequences]: Typography: rounded sans-serif (e.g. Outfit) or soft friendly display fonts\nColor Temperature: warm, pastel-infused palette; peach, soft mint, butter yellow, warm grey background\nMotion Tempo: bouncy ",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure touch targets are at least 48px to support relaxed interaction\n5-Second Validation: Show for 5 seconds: does the viewer smile or experience a positive emotional lift?\nF",
+      "[Somatic Design Brief Summary]: SOMATIC RESPONSE DESIGN BRIEF — \"witty pet wellness assistant UI\"\nDescriptor: cute and witty\nObservable body reaction: zygomatic major muscle activation (smiling), relaxed shoulder drop\nPosture & Appr"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "E": {
+    "methodId": "method_somatic_response_design",
+    "resourceId": "res_somatic_response_design",
+    "input": {
+      "methodId": "method_somatic_response_design",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "verify",
+      "subjectDescription": "mindfulness audio narrative device",
+      "subjectContext": "audio companion app",
+      "capabilityGap": "bodily-response-art-direction",
+      "supplementaryFields": {
+        "targetSensoryExperience": "calm / reflective"
+      }
+    },
+    "result": {
+      "methodId": "method_somatic_response_design",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Target Sensory Descriptor",
+          "instruction": "Load target sensory descriptor: \"calm / reflective\".",
+          "outputKey": "descriptor"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Map Physiological Reactions",
+          "instruction": "Derive observable viewer body reactions, eye path, viewing speed, and focal duration.",
+          "outputKey": "somatic-reactions"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Translate to Compositional Consequences",
+          "instruction": "Calculate layout consequences (composition, density, whitespace, scale).",
+          "outputKey": "layout-consequences"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Derive Sensory & Typographic Assets",
+          "instruction": "Define typography, color temperature, and motion tempo consequences.",
+          "outputKey": "sensory-consequences"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Safeguards & Validation",
+          "instruction": "Establish accessibility safeguards, validation tests, and failure signals.",
+          "outputKey": "safeguards-validation"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "somatic-reactions",
+          "label": "Observable Somatic Reactions",
+          "content": "Descriptor: calm / reflective\nBody Reaction: respiratory deceleration, muscle relaxation, neutral brow\nViewer Behavior: passive reading, gentle scrolling, minimal mouse movement\nEye Path: smooth horizontal sweeps, scanning top-to-bottom sequentially\nViewing Speed: slow (meditative reading)\nFocal Duration: long (1.5s to 3.0s per text block)\nPosture/Approach: relaxed lean back (reflective posture)\nMicro-reaction: deep exhalation, quiet focus\nTension: low"
+        },
+        {
+          "sectionKey": "layout-consequences",
+          "label": "Layout & Composition Consequences",
+          "content": "Composition: balanced symmetry, horizontal bands, aligned blocks\nDensity: low density; limited options per view, clear priority\nWhitespace: very high; open space acting as silence\nScale: consistent, gentle scale steps (no loud visual hierarchy jumps)"
+        },
+        {
+          "sectionKey": "sensory-consequences",
+          "label": "Sensory & Typographic Consequences",
+          "content": "Typography: highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif\nColor Temperature: cool, low-saturation earth tones; slate, moss, sage, warm cream backing\nMotion Tempo: slow fade-in/out transitions, 800ms ease duration (no sudden translates)\nSound: continuous ambient textures, silence-dominated soundscapes"
+        },
+        {
+          "sectionKey": "safeguards-validation",
+          "label": "Safeguards & Validation",
+          "content": "Accessibility Safeguard: ensure high contrast for body copy; absolute avoidance of moving elements behind text\n5-Second Validation: Show for 5 seconds: does the viewer feel an absence of pressure to act immediately?\nFailure Signals:\nviewer feels bored or drops off\nviewer describes it as 'clinical' or 'sad'"
+        },
+        {
+          "sectionKey": "somatic-brief",
+          "label": "Somatic Design Brief Summary",
+          "content": "SOMATIC RESPONSE DESIGN BRIEF — \"mindfulness audio narrative device\"\nDescriptor: calm / reflective\nObservable body reaction: respiratory deceleration, muscle relaxation, neutral brow\nPosture & Approach: relaxed lean back (reflective posture)\nTension Level: low\nWhitespace consequence: very high; open space acting as silence\nVisual implications: Typography [highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif]; Color [cool, low-saturation earth tones; slate, moss, sage, warm cream backing]\nMotion Tempo: slow fade-in/out transitions, 800ms ease duration (no sudden translates)\nSafeguard: ensure high contrast for body copy; absolute avoidance of moving elements behind text\nValidation: Show for 5 seconds: does the viewer feel an absence of pressure to act immediately?"
+        }
+      ],
+      "rawOutputs": {
+        "descriptor": "calm / reflective",
+        "observableReaction": "respiratory deceleration, muscle relaxation, neutral brow",
+        "observableViewerBehavior": "passive reading, gentle scrolling, minimal mouse movement",
+        "eyePath": "smooth horizontal sweeps, scanning top-to-bottom sequentially",
+        "viewingSpeed": "slow (meditative reading)",
+        "focalDuration": "long (1.5s to 3.0s per text block)",
+        "postureApproachBehavior": "relaxed lean back (reflective posture)",
+        "microReaction": "deep exhalation, quiet focus",
+        "tension": "low",
+        "compositionConsequence": "balanced symmetry, horizontal bands, aligned blocks",
+        "densityConsequence": "low density; limited options per view, clear priority",
+        "whitespaceConsequence": "very high; open space acting as silence",
+        "scaleConsequence": "consistent, gentle scale steps (no loud visual hierarchy jumps)",
+        "typographyConsequence": "highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif",
+        "colorTemperatureConsequence": "cool, low-saturation earth tones; slate, moss, sage, warm cream backing",
+        "motionTempoConsequence": "slow fade-in/out transitions, 800ms ease duration (no sudden translates)",
+        "soundConsequence": "continuous ambient textures, silence-dominated soundscapes",
+        "accessibilitySafeguard": "ensure high contrast for body copy; absolute avoidance of moving elements behind text",
+        "fiveSecondValidationTest": "Show for 5 seconds: does the viewer feel an absence of pressure to act immediately?",
+        "failureSignals": "viewer feels bored or drops off\nviewer describes it as 'clinical' or 'sad'",
+        "somaticBrief": "SOMATIC RESPONSE DESIGN BRIEF — \"mindfulness audio narrative device\"\nDescriptor: calm / reflective\nObservable body reaction: respiratory deceleration, muscle relaxation, neutral brow\nPosture & Approach: relaxed lean back (reflective posture)\nTension Level: low\nWhitespace consequence: very high; open space acting as silence\nVisual implications: Typography [highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif]; Color [cool, low-saturation earth tones; slate, moss, sage, warm cream backing]\nMotion Tempo: slow fade-in/out transitions, 800ms ease duration (no sudden translates)\nSafeguard: ensure high contrast for body copy; absolute avoidance of moving elements behind text\nValidation: Show for 5 seconds: does the viewer feel an absence of pressure to act immediately?",
+        "inputFingerprint": "SRD:descriptor=calm / reflective:subject=mindfulness audio narrative de:context=audio companion app",
+        "outputFingerprint": "SRD:tension=low:whitespace=very high; open spac:color=cool, low-saturation"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srd.physical-vocabulary-present",
+        "label": "Physical Vocabulary Present",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.art-direction-guidance-concrete",
+        "label": "Art Direction Guidance Is Concrete",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.risk-areas-identified",
+        "label": "Risk Areas Identified",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srd.no-coercive-patterns",
+        "label": "No Coercive Dark-Pattern Behavior",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Observable Somatic Reactions]: Descriptor: calm / reflective\nBody Reaction: respiratory deceleration, muscle relaxation, neutral brow\nViewer Behavior: passive reading, gentle scrolling, minimal mouse movement\nEye Path: smooth horiz",
+      "[Layout & Composition Consequences]: Composition: balanced symmetry, horizontal bands, aligned blocks\nDensity: low density; limited options per view, clear priority\nWhitespace: very high; open space acting as silence\nScale: consistent, g",
+      "[Sensory & Typographic Consequences]: Typography: highly legible classic serif (e.g. Georgia, Lora) or clean neutral sans-serif\nColor Temperature: cool, low-saturation earth tones; slate, moss, sage, warm cream backing\nMotion Tempo: slow ",
+      "[Safeguards & Validation]: Accessibility Safeguard: ensure high contrast for body copy; absolute avoidance of moving elements behind text\n5-Second Validation: Show for 5 seconds: does the viewer feel an absence of pressure to a",
+      "[Somatic Design Brief Summary]: SOMATIC RESPONSE DESIGN BRIEF — \"mindfulness audio narrative device\"\nDescriptor: calm / reflective\nObservable body reaction: respiratory deceleration, muscle relaxation, neutral brow\nPosture & Approac"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}
