@@ -1,0 +1,12 @@
+{
+  "approvalState": "GRANTED",
+  "projectId": "wrong",
+  "projectBrainFingerprint": "brain_1",
+  "planFingerprint": "plan_fp_1",
+  "resourceId": "res_mock",
+  "capabilityId": "cap_mock",
+  "providerAdapterId": "fake_test_provider",
+  "approvedAuthority": "EXPLICIT_EXTERNAL",
+  "costCeiling": 10,
+  "approvalFingerprint": "23d8c83a123f114c"
+}

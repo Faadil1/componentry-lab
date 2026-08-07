@@ -1,0 +1,11 @@
+{
+  "status": "PROVIDER_ERROR",
+  "error": "Simulated error",
+  "receipt": {
+    "executionId": "fake_exec",
+    "executionIntentFingerprint": "abc123def456",
+    "providerOutputFingerprint": null,
+    "receiptFingerprint": "abcd1234efgh5678",
+    "timestamp": "2026-08-07T12:00:00Z"
+  }
+}

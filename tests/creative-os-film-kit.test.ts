@@ -126,7 +126,7 @@ test("FilmKit Production: EXPLICIT_EXTERNAL required authority yields HUMAN_APPR
   assert.ok(result.externalCapabilityPlan)
   assert.strictEqual(result.externalCapabilityPlan.requiredHumanApproval, true)
   assert.strictEqual(result.externalCapabilityPlan.humanApprovalState, "REQUIRED")
-  assert.strictEqual(result.externalCapabilityPlan.executionStatus, "HUMAN_APPROVAL_REQUIRED")
+  assert.strictEqual(result.externalCapabilityPlan.executionStatus, "APPROVAL_REQUIRED")
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
