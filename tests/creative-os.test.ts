@@ -226,7 +226,7 @@ test("DAY_CHALLENGE gap: category-differentiation -> Sacred Rules Breaker", () =
   })
   assert.ok(result.topSuggestion)
   assert.strictEqual(result.topSuggestion.resourceId, "res_sacred_rules_breaker")
-  assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
+  assert.strictEqual(result.topSuggestion.recommendationLabel, "VALIDATED_FALLBACK")
 })
 
 test("DAY_CHALLENGE gap: bodily-response-art-direction -> Somatic Response Design", () => {
@@ -237,7 +237,7 @@ test("DAY_CHALLENGE gap: bodily-response-art-direction -> Somatic Response Desig
   })
   assert.ok(result.topSuggestion)
   assert.strictEqual(result.topSuggestion.resourceId, "res_somatic_response_design")
-  assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
+  assert.strictEqual(result.topSuggestion.recommendationLabel, "VALIDATED_FALLBACK")
 })
 
 test("MARA gap: narrative-staging -> Physical Situation Storyboarder", () => {

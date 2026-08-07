@@ -78,7 +78,8 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
 
   // Core physicalization reasoning:
   // Convert the abstract narrative idea/tension into concrete physical elements.
-  const physicalMetaphor = `A physical struggle with a tangible, stubborn object that resists simple completion, reflecting the emotional state of "${emotionalTension}".`
+  const physicalMetaphor = `A physical struggle with a tangible, stubborn object that resists simple completion in context: "${context}", reflecting the emotional state of "${emotionalTension}".`
+
   
   // Scene generation logic responsive to character and context
   const nodes: SceneNode[] = []

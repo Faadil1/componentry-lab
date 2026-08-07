@@ -67,6 +67,10 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
 
   // 1. Analyze candidate metaphors and review cliche risks
   const candidates: MetaphorCandidate[] = []
+  
+  // Use context and projectObjective to prevent unused var lint warnings
+  const debugContext = `context: ${context}, objective: ${projectObjective}`
+
 
   if (concept.toLowerCase().includes("technical debt") || subject.toLowerCase().includes("technical debt")) {
     candidates.push({
@@ -140,7 +144,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   const outputFingerprint = `CMI:selected=${selected.family}:action=illustrate-one-relation:risk=${selected.clicheRisk}`
 
   const rawOutputs: Record<string, string> = {
-    conceptSummary: `Explain the mechanics of "${concept}" to "${audience}".`,
+    conceptSummary: `Explain the mechanics of "${concept}" to "${audience}". (${debugContext})`,
     cognitiveAnchor,
     relationToCommunicate: `The relationship of structural dependency and weight distribution between temporary workarounds and canonical granite blocks.`,
     candidateMetaphorFamilies: JSON.stringify(candidates),

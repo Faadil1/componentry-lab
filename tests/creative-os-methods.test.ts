@@ -16,6 +16,8 @@ import {
   PHYSICAL_SITUATION_STORYBOARDER_ID,
   LIBRARY_FIRST_COMPOSITION_ROUTER_ID
 } from "../lib/creative-os/methods"
+import { RESOURCE_REGISTRY } from "../lib/creative-os/registry"
+
 
 // ───────────────────────────────────────────────────────────────
 // Registry Tests
@@ -312,32 +314,285 @@ test("Somatic Response Design 5-second test checks observable behaviors", () => 
 })
 
 // ───────────────────────────────────────────────────────────────
-// Stub Methods — Contract Tests (methods 3–6)
+// Physical Situation Storyboarder — V1 Tests
 // ───────────────────────────────────────────────────────────────
 
-const stubBase = {
-  phase: "clarify" as const,
-  subjectDescription: "Test subject",
-  subjectContext: "Test context",
-  capabilityGap: "test-gap"
+const pssInput = {
+  methodId: PHYSICAL_SITUATION_STORYBOARDER_ID,
+  projectMode: "MARA" as const,
+  phase: "build" as const,
+  subjectDescription: "Mara's eight-bar journey",
+  subjectContext: "Short film",
+  capabilityGap: "narrative-staging",
+  supplementaryFields: {
+    projectObjective: "observe and mirror incompleteness",
+    narrativeBeat: "accepting incompleteness",
+    subjectOrCharacter: "Mara",
+    emotionalTension: "existential anxiety / incompleteness",
+    desiredTransformation: "acceptance",
+    locationConstraints: "interior pottery studio",
+    propConstraints: "unfinished clay pot"
+  }
 }
 
-test("Relationship-Preserving Abstraction stub returns BLOCKED", () => {
-  const result = runRelationshipPreservingAbstraction({ methodId: RELATIONSHIP_PRESERVING_ABSTRACTION_ID, projectMode: "DATA_STORY" as const, ...stubBase })
-  assert.strictEqual(result.status, "BLOCKED")
+test("Physical Situation Storyboarder executes and returns COMPLETE", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  assert.strictEqual(result.status, "COMPLETE")
+  assert.strictEqual(result.isReadOnly, true)
+  assert.strictEqual(result.result.outputSections.length, 5)
 })
 
-test("Cognitive Metaphor Illustrator stub returns BLOCKED", () => {
-  const result = runCognitiveMetaphorIllustrator({ methodId: COGNITIVE_METAPHOR_ILLUSTRATOR_ID, projectMode: "DATA_STORY" as const, ...stubBase })
-  assert.strictEqual(result.status, "BLOCKED")
+test("Physical Situation Storyboarder all quality gates pass", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  assert.strictEqual(result.allGatesPassed, true)
+  for (const gate of result.qualityResults) {
+    assert.strictEqual(gate.passed, true, `Gate ${gate.gateId} failed: ${gate.failReasons.join(", ")}`)
+  }
 })
 
-test("Physical Situation Storyboarder stub returns BLOCKED", () => {
-  const result = runPhysicalSituationStoryboarder({ methodId: PHYSICAL_SITUATION_STORYBOARDER_ID, projectMode: "MARA" as const, ...stubBase })
-  assert.strictEqual(result.status, "BLOCKED")
+test("Physical Situation Storyboarder: idea-becomes-physical converts abstract to object", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  const pm = result.result.rawOutputs.physicalMetaphor ?? ""
+  const keyObj = result.result.rawOutputs.keyObject ?? ""
+  assert.ok(pm.includes("clay") || pm.includes("object"))
+  assert.strictEqual(keyObj, "unfinished clay pot")
 })
 
-test("Library-First Composition Router stub returns BLOCKED", () => {
-  const result = runLibraryFirstCompositionRouter({ methodId: LIBRARY_FIRST_COMPOSITION_ROUTER_ID, projectMode: "HACKATHON" as const, ...stubBase })
-  assert.strictEqual(result.status, "BLOCKED")
+test("Physical Situation Storyboarder: transformation is physically visible between start and end states", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  const start = result.result.rawOutputs.startingPhysicalState ?? ""
+  const end = result.result.rawOutputs.endingPhysicalState ?? ""
+  assert.notStrictEqual(start, end)
 })
+
+test("Physical Situation Storyboarder: no-exposition-dependence enforces silent subtext", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  const unspoken = result.result.rawOutputs.whatMustRemainUnspoken ?? ""
+  assert.ok(unspoken.includes("Do not speak"))
+})
+
+test("Physical Situation Storyboarder: context sensitivity (pottery vs invisible labor)", () => {
+  const resA = runPhysicalSituationStoryboarder(pssInput)
+  const resB = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      narrativeBeat: "labor",
+      emotionalTension: "invisible labor",
+      propConstraints: "brass plates"
+    }
+  })
+  assert.notDeepEqual(resA.result.rawOutputs.sceneNodes, resB.result.rawOutputs.sceneNodes)
+})
+
+// ───────────────────────────────────────────────────────────────
+// Relationship-Preserving Abstraction — V1 Tests
+// ───────────────────────────────────────────────────────────────
+
+const rpaInput = {
+  methodId: RELATIONSHIP_PRESERVING_ABSTRACTION_ID,
+  projectMode: "DATA_STORY" as const,
+  phase: "build" as const,
+  subjectDescription: "High-rise structural photo",
+  subjectContext: "Editorial poster",
+  capabilityGap: "editorial-abstraction",
+  supplementaryFields: {
+    sourceDescription: "architectural photograph of grid facade",
+    projectObjective: "convey vertical architectural height",
+    communicationIntent: "highlight grid scale ratios",
+    sourceType: "architectural",
+    abstractionLevel: "high"
+  }
+}
+
+test("Relationship-Preserving Abstraction executes and passes all quality gates", () => {
+  const result = runRelationshipPreservingAbstraction(rpaInput)
+  assert.strictEqual(result.status, "COMPLETE")
+  assert.strictEqual(result.allGatesPassed, true)
+})
+
+test("Relationship-Preserving Abstraction: relationships-not-contours forces geometric relationships", () => {
+  const result = runRelationshipPreservingAbstraction(rpaInput)
+  const facts = result.result.rawOutputs.selectedFacts ?? ""
+  assert.ok(facts.includes("scale") || facts.includes("rhythm") || facts.includes("occlusion"))
+})
+
+test("Relationship-Preserving Abstraction limits mark families to avoid visual noise", () => {
+  const result = runRelationshipPreservingAbstraction(rpaInput)
+  const supporting = result.result.rawOutputs.supportingMarkFamilies ?? ""
+  const count = supporting.split("|").filter(Boolean).length
+  assert.ok(count <= 2)
+})
+
+test("Relationship-Preserving Abstraction context sensitivity (architectural vs human)", () => {
+  const resA = runRelationshipPreservingAbstraction(rpaInput)
+  const resB = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      ...rpaInput.supplementaryFields,
+      sourceType: "human",
+      sourceDescription: "portrait of staring athlete"
+    }
+  })
+  assert.notDeepEqual(resA.result.rawOutputs.primaryMarkFamily, resB.result.rawOutputs.primaryMarkFamily)
+})
+
+// ───────────────────────────────────────────────────────────────
+// Cognitive Metaphor Illustrator — V1 Tests
+// ───────────────────────────────────────────────────────────────
+
+const cmiInput = {
+  methodId: COGNITIVE_METAPHOR_ILLUSTRATOR_ID,
+  projectMode: "DATA_STORY" as const,
+  phase: "build" as const,
+  subjectDescription: "invisible technical debt accumulation",
+  subjectContext: "Developer roadmap",
+  capabilityGap: "visual-metaphor",
+  supplementaryFields: {
+    concept: "technical debt",
+    projectObjective: "convey structural load instability",
+    audience: "product managers",
+    projectSymbols: "granite blocks, wooden support sticks"
+  }
+}
+
+test("Cognitive Metaphor Illustrator executes and passes all quality gates", () => {
+  const result = runCognitiveMetaphorIllustrator(cmiInput)
+  assert.strictEqual(result.status, "COMPLETE")
+  assert.strictEqual(result.allGatesPassed, true)
+})
+
+test("Cognitive Metaphor Illustrator: cliche-risk-reviewed audits and rejects common cliches", () => {
+  const result = runCognitiveMetaphorIllustrator(cmiInput)
+  const audit = result.result.rawOutputs.clicheRiskAssessment ?? ""
+  assert.ok(audit.includes("rejected"))
+  assert.ok(result.result.rawOutputs.alternativeRejectedMetaphors.includes("plant"))
+})
+
+test("Cognitive Metaphor Illustrator: one-image-one-cognitive-action focuses on one relation", () => {
+  const result = runCognitiveMetaphorIllustrator(cmiInput)
+  const action = result.result.rawOutputs.oneCognitiveAction ?? ""
+  assert.ok(action.length > 5 && !action.toLowerCase().includes("multiple"))
+})
+
+test("Cognitive Metaphor Illustrator context sensitivity (tech debt vs trust erosion)", () => {
+  const resA = runCognitiveMetaphorIllustrator(cmiInput)
+  const resB = runCognitiveMetaphorIllustrator({
+    ...cmiInput,
+    subjectDescription: "trust erosion",
+    supplementaryFields: {
+      ...cmiInput.supplementaryFields,
+      concept: "trust erosion"
+    }
+  })
+  assert.notDeepEqual(resA.result.rawOutputs.selectedPhysicalMetaphor, resB.result.rawOutputs.selectedPhysicalMetaphor)
+})
+
+// ───────────────────────────────────────────────────────────────
+// Library-First Composition Router — V1 Tests
+// ───────────────────────────────────────────────────────────────
+
+const lfcrInput = {
+  methodId: LIBRARY_FIRST_COMPOSITION_ROUTER_ID,
+  projectMode: "HACKATHON" as const,
+  phase: "route" as const,
+  subjectDescription: "simple fade transition",
+  subjectContext: "UI layout",
+  capabilityGap: "library-composition",
+  supplementaryFields: {
+    requestedCapability: "simple fade",
+    projectObjective: "minimize asset weight",
+    artifactType: "composition-tree"
+  }
+}
+
+test("Library-First Composition Router executes and passes all gates", () => {
+  const result = runLibraryFirstCompositionRouter(lfcrInput)
+  assert.strictEqual(result.status, "COMPLETE")
+  assert.strictEqual(result.allGatesPassed, true)
+})
+
+test("Library-First Composition Router: native-first prefers native route for simple transition", () => {
+  const result = runLibraryFirstCompositionRouter(lfcrInput)
+  assert.strictEqual(result.result.rawOutputs.selectedRoute, "USE_NATIVE")
+  assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
+})
+
+test("Library-First Composition Router: recommends experimental resource for complex animation", () => {
+  const result = runLibraryFirstCompositionRouter({
+    ...lfcrInput,
+    supplementaryFields: {
+      ...lfcrInput.supplementaryFields,
+      requestedCapability: "web-component-animation"
+    }
+  })
+  assert.strictEqual(result.result.rawOutputs.selectedRoute, "CONSIDER_EXPERIMENTAL_RESOURCE")
+  assert.ok(result.result.rawOutputs.selectedResource === "res_originkit" || result.result.rawOutputs.selectedResource === "res_remocn")
+})
+
+test("Library-First Composition Router reports UNKNOWN for missing metrics evidence", () => {
+  const result = runLibraryFirstCompositionRouter(lfcrInput)
+  const perf = result.result.rawOutputs.performanceConsiderations ?? ""
+  const lic = result.result.rawOutputs.licenseConsiderations ?? ""
+  assert.ok(perf.includes("UNKNOWN"))
+  assert.ok(lic.includes("UNKNOWN"))
+})
+
+test("Library-First Composition Router: discovery feeds can never be direct implementation winners", () => {
+  const result = runLibraryFirstCompositionRouter({
+    ...lfcrInput,
+    supplementaryFields: {
+      ...lfcrInput.supplementaryFields,
+      requestedCapability: "yummy design sprint backlog" // matches design sprint feed gap
+    }
+  })
+  const res = result.result.rawOutputs.selectedResource ?? "none"
+  assert.ok(res !== "res_yummy_design_sprint")
+})
+
+// ───────────────────────────────────────────────────────────────
+// Cross-Method Governance & Lifecycle Integrity Tests
+// ───────────────────────────────────────────────────────────────
+
+test("cross-method governance: all six methods resolve through the same runtime structure", () => {
+  const allMethods = [
+    runSacredRulesBreaker,
+    runSomaticResponseDesign,
+    runPhysicalSituationStoryboarder,
+    runRelationshipPreservingAbstraction,
+    runCognitiveMetaphorIllustrator,
+    runLibraryFirstCompositionRouter
+  ]
+  assert.strictEqual(allMethods.length, 6)
+  for (const run of allMethods) {
+    assert.strictEqual(typeof run, "function")
+  }
+})
+
+test("cross-method governance: all four new methods remain in TEST_CANDIDATE lifecycleState", () => {
+  const pss = RESOURCE_REGISTRY.find(r => r.id === "res_physical_situation_storyboarder")!
+  const rpa = RESOURCE_REGISTRY.find(r => r.id === "res_relationship_preserving_abstraction")!
+  const cmi = RESOURCE_REGISTRY.find(r => r.id === "res_cognitive_metaphor_illustrator")!
+  const lfcr = RESOURCE_REGISTRY.find(r => r.id === "res_library_first_composition_router")!
+
+  assert.strictEqual(pss.lifecycleState, "TEST_CANDIDATE")
+  assert.strictEqual(rpa.lifecycleState, "TEST_CANDIDATE")
+  assert.strictEqual(cmi.lifecycleState, "TEST_CANDIDATE")
+  assert.strictEqual(lfcr.lifecycleState, "TEST_CANDIDATE")
+})
+
+test("cross-method governance: only SRB and SRD are VALIDATED", () => {
+  const srb = RESOURCE_REGISTRY.find(r => r.id === "res_sacred_rules_breaker")!
+  const srd = RESOURCE_REGISTRY.find(r => r.id === "res_somatic_response_design")!
+
+  assert.strictEqual(srb.lifecycleState, "VALIDATED")
+  assert.strictEqual(srd.lifecycleState, "VALIDATED")
+})
+
+test("cross-method governance: zero methods are APPROVED", () => {
+  for (const res of RESOURCE_REGISTRY) {
+    assert.notStrictEqual(res.lifecycleState, "APPROVED", `${res.id} must not be APPROVED`)
+  }
+})
+
+

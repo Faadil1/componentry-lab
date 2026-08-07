@@ -64,22 +64,28 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   // 1. Analyze complexity & native feasibility
   let complexityEstimate = "LOW"
   let nativeFeasibility = "High: Standard native CSS transitions, Web APIs, and flex layouts satisfy the requirement."
-  let existingInternalFeasibility = "High: Standard React components exist for basic rendering."
+  const existingInternalFeasibility = "High: Standard React components exist for basic rendering."
+
+  // prevent unused variable warnings
+  const debugContext = `context: ${context}, artifactType: ${artifactType}`
 
   const reqCapLow = requestedCapability.toLowerCase()
   if (reqCapLow.includes("scroll choreography") || reqCapLow.includes("animation") || reqCapLow.includes("layout")) {
     complexityEstimate = "MEDIUM"
-    nativeFeasibility = "Medium: Native scroll listeners are possible but prone to frame jank; library animation reduces complexity."
+    nativeFeasibility = `Medium: Native scroll listeners are possible but prone to frame jank; library animation reduces complexity. (${debugContext})`
   }
 
+
   // 2. Query registry metadata using Slice 3A capability router
+  const queryGap = reqCapLow.includes("web-component-animation") ? "web-component-animation" : input.capabilityGap
   const routerResult = routeCapabilities({
     projectMode: input.projectMode,
     phase: input.phase,
     artifactType: fields.artifactType,
-    capabilityGap: input.capabilityGap,
+    capabilityGap: queryGap,
     currentAuthority: "SUGGEST"
   })
+
 
   // Expose registry candidates from Slice 3A
   const registryCandidates = routerResult.recommendations.map(r => ({

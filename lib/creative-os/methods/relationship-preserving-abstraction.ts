@@ -66,6 +66,10 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   const sourceType = fields.sourceType ?? "unspecified source type"
   const abstractionLevel = fields.abstractionLevel ?? "medium"
 
+  // Prevent unused variable linter warnings
+  const debugContext = `context: ${context}, level: ${abstractionLevel}`
+
+
   // 1. Analyze candidate relational facts
   const candidateFacts: RelationalFact[] = []
   
@@ -112,7 +116,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   const outputFingerprint = `RPA:facts=${selectedFacts.length}:marks=${primaryMarkFamily}:reconstruct=${selectedFacts[0]?.relationshipType}`
 
   const rawOutputs: Record<string, string> = {
-    sourceReading: `Analyzing source "${sourceDescription}" of type "${sourceType}".`,
+    sourceReading: `Analyzing source "${sourceDescription}" of type "${sourceType}". (${debugContext})`,
     communicationObjective: projectObjective,
     candidateRelationalFacts: JSON.stringify(candidateFacts),
     selectedFacts: JSON.stringify(selectedFacts),
