@@ -1,0 +1,467 @@
+{
+  "A": {
+    "methodId": "method_relationship_preserving_abstraction",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "input": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "architectural photograph of grid facade",
+      "subjectContext": "Editorial system",
+      "capabilityGap": "editorial-abstraction",
+      "supplementaryFields": {
+        "sourceDescription": "architectural photograph of grid facade",
+        "projectObjective": "convey vertical architectural height",
+        "communicationIntent": "highlight spatial relationships",
+        "sourceType": "architectural",
+        "abstractionLevel": "high"
+      }
+    },
+    "result": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Deconstruct Source",
+          "instruction": "Analyze the structural properties of \"architectural photograph of grid facade\".",
+          "outputKey": "abstraction-planning"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Extract Relational Facts",
+          "instruction": "Identify and rank the relative spatial intervals, ratios, and overlaps.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Preserved Criteria",
+          "instruction": "Lock the 3-6 critical facts that preserve spatial identity.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Define Visual Grammar",
+          "instruction": "Choose the mark families and palette constraints for reconstruction.",
+          "outputKey": "visual-grammar"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Draft Composition Directives",
+          "instruction": "Synthesize the final reconstruction instructions.",
+          "outputKey": "reconstruction-directives"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "abstraction-planning",
+          "label": "Abstraction Planning & Analysis",
+          "content": "Source: architectural photograph of grid facade\nSource Type: architectural\nObjective: convey vertical architectural height\nCommunication Intent: highlight spatial relationships"
+        },
+        {
+          "sectionKey": "relational-facts",
+          "label": "Preserved Relational Facts",
+          "content": "Selected Facts (3-6 Preserved):\n- [rf_01] (relative scale) Importance: CRITICAL - Extreme vertical height ratio compared to horizontal width (3:1).\n- [rf_02] (rhythm) Importance: HIGH - Regular repeating vertical window column intervals (50px).\n- [rf_03] (occlusion) Importance: HIGH - Upper structure occludes lower supporting frame elements.\n- [rf_04] (alignment) Importance: MEDIUM - Perfect symmetrical alignment about central vertical axis.\n\nDiscarded Literal Details:\nDiscarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients."
+        },
+        {
+          "sectionKey": "visual-grammar",
+          "label": "Visual Abstraction Grammar",
+          "content": "Primary Mark Family: monolithic blocks\nSupporting Families: grid wires\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points."
+        },
+        {
+          "sectionKey": "reconstruction-directives",
+          "label": "Reconstruction Directives",
+          "content": "Directives: Rebuild the layout by plotting marks in monolithic blocks matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of \"architectural photograph of grid facade\" by locking the relative scale and rhythm and occlusion and alignment relationships, which define the structure.\nCommunication Rationale: Supports the objective: \"convey vertical architectural height\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risks",
+          "content": "Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.\nFailure Risks: Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted."
+        }
+      ],
+      "rawOutputs": {
+        "sourceReading": "Analyzing source \"architectural photograph of grid facade\" of type \"architectural\". (context: Editorial system, level: high)",
+        "communicationObjective": "convey vertical architectural height",
+        "candidateRelationalFacts": "[{\"factId\":\"rf_01\",\"description\":\"Extreme vertical height ratio compared to horizontal width (3:1).\",\"importance\":\"CRITICAL\",\"relationshipType\":\"relative scale\"},{\"factId\":\"rf_02\",\"description\":\"Regular repeating vertical window column intervals (50px).\",\"importance\":\"HIGH\",\"relationshipType\":\"rhythm\"},{\"factId\":\"rf_03\",\"description\":\"Upper structure occludes lower supporting frame elements.\",\"importance\":\"HIGH\",\"relationshipType\":\"occlusion\"},{\"factId\":\"rf_04\",\"description\":\"Perfect symmetrical alignment about central vertical axis.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"alignment\"}]",
+        "selectedFacts": "[{\"factId\":\"rf_01\",\"description\":\"Extreme vertical height ratio compared to horizontal width (3:1).\",\"importance\":\"CRITICAL\",\"relationshipType\":\"relative scale\"},{\"factId\":\"rf_02\",\"description\":\"Regular repeating vertical window column intervals (50px).\",\"importance\":\"HIGH\",\"relationshipType\":\"rhythm\"},{\"factId\":\"rf_03\",\"description\":\"Upper structure occludes lower supporting frame elements.\",\"importance\":\"HIGH\",\"relationshipType\":\"occlusion\"},{\"factId\":\"rf_04\",\"description\":\"Perfect symmetrical alignment about central vertical axis.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"alignment\"}]",
+        "discardedInformation": "Discarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients.",
+        "abstractionGrammar": "A formal system using monolithic blocks and grid wires to reconstruct the primary spatial relationships.",
+        "primaryMarkFamily": "monolithic blocks",
+        "supportingMarkFamilies": "grid wires",
+        "paletteRoles": "Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points.",
+        "compositionReconstruction": "Rebuild the layout by plotting marks in monolithic blocks matching the structural scale and intervals identified in selected facts.",
+        "identityPreservationRationale": "Preserves the core identity of \"architectural photograph of grid facade\" by locking the relative scale and rhythm and occlusion and alignment relationships, which define the structure.",
+        "communicationPreservationRationale": "Supports the objective: \"convey vertical architectural height\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure.",
+        "abstractionRisks": "Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted.",
+        "validationTest": "Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.",
+        "inputFingerprint": "RPA:src=architectural photograph of gr:obj=convey vertical architectural :intent=highlight spatial relationship",
+        "outputFingerprint": "RPA:facts=4:marks=monolithic blocks:reconstruct=relative scale"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "rpa.relationships-not-contours",
+        "label": "Relationships Not Contours",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.high-information-selection",
+        "label": "High Information Selection",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.hierarchy-preserved",
+        "label": "Hierarchy Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.identity-survives",
+        "label": "Identity Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.communication-survives",
+        "label": "Communication Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.visual-language-constrained",
+        "label": "Visual Language Constrained",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Abstraction Planning & Analysis]: Source: architectural photograph of grid facade\nSource Type: architectural\nObjective: convey vertical architectural height\nCommunication Intent: highlight spatial relationships",
+      "[Preserved Relational Facts]: Selected Facts (3-6 Preserved):\n- [rf_01] (relative scale) Importance: CRITICAL - Extreme vertical height ratio compared to horizontal width (3:1).\n- [rf_02] (rhythm) Importance: HIGH - Regular repeat",
+      "[Visual Abstraction Grammar]: Primary Mark Family: monolithic blocks\nSupporting Families: grid wires\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion point",
+      "[Reconstruction Directives]: Directives: Rebuild the layout by plotting marks in monolithic blocks matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of \"arch",
+      "[Validation & Risks]: Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship "
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "B": {
+    "methodId": "method_relationship_preserving_abstraction",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "input": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "portrait of staring athlete",
+      "subjectContext": "Editorial system",
+      "capabilityGap": "editorial-abstraction",
+      "supplementaryFields": {
+        "sourceDescription": "portrait of staring athlete",
+        "projectObjective": "convey intense focus",
+        "communicationIntent": "highlight spatial relationships",
+        "sourceType": "human",
+        "abstractionLevel": "high"
+      }
+    },
+    "result": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Deconstruct Source",
+          "instruction": "Analyze the structural properties of \"portrait of staring athlete\".",
+          "outputKey": "abstraction-planning"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Extract Relational Facts",
+          "instruction": "Identify and rank the relative spatial intervals, ratios, and overlaps.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Preserved Criteria",
+          "instruction": "Lock the 3-6 critical facts that preserve spatial identity.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Define Visual Grammar",
+          "instruction": "Choose the mark families and palette constraints for reconstruction.",
+          "outputKey": "visual-grammar"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Draft Composition Directives",
+          "instruction": "Synthesize the final reconstruction instructions.",
+          "outputKey": "reconstruction-directives"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "abstraction-planning",
+          "label": "Abstraction Planning & Analysis",
+          "content": "Source: portrait of staring athlete\nSource Type: human\nObjective: convey intense focus\nCommunication Intent: highlight spatial relationships"
+        },
+        {
+          "sectionKey": "relational-facts",
+          "label": "Preserved Relational Facts",
+          "content": "Selected Facts (3-6 Preserved):\n- [rf_01] (spatial tension) Importance: CRITICAL - Eye gaze line intersects with off-center focal point.\n- [rf_02] (negative space) Importance: HIGH - Negative space framing the subject exceeds subject mass (2:1).\n- [rf_03] (overlap) Importance: MEDIUM - Lower limbs overlap ground plane shadow anchors.\n\nDiscarded Literal Details:\nDiscarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients."
+        },
+        {
+          "sectionKey": "visual-grammar",
+          "label": "Visual Abstraction Grammar",
+          "content": "Primary Mark Family: geometric vector lines\nSupporting Families: ovals\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points."
+        },
+        {
+          "sectionKey": "reconstruction-directives",
+          "label": "Reconstruction Directives",
+          "content": "Directives: Rebuild the layout by plotting marks in geometric vector lines matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of \"portrait of staring athlete\" by locking the spatial tension and negative space and overlap relationships, which define the structure.\nCommunication Rationale: Supports the objective: \"convey intense focus\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risks",
+          "content": "Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.\nFailure Risks: Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted."
+        }
+      ],
+      "rawOutputs": {
+        "sourceReading": "Analyzing source \"portrait of staring athlete\" of type \"human\". (context: Editorial system, level: high)",
+        "communicationObjective": "convey intense focus",
+        "candidateRelationalFacts": "[{\"factId\":\"rf_01\",\"description\":\"Eye gaze line intersects with off-center focal point.\",\"importance\":\"CRITICAL\",\"relationshipType\":\"spatial tension\"},{\"factId\":\"rf_02\",\"description\":\"Negative space framing the subject exceeds subject mass (2:1).\",\"importance\":\"HIGH\",\"relationshipType\":\"negative space\"},{\"factId\":\"rf_03\",\"description\":\"Lower limbs overlap ground plane shadow anchors.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"overlap\"}]",
+        "selectedFacts": "[{\"factId\":\"rf_01\",\"description\":\"Eye gaze line intersects with off-center focal point.\",\"importance\":\"CRITICAL\",\"relationshipType\":\"spatial tension\"},{\"factId\":\"rf_02\",\"description\":\"Negative space framing the subject exceeds subject mass (2:1).\",\"importance\":\"HIGH\",\"relationshipType\":\"negative space\"},{\"factId\":\"rf_03\",\"description\":\"Lower limbs overlap ground plane shadow anchors.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"overlap\"}]",
+        "discardedInformation": "Discarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients.",
+        "abstractionGrammar": "A formal system using geometric vector lines and ovals to reconstruct the primary spatial relationships.",
+        "primaryMarkFamily": "geometric vector lines",
+        "supportingMarkFamilies": "ovals",
+        "paletteRoles": "Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points.",
+        "compositionReconstruction": "Rebuild the layout by plotting marks in geometric vector lines matching the structural scale and intervals identified in selected facts.",
+        "identityPreservationRationale": "Preserves the core identity of \"portrait of staring athlete\" by locking the spatial tension and negative space and overlap relationships, which define the structure.",
+        "communicationPreservationRationale": "Supports the objective: \"convey intense focus\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure.",
+        "abstractionRisks": "Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted.",
+        "validationTest": "Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.",
+        "inputFingerprint": "RPA:src=portrait of staring athlete:obj=convey intense focus:intent=highlight spatial relationship",
+        "outputFingerprint": "RPA:facts=3:marks=geometric vector lines:reconstruct=spatial tension"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "rpa.relationships-not-contours",
+        "label": "Relationships Not Contours",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.high-information-selection",
+        "label": "High Information Selection",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.hierarchy-preserved",
+        "label": "Hierarchy Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.identity-survives",
+        "label": "Identity Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.communication-survives",
+        "label": "Communication Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.visual-language-constrained",
+        "label": "Visual Language Constrained",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Abstraction Planning & Analysis]: Source: portrait of staring athlete\nSource Type: human\nObjective: convey intense focus\nCommunication Intent: highlight spatial relationships",
+      "[Preserved Relational Facts]: Selected Facts (3-6 Preserved):\n- [rf_01] (spatial tension) Importance: CRITICAL - Eye gaze line intersects with off-center focal point.\n- [rf_02] (negative space) Importance: HIGH - Negative space fr",
+      "[Visual Abstraction Grammar]: Primary Mark Family: geometric vector lines\nSupporting Families: ovals\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion point",
+      "[Reconstruction Directives]: Directives: Rebuild the layout by plotting marks in geometric vector lines matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of ",
+      "[Validation & Risks]: Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship "
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "C": {
+    "methodId": "method_relationship_preserving_abstraction",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "input": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "projectMode": "DATA_STORY",
+      "phase": "build",
+      "subjectDescription": "exponential line chart",
+      "subjectContext": "Editorial system",
+      "capabilityGap": "editorial-abstraction",
+      "supplementaryFields": {
+        "sourceDescription": "exponential line chart",
+        "projectObjective": "convey rapid growth",
+        "communicationIntent": "highlight spatial relationships",
+        "sourceType": "data visualization",
+        "abstractionLevel": "high"
+      }
+    },
+    "result": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Deconstruct Source",
+          "instruction": "Analyze the structural properties of \"exponential line chart\".",
+          "outputKey": "abstraction-planning"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Extract Relational Facts",
+          "instruction": "Identify and rank the relative spatial intervals, ratios, and overlaps.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Preserved Criteria",
+          "instruction": "Lock the 3-6 critical facts that preserve spatial identity.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Define Visual Grammar",
+          "instruction": "Choose the mark families and palette constraints for reconstruction.",
+          "outputKey": "visual-grammar"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Draft Composition Directives",
+          "instruction": "Synthesize the final reconstruction instructions.",
+          "outputKey": "reconstruction-directives"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "abstraction-planning",
+          "label": "Abstraction Planning & Analysis",
+          "content": "Source: exponential line chart\nSource Type: data visualization\nObjective: convey rapid growth\nCommunication Intent: highlight spatial relationships"
+        },
+        {
+          "sectionKey": "relational-facts",
+          "label": "Preserved Relational Facts",
+          "content": "Selected Facts (3-6 Preserved):\n- [rf_01] (hierarchy) Importance: CRITICAL - Exponential height curve of vertical nodes.\n- [rf_02] (interval) Importance: HIGH - Uneven horizontal intervals between clusters.\n- [rf_03] (alignment) Importance: MEDIUM - Primary cluster occupies top-right quadrant.\n\nDiscarded Literal Details:\nDiscarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients."
+        },
+        {
+          "sectionKey": "visual-grammar",
+          "label": "Visual Abstraction Grammar",
+          "content": "Primary Mark Family: rectilinear coordinates\nSupporting Families: circles\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points."
+        },
+        {
+          "sectionKey": "reconstruction-directives",
+          "label": "Reconstruction Directives",
+          "content": "Directives: Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of \"exponential line chart\" by locking the hierarchy and interval and alignment relationships, which define the structure.\nCommunication Rationale: Supports the objective: \"convey rapid growth\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risks",
+          "content": "Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.\nFailure Risks: Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted."
+        }
+      ],
+      "rawOutputs": {
+        "sourceReading": "Analyzing source \"exponential line chart\" of type \"data visualization\". (context: Editorial system, level: high)",
+        "communicationObjective": "convey rapid growth",
+        "candidateRelationalFacts": "[{\"factId\":\"rf_01\",\"description\":\"Exponential height curve of vertical nodes.\",\"importance\":\"CRITICAL\",\"relationshipType\":\"hierarchy\"},{\"factId\":\"rf_02\",\"description\":\"Uneven horizontal intervals between clusters.\",\"importance\":\"HIGH\",\"relationshipType\":\"interval\"},{\"factId\":\"rf_03\",\"description\":\"Primary cluster occupies top-right quadrant.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"alignment\"}]",
+        "selectedFacts": "[{\"factId\":\"rf_01\",\"description\":\"Exponential height curve of vertical nodes.\",\"importance\":\"CRITICAL\",\"relationshipType\":\"hierarchy\"},{\"factId\":\"rf_02\",\"description\":\"Uneven horizontal intervals between clusters.\",\"importance\":\"HIGH\",\"relationshipType\":\"interval\"},{\"factId\":\"rf_03\",\"description\":\"Primary cluster occupies top-right quadrant.\",\"importance\":\"MEDIUM\",\"relationshipType\":\"alignment\"}]",
+        "discardedInformation": "Discarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients.",
+        "abstractionGrammar": "A formal system using rectilinear coordinates and circles to reconstruct the primary spatial relationships.",
+        "primaryMarkFamily": "rectilinear coordinates",
+        "supportingMarkFamilies": "circles",
+        "paletteRoles": "Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points.",
+        "compositionReconstruction": "Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.",
+        "identityPreservationRationale": "Preserves the core identity of \"exponential line chart\" by locking the hierarchy and interval and alignment relationships, which define the structure.",
+        "communicationPreservationRationale": "Supports the objective: \"convey rapid growth\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure.",
+        "abstractionRisks": "Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted.",
+        "validationTest": "Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.",
+        "inputFingerprint": "RPA:src=exponential line chart:obj=convey rapid growth:intent=highlight spatial relationship",
+        "outputFingerprint": "RPA:facts=3:marks=rectilinear coordinates:reconstruct=hierarchy"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "rpa.relationships-not-contours",
+        "label": "Relationships Not Contours",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.high-information-selection",
+        "label": "High Information Selection",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.hierarchy-preserved",
+        "label": "Hierarchy Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.identity-survives",
+        "label": "Identity Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.communication-survives",
+        "label": "Communication Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.visual-language-constrained",
+        "label": "Visual Language Constrained",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Abstraction Planning & Analysis]: Source: exponential line chart\nSource Type: data visualization\nObjective: convey rapid growth\nCommunication Intent: highlight spatial relationships",
+      "[Preserved Relational Facts]: Selected Facts (3-6 Preserved):\n- [rf_01] (hierarchy) Importance: CRITICAL - Exponential height curve of vertical nodes.\n- [rf_02] (interval) Importance: HIGH - Uneven horizontal intervals between clu",
+      "[Visual Abstraction Grammar]: Primary Mark Family: rectilinear coordinates\nSupporting Families: circles\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion po",
+      "[Reconstruction Directives]: Directives: Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of",
+      "[Validation & Risks]: Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship "
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  }
+}

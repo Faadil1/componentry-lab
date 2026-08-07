@@ -275,7 +275,7 @@ export const libraryFirstCompositionRouterGates: CreativeMethodQualityGate[] = [
         const candidate = candidates.find(c => c.id === targetRes)
         const isApprovedRoute = route === "CONSIDER_APPROVED_RESOURCE"
         const isApprovedRes = candidate && candidate.lifecycleState === "APPROVED"
-        const passed = !isApprovedRoute || isApprovedRes
+        const passed = !isApprovedRoute || !!isApprovedRes
         return {
           gateId: "lfcr.lifecycle-honest",
           label: "Lifecycle Honest",
