@@ -12,6 +12,7 @@ import {
   runPhysicalSituationStoryboarder,
   runLibraryFirstCompositionRouter
 } from "../methods"
+import type { CreativeMethodInput, CreativeMethodExecutionResult } from "../methods/types"
 import crypto from "crypto"
 
 export function stableStringify(obj: unknown): string {
@@ -45,7 +46,7 @@ function inferMode(project: ProjectBrain, prev?: CreativeOSContinuationState): C
   return "DAY_CHALLENGE"
 }
 
-const METHOD_RUNNERS: Record<string, (input: unknown) => unknown> = {
+const METHOD_RUNNERS: Record<string, (input: CreativeMethodInput) => CreativeMethodExecutionResult> = {
   "res_sacred_rules_breaker": runSacredRulesBreaker,
   "res_somatic_response_design": runSomaticResponseDesign,
   "res_physical_situation_storyboarder": runPhysicalSituationStoryboarder,
@@ -126,8 +127,16 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
   const topSuggestion = routerResult.topSuggestion
 
   let selectedResource = topSuggestion
-  let methodExecution: Record<string, unknown> | null = null
-  let methodQualityEvidence: Record<string, unknown> | null = null
+  let methodExecution: CreativeMethodExecutionResult | null = null
+  let methodQualityEvidence: {
+    status: string
+    qualityResults: { gateId: string; passed: boolean; failReasons?: string[] }[]
+    inputSignature?: string
+    outputSignature?: string
+    resourceLifecycle?: string
+    resourceId?: string
+    methodId?: string
+  } | null = null
   let status: IntegrationStatus = "NO_METHOD_REQUIRED"
   let routingDecision: "MATCH" | "NO_MATCH" | "BLOCKED" | "INSUFFICIENT_AUTHORITY" | "NO_GAP" = "NO_MATCH"
 
@@ -201,12 +210,14 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
       }
 
       try {
-        methodExecution = runner(methodInput) as Record<string, unknown>
+        methodExecution = runner(methodInput as unknown as CreativeMethodInput)
         methodQualityEvidence = {
           status: methodExecution.status,
           qualityResults: methodExecution.qualityResults,
-          inputSignature: methodExecution.inputSignature || computeFingerprint(methodInput),
-          outputSignature: methodExecution.outputSignature || computeFingerprint((methodExecution.result as Record<string, unknown>).rawOutputs),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          inputSignature: (methodExecution as any).inputSignature || computeFingerprint(methodInput),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          outputSignature: (methodExecution as any).outputSignature || computeFingerprint(methodExecution.result.rawOutputs),
           resourceLifecycle: selectedResource.lifecycleState,
           resourceId: selectedResource.resourceId,
           methodId: methodExecution.methodId
@@ -238,7 +249,7 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
     advisoryEvidence.push({
       id: `adv_${projectId}_${methodQualityEvidence.methodId}`,
       label: `Advisory evidence for ${selectedResource?.name}`,
-      source: `method:${methodQualityEvidence.methodId as string}`,
+      source: `method:${methodQualityEvidence.methodId}`,
       status: isPartial ? "partial" : hasPassedGates ? "pass" : "fail"
     })
   }
@@ -260,8 +271,8 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
   // Compute fingerprints
   const directorProjectionFingerprint = computeFingerprint(directorBefore)
   const methodInputFingerprint = methodExecution ? computeFingerprint(methodExecution.input) : null
-  const methodOutputFingerprint = methodExecution ? computeFingerprint((methodExecution.result as Record<string, unknown>).rawOutputs) : null
-  const qualitySummary = methodExecution ? JSON.stringify((methodExecution.qualityResults as Array<{gateId: string, passed: boolean}>).map(r => `${r.gateId}:${r.passed}`)) : null
+  const methodOutputFingerprint = methodExecution ? computeFingerprint(methodExecution.result.rawOutputs) : null
+  const qualitySummary = methodExecution ? JSON.stringify(methodExecution.qualityResults.map(r => `${r.gateId}:${r.passed}`)) : null
   const directorFinalFingerprint = computeFingerprint(directorAfter)
   const authorizedActionFingerprint = computeFingerprint(authorizedNextAction)
 

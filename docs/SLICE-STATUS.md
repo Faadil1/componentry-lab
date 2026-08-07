@@ -32,6 +32,7 @@
 
 | Packet | State |
 |---|---|
+| `creative-os-slice-3b3` | **CURRENT** |
 | `creative-os-slice-3b2-v3` | **CURRENT** |
 | `director-design-review-v4` | **CURRENT** |
 | `creative-os-slice-3b2` | SUPERSEDED |
@@ -39,5 +40,8 @@
 | `director-design-review-v2` | SUPERSEDED |
 | `director-design-review-v3` | SUPERSEDED |
 
+## SLICE 3B.3 — Creative OS Integration Gate
+**Status: FROZEN (HUMAN APPROVED)**
+
 ### Next Action
-Start **Slice 3B.3 — Creative OS Integration Gate**.
+Begin planning Slice 3C — External Capability / Film Kit Integration Layer.

@@ -1,0 +1,827 @@
+{
+  "projectId": "the-second-absence",
+  "projectBrainFingerprint": "366c2a9a3cf0a191",
+  "directorBefore": {
+    "mode": "DAY_CHALLENGE",
+    "resolvedPhase": "review",
+    "objective": {
+      "statement": "Visualising human accountability by transforming anonymous status notifications into a named responsible owner.",
+      "intendedOutcome": "The customer sees a named accountable contact (Alex) and a clear callback promise for the £149 discrepancy.",
+      "primaryAudienceOrEvaluator": "An observational campaign exposing the missing human element in corporate support.",
+      "successEvidence": [
+        "tsa_ev1"
+      ],
+      "constraints": [
+        "Visual reframe must use the premium observational campaign style."
+      ],
+      "nonGoals": [
+        "Security locking protocols",
+        "Session loss warning reports"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "audience",
+      "decisionTheyMustMake": "Can this daily slice be understood and trusted immediately?",
+      "whatTheyNeedToUnderstand": [
+        "the problem",
+        "the one-day scope",
+        "the visible proof"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the slice is complete enough to stand alone"
+      ],
+      "requiredProof": [
+        "clear outcome",
+        "visible accountability",
+        "bounded scope"
+      ],
+      "memorySentence": "The one-day slice makes accountability visible."
+    },
+    "heroDemoMoment": {
+      "title": "The institutional case changes from 'resolved' without ownership to a named accountable human with a callback promise.",
+      "description": "An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.",
+      "trigger": "build",
+      "visibleTransformationOrProof": "The transitional screen showing ticket resolution changing to a personal callback card.",
+      "evaluatorInterpretation": "An observational campaign exposing the missing human element in corporate support.",
+      "requiredEvidence": [
+        "tsa_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "DAY_CHALLENGE"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "tsa_ev1"
+        ],
+        "controllingEvidence": "tsa_ev1",
+        "decision": "review",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "tsa_ev1"
+        ],
+        "controllingEvidence": "tsa_ev1",
+        "decision": "review",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-day-1",
+      "actionType": "next-action",
+      "title": "Validate accountability reveal proof",
+      "description": "Verify the accountability reveal or continuity proof before final film assembly.",
+      "rationale": "Verify the accountability reveal or continuity proof before final film assembly.",
+      "mode": "DAY_CHALLENGE",
+      "phase": "review",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [],
+      "expectedResult": "Verify the accountability reveal or continuity proof before final film assembly.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "tsa_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "detectedCapabilityGap": "category-differentiation",
+  "routingDecision": "MATCH",
+  "selectedResource": {
+    "resourceId": "res_sacred_rules_breaker",
+    "name": "Sacred Rules Breaker",
+    "type": "CORE_METHOD",
+    "lifecycleState": "VALIDATED",
+    "maxExecutionAuthority": "SUGGEST",
+    "isRecommendable": true,
+    "suitabilityScore": 545,
+    "matchingCapabilities": [
+      "gap:category-differentiation"
+    ],
+    "progressiveLoadLevel": "LEVEL_1_CAPABILITY_CARD",
+    "recommendationLabel": "VALIDATED_FALLBACK"
+  },
+  "methodExecution": {
+    "methodId": "method_sacred_rules_breaker",
+    "resourceId": "res_sacred_rules_breaker",
+    "input": {
+      "methodId": "method_sacred_rules_breaker",
+      "projectMode": "DAY_CHALLENGE",
+      "phase": "build",
+      "subjectDescription": "An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.",
+      "subjectContext": "General public and accountability advocates",
+      "capabilityGap": "category-differentiation",
+      "supplementaryFields": {
+        "projectObjective": "Visualising human accountability by transforming anonymous status notifications into a named responsible owner.",
+        "narrativeBeat": "build",
+        "subjectOrCharacter": "The institutional case changes from 'resolved' without ownership to a named accountable human with a callback promise.",
+        "emotionalTension": "Anonymous status versus human ownership.",
+        "desiredTransformation": "The customer sees a named accountable contact (Alex) and a clear callback promise for the £149 discrepancy.",
+        "locationConstraints": "",
+        "propConstraints": "",
+        "sourceDescription": "",
+        "communicationIntent": "No One to Alex.",
+        "sourceType": "",
+        "abstractionLevel": "high",
+        "knownSpatialRelationships": "[]",
+        "concept": "",
+        "projectSymbols": "",
+        "requestedCapability": "",
+        "artifactType": ""
+      }
+    },
+    "result": {
+      "methodId": "method_sacred_rules_breaker",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Detect Category and Load Conventions",
+          "instruction": "Detect category from subject/context signals. Category detected: \"generic\".",
+          "outputKey": "conventionInventory"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Classify Sacred vs. Habit",
+          "instruction": "For each convention, classify as SACRED or HABIT based on desired position \"distinctive and memorable\" and trust requirements [].",
+          "outputKey": "sacredVsHabitClassification"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Rank Break Candidates",
+          "instruction": "Sort habit conventions by challenge strength against desired position. Higher strength = more strategically aligned.",
+          "outputKey": "breakCandidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Identify Preserved Category Signals",
+          "instruction": "List SACRED conventions that must not be broken.",
+          "outputKey": "categorySignalsPreserved"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Synthesise Strategic Inversion",
+          "instruction": "Combine highest-strength break candidate with objective, audience, and position to produce the specific strategic inversion.",
+          "outputKey": "strategicInversion"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "convention-inventory",
+          "label": "Conventions Discovered",
+          "content": "1. [category-visual-conformity] \"Visual and structural language conforms to established category codes — the work looks like it belongs\"\n   Why it exists: Category recognition lowers cognitive processing load for evaluators; unfamiliar work triggers skepticism\n\n2. [quality-is-differentiation] \"Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\"\n   Why it exists: Quality is the most legible and least-risk competitive strategy — requires no new mental model from evaluators\n\n3. [evaluator-competence-frame] \"The primary evaluator frame is competence — evaluators assess whether the work is done correctly\"\n   Why it exists: Risk-averse evaluation defaults to competence-checking before considering transformation potential\n\n4. [narrative-setup-conflict-resolution] \"Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\"\n   Why it exists: Cultural familiarity reduces cognitive effort; evaluators can follow without attention investment\n\n5. [format-category-defaults] \"Presentation format conforms to category defaults — duration, medium, pacing, delivery context\"\n   Why it exists: Format deviation requires additional cognitive work from evaluators — non-standard formats can signal amateurism"
+        },
+        {
+          "sectionKey": "sacred-vs-habit",
+          "label": "Sacred vs. Habit Classification",
+          "content": "[NATURE: HABIT] [ACTION: BREAK] category-visual-conformity\nStatement: Visual and structural language conforms to established category codes — the work looks like it belongs\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] quality-is-differentiation\nStatement: Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] evaluator-competence-frame\nStatement: The primary evaluator frame is competence — evaluators assess whether the work is done correctly\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] narrative-setup-conflict-resolution\nStatement: Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] format-category-defaults\nStatement: Presentation format conforms to category defaults — duration, medium, pacing, delivery context\nRationale: Default category convention.\nTrust Impact: NONE"
+        },
+        {
+          "sectionKey": "break-candidates",
+          "label": "Rule-Break Candidates",
+          "content": "#1 [category-visual-conformity] action:BREAK challenge-strength:1\nConvention: Visual and structural language conforms to established category codes — the work looks like it belongs\nProposed action: Abandon convention \"category-visual-conformity\" — replace [Use of dominant category visual language (palette, layout, typographic defaults)] with design language that directly signals \"distinctive and memorable\" for target audience.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"distinctive and memorable\". Category vocabulary and evaluator-legible framing must be replaced.\nObjective link: Breaking \"category-visual-conformity\" creates pattern disruption to serve the objective: \"Create distinctive work in: General public and accountability advocates\".\nBreak risk: Breaking visual category codes without deliberate positioning frames the work as simply unrecognised.\n\n---\n\n#2 [quality-is-differentiation] action:BREAK challenge-strength:1\nConvention: Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\nProposed action: Abandon convention \"quality-is-differentiation\" — replace [Higher production values; more refined execution of existing category codes] with design language that directly signals \"distinctive and memorable\" for target audience.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"distinctive and memorable\". Superlatives within category language — 'the best', 'most refined', 'premium' must be replaced.\nObjective link: Breaking \"quality-is-differentiation\" creates pattern disruption to serve the objective: \"Create distinctive work in: General public and accountability advocates\".\nBreak risk: Quality competition is a copying treadmill — structural differentiation is more durable."
+        },
+        {
+          "sectionKey": "category-signals-preserved",
+          "label": "Category Signals Preserved (Sacred Conventions)",
+          "content": "PRESERVE/ADAPT [evaluator-competence-frame] (Action: KEEP): The primary evaluator frame is competence — evaluators assess whether the work is done correctly\nVisual: Organised, legible, technically proficient execution\nVerbal: Professional vocabulary; evidence-based claims; structured arguments\n\nPRESERVE/ADAPT [narrative-setup-conflict-resolution] (Action: KEEP): Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\nVisual: Linear progression of visual story; clear beginning/middle/end structure\nVerbal: Problem → solution → result framing\n\nPRESERVE/ADAPT [format-category-defaults] (Action: KEEP): Presentation format conforms to category defaults — duration, medium, pacing, delivery context\nVisual: Standard length, standard container, standard delivery mechanism\nVerbal: Conventional pitch or presentation structure"
+        },
+        {
+          "sectionKey": "strategic-inversion",
+          "label": "Selected Strategic Inversion",
+          "content": "STRATEGIC INVERSION for \"An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.\": The convention \"Visual and structural language conforms to established category codes — the work looks like it belongs\" is target for \"BREAK\" because it opposes desired position \"distinctive and memorable\" and has trust impact: NEUTRAL. Action details: replace [Use of dominant category visual language (palette, layout, typographic defaults)] with design language that actively signals \"distinctive and memorable\". Verbal implications: [Category vocabulary and evaluator-legible framing] → positioning language that encodes \"distinctive and memorable\" for target audience. Motion pacing implications: Category-standard pacing and transition conventions → pacing that embodies the desired position. This directly serves the objective: \"Create distinctive work in: General public and accountability advocates\"."
+        }
+      ],
+      "rawOutputs": {
+        "category": "generic",
+        "conventionInventory": "1. [category-visual-conformity] \"Visual and structural language conforms to established category codes — the work looks like it belongs\"\n   Why it exists: Category recognition lowers cognitive processing load for evaluators; unfamiliar work triggers skepticism\n\n2. [quality-is-differentiation] \"Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\"\n   Why it exists: Quality is the most legible and least-risk competitive strategy — requires no new mental model from evaluators\n\n3. [evaluator-competence-frame] \"The primary evaluator frame is competence — evaluators assess whether the work is done correctly\"\n   Why it exists: Risk-averse evaluation defaults to competence-checking before considering transformation potential\n\n4. [narrative-setup-conflict-resolution] \"Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\"\n   Why it exists: Cultural familiarity reduces cognitive effort; evaluators can follow without attention investment\n\n5. [format-category-defaults] \"Presentation format conforms to category defaults — duration, medium, pacing, delivery context\"\n   Why it exists: Format deviation requires additional cognitive work from evaluators — non-standard formats can signal amateurism",
+        "sacredVsHabitClassification": "[NATURE: HABIT] [ACTION: BREAK] category-visual-conformity\nStatement: Visual and structural language conforms to established category codes — the work looks like it belongs\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: BREAK] quality-is-differentiation\nStatement: Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\nRationale: Position-driven habit target: challenged by desired position.\nTrust Impact: NONE\n\n---\n\n[NATURE: SACRED] [ACTION: KEEP] evaluator-competence-frame\nStatement: The primary evaluator frame is competence — evaluators assess whether the work is done correctly\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] narrative-setup-conflict-resolution\nStatement: Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\nRationale: Default category convention.\nTrust Impact: NONE\n\n---\n\n[NATURE: HABIT] [ACTION: KEEP] format-category-defaults\nStatement: Presentation format conforms to category defaults — duration, medium, pacing, delivery context\nRationale: Default category convention.\nTrust Impact: NONE",
+        "breakCandidates": "#1 [category-visual-conformity] action:BREAK challenge-strength:1\nConvention: Visual and structural language conforms to established category codes — the work looks like it belongs\nProposed action: Abandon convention \"category-visual-conformity\" — replace [Use of dominant category visual language (palette, layout, typographic defaults)] with design language that directly signals \"distinctive and memorable\" for target audience.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"distinctive and memorable\". Category vocabulary and evaluator-legible framing must be replaced.\nObjective link: Breaking \"category-visual-conformity\" creates pattern disruption to serve the objective: \"Create distinctive work in: General public and accountability advocates\".\nBreak risk: Breaking visual category codes without deliberate positioning frames the work as simply unrecognised.\n\n---\n\n#2 [quality-is-differentiation] action:BREAK challenge-strength:1\nConvention: Differentiation is achieved through quality improvement within conventions, not structural or positional deviation\nProposed action: Abandon convention \"quality-is-differentiation\" — replace [Higher production values; more refined execution of existing category codes] with design language that directly signals \"distinctive and memorable\" for target audience.\nStrategic value: POSITION-DRIVEN (strength: 1): Directly aligned with desired position \"distinctive and memorable\". Superlatives within category language — 'the best', 'most refined', 'premium' must be replaced.\nObjective link: Breaking \"quality-is-differentiation\" creates pattern disruption to serve the objective: \"Create distinctive work in: General public and accountability advocates\".\nBreak risk: Quality competition is a copying treadmill — structural differentiation is more durable.",
+        "categorySignalsPreserved": "PRESERVE/ADAPT [evaluator-competence-frame] (Action: KEEP): The primary evaluator frame is competence — evaluators assess whether the work is done correctly\nVisual: Organised, legible, technically proficient execution\nVerbal: Professional vocabulary; evidence-based claims; structured arguments\n\nPRESERVE/ADAPT [narrative-setup-conflict-resolution] (Action: KEEP): Storytelling follows standard narrative arc — setup, conflict, resolution — for predictable evaluator comprehension\nVisual: Linear progression of visual story; clear beginning/middle/end structure\nVerbal: Problem → solution → result framing\n\nPRESERVE/ADAPT [format-category-defaults] (Action: KEEP): Presentation format conforms to category defaults — duration, medium, pacing, delivery context\nVisual: Standard length, standard container, standard delivery mechanism\nVerbal: Conventional pitch or presentation structure",
+        "visualImplications": "[category-visual-conformity]: Abandon \"Use of dominant category visual language (palette, layout, typographic defaults)\". Signal \"distinctive and memorable\" through visual language that directly encodes the positioning intent.\n\n[quality-is-differentiation]: Abandon \"Higher production values; more refined execution of existing category codes\". Signal \"distinctive and memorable\" through visual language that directly encodes the positioning intent.",
+        "verbalImplications": "[category-visual-conformity]: Replace \"Category vocabulary and evaluator-legible framing\" with language that encodes \"distinctive and memorable\" for target audience.\n\n[quality-is-differentiation]: Replace \"Superlatives within category language — 'the best', 'most refined', 'premium'\" with language that encodes \"distinctive and memorable\" for target audience.",
+        "motionImplications": "[category-visual-conformity]: Abandon \"Category-standard pacing and transition conventions\". Motion pacing must actively signal \"distinctive and memorable\" — motion calibrated to the desired audience response rather than the category default",
+        "failureRisks": "Breaking visual category codes without deliberate positioning frames the work as simply unrecognised.\n\nQuality competition is a copying treadmill — structural differentiation is more durable.\n\nIf breaking a habit convention accidentally erodes a SACRED convention (evaluator-competence-frame), audience trust will be irreparably damaged. Confirm all trust codes are preserved.",
+        "proposedValidationTest": "Five-second validation: Show the proposed creative work to one evaluator matching \"target audience\" WITHOUT brand context. Ask: \"What position does this work occupy in its category?\" The answer must include language from \"distinctive and memorable\" — NOT standard category language. If the evaluator describes the work using conventional category language [category-visual-conformity, quality-is-differentiation], the strategic inversion has not landed.",
+        "strategicInversion": "STRATEGIC INVERSION for \"An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.\": The convention \"Visual and structural language conforms to established category codes — the work looks like it belongs\" is target for \"BREAK\" because it opposes desired position \"distinctive and memorable\" and has trust impact: NEUTRAL. Action details: replace [Use of dominant category visual language (palette, layout, typographic defaults)] with design language that actively signals \"distinctive and memorable\". Verbal implications: [Category vocabulary and evaluator-legible framing] → positioning language that encodes \"distinctive and memorable\" for target audience. Motion pacing implications: Category-standard pacing and transition conventions → pacing that embodies the desired position. This directly serves the objective: \"Create distinctive work in: General public and accountability advocates\".",
+        "differentiationInsight": "STRATEGIC INVERSION for \"An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.\": The convention \"Visual and structural language conforms to established category codes — the work looks like it belongs\" is target for \"BREAK\" because it opposes desired position \"distinctive and memorable\" and has trust impact: NEUTRAL. Action details: replace [Use of dominant category visual language (palette, layout, typographic defaults)] with design language that actively signals \"distinctive and memorable\". Verbal implications: [Category vocabulary and evaluator-legible framing] → positioning language that encodes \"distinctive and memorable\" for target audience. Motion pacing implications: Category-standard pacing and transition conventions → pacing that embodies the desired position. This directly serves the objective: \"Create distinctive work in: General public and accountability advocates\".",
+        "inputFingerprint": "SRB:cat=generic:pos=distinctive and memorable:trust=",
+        "outputFingerprint": "SRB:actions=category-visual-conformity=BREAK|quality-is-differentiation=BREAK|evaluator-competence-frame=KEEP|narrative-setup-conflict-resolution=KEEP|format-category-defaults=KEEP:natures=category-visual-conformity=HABIT|quality-is-differentiation=HABIT|evaluator-competence-frame=SACRED|narrative-setup-conflict-resolution=HABIT|format-category-defaults=HABIT"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": false,
+        "failReasons": [
+          "No trust impact evaluation or reasoning was found in classification outputs."
+        ]
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Conventions Discovered]: 1. [category-visual-conformity] \"Visual and structural language conforms to established category codes — the work looks like it belongs\"\n   Why it exists: Category recognition lowers cognitive process",
+      "[Sacred vs. Habit Classification]: [NATURE: HABIT] [ACTION: BREAK] category-visual-conformity\nStatement: Visual and structural language conforms to established category codes — the work looks like it belongs\nRationale: Position-driven ",
+      "[Rule-Break Candidates]: #1 [category-visual-conformity] action:BREAK challenge-strength:1\nConvention: Visual and structural language conforms to established category codes — the work looks like it belongs\nProposed action: Ab",
+      "[Category Signals Preserved (Sacred Conventions)]: PRESERVE/ADAPT [evaluator-competence-frame] (Action: KEEP): The primary evaluator frame is competence — evaluators assess whether the work is done correctly\nVisual: Organised, legible, technically pro",
+      "[Selected Strategic Inversion]: STRATEGIC INVERSION for \"An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.\": The convention \""
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "methodQualityEvidence": {
+    "status": "COMPLETE",
+    "qualityResults": [
+      {
+        "gateId": "srb.conventions-inventoried",
+        "label": "Conventions Inventoried",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.trust-requirement-reasoned",
+        "label": "Trust Requirement Reasoned",
+        "passed": false,
+        "failReasons": [
+          "No trust impact evaluation or reasoning was found in classification outputs."
+        ]
+      },
+      {
+        "gateId": "srb.action-model-valid",
+        "label": "Action Model Valid",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.category-recognition-preserved",
+        "label": "Category Recognition Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.objective-link-explicit",
+        "label": "Objective Link Explicit",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "srb.scalable-beyond-single-visual",
+        "label": "Scalable Beyond Single Visual",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "inputSignature": "e38b3583ca8a3093",
+    "outputSignature": "7fcc27d94c938dba",
+    "resourceLifecycle": "VALIDATED",
+    "resourceId": "res_sacred_rules_breaker",
+    "methodId": "method_sacred_rules_breaker"
+  },
+  "directorAfter": {
+    "mode": "DAY_CHALLENGE",
+    "resolvedPhase": "review",
+    "objective": {
+      "statement": "Visualising human accountability by transforming anonymous status notifications into a named responsible owner.",
+      "intendedOutcome": "The customer sees a named accountable contact (Alex) and a clear callback promise for the £149 discrepancy.",
+      "primaryAudienceOrEvaluator": "An observational campaign exposing the missing human element in corporate support.",
+      "successEvidence": [
+        "tsa_ev1"
+      ],
+      "constraints": [
+        "Visual reframe must use the premium observational campaign style."
+      ],
+      "nonGoals": [
+        "Security locking protocols",
+        "Session loss warning reports"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "audience",
+      "decisionTheyMustMake": "Can this daily slice be understood and trusted immediately?",
+      "whatTheyNeedToUnderstand": [
+        "the problem",
+        "the one-day scope",
+        "the visible proof"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the slice is complete enough to stand alone"
+      ],
+      "requiredProof": [
+        "clear outcome",
+        "visible accountability",
+        "bounded scope"
+      ],
+      "memorySentence": "The one-day slice makes accountability visible."
+    },
+    "heroDemoMoment": {
+      "title": "The institutional case changes from 'resolved' without ownership to a named accountable human with a callback promise.",
+      "description": "An premium observational campaign visualising customer-service accountability by transforming anonymous status notifications into a named responsible owner.",
+      "trigger": "build",
+      "visibleTransformationOrProof": "The transitional screen showing ticket resolution changing to a personal callback card.",
+      "evaluatorInterpretation": "An observational campaign exposing the missing human element in corporate support.",
+      "requiredEvidence": [
+        "tsa_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "DAY_CHALLENGE"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "tsa_ev1"
+        ],
+        "controllingEvidence": "tsa_ev1",
+        "decision": "review",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "tsa_ev1"
+        ],
+        "controllingEvidence": "tsa_ev1",
+        "decision": "review",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DAY_CHALLENGE",
+          "build"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "audience",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [
+      {
+        "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+        "humanActionRequired": true
+      },
+      {
+        "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+        "humanActionRequired": true
+      }
+    ],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-day-1",
+      "actionType": "review-required",
+      "title": "Resolve contradiction: Advisory evidence for Sacred Rules Breaker",
+      "description": "Verify the accountability reveal or continuity proof before final film assembly.",
+      "rationale": "Verify the accountability reveal or continuity proof before final film assembly. (Contradicts assumption: Advisory evidence for Sacred Rules Breaker failed)",
+      "mode": "DAY_CHALLENGE",
+      "phase": "review",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [
+        {
+          "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+          "category": "advisory-contradiction",
+          "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+          "severity": "warning",
+          "status": "open",
+          "source": "AdvisoryEvidence",
+          "blockingScope": "project",
+          "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+          "humanActionRequired": true
+        },
+        {
+          "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+          "category": "advisory-contradiction",
+          "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+          "severity": "warning",
+          "status": "open",
+          "source": "AdvisoryEvidence",
+          "blockingScope": "project",
+          "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+          "humanActionRequired": true
+        }
+      ],
+      "expectedResult": "Verify the accountability reveal or continuity proof before final film assembly.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "tsa_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "authorizedNextAction": {
+    "actionId": "act-day-1",
+    "actionType": "review-required",
+    "title": "Resolve contradiction: Advisory evidence for Sacred Rules Breaker",
+    "description": "Verify the accountability reveal or continuity proof before final film assembly.",
+    "rationale": "Verify the accountability reveal or continuity proof before final film assembly. (Contradicts assumption: Advisory evidence for Sacred Rules Breaker failed)",
+    "mode": "DAY_CHALLENGE",
+    "phase": "review",
+    "authorityRequirement": "suggest",
+    "approvalStatus": "not-required",
+    "preconditions": [],
+    "blockers": [
+      {
+        "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+        "humanActionRequired": true
+      },
+      {
+        "blockerId": "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Sacred Rules Breaker",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Sacred Rules Breaker",
+        "humanActionRequired": true
+      }
+    ],
+    "expectedResult": "Verify the accountability reveal or continuity proof before final film assembly.",
+    "reversibility": "reversible",
+    "evidenceNeededAfterCompletion": [
+      "tsa_ev1"
+    ],
+    "sourceDecisionOrGate": "hero-demo-moment"
+  },
+  "integrationProvenance": {
+    "projectBrainFingerprint": "366c2a9a3cf0a191",
+    "directorProjectionFingerprint": "337831ef5f7af5b4",
+    "capabilityGapSource": "DIRECTOR_DERIVED",
+    "routingResult": "MATCH",
+    "resourceId": "res_sacred_rules_breaker",
+    "resourceLifecycle": "VALIDATED",
+    "methodId": "method_sacred_rules_breaker",
+    "methodInputFingerprint": "e38b3583ca8a3093",
+    "methodOutputFingerprint": "7fcc27d94c938dba",
+    "qualitySummary": "[\"srb.conventions-inventoried:true\",\"srb.trust-requirement-reasoned:false\",\"srb.action-model-valid:true\",\"srb.category-recognition-preserved:true\",\"srb.objective-link-explicit:true\",\"srb.scalable-beyond-single-visual:true\"]",
+    "directorFinalFingerprint": "07196242c4d90e20",
+    "authorizedActionFingerprint": "18f9ff0e2b1739e4",
+    "continuationFingerprint": "6c5c3feabd3a4de7"
+  },
+  "continuationState": {
+    "schemaVersion": "v3",
+    "projectId": "the-second-absence",
+    "projectBrainFingerprint": "366c2a9a3cf0a191",
+    "phase": "build",
+    "mode": "DAY_CHALLENGE",
+    "currentObjective": "Visualising human accountability by transforming anonymous status notifications into a named responsible owner.",
+    "evaluator": "audience",
+    "heroDemoMomentIdOrFingerprint": "The institutional case changes from 'resolved' without ownership to a named accountable human with a callback promise.",
+    "activeBlockerIds": [
+      "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker",
+      "advisory-fail-adv_the-second-absence_method_sacred_rules_breaker"
+    ],
+    "detectedCapabilityGap": "category-differentiation",
+    "selectedResourceId": "res_sacred_rules_breaker",
+    "selectedMethodId": "method_sacred_rules_breaker",
+    "methodInputFingerprint": "e38b3583ca8a3093",
+    "methodOutputFingerprint": "7fcc27d94c938dba",
+    "qualitySummary": "[\"srb.conventions-inventoried:true\",\"srb.trust-requirement-reasoned:false\",\"srb.action-model-valid:true\",\"srb.category-recognition-preserved:true\",\"srb.objective-link-explicit:true\",\"srb.scalable-beyond-single-visual:true\"]",
+    "authorizedNextActionFingerprint": "18f9ff0e2b1739e4",
+    "provenanceReferences": [
+      "ProjectBrain",
+      "Director",
+      "Router",
+      "MethodRuntime"
+    ],
+    "continuationCompatibility": "NONE",
+    "resumeSummary": "Resuming project \"The Second Absence\" in DAY_CHALLENGE mode, build phase.",
+    "currentDecision": "Next authorized action is: \"Resolve contradiction: Advisory evidence for Sacred Rules Breaker\".",
+    "whyThisIsNext": "Rationale: \"Verify the accountability reveal or continuity proof before final film assembly. (Contradicts assumption: Advisory evidence for Sacred Rules Breaker failed)\".",
+    "unresolvedBlocker": "Blocked by: advisory-fail-adv_the-second-absence_method_sacred_rules_breaker, advisory-fail-adv_the-second-absence_method_sacred_rules_breaker.",
+    "evidenceStillNeeded": "Resolve blockers to proceed.",
+    "integrationFingerprint": "00b87ae387627989",
+    "continuationFingerprint": "6c5c3feabd3a4de7"
+  },
+  "status": "COMPLETE"
+}

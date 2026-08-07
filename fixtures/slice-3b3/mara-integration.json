@@ -1,0 +1,930 @@
+{
+  "projectId": "mara-episode",
+  "projectBrainFingerprint": "22e182567b2c6a1d",
+  "directorBefore": {
+    "mode": "MARA",
+    "resolvedPhase": "review",
+    "objective": {
+      "statement": "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+      "intendedOutcome": "Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.",
+      "primaryAudienceOrEvaluator": "A cinematic character study highlighting quiet human complexity.",
+      "successEvidence": [
+        "mara_ev1"
+      ],
+      "constraints": [
+        "Narrative transitions must prioritize quiet acceptance over productivity cues."
+      ],
+      "nonGoals": [
+        "Classical orchestral research",
+        "Cryptographic proof systems"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "stakeholder",
+      "decisionTheyMustMake": "Does the narrative remain coherent across the episode?",
+      "whatTheyNeedToUnderstand": [
+        "continuity",
+        "constraint handling",
+        "unresolved thread"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the arc is consistent"
+      ],
+      "requiredProof": [
+        "episode coherence",
+        "no generic fallback",
+        "continuity evidence"
+      ],
+      "memorySentence": "Narrative continuity stays intact across the episode."
+    },
+    "heroDemoMoment": {
+      "title": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+      "description": "An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The quiet frame of Mara sitting in the office space with an unfinished task list.",
+      "evaluatorInterpretation": "A cinematic character study highlighting quiet human complexity.",
+      "requiredEvidence": [
+        "mara_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "MARA"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "mara_ev1"
+        ],
+        "controllingEvidence": "mara_ev1",
+        "decision": "review",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "mara_ev1"
+        ],
+        "controllingEvidence": "mara_ev1",
+        "decision": "review",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-mara-1",
+      "actionType": "next-action",
+      "title": "Validate episode continuity proof",
+      "description": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+      "rationale": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+      "mode": "MARA",
+      "phase": "review",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [],
+      "expectedResult": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "mara_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "detectedCapabilityGap": "narrative-staging",
+  "routingDecision": "MATCH",
+  "selectedResource": {
+    "resourceId": "res_physical_situation_storyboarder",
+    "name": "Physical Situation Storyboarder",
+    "type": "CORE_METHOD",
+    "lifecycleState": "VALIDATED",
+    "maxExecutionAuthority": "SUGGEST",
+    "isRecommendable": true,
+    "suitabilityScore": 545,
+    "matchingCapabilities": [
+      "gap:narrative-staging"
+    ],
+    "progressiveLoadLevel": "LEVEL_1_CAPABILITY_CARD",
+    "recommendationLabel": "VALIDATED_FALLBACK"
+  },
+  "methodExecution": {
+    "methodId": "method_physical_situation_storyboarder",
+    "resourceId": "res_physical_situation_storyboarder",
+    "input": {
+      "methodId": "method_physical_situation_storyboarder",
+      "projectMode": "MARA",
+      "phase": "verify",
+      "subjectDescription": "An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.",
+      "subjectContext": "Cinematic audience and creative stakeholders",
+      "capabilityGap": "narrative-staging",
+      "supplementaryFields": {
+        "projectObjective": "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+        "narrativeBeat": "verify",
+        "subjectOrCharacter": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+        "emotionalTension": "Productivity expectations versus emotional authenticity.",
+        "desiredTransformation": "Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.",
+        "locationConstraints": "",
+        "propConstraints": "",
+        "sourceDescription": "",
+        "communicationIntent": "Emotional truth over product proof.",
+        "sourceType": "",
+        "abstractionLevel": "high",
+        "knownSpatialRelationships": "[]",
+        "concept": "",
+        "projectSymbols": "",
+        "requestedCapability": "",
+        "artifactType": ""
+      }
+    },
+    "result": {
+      "methodId": "method_physical_situation_storyboarder",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Identify Narrative Gaps & Tension",
+          "instruction": "Load narrative beat: \"verify\" and emotional tension: \"Productivity expectations versus emotional authenticity.\".",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Design Physical Metaphor",
+          "instruction": "Map the emotional state onto a physical, non-verbal object relationship.",
+          "outputKey": "metaphor-design"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Draft Scene Nodes Sequence",
+          "instruction": "Break down the physical actions into a sequence of concrete visual frames.",
+          "outputKey": "storyboard-nodes"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Establish Continuity Controls",
+          "instruction": "Define the physical spatial layout and wardrobe/prop continuity requirements.",
+          "outputKey": "continuity-governance"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Validation Test",
+          "instruction": "Draft a silent validation test to verify that the concept carries without exposition.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "metaphor-design",
+          "label": "Physical Metaphor Design",
+          "content": "Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Cinematic audience and creative stakeholders\", reflecting the emotional state of \"Productivity expectations versus emotional authenticity.\".\nKey Object/Prop: \nEnvironment: \nUnspoken Subtext: Do not speak or mention \"Productivity expectations versus emotional authenticity.\" or \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\" in dialogue. The viewer must infer it solely by observing Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s posture and her refusal to complete the ."
+        },
+        {
+          "sectionKey": "storyboard-nodes",
+          "label": "Storyboard Scene Nodes",
+          "content": "BEAT #1: beat_01_verify\n  Narrative Function: Introduce the physical tension anchor of Productivity expectations versus emotional authenticity. in service of project objective: Verify emotional and wardrobe continuity for Mara Keita across all shot sequences..\n  Subject State: Tense posture, slight shrug.\n  Object State: A physical representation of the  showing structural strain within the \n  Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. approaches the  with hesitation, looking at the cracks.\n  Spatial Relationship: Facing the  directly at a distance of 30cm.\n  Visible Change: The physical state of the  remains unchanged, mirroring the tension of Productivity expectations versus emotional authenticity..\n  Camera: Medium shot tracking Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s tentative movements.\n  Continuity: Consistent wardrobe and environment.  state matches initialization.\n\nBEAT #2: beat_02_verify\n  Narrative Function: Observe the physical consequence of the transformation to Viewer recognizes emotional mirrors and wardrobe remains consistent across shots..\n  Subject State: Resolved/relaxed posture showing acceptance.\n  Object State: The  left in its current state within the  as a monument to the process\n  Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. deliberately steps back and disengages, leaving the  unfinished.\n  Spatial Relationship: Stepping back to a distance of 2 meters from the .\n  Visible Change: The  is left in its current state as a monument to the process.\n  Camera: Slow pull out wide shot framing both Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. and the incomplete .\n  Continuity:  state remains consistent with the previous beat."
+        },
+        {
+          "sectionKey": "continuity-governance",
+          "label": "Continuity & Staging Constraints",
+          "content": "Staging Rules: Facing the  directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the .\nContinuity: No visual changes in background objects between beats.\nCamera Directives:\nbeat_01_verify: Medium shot tracking Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s tentative movements.\nbeat_02_verify: Slow pull out wide shot framing both Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. and the incomplete ."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risk Mitigation",
+          "content": "Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\" or accepting the unfinished vessel, the scene passes.\nFailure Risks: Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object."
+        },
+        {
+          "sectionKey": "brief-summary",
+          "label": "Storyboard Brief Summary",
+          "content": "PHYSICAL STORYBOARD BRIEF — \"An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.\"\nTension: Productivity expectations versus emotional authenticity.\nSubject: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. | Environment: \nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Cinematic audience and creative stakeholders\", reflecting the emotional state of \"Productivity expectations versus emotional authenticity.\".\nScene Nodes:\n  - [beat_01_verify] Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. approaches the  with hesitation, looking at the cracks. -> Result: The physical state of the  remains unchanged, mirroring the tension of Productivity expectations versus emotional authenticity..\n  - [beat_02_verify] Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. deliberately steps back and disengages, leaving the  unfinished. -> Result: The  is left in its current state as a monument to the process."
+        },
+        {
+          "sectionKey": "transformation-evidence",
+          "label": "Transformation Evidence & Grounding",
+          "content": "### Behavioral Meaning\nThe subject accepts the state of the  as it is, without attempting to change it.\n\n### Observable Evidence Required\nThe subject steps back, showing a relaxed posture while leaving the object unfinished.\n\n### Action Evidence\nMara stops performing productivity and allows one unfinished task to remain visible without correcting it. steps back and disengages, leaving the  untouched.\n\n### Relationship Change\nSubject increases distance from 30cm to 2 meters.\n\n### Ending Evidence\nThe  is left in its unfinished state as a monument to the process.\n\n### Reasoning\nAcceptance is shown by looking at the unfinished object and stepping away with a relaxed, non-frustrated posture at the ."
+        }
+      ],
+      "rawOutputs": {
+        "narrativeIntent": "Show the transformation of \"Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.\" from \"Productivity expectations versus emotional authenticity.\" to \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\" through physical action rather than verbal exposition.",
+        "emotionalTension": "Productivity expectations versus emotional authenticity.",
+        "desiredTransformation": "Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.",
+        "observableTransformation": "Transition from Tense posture, slight shrug. with incomplete object to Resolved/relaxed posture showing acceptance. with object left unfinished.",
+        "physicalMetaphor": "A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Cinematic audience and creative stakeholders\", reflecting the emotional state of \"Productivity expectations versus emotional authenticity.\".",
+        "subject": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+        "environment": "",
+        "keyObject": "",
+        "startingPhysicalState": "Tense posture, slight shrug.",
+        "action": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. deliberately steps back and disengages, leaving the  unfinished.",
+        "consequence": "The  is left in its current state as a monument to the process.",
+        "endingPhysicalState": "Resolved/relaxed posture showing acceptance.",
+        "sceneNodes": "[\n  {\n    \"beatId\": \"beat_01_verify\",\n    \"narrativeFunction\": \"Introduce the physical tension anchor of Productivity expectations versus emotional authenticity. in service of project objective: Verify emotional and wardrobe continuity for Mara Keita across all shot sequences..\",\n    \"subjectState\": \"Tense posture, slight shrug.\",\n    \"objectState\": \"A physical representation of the  showing structural strain within the \",\n    \"physicalAction\": \"Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. approaches the  with hesitation, looking at the cracks.\",\n    \"spatialRelationship\": \"Facing the  directly at a distance of 30cm.\",\n    \"visibleChange\": \"The physical state of the  remains unchanged, mirroring the tension of Productivity expectations versus emotional authenticity..\",\n    \"continuityRequirements\": \"Consistent wardrobe and environment.  state matches initialization.\",\n    \"cameraIntent\": \"Medium shot tracking Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s tentative movements.\"\n  },\n  {\n    \"beatId\": \"beat_02_verify\",\n    \"narrativeFunction\": \"Observe the physical consequence of the transformation to Viewer recognizes emotional mirrors and wardrobe remains consistent across shots..\",\n    \"subjectState\": \"Resolved/relaxed posture showing acceptance.\",\n    \"objectState\": \"The  left in its current state within the  as a monument to the process\",\n    \"physicalAction\": \"Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. deliberately steps back and disengages, leaving the  unfinished.\",\n    \"spatialRelationship\": \"Stepping back to a distance of 2 meters from the .\",\n    \"visibleChange\": \"The  is left in its current state as a monument to the process.\",\n    \"continuityRequirements\": \" state remains consistent with the previous beat.\",\n    \"cameraIntent\": \"Slow pull out wide shot framing both Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. and the incomplete .\"\n  }\n]",
+        "spatialRelationships": "Facing the  directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the .",
+        "continuityConstraints": "No visual changes in background objects between beats.",
+        "cameraIntent": "beat_01_verify: Medium shot tracking Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s tentative movements.\nbeat_02_verify: Slow pull out wide shot framing both Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. and the incomplete .",
+        "whatMustRemainUnspoken": "Do not speak or mention \"Productivity expectations versus emotional authenticity.\" or \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\" in dialogue. The viewer must infer it solely by observing Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.'s posture and her refusal to complete the .",
+        "failureRisks": "Risk that the actor expresses sadness verbally, or the camera edits out the unfinished object.",
+        "validationTest": "Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\" or accepting the unfinished vessel, the scene passes.",
+        "storyboardBrief": "PHYSICAL STORYBOARD BRIEF — \"An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.\"\nTension: Productivity expectations versus emotional authenticity.\nSubject: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. | Environment: \nPhysical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Cinematic audience and creative stakeholders\", reflecting the emotional state of \"Productivity expectations versus emotional authenticity.\".\nScene Nodes:\n  - [beat_01_verify] Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. approaches the  with hesitation, looking at the cracks. -> Result: The physical state of the  remains unchanged, mirroring the tension of Productivity expectations versus emotional authenticity..\n  - [beat_02_verify] Action: Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. deliberately steps back and disengages, leaving the  unfinished. -> Result: The  is left in its current state as a monument to the process.",
+        "transformationEvidence": "{\n  \"desiredTransformation\": \"Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.\",\n  \"behavioralMeaning\": \"The subject accepts the state of the  as it is, without attempting to change it.\",\n  \"observableEvidenceRequired\": \"The subject steps back, showing a relaxed posture while leaving the object unfinished.\",\n  \"actionEvidence\": \"Mara stops performing productivity and allows one unfinished task to remain visible without correcting it. steps back and disengages, leaving the  untouched.\",\n  \"relationshipChange\": \"Subject increases distance from 30cm to 2 meters.\",\n  \"endingEvidence\": \"The  is left in its unfinished state as a monument to the process.\",\n  \"reasoning\": \"Acceptance is shown by looking at the unfinished object and stepping away with a relaxed, non-frustrated posture at the .\"\n}",
+        "inputFingerprint": "PSS:tension=Productivity expectations vers:subject=Mara stops performin:obj=Verify emotional and wardrobe ",
+        "outputFingerprint": "PSS:nodes=2:firstBeat=beat_01_verify:lastAction=Mara stops performing producti"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "pss.idea-becomes-physical",
+        "label": "Idea Becomes Physical",
+        "passed": false,
+        "failReasons": [
+          "The scene does not ground the narrative tension in concrete objects or actions."
+        ]
+      },
+      {
+        "gateId": "pss.one-beat-one-function",
+        "label": "One Beat One Function",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-visible",
+        "label": "Transformation Visible",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-exposition-dependence",
+        "label": "No Exposition Dependence",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.continuity-protected",
+        "label": "Continuity Protected",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.project-specific",
+        "label": "Project Specific",
+        "passed": false,
+        "failReasons": [
+          "The storyboard did not integrate project-specific character or object parameters."
+        ]
+      },
+      {
+        "gateId": "pss.no-coaching-drift",
+        "label": "No Coaching Drift",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-input-grounded",
+        "label": "Transformation Input Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.semantic-domain-coherent",
+        "label": "Semantic Domain Coherent",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-generic-placeholder-language",
+        "label": "No Generic Placeholder Language",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-behaviorally-realized",
+        "label": "Transformation Behaviorally Realized",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-contrast-material",
+        "label": "Transformation Contrast Material",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-action-transformation-contradiction",
+        "label": "No Action-Transformation Contradiction",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Physical Metaphor Design]: Physical Metaphor: A physical struggle with a tangible, stubborn object that resists simple completion in context: \"Cinematic audience and creative stakeholders\", reflecting the emotional state of \"Pr",
+      "[Storyboard Scene Nodes]: BEAT #1: beat_01_verify\n  Narrative Function: Introduce the physical tension anchor of Productivity expectations versus emotional authenticity. in service of project objective: Verify emotional and wa",
+      "[Continuity & Staging Constraints]: Staging Rules: Facing the  directly at a distance of 30cm. | Stepping back to a distance of 2 meters from the .\nContinuity: No visual changes in background objects between beats.\nCamera Directives:\nbe",
+      "[Validation & Risk Mitigation]: Validation Test: Show the sequence to a viewer without audio or subtitle files. Ask: \"Why did she walk away from the pot, and what was her state of mind?\" If they answer with themes of \"Viewer recogni",
+      "[Storyboard Brief Summary]: PHYSICAL STORYBOARD BRIEF — \"An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.\"\nTension: Productivity ex",
+      "[Transformation Evidence & Grounding]: ### Behavioral Meaning\nThe subject accepts the state of the  as it is, without attempting to change it.\n\n### Observable Evidence Required\nThe subject steps back, showing a relaxed posture while leavin"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "methodQualityEvidence": {
+    "status": "COMPLETE",
+    "qualityResults": [
+      {
+        "gateId": "pss.idea-becomes-physical",
+        "label": "Idea Becomes Physical",
+        "passed": false,
+        "failReasons": [
+          "The scene does not ground the narrative tension in concrete objects or actions."
+        ]
+      },
+      {
+        "gateId": "pss.one-beat-one-function",
+        "label": "One Beat One Function",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-visible",
+        "label": "Transformation Visible",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-exposition-dependence",
+        "label": "No Exposition Dependence",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.continuity-protected",
+        "label": "Continuity Protected",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.project-specific",
+        "label": "Project Specific",
+        "passed": false,
+        "failReasons": [
+          "The storyboard did not integrate project-specific character or object parameters."
+        ]
+      },
+      {
+        "gateId": "pss.no-coaching-drift",
+        "label": "No Coaching Drift",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-input-grounded",
+        "label": "Transformation Input Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.semantic-domain-coherent",
+        "label": "Semantic Domain Coherent",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-generic-placeholder-language",
+        "label": "No Generic Placeholder Language",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-behaviorally-realized",
+        "label": "Transformation Behaviorally Realized",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.transformation-contrast-material",
+        "label": "Transformation Contrast Material",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "pss.no-action-transformation-contradiction",
+        "label": "No Action-Transformation Contradiction",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "inputSignature": "3ab0cc607314edb4",
+    "outputSignature": "7254197d351411b9",
+    "resourceLifecycle": "VALIDATED",
+    "resourceId": "res_physical_situation_storyboarder",
+    "methodId": "method_physical_situation_storyboarder"
+  },
+  "directorAfter": {
+    "mode": "MARA",
+    "resolvedPhase": "review",
+    "objective": {
+      "statement": "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+      "intendedOutcome": "Viewer recognizes emotional mirrors and wardrobe remains consistent across shots.",
+      "primaryAudienceOrEvaluator": "A cinematic character study highlighting quiet human complexity.",
+      "successEvidence": [
+        "mara_ev1"
+      ],
+      "constraints": [
+        "Narrative transitions must prioritize quiet acceptance over productivity cues."
+      ],
+      "nonGoals": [
+        "Classical orchestral research",
+        "Cryptographic proof systems"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "stakeholder",
+      "decisionTheyMustMake": "Does the narrative remain coherent across the episode?",
+      "whatTheyNeedToUnderstand": [
+        "continuity",
+        "constraint handling",
+        "unresolved thread"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the arc is consistent"
+      ],
+      "requiredProof": [
+        "episode coherence",
+        "no generic fallback",
+        "continuity evidence"
+      ],
+      "memorySentence": "Narrative continuity stays intact across the episode."
+    },
+    "heroDemoMoment": {
+      "title": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+      "description": "An episodic cinematic project focusing on the narrative and emotional continuity of Mara Keïta across complex wardrobe and environmental changes.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The quiet frame of Mara sitting in the office space with an unfinished task list.",
+      "evaluatorInterpretation": "A cinematic character study highlighting quiet human complexity.",
+      "requiredEvidence": [
+        "mara_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "MARA"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "mara_ev1"
+        ],
+        "controllingEvidence": "mara_ev1",
+        "decision": "review",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "mara_ev1"
+        ],
+        "controllingEvidence": "mara_ev1",
+        "decision": "review",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "MARA",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "stakeholder",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [
+      {
+        "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+        "humanActionRequired": true
+      },
+      {
+        "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+        "humanActionRequired": true
+      }
+    ],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-mara-1",
+      "actionType": "review-required",
+      "title": "Resolve contradiction: Advisory evidence for Physical Situation Storyboarder",
+      "description": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+      "rationale": "Verify the episode's emotional and visual continuity before final sequence assembly. (Contradicts assumption: Advisory evidence for Physical Situation Storyboarder failed)",
+      "mode": "MARA",
+      "phase": "review",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [
+        {
+          "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+          "category": "advisory-contradiction",
+          "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+          "severity": "warning",
+          "status": "open",
+          "source": "AdvisoryEvidence",
+          "blockingScope": "project",
+          "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+          "humanActionRequired": true
+        },
+        {
+          "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+          "category": "advisory-contradiction",
+          "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+          "severity": "warning",
+          "status": "open",
+          "source": "AdvisoryEvidence",
+          "blockingScope": "project",
+          "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+          "humanActionRequired": true
+        }
+      ],
+      "expectedResult": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "mara_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "authorizedNextAction": {
+    "actionId": "act-mara-1",
+    "actionType": "review-required",
+    "title": "Resolve contradiction: Advisory evidence for Physical Situation Storyboarder",
+    "description": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+    "rationale": "Verify the episode's emotional and visual continuity before final sequence assembly. (Contradicts assumption: Advisory evidence for Physical Situation Storyboarder failed)",
+    "mode": "MARA",
+    "phase": "review",
+    "authorityRequirement": "suggest",
+    "approvalStatus": "not-required",
+    "preconditions": [],
+    "blockers": [
+      {
+        "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+        "humanActionRequired": true
+      },
+      {
+        "blockerId": "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+        "category": "advisory-contradiction",
+        "description": "Advisory evidence failed: Advisory evidence for Physical Situation Storyboarder",
+        "severity": "warning",
+        "status": "open",
+        "source": "AdvisoryEvidence",
+        "blockingScope": "project",
+        "resolutionCondition": "Resolve contradiction in Advisory evidence for Physical Situation Storyboarder",
+        "humanActionRequired": true
+      }
+    ],
+    "expectedResult": "Verify the episode's emotional and visual continuity before final sequence assembly.",
+    "reversibility": "reversible",
+    "evidenceNeededAfterCompletion": [
+      "mara_ev1"
+    ],
+    "sourceDecisionOrGate": "hero-demo-moment"
+  },
+  "integrationProvenance": {
+    "projectBrainFingerprint": "22e182567b2c6a1d",
+    "directorProjectionFingerprint": "9caab3f72fe24ffe",
+    "capabilityGapSource": "DIRECTOR_DERIVED",
+    "routingResult": "MATCH",
+    "resourceId": "res_physical_situation_storyboarder",
+    "resourceLifecycle": "VALIDATED",
+    "methodId": "method_physical_situation_storyboarder",
+    "methodInputFingerprint": "3ab0cc607314edb4",
+    "methodOutputFingerprint": "7254197d351411b9",
+    "qualitySummary": "[\"pss.idea-becomes-physical:false\",\"pss.one-beat-one-function:true\",\"pss.transformation-visible:true\",\"pss.no-exposition-dependence:true\",\"pss.continuity-protected:true\",\"pss.project-specific:false\",\"pss.no-coaching-drift:true\",\"pss.transformation-input-grounded:true\",\"pss.semantic-domain-coherent:true\",\"pss.no-generic-placeholder-language:true\",\"pss.transformation-behaviorally-realized:true\",\"pss.transformation-contrast-material:true\",\"pss.no-action-transformation-contradiction:true\"]",
+    "directorFinalFingerprint": "b4c79c98f43555ca",
+    "authorizedActionFingerprint": "8ffa3ea0238cf1d7",
+    "continuationFingerprint": "d924d77263973dc2"
+  },
+  "continuationState": {
+    "schemaVersion": "v3",
+    "projectId": "mara-episode",
+    "projectBrainFingerprint": "22e182567b2c6a1d",
+    "phase": "verify",
+    "mode": "MARA",
+    "currentObjective": "Verify emotional and wardrobe continuity for Mara Keita across all shot sequences.",
+    "evaluator": "stakeholder",
+    "heroDemoMomentIdOrFingerprint": "Mara stops performing productivity and allows one unfinished task to remain visible without correcting it.",
+    "activeBlockerIds": [
+      "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder",
+      "advisory-fail-adv_mara-episode_method_physical_situation_storyboarder"
+    ],
+    "detectedCapabilityGap": "narrative-staging",
+    "selectedResourceId": "res_physical_situation_storyboarder",
+    "selectedMethodId": "method_physical_situation_storyboarder",
+    "methodInputFingerprint": "3ab0cc607314edb4",
+    "methodOutputFingerprint": "7254197d351411b9",
+    "qualitySummary": "[\"pss.idea-becomes-physical:false\",\"pss.one-beat-one-function:true\",\"pss.transformation-visible:true\",\"pss.no-exposition-dependence:true\",\"pss.continuity-protected:true\",\"pss.project-specific:false\",\"pss.no-coaching-drift:true\",\"pss.transformation-input-grounded:true\",\"pss.semantic-domain-coherent:true\",\"pss.no-generic-placeholder-language:true\",\"pss.transformation-behaviorally-realized:true\",\"pss.transformation-contrast-material:true\",\"pss.no-action-transformation-contradiction:true\"]",
+    "authorizedNextActionFingerprint": "8ffa3ea0238cf1d7",
+    "provenanceReferences": [
+      "ProjectBrain",
+      "Director",
+      "Router",
+      "MethodRuntime"
+    ],
+    "continuationCompatibility": "NONE",
+    "resumeSummary": "Resuming project \"MARA Episode\" in MARA mode, verify phase.",
+    "currentDecision": "Next authorized action is: \"Resolve contradiction: Advisory evidence for Physical Situation Storyboarder\".",
+    "whyThisIsNext": "Rationale: \"Verify the episode's emotional and visual continuity before final sequence assembly. (Contradicts assumption: Advisory evidence for Physical Situation Storyboarder failed)\".",
+    "unresolvedBlocker": "Blocked by: advisory-fail-adv_mara-episode_method_physical_situation_storyboarder, advisory-fail-adv_mara-episode_method_physical_situation_storyboarder.",
+    "evidenceStillNeeded": "Resolve blockers to proceed.",
+    "integrationFingerprint": "5d0c2a45c543b40a",
+    "continuationFingerprint": "d924d77263973dc2"
+  },
+  "status": "COMPLETE"
+}

@@ -1,0 +1,4 @@
+# Architecture
+
+Implements CreativeOSIntegrationRequest and CreativeOSIntegrationResult with CreativeOSContinuationState.
+Uses deterministic fingerprints to prove continuity across requests.

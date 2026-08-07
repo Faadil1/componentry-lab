@@ -1,0 +1,797 @@
+{
+  "projectId": "power-bi-service-performance",
+  "projectBrainFingerprint": "46902f6724a890c3",
+  "directorBefore": {
+    "mode": "DATA_STORY",
+    "resolvedPhase": "publish",
+    "objective": {
+      "statement": "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+      "intendedOutcome": "Stakeholders can instantly locate the primary operational performance irritant and the positive metric signal.",
+      "primaryAudienceOrEvaluator": "An executive performance dashboard revealing answered and abandoned call performance trends.",
+      "successEvidence": [
+        "ds_ev1"
+      ],
+      "constraints": [
+        "Dashboard rendering must use pure SVG shapes without external database dependencies."
+      ],
+      "nonGoals": [
+        "Real-time database integration",
+        "AI-based forecasting projections"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "client",
+      "decisionTheyMustMake": "Can a stakeholder act on the evidence?",
+      "whatTheyNeedToUnderstand": [
+        "the metric",
+        "the change",
+        "the business implication"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the data supports the claim"
+      ],
+      "requiredProof": [
+        "metric evidence",
+        "visual explanation",
+        "stakeholder decision"
+      ],
+      "memorySentence": "The evidence explains the decision clearly."
+    },
+    "heroDemoMoment": {
+      "title": "Analyzed the trend of answered versus abandoned calls to pinpoint the primary irritant for operational scaling.",
+      "description": "An interactive data story visualising the relationship between monthly service metrics, answered versus abandoned calls, and operational performance levers.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The transition from raw data tables to visual SVG charts displaying call center satisfaction peaks.",
+      "evaluatorInterpretation": "An executive performance dashboard revealing answered and abandoned call performance trends.",
+      "requiredEvidence": [
+        "ds_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "DATA_STORY"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "ds_ev1"
+        ],
+        "controllingEvidence": "ds_ev1",
+        "decision": "review",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "ds_ev1"
+        ],
+        "controllingEvidence": "ds_ev1",
+        "decision": "review",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-datastory-1",
+      "actionType": "next-action",
+      "title": "Validate Power BI metric evidence",
+      "description": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+      "rationale": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+      "mode": "DATA_STORY",
+      "phase": "publish",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [],
+      "expectedResult": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "ds_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "detectedCapabilityGap": "editorial-abstraction",
+  "routingDecision": "MATCH",
+  "selectedResource": {
+    "resourceId": "res_relationship_preserving_abstraction",
+    "name": "Relationship-Preserving Abstraction",
+    "type": "CORE_METHOD",
+    "lifecycleState": "VALIDATED",
+    "maxExecutionAuthority": "PREPARE",
+    "isRecommendable": true,
+    "suitabilityScore": 545,
+    "matchingCapabilities": [
+      "gap:editorial-abstraction"
+    ],
+    "progressiveLoadLevel": "LEVEL_1_CAPABILITY_CARD",
+    "recommendationLabel": "VALIDATED_FALLBACK"
+  },
+  "methodExecution": {
+    "methodId": "method_relationship_preserving_abstraction",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "input": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "projectMode": "DATA_STORY",
+      "phase": "verify",
+      "subjectDescription": "An interactive data story visualising the relationship between monthly service metrics, answered versus abandoned calls, and operational performance levers.",
+      "subjectContext": "Operational stakeholders and business leaders",
+      "capabilityGap": "editorial-abstraction",
+      "supplementaryFields": {
+        "projectObjective": "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+        "narrativeBeat": "verify",
+        "subjectOrCharacter": "Analyzed the trend of answered versus abandoned calls to pinpoint the primary irritant for operational scaling.",
+        "emotionalTension": "Raw metrics complexity vs. clear resource decisions.",
+        "desiredTransformation": "Stakeholders can instantly locate the primary operational performance irritant and the positive metric signal.",
+        "locationConstraints": "",
+        "propConstraints": "",
+        "sourceDescription": "",
+        "communicationIntent": "See the service trend behind the numbers.",
+        "sourceType": "",
+        "abstractionLevel": "high",
+        "knownSpatialRelationships": "[]",
+        "concept": "",
+        "projectSymbols": "",
+        "requestedCapability": "",
+        "artifactType": ""
+      }
+    },
+    "result": {
+      "methodId": "method_relationship_preserving_abstraction",
+      "status": "PARTIAL",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Deconstruct Source",
+          "instruction": "Analyze the structural properties of \"\".",
+          "outputKey": "abstraction-planning"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Extract Relational Facts",
+          "instruction": "Identify and rank the relative spatial intervals, ratios, and overlaps.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Select Preserved Criteria",
+          "instruction": "Lock the 3-6 critical facts that preserve spatial identity.",
+          "outputKey": "relational-facts"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Define Visual Grammar",
+          "instruction": "Choose the mark families and palette constraints for reconstruction.",
+          "outputKey": "visual-grammar"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Draft Composition Directives",
+          "instruction": "Synthesize the final reconstruction instructions.",
+          "outputKey": "reconstruction-directives"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "abstraction-planning",
+          "label": "Abstraction Planning & Analysis",
+          "content": "Source: \nSource Type: \nObjective: Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.\nCommunication Intent: See the service trend behind the numbers."
+        },
+        {
+          "sectionKey": "relational-facts",
+          "label": "Preserved Relational Facts",
+          "content": "Selected Facts (3-6 Preserved):\n\n\nDiscarded Literal Details:\nDiscarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients."
+        },
+        {
+          "sectionKey": "visual-grammar",
+          "label": "Visual Abstraction Grammar",
+          "content": "Primary Mark Family: rectilinear coordinates\nSupporting Families: circles\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points."
+        },
+        {
+          "sectionKey": "reconstruction-directives",
+          "label": "Reconstruction Directives",
+          "content": "Directives: Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of \"\" by locking the essential relationships, which define the structure.\nCommunication Rationale: Supports the objective: \"Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Risks",
+          "content": "Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.\nFailure Risks: Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted."
+        }
+      ],
+      "rawOutputs": {
+        "sourceReading": "Analyzing source \"\" of type \"\". (context: Operational stakeholders and business leaders, level: high)",
+        "communicationObjective": "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+        "candidateRelationalFacts": "[{\"factId\":\"rf_01\",\"description\":\"General bounding box and center of mass.\",\"importance\":\"LOW\",\"relationshipType\":\"alignment\",\"provenance\":\"UNKNOWN\",\"evidenceBasis\":\"No structural details or spatial relationships provided in source\"}]",
+        "selectedFacts": "[]",
+        "discardedInformation": "Discarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients.",
+        "abstractionGrammar": "A formal system using rectilinear coordinates and circles to reconstruct the primary spatial relationships.",
+        "primaryMarkFamily": "rectilinear coordinates",
+        "supportingMarkFamilies": "circles",
+        "paletteRoles": "Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion points.",
+        "compositionReconstruction": "Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.",
+        "identityPreservationRationale": "Preserves the core identity of \"\" by locking the essential relationships, which define the structure.",
+        "communicationPreservationRationale": "Supports the objective: \"Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.\" by abstracting distracting details, allowing the viewer's eye to immediately target the essential structure.",
+        "abstractionRisks": "Risk that the composition becomes completely unrecognized if the Vertical Height ratio is distorted.",
+        "validationTest": "Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship preservation is successful.",
+        "inputFingerprint": "RPA:src=:obj=Providing stakeholders with cl:intent=See the service trend behind t",
+        "outputFingerprint": "RPA:facts=0:marks=rectilinear coordinates:reconstruct=none"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "rpa.relationships-not-contours",
+        "label": "Relationships Not Contours",
+        "passed": false,
+        "failReasons": [
+          "The abstraction instructions focus on tracing literal contours rather than spatial relationships."
+        ]
+      },
+      {
+        "gateId": "rpa.high-information-selection",
+        "label": "High Information Selection",
+        "passed": false,
+        "failReasons": [
+          "INSUFFICIENT_HIGH_INFORMATION_RELATIONSHIPS"
+        ]
+      },
+      {
+        "gateId": "rpa.hierarchy-preserved",
+        "label": "Hierarchy Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.identity-survives",
+        "label": "Identity Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.communication-survives",
+        "label": "Communication Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.visual-language-constrained",
+        "label": "Visual Language Constrained",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.source-grounded",
+        "label": "Source Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.no-invented-source-detail",
+        "label": "No Invented Source Detail",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": false,
+    "advisoryEvidence": [
+      "[Abstraction Planning & Analysis]: Source: \nSource Type: \nObjective: Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.\nCommunication Intent: See the service trend behind the numb",
+      "[Preserved Relational Facts]: Selected Facts (3-6 Preserved):\n\n\nDiscarded Literal Details:\nDiscarded literal textures, exact window frames, individual leaf contours, and superficial organic shadow gradients.",
+      "[Visual Abstraction Grammar]: Primary Mark Family: rectilinear coordinates\nSupporting Families: circles\nPalette Constraints: Primary color denotes core mass; secondary neutral tracks negative space; accent color flags occlusion po",
+      "[Reconstruction Directives]: Directives: Rebuild the layout by plotting marks in rectilinear coordinates matching the structural scale and intervals identified in selected facts.\nIdentity Rationale: Preserves the core identity of",
+      "[Validation & Risks]: Validation Test: Present the abstract mark layout alongside 3 unrelated source photographs to a panel. Ask: \"Which source does this abstraction represent?\" If they pair it correctly, the relationship "
+    ],
+    "status": "PARTIAL",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "methodQualityEvidence": {
+    "status": "PARTIAL",
+    "qualityResults": [
+      {
+        "gateId": "rpa.relationships-not-contours",
+        "label": "Relationships Not Contours",
+        "passed": false,
+        "failReasons": [
+          "The abstraction instructions focus on tracing literal contours rather than spatial relationships."
+        ]
+      },
+      {
+        "gateId": "rpa.high-information-selection",
+        "label": "High Information Selection",
+        "passed": false,
+        "failReasons": [
+          "INSUFFICIENT_HIGH_INFORMATION_RELATIONSHIPS"
+        ]
+      },
+      {
+        "gateId": "rpa.hierarchy-preserved",
+        "label": "Hierarchy Preserved",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.identity-survives",
+        "label": "Identity Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.communication-survives",
+        "label": "Communication Survives",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.visual-language-constrained",
+        "label": "Visual Language Constrained",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.project-specific",
+        "label": "Project Specific",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.source-grounded",
+        "label": "Source Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "rpa.no-invented-source-detail",
+        "label": "No Invented Source Detail",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "inputSignature": "70db55c511ef53f9",
+    "outputSignature": "481b91336d596997",
+    "resourceLifecycle": "VALIDATED",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "methodId": "method_relationship_preserving_abstraction"
+  },
+  "directorAfter": {
+    "mode": "DATA_STORY",
+    "resolvedPhase": "publish",
+    "objective": {
+      "statement": "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+      "intendedOutcome": "Stakeholders can instantly locate the primary operational performance irritant and the positive metric signal.",
+      "primaryAudienceOrEvaluator": "An executive performance dashboard revealing answered and abandoned call performance trends.",
+      "successEvidence": [
+        "ds_ev1"
+      ],
+      "constraints": [
+        "Dashboard rendering must use pure SVG shapes without external database dependencies."
+      ],
+      "nonGoals": [
+        "Real-time database integration",
+        "AI-based forecasting projections"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "client",
+      "decisionTheyMustMake": "Can a stakeholder act on the evidence?",
+      "whatTheyNeedToUnderstand": [
+        "the metric",
+        "the change",
+        "the business implication"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the data supports the claim"
+      ],
+      "requiredProof": [
+        "metric evidence",
+        "visual explanation",
+        "stakeholder decision"
+      ],
+      "memorySentence": "The evidence explains the decision clearly."
+    },
+    "heroDemoMoment": {
+      "title": "Analyzed the trend of answered versus abandoned calls to pinpoint the primary irritant for operational scaling.",
+      "description": "An interactive data story visualising the relationship between monthly service metrics, answered versus abandoned calls, and operational performance levers.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The transition from raw data tables to visual SVG charts displaying call center satisfaction peaks.",
+      "evaluatorInterpretation": "An executive performance dashboard revealing answered and abandoned call performance trends.",
+      "requiredEvidence": [
+        "ds_ev1"
+      ],
+      "readinessStatus": "ready",
+      "blockers": [],
+      "modeSpecificMetadata": {
+        "mode": "DATA_STORY"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "pass",
+        "requiredEvidence": [
+          "ds_ev1"
+        ],
+        "controllingEvidence": "ds_ev1",
+        "decision": "review",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "pass",
+        "requiredEvidence": [
+          "ds_ev1"
+        ],
+        "controllingEvidence": "ds_ev1",
+        "decision": "review",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "pass",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "DATA_STORY",
+          "verify"
+        ],
+        "blockers": [],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "client",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-datastory-1",
+      "actionType": "next-action",
+      "title": "Validate Power BI metric evidence",
+      "description": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+      "rationale": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria. (Acknowledge uncertainty: guided by partial advisory evidence: Advisory evidence for Relationship-Preserving Abstraction)",
+      "mode": "DATA_STORY",
+      "phase": "publish",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [],
+      "blockers": [],
+      "expectedResult": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "ds_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "authorizedNextAction": {
+    "actionId": "act-datastory-1",
+    "actionType": "next-action",
+    "title": "Validate Power BI metric evidence",
+    "description": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+    "rationale": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria. (Acknowledge uncertainty: guided by partial advisory evidence: Advisory evidence for Relationship-Preserving Abstraction)",
+    "mode": "DATA_STORY",
+    "phase": "publish",
+    "authorityRequirement": "suggest",
+    "approvalStatus": "not-required",
+    "preconditions": [],
+    "blockers": [],
+    "expectedResult": "Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria.",
+    "reversibility": "reversible",
+    "evidenceNeededAfterCompletion": [
+      "ds_ev1"
+    ],
+    "sourceDecisionOrGate": "hero-demo-moment"
+  },
+  "integrationProvenance": {
+    "projectBrainFingerprint": "46902f6724a890c3",
+    "directorProjectionFingerprint": "aa213525268b512a",
+    "capabilityGapSource": "DIRECTOR_DERIVED",
+    "routingResult": "MATCH",
+    "resourceId": "res_relationship_preserving_abstraction",
+    "resourceLifecycle": "VALIDATED",
+    "methodId": "method_relationship_preserving_abstraction",
+    "methodInputFingerprint": "70db55c511ef53f9",
+    "methodOutputFingerprint": "481b91336d596997",
+    "qualitySummary": "[\"rpa.relationships-not-contours:false\",\"rpa.high-information-selection:false\",\"rpa.hierarchy-preserved:true\",\"rpa.identity-survives:true\",\"rpa.communication-survives:true\",\"rpa.visual-language-constrained:true\",\"rpa.project-specific:true\",\"rpa.source-grounded:true\",\"rpa.no-invented-source-detail:true\"]",
+    "directorFinalFingerprint": "548f0a5e50b81eff",
+    "authorizedActionFingerprint": "9aa8a261e21ece84",
+    "continuationFingerprint": "7b01598696d7588c"
+  },
+  "continuationState": {
+    "schemaVersion": "v3",
+    "projectId": "power-bi-service-performance",
+    "projectBrainFingerprint": "46902f6724a890c3",
+    "phase": "verify",
+    "mode": "DATA_STORY",
+    "currentObjective": "Providing stakeholders with clear, evidence-backed visual proof of monthly call center performance trends.",
+    "evaluator": "client",
+    "heroDemoMomentIdOrFingerprint": "Analyzed the trend of answered versus abandoned calls to pinpoint the primary irritant for operational scaling.",
+    "activeBlockerIds": [],
+    "detectedCapabilityGap": "editorial-abstraction",
+    "selectedResourceId": "res_relationship_preserving_abstraction",
+    "selectedMethodId": "method_relationship_preserving_abstraction",
+    "methodInputFingerprint": "70db55c511ef53f9",
+    "methodOutputFingerprint": "481b91336d596997",
+    "qualitySummary": "[\"rpa.relationships-not-contours:false\",\"rpa.high-information-selection:false\",\"rpa.hierarchy-preserved:true\",\"rpa.identity-survives:true\",\"rpa.communication-survives:true\",\"rpa.visual-language-constrained:true\",\"rpa.project-specific:true\",\"rpa.source-grounded:true\",\"rpa.no-invented-source-detail:true\"]",
+    "authorizedNextActionFingerprint": "9aa8a261e21ece84",
+    "provenanceReferences": [
+      "ProjectBrain",
+      "Director",
+      "Router",
+      "MethodRuntime"
+    ],
+    "continuationCompatibility": "NONE",
+    "resumeSummary": "Resuming project \"Power BI Service Performance\" in DATA_STORY mode, verify phase.",
+    "currentDecision": "Next authorized action is: \"Validate Power BI metric evidence\".",
+    "whyThisIsNext": "Rationale: \"Validate controlling SVG performance metric evidence and clarify stakeholder decision criteria. (Acknowledge uncertainty: guided by partial advisory evidence: Advisory evidence for Relationship-Preserving Abstraction)\".",
+    "unresolvedBlocker": "No unresolved blockers.",
+    "evidenceStillNeeded": "No additional evidence currently needed.",
+    "integrationFingerprint": "fcef71ca5e946487",
+    "continuationFingerprint": "7b01598696d7588c"
+  },
+  "status": "METHOD_PARTIAL"
+}

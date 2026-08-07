@@ -13,6 +13,13 @@
       "provenanceState": "CURRENT",
       "description": "Creative OS Slice 3B.2 V3 Method Quality Refinement evidence packet.",
       "version": "v3"
+    },
+    {
+      "packetId": "creative-os-slice-3b3",
+      "path": "docs/evidence/creative-os-slice-3b3",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3B.3 Integration Gate evidence packet.",
+      "version": "v1"
     }
   ],
   "supersededPackets": [

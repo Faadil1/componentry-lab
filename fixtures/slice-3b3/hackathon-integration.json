@@ -1,0 +1,1076 @@
+{
+  "projectId": "cleanverse-build-round-2",
+  "projectBrainFingerprint": "2d3a346a2d9cca6d",
+  "directorBefore": {
+    "mode": "HACKATHON",
+    "resolvedPhase": "submit",
+    "objective": {
+      "statement": "Provide a judge-verifiable audit trace showing clean finance asset verification.",
+      "intendedOutcome": "Verify signed audit trace and output verification receipt with zero session loss warnings.",
+      "primaryAudienceOrEvaluator": "A protocol demo validating financial assets with a secure verification receipt.",
+      "successEvidence": [
+        "cv_ev1"
+      ],
+      "constraints": [
+        "Cryptographic signed receipt conforms to compliance-native finance protocols."
+      ],
+      "nonGoals": [
+        "Customer complaints campaign",
+        "Support ticket reframe"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "judge",
+      "decisionTheyMustMake": "Is the submission judge-ready?",
+      "whatTheyNeedToUnderstand": [
+        "the claim",
+        "the evidence",
+        "the demo path"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the project is submission-ready"
+      ],
+      "requiredProof": [
+        "judge clarity",
+        "submission bundle",
+        "technical proof"
+      ],
+      "memorySentence": "The judge path stays explicit and visible."
+    },
+    "heroDemoMoment": {
+      "title": "Sponsor-native clean build asset verification and live audit receipt generation for judges.",
+      "description": "A compliance-native financial verification system designed to provide judge-verifiable audit traces and asset state compliance checks.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The successful production of a cryptographic verification receipt for the transaction ledger.",
+      "evaluatorInterpretation": "A protocol demo validating financial assets with a secure verification receipt.",
+      "requiredEvidence": [
+        "cv_ev1"
+      ],
+      "readinessStatus": "blocked",
+      "blockers": [
+        {
+          "blockerId": "blocker-1",
+          "category": "project-blockers",
+          "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "severity": "warning",
+          "status": "open",
+          "source": "ProjectBrain.blockers",
+          "blockingScope": "project",
+          "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "humanActionRequired": true
+        }
+      ],
+      "modeSpecificMetadata": {
+        "mode": "HACKATHON"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "blocked",
+        "requiredEvidence": [
+          "cv_ev1"
+        ],
+        "controllingEvidence": "cv_ev1",
+        "decision": "review",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "blocked",
+        "requiredEvidence": [
+          "cv_ev1"
+        ],
+        "controllingEvidence": "cv_ev1",
+        "decision": "review",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [
+      {
+        "blockerId": "blocker-1",
+        "category": "project-blockers",
+        "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "severity": "warning",
+        "status": "open",
+        "source": "ProjectBrain.blockers",
+        "blockingScope": "project",
+        "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "humanActionRequired": true
+      }
+    ],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-hackathon-1",
+      "actionType": "review-required",
+      "title": "Resolve hackathon audit receipt blocker",
+      "description": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+      "rationale": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+      "mode": "HACKATHON",
+      "phase": "submit",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [
+        "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."
+      ],
+      "blockers": [
+        {
+          "blockerId": "blocker-1",
+          "category": "project-blockers",
+          "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "severity": "warning",
+          "status": "open",
+          "source": "ProjectBrain.blockers",
+          "blockingScope": "project",
+          "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "humanActionRequired": true
+        }
+      ],
+      "expectedResult": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "cv_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "detectedCapabilityGap": "library-composition",
+  "routingDecision": "MATCH",
+  "selectedResource": {
+    "resourceId": "res_library_first_composition_router",
+    "name": "Library-First Composition Router",
+    "type": "CORE_METHOD",
+    "lifecycleState": "VALIDATED",
+    "maxExecutionAuthority": "PREPARE",
+    "isRecommendable": true,
+    "suitabilityScore": 545,
+    "matchingCapabilities": [
+      "gap:library-composition"
+    ],
+    "progressiveLoadLevel": "LEVEL_1_CAPABILITY_CARD",
+    "recommendationLabel": "VALIDATED_FALLBACK"
+  },
+  "methodExecution": {
+    "methodId": "method_library_first_composition_router",
+    "resourceId": "res_library_first_composition_router",
+    "input": {
+      "methodId": "method_library_first_composition_router",
+      "projectMode": "HACKATHON",
+      "phase": "verify",
+      "subjectDescription": "A compliance-native financial verification system designed to provide judge-verifiable audit traces and asset state compliance checks.",
+      "subjectContext": "Hackathon judges and protocol evaluators",
+      "capabilityGap": "library-composition",
+      "supplementaryFields": {
+        "projectObjective": "Provide a judge-verifiable audit trace showing clean finance asset verification.",
+        "narrativeBeat": "verify",
+        "subjectOrCharacter": "Sponsor-native clean build asset verification and live audit receipt generation for judges.",
+        "emotionalTension": "Decentralised speed versus compliance auditability.",
+        "desiredTransformation": "Verify signed audit trace and output verification receipt with zero session loss warnings.",
+        "locationConstraints": "",
+        "propConstraints": "",
+        "sourceDescription": "",
+        "communicationIntent": "Compliance-native verification.",
+        "sourceType": "",
+        "abstractionLevel": "high",
+        "knownSpatialRelationships": "[]",
+        "concept": "",
+        "projectSymbols": "",
+        "requestedCapability": "",
+        "artifactType": ""
+      }
+    },
+    "result": {
+      "methodId": "method_library_first_composition_router",
+      "status": "COMPLETE",
+      "steps": [
+        {
+          "stepIndex": 1,
+          "label": "Assess Complexity & Native Feasibility",
+          "instruction": "Analyze if requested capability: \"\" can be completed natively.",
+          "outputKey": "native-feasibility"
+        },
+        {
+          "stepIndex": 2,
+          "label": "Query Governed Registry",
+          "instruction": "Retrieve candidate resources matching capability and mode restrictions.",
+          "outputKey": "registry-candidates"
+        },
+        {
+          "stepIndex": 3,
+          "label": "Audit Metadata & Evidence",
+          "instruction": "Verify compatibility evidence, licenses, and performance profiles.",
+          "outputKey": "registry-candidates"
+        },
+        {
+          "stepIndex": 4,
+          "label": "Determine Smallest Justified Route",
+          "instruction": "Compare native vs. library options. Route decision.",
+          "outputKey": "routing-decision"
+        },
+        {
+          "stepIndex": 5,
+          "label": "Formulate Routing Validation",
+          "instruction": "Outline integration validation steps and missing evidence reports.",
+          "outputKey": "validation-plan"
+        }
+      ],
+      "outputSections": [
+        {
+          "sectionKey": "routing-intake",
+          "label": "Capability Intake & Complexity Assessment",
+          "content": "Requested Capability: \nProject Objective: Provide a judge-verifiable audit trace showing clean finance asset verification.\nSurface Framework: React/NextJS\nComplexity Estimate: LOW"
+        },
+        {
+          "sectionKey": "native-feasibility",
+          "label": "Native & Internal Feasibility Analysis",
+          "content": "Native Feasibility: High: Standard native CSS transitions, Web APIs, and flex layouts satisfy the requirement.\nInternal components fit: High: Standard React components exist for basic rendering."
+        },
+        {
+          "sectionKey": "registry-candidates",
+          "label": "Registry Candidate Evaluation",
+          "content": "Registry Candidates Found:\n- ID: res_library_first_composition_router | Name: Library-First Composition Router | Type: CORE_METHOD | Lifecycle: VALIDATED\n\nLicense Audit: UNKNOWN (Registry metadata lacks verified license verification fields; defaulting to conservative UNKNOWN values)\nPerformance Audit: UNKNOWN (Bundle constraints evaluated but no certified bundle size metadata is present)"
+        },
+        {
+          "sectionKey": "routing-decision",
+          "label": "Selected Composition Route",
+          "content": "Selected Route: CONSIDER_VALIDATED_RESOURCE\nResource Target: res_library_first_composition_router\nRationale: Recommend considering candidate \"Library-First Composition Router\" (lifecycle: VALIDATED) since native animation complexity is high and this resource is registered in governed metadata."
+        },
+        {
+          "sectionKey": "validation-plan",
+          "label": "Validation & Governance",
+          "content": "Validation Step: Verify components render under strict Next.js mock environments.\nMissing Evidence: License file hash; package index validation; bundle size certification.\nUnresolved Authority Questions: Will this resource require EXPLICIT_EXTERNAL network execution authority at runtime? (Defaulting to restricted LOCAL execution only)"
+        }
+      ],
+      "rawOutputs": {
+        "requestedCapability": "",
+        "complexityAssessment": "Assessed capability complexity as LOW.",
+        "nativeFeasibility": "High: Standard native CSS transitions, Web APIs, and flex layouts satisfy the requirement.",
+        "existingInternalFeasibility": "High: Standard React components exist for basic rendering.",
+        "registryCandidates": "[{\"id\":\"res_library_first_composition_router\",\"name\":\"Library-First Composition Router\",\"type\":\"CORE_METHOD\",\"lifecycleState\":\"VALIDATED\",\"license\":\"UNKNOWN\"}]",
+        "compatibilityEvidenceAvailable": "True for local interface routing.",
+        "missingEvidence": "License file hash; package index validation; bundle size certification.",
+        "dependencyBurden": "Adds 1 third-party reference to registry dependency tree.",
+        "accessibilityConsiderations": "Ensure keyboard accessibility and screen reader support on native elements.",
+        "performanceConsiderations": "UNKNOWN (Bundle constraints evaluated but no certified bundle size metadata is present)",
+        "licenseConsiderations": "UNKNOWN (Registry metadata lacks verified license verification fields; defaulting to conservative UNKNOWN values)",
+        "selectedRoute": "CONSIDER_VALIDATED_RESOURCE",
+        "selectedResource": "res_library_first_composition_router",
+        "whySmallerAlternativesWereRejected": "Recommend considering candidate \"Library-First Composition Router\" (lifecycle: VALIDATED) since native animation complexity is high and this resource is registered in governed metadata.",
+        "unresolvedQuestions": "Will this resource require EXPLICIT_EXTERNAL network execution authority at runtime? (Defaulting to restricted LOCAL execution only)",
+        "executionAuthorityRequiredLater": "SUGGEST",
+        "recommendedValidationStep": "Verify components render under strict Next.js mock environments.",
+        "inputFingerprint": "LFCR:cap=:frame=React/NextJS:obj=Provide a judge-verifiable aud",
+        "outputFingerprint": "LFCR:route=CONSIDER_VALIDATED_RESOURCE:res=res_library_first_composition_router:complexity=LOW"
+      }
+    },
+    "qualityResults": [
+      {
+        "gateId": "lfcr.native-first",
+        "label": "Native First",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.registry-grounded",
+        "label": "Registry Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.lifecycle-honest",
+        "label": "Lifecycle Honest",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.discovery-not-production",
+        "label": "Discovery Not Production",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.smallest-justified-dependency",
+        "label": "Smallest Justified Dependency",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.evidence-aware",
+        "label": "Evidence Aware",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.no-execution",
+        "label": "No Execution",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "allGatesPassed": true,
+    "advisoryEvidence": [
+      "[Capability Intake & Complexity Assessment]: Requested Capability: \nProject Objective: Provide a judge-verifiable audit trace showing clean finance asset verification.\nSurface Framework: React/NextJS\nComplexity Estimate: LOW",
+      "[Native & Internal Feasibility Analysis]: Native Feasibility: High: Standard native CSS transitions, Web APIs, and flex layouts satisfy the requirement.\nInternal components fit: High: Standard React components exist for basic rendering.",
+      "[Registry Candidate Evaluation]: Registry Candidates Found:\n- ID: res_library_first_composition_router | Name: Library-First Composition Router | Type: CORE_METHOD | Lifecycle: VALIDATED\n\nLicense Audit: UNKNOWN (Registry metadata lac",
+      "[Selected Composition Route]: Selected Route: CONSIDER_VALIDATED_RESOURCE\nResource Target: res_library_first_composition_router\nRationale: Recommend considering candidate \"Library-First Composition Router\" (lifecycle: VALIDATED) s",
+      "[Validation & Governance]: Validation Step: Verify components render under strict Next.js mock environments.\nMissing Evidence: License file hash; package index validation; bundle size certification.\nUnresolved Authority Questio"
+    ],
+    "status": "COMPLETE",
+    "isReadOnly": true,
+    "sideEffects": null
+  },
+  "methodQualityEvidence": {
+    "status": "COMPLETE",
+    "qualityResults": [
+      {
+        "gateId": "lfcr.native-first",
+        "label": "Native First",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.registry-grounded",
+        "label": "Registry Grounded",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.lifecycle-honest",
+        "label": "Lifecycle Honest",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.discovery-not-production",
+        "label": "Discovery Not Production",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.smallest-justified-dependency",
+        "label": "Smallest Justified Dependency",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.evidence-aware",
+        "label": "Evidence Aware",
+        "passed": true,
+        "failReasons": []
+      },
+      {
+        "gateId": "lfcr.no-execution",
+        "label": "No Execution",
+        "passed": true,
+        "failReasons": []
+      }
+    ],
+    "inputSignature": "02e2e893e813c974",
+    "outputSignature": "d3927861c3df3fe2",
+    "resourceLifecycle": "VALIDATED",
+    "resourceId": "res_library_first_composition_router",
+    "methodId": "method_library_first_composition_router"
+  },
+  "directorAfter": {
+    "mode": "HACKATHON",
+    "resolvedPhase": "submit",
+    "objective": {
+      "statement": "Provide a judge-verifiable audit trace showing clean finance asset verification.",
+      "intendedOutcome": "Verify signed audit trace and output verification receipt with zero session loss warnings.",
+      "primaryAudienceOrEvaluator": "A protocol demo validating financial assets with a secure verification receipt.",
+      "successEvidence": [
+        "cv_ev1"
+      ],
+      "constraints": [
+        "Cryptographic signed receipt conforms to compliance-native finance protocols."
+      ],
+      "nonGoals": [
+        "Customer complaints campaign",
+        "Support ticket reframe"
+      ]
+    },
+    "evaluatorPath": {
+      "evaluatorType": "judge",
+      "decisionTheyMustMake": "Is the submission judge-ready?",
+      "whatTheyNeedToUnderstand": [
+        "the claim",
+        "the evidence",
+        "the demo path"
+      ],
+      "whatTheyNeedToBelieve": [
+        "the project is submission-ready"
+      ],
+      "requiredProof": [
+        "judge clarity",
+        "submission bundle",
+        "technical proof"
+      ],
+      "memorySentence": "The judge path stays explicit and visible."
+    },
+    "heroDemoMoment": {
+      "title": "Sponsor-native clean build asset verification and live audit receipt generation for judges.",
+      "description": "A compliance-native financial verification system designed to provide judge-verifiable audit traces and asset state compliance checks.",
+      "trigger": "verify",
+      "visibleTransformationOrProof": "The successful production of a cryptographic verification receipt for the transaction ledger.",
+      "evaluatorInterpretation": "A protocol demo validating financial assets with a secure verification receipt.",
+      "requiredEvidence": [
+        "cv_ev1"
+      ],
+      "readinessStatus": "blocked",
+      "blockers": [
+        {
+          "blockerId": "blocker-1",
+          "category": "project-blockers",
+          "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "severity": "warning",
+          "status": "open",
+          "source": "ProjectBrain.blockers",
+          "blockingScope": "project",
+          "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "humanActionRequired": true
+        }
+      ],
+      "modeSpecificMetadata": {
+        "mode": "HACKATHON"
+      }
+    },
+    "gateEvaluations": [
+      {
+        "gateId": "problem-or-intention-clarity",
+        "name": "problem or intention clarity",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "scope",
+        "name": "scope",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "distinction",
+        "name": "distinction",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "hero-demo-moment",
+        "name": "hero demo moment",
+        "status": "blocked",
+        "requiredEvidence": [
+          "cv_ev1"
+        ],
+        "controllingEvidence": "cv_ev1",
+        "decision": "review",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "proof-or-evidence",
+        "name": "proof or evidence",
+        "status": "blocked",
+        "requiredEvidence": [
+          "cv_ev1"
+        ],
+        "controllingEvidence": "cv_ev1",
+        "decision": "review",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "continuity-or-coherence",
+        "name": "continuity or coherence",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "technical-integrity",
+        "name": "technical integrity",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "presentation-readiness",
+        "name": "presentation readiness",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      },
+      {
+        "gateId": "completion-readiness",
+        "name": "completion readiness",
+        "status": "blocked",
+        "requiredEvidence": [],
+        "controllingEvidence": null,
+        "decision": "pass",
+        "conditions": [
+          "HACKATHON",
+          "verify"
+        ],
+        "blockers": [
+          {
+            "blockerId": "blocker-1",
+            "category": "project-blockers",
+            "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "severity": "warning",
+            "status": "open",
+            "source": "ProjectBrain.blockers",
+            "blockingScope": "project",
+            "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+            "humanActionRequired": true
+          }
+        ],
+        "evaluatedAt": "2000-01-01T00:00:00.000Z",
+        "evaluator": "judge",
+        "provenance": "director:gates"
+      }
+    ],
+    "blockers": [
+      {
+        "blockerId": "blocker-1",
+        "category": "project-blockers",
+        "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "severity": "warning",
+        "status": "open",
+        "source": "ProjectBrain.blockers",
+        "blockingScope": "project",
+        "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "humanActionRequired": true
+      }
+    ],
+    "selectedSkills": [],
+    "nextAction": {
+      "actionId": "act-hackathon-1",
+      "actionType": "review-required",
+      "title": "Resolve hackathon audit receipt blocker",
+      "description": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+      "rationale": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation. (Confirmed by validated advisory evidence: Advisory evidence for Library-First Composition Router)",
+      "mode": "HACKATHON",
+      "phase": "submit",
+      "authorityRequirement": "suggest",
+      "approvalStatus": "not-required",
+      "preconditions": [
+        "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."
+      ],
+      "blockers": [
+        {
+          "blockerId": "blocker-1",
+          "category": "project-blockers",
+          "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "severity": "warning",
+          "status": "open",
+          "source": "ProjectBrain.blockers",
+          "blockingScope": "project",
+          "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+          "humanActionRequired": true
+        }
+      ],
+      "expectedResult": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+      "reversibility": "reversible",
+      "evidenceNeededAfterCompletion": [
+        "cv_ev1"
+      ],
+      "sourceDecisionOrGate": "hero-demo-moment"
+    },
+    "learningProposals": [],
+    "validationIssues": [],
+    "provenance": [
+      "ProjectBrain",
+      "DirectorAdapters"
+    ],
+    "sideEffectPayload": null
+  },
+  "authorizedNextAction": {
+    "actionId": "act-hackathon-1",
+    "actionType": "review-required",
+    "title": "Resolve hackathon audit receipt blocker",
+    "description": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+    "rationale": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation. (Confirmed by validated advisory evidence: Advisory evidence for Library-First Composition Router)",
+    "mode": "HACKATHON",
+    "phase": "submit",
+    "authorityRequirement": "suggest",
+    "approvalStatus": "not-required",
+    "preconditions": [
+      "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings."
+    ],
+    "blockers": [
+      {
+        "blockerId": "blocker-1",
+        "category": "project-blockers",
+        "description": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "severity": "warning",
+        "status": "open",
+        "source": "ProjectBrain.blockers",
+        "blockingScope": "project",
+        "resolutionCondition": "Hackathon submission gate requires verified audit log proof and zero unhandled session loss warnings.",
+        "humanActionRequired": true
+      }
+    ],
+    "expectedResult": "Resolve session reset loss warning and verify audit receipt generator for judge evaluation.",
+    "reversibility": "reversible",
+    "evidenceNeededAfterCompletion": [
+      "cv_ev1"
+    ],
+    "sourceDecisionOrGate": "hero-demo-moment"
+  },
+  "integrationProvenance": {
+    "projectBrainFingerprint": "2d3a346a2d9cca6d",
+    "directorProjectionFingerprint": "d8a13f2725ec9375",
+    "capabilityGapSource": "DIRECTOR_DERIVED",
+    "routingResult": "MATCH",
+    "resourceId": "res_library_first_composition_router",
+    "resourceLifecycle": "VALIDATED",
+    "methodId": "method_library_first_composition_router",
+    "methodInputFingerprint": "02e2e893e813c974",
+    "methodOutputFingerprint": "d3927861c3df3fe2",
+    "qualitySummary": "[\"lfcr.native-first:true\",\"lfcr.registry-grounded:true\",\"lfcr.lifecycle-honest:true\",\"lfcr.discovery-not-production:true\",\"lfcr.smallest-justified-dependency:true\",\"lfcr.evidence-aware:true\",\"lfcr.no-execution:true\"]",
+    "directorFinalFingerprint": "5e24575b1d785cde",
+    "authorizedActionFingerprint": "3e8947b17443359a",
+    "continuationFingerprint": "476c7ada776a1302"
+  },
+  "continuationState": {
+    "schemaVersion": "v3",
+    "projectId": "cleanverse-build-round-2",
+    "projectBrainFingerprint": "2d3a346a2d9cca6d",
+    "phase": "verify",
+    "mode": "HACKATHON",
+    "currentObjective": "Provide a judge-verifiable audit trace showing clean finance asset verification.",
+    "evaluator": "judge",
+    "heroDemoMomentIdOrFingerprint": "Sponsor-native clean build asset verification and live audit receipt generation for judges.",
+    "activeBlockerIds": [
+      "blocker-1"
+    ],
+    "detectedCapabilityGap": "library-composition",
+    "selectedResourceId": "res_library_first_composition_router",
+    "selectedMethodId": "method_library_first_composition_router",
+    "methodInputFingerprint": "02e2e893e813c974",
+    "methodOutputFingerprint": "d3927861c3df3fe2",
+    "qualitySummary": "[\"lfcr.native-first:true\",\"lfcr.registry-grounded:true\",\"lfcr.lifecycle-honest:true\",\"lfcr.discovery-not-production:true\",\"lfcr.smallest-justified-dependency:true\",\"lfcr.evidence-aware:true\",\"lfcr.no-execution:true\"]",
+    "authorizedNextActionFingerprint": "3e8947b17443359a",
+    "provenanceReferences": [
+      "ProjectBrain",
+      "Director",
+      "Router",
+      "MethodRuntime"
+    ],
+    "continuationCompatibility": "NONE",
+    "resumeSummary": "Resuming project \"Cleanverse Build Round 2\" in HACKATHON mode, verify phase.",
+    "currentDecision": "Next authorized action is: \"Resolve hackathon audit receipt blocker\".",
+    "whyThisIsNext": "Rationale: \"Resolve session reset loss warning and verify audit receipt generator for judge evaluation. (Confirmed by validated advisory evidence: Advisory evidence for Library-First Composition Router)\".",
+    "unresolvedBlocker": "Blocked by: blocker-1.",
+    "evidenceStillNeeded": "Resolve blockers to proceed.",
+    "integrationFingerprint": "012a1a1a7898c5d7",
+    "continuationFingerprint": "476c7ada776a1302"
+  },
+  "status": "COMPLETE"
+}
