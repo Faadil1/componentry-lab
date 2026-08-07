@@ -37,6 +37,8 @@
     "tests/episode-state-card-accessibility.test.ts",
     "tests/adapters/episode-state-card-adapter.test.ts",
     "tests/youtube/episode-state-provider.test.ts",
+    "tests/youtube/canonical-episode-to-snapshot.test.ts",
+    "tests/youtube/get-episode-state-from-db.test.ts",
     "tests/persistence/episode-repository.test.ts",
     "tests/persistence/episode-row-mappers.test.ts",
     "tests/persistence/episode-repository.live.test.ts"

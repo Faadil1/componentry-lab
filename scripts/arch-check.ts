@@ -26,8 +26,12 @@ const allowedPaths = [
   "lib/persistence/episode-repository.ts",
   // The internal module itself
   "lib/persistence/episode-repository-live-core.ts",
+  // Database provider core (testable by Node for integration validation)
+  "lib/youtube/get-episode-state-from-db-core.ts",
   // Live test that directly validates Neon behavior
   "tests/persistence/episode-repository.live.test.ts",
+  // Database provider test that directly validates Neon behavior
+  "tests/youtube/get-episode-state-from-db.test.ts",
   // Migration runner (internal infrastructure)
   "scripts/run-migrations.ts",
   // This script itself
