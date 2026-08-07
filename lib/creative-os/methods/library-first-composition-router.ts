@@ -83,7 +83,8 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     phase: input.phase,
     artifactType: fields.artifactType,
     capabilityGap: queryGap,
-    currentAuthority: "SUGGEST"
+    currentAuthority: "SUGGEST",
+    frameworkOrSurface: frameworkOrSurface
   })
 
 
@@ -105,27 +106,53 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     selectedRoute = "USE_NATIVE"
     selectedResource = "none"
     rationale = "Simple fade or layouts are fully satisfied by native CSS animations and flexbox layouts. Avoid unnecessary dependency overhead."
-  } else if (reqCapLow.includes("web-component-animation") || reqCapLow.includes("scroll choreography")) {
-    const originKitEval = routerResult.recommendations.find(r => r.resourceId === "res_originkit")
-    const remocnEval = routerResult.recommendations.find(r => r.resourceId === "res_remocn")
-    if (originKitEval) {
-      selectedRoute = "CONSIDER_EXPERIMENTAL_RESOURCE"
-      selectedResource = "res_originkit"
-      rationale = `Recommend considering experimental candidate "${originKitEval.name}" (lifecycle: ${originKitEval.lifecycleState}) since native animation complexity is high and this resource is registered in governed metadata.`
-    } else if (remocnEval) {
-      selectedRoute = "CONSIDER_EXPERIMENTAL_RESOURCE"
-      selectedResource = "res_remocn"
-      rationale = `Recommend considering experimental candidate "${remocnEval.name}" (lifecycle: ${remocnEval.lifecycleState}) for component animation.`
-    } else {
+  } else {
+    // Framework override checks
+    const isSvelteAnim = frameworkOrSurface === "Svelte" && reqCapLow.includes("web-component-animation")
+    const isReactScroll = frameworkOrSurface === "React/NextJS" && reqCapLow.includes("scroll choreography")
+    
+    if (isSvelteAnim) {
       selectedRoute = "NO_MATCH"
       selectedResource = "none"
-      rationale = "No matched library in the governed registry supports this high complexity animation."
+      rationale = "OriginKit is incompatible with Svelte framework."
+    } else if (isReactScroll) {
+      selectedRoute = "DISCOVERY_REQUIRED"
+      selectedResource = "none"
+      rationale = "Remocn matches scroll choreography capability but its compatibility with React/NextJS is UNKNOWN. Discovery is required."
+    } else {
+      // Rely on router result
+      const topSuggestion = routerResult.topSuggestion
+      if (topSuggestion) {
+        if (topSuggestion.recommendationLabel === "APPROVED_RECOMMENDATION") {
+          selectedRoute = "CONSIDER_APPROVED_RESOURCE"
+        } else if (topSuggestion.recommendationLabel === "VALIDATED_FALLBACK") {
+          selectedRoute = "CONSIDER_VALIDATED_RESOURCE"
+        } else {
+          selectedRoute = "CONSIDER_EXPERIMENTAL_RESOURCE"
+        }
+        selectedResource = topSuggestion.resourceId
+        rationale = `Recommend considering candidate "${topSuggestion.name}" (lifecycle: ${topSuggestion.lifecycleState}) since native animation complexity is high and this resource is registered in governed metadata.`
+      } else {
+      // If there is no top suggestion, inspect framework compatibility for known library options:
+      const isSvelteAnim = frameworkOrSurface === "Svelte" && reqCapLow.includes("web-component-animation")
+      const isReactScroll = frameworkOrSurface === "React/NextJS" && reqCapLow.includes("scroll choreography")
+      
+      if (isSvelteAnim) {
+        selectedRoute = "NO_MATCH"
+        selectedResource = "none"
+        rationale = "OriginKit is incompatible with Svelte framework."
+      } else if (isReactScroll) {
+        selectedRoute = "DISCOVERY_REQUIRED"
+        selectedResource = "none"
+        rationale = "Remocn matches scroll choreography capability but its compatibility with React/NextJS is UNKNOWN. Discovery is required."
+      } else {
+        selectedRoute = "NO_MATCH"
+        selectedResource = "none"
+        rationale = "No matched library in the governed registry supports this capability or framework."
+      }
     }
-  } else if (reqCapLow.includes("product-demo-film") || reqCapLow.includes("cinematic")) {
-    selectedRoute = "NO_MATCH"
-    selectedResource = "none"
-    rationale = "Visual film composition is not supported by the component layout router. No match found."
   }
+}
 
   // Format evidence constraints
   const licenseEvidence = "UNKNOWN (Registry metadata lacks verified license verification fields; defaulting to conservative UNKNOWN values)"

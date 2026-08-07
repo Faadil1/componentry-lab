@@ -92,6 +92,7 @@ export function evaluateResource(
     activationTags?: string[]
     currentAuthority?: AuthorityCeiling
     allowExperimental?: boolean
+    frameworkOrSurface?: string
   }
 ): ResourceEvaluation {
   const resourceId = resource.id
@@ -193,6 +194,30 @@ export function evaluateResource(
     }
   }
 
+  // V2 Extension: Framework and Capability Compatibility check
+  if (query.frameworkOrSurface && resource.supportedFrameworks) {
+    const isCompatible = resource.supportedFrameworks.includes(query.frameworkOrSurface)
+    const isUnknown = resource.compatibilityEvidenceStatus === "UNKNOWN"
+    
+    if (!isCompatible) {
+      return {
+        resourceId,
+        name,
+        type,
+        lifecycleState,
+        maxExecutionAuthority,
+        isRecommendable: false,
+        suitabilityScore: 0,
+        rejectionReason: isUnknown 
+          ? `Framework compatibility for "${query.frameworkOrSurface}" is UNKNOWN`
+          : `Framework "${query.frameworkOrSurface}" is incompatible with ${name}`,
+        matchingCapabilities: [],
+        progressiveLoadLevel,
+        recommendationLabel: "NO_MATCH"
+      }
+    }
+  }
+
   // 6. Capability matching
   const capMatch = matchesCapability(resource, query.action, query.artifactType, query.capabilityGap)
   if (!capMatch.matches) {
@@ -210,8 +235,6 @@ export function evaluateResource(
       recommendationLabel: "NO_MATCH"
     }
   }
-
-  // 7. Scoring logic
   let score = 0
 
   // Matching capability score additions

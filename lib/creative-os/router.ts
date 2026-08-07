@@ -20,7 +20,8 @@ export function routeCapabilities(inputs: RouterInputs): RouterResult {
     evaluator,
     capabilityGap,
     activationTags,
-    currentAuthority
+    currentAuthority,
+    frameworkOrSurface
   } = inputs
 
   // Mode alone must never be enough. If no gap and no artifact type are specified,
@@ -40,7 +41,8 @@ export function routeCapabilities(inputs: RouterInputs): RouterResult {
       capabilityGap,
       activationTags,
       currentAuthority,
-      allowExperimental: true // V2 allows experimental/captured/audited resources
+      allowExperimental: true, // V2 allows experimental/captured/audited resources
+      frameworkOrSurface
     })
   })
 

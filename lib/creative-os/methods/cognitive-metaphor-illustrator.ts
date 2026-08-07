@@ -39,6 +39,7 @@ export const cognitiveMetaphorIllustratorDefinition: CreativeMethodDefinition = 
     "cmi.one-image-one-cognitive-action",
     "cmi.physical-not-verbal",
     "cmi.cliche-risk-reviewed",
+    "cmi.literalization-risk-reviewed",
     "cmi.project-specific",
     "cmi.comprehension-over-decoration",
     "cmi.no-source-style-copy"
@@ -52,6 +53,13 @@ interface MetaphorCandidate {
   clicheRisk: "HIGH" | "MEDIUM" | "LOW"
   riskReason: string
   physicalDescription: string
+  // V2 Metaphor Transformation Dimension
+  transformationDimension: "DIRECT_LITERALIZATION" | "LOW_TRANSFORMATION" | "STRUCTURAL_ANALOGY" | "UNEXPECTED_LEGIBLE_ANALOGY"
+  semanticDistance: number // 1 to 10
+  comprehensionStrength: number // 1 to 10
+  distinctivenessStrength: number // 1 to 10
+  literalizationRisk: number // 1 to 10
+  reasoning: string
 }
 
 function produce(input: CreativeMethodInput): CreativeMethodResult {
@@ -68,48 +76,134 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   // 1. Analyze candidate metaphors and review cliche risks
   const candidates: MetaphorCandidate[] = []
   
-  // Use context and projectObjective to prevent unused var lint warnings
   const debugContext = `context: ${context}, objective: ${projectObjective}`
-
 
   if (concept.toLowerCase().includes("technical debt") || subject.toLowerCase().includes("technical debt")) {
     candidates.push({
       family: "cliche plant / gardening",
       clicheRisk: "HIGH",
       riskReason: "Growing plants are the default metaphor for any business growth or developmental accumulation.",
-      physicalDescription: "A weeds-ridden plant choking fresh growth."
+      physicalDescription: "A weeds-ridden plant choking fresh growth.",
+      transformationDimension: "LOW_TRANSFORMATION",
+      semanticDistance: 3,
+      comprehensionStrength: 8,
+      distinctivenessStrength: 2,
+      literalizationRisk: 3,
+      reasoning: "Planting weeds represents organic neglect, but it is extremely overused in corporate slide decks."
     })
     candidates.push({
       family: "decaying architectural foundations",
       clicheRisk: "LOW",
       riskReason: "Focuses on structural load-bearing limits and spatial relationships, showing structural decay under load.",
-      physicalDescription: "A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight."
+      physicalDescription: "A heavy granite block supported by a row of pillars where three pillars are replaced by temporary wooden sticks bowing under the weight.",
+      transformationDimension: "STRUCTURAL_ANALOGY",
+      semanticDistance: 7,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 8,
+      literalizationRisk: 1,
+      reasoning: "Architectural pillars and load shifting structurally maps the trade-offs of deferring system architecture."
     })
+    // Candidate 3 for technical debt depending on audience
+    if (audience.toLowerCase().includes("engineer")) {
+      candidates.push({
+        family: "jumbled pipeline junctions",
+        clicheRisk: "LOW",
+        riskReason: "Relates specifically to physical plumbing redirects.",
+        physicalDescription: "A fluid transit pipe with 15 nested bypass valves leaking pressure at every bend.",
+        transformationDimension: "STRUCTURAL_ANALOGY",
+        semanticDistance: 6,
+        comprehensionStrength: 9,
+        distinctivenessStrength: 7,
+        literalizationRisk: 2,
+        reasoning: "Highlights flow resistance and friction for senior engineering audience."
+      })
+    } else {
+      candidates.push({
+        family: "over-packed cargo boat sailing low",
+        clicheRisk: "LOW",
+        riskReason: "Represents weight limit exceeding.",
+        physicalDescription: "A wooden barge loaded with cargo boxes stack too high, its hull sitting 2 inches below the safety waterline.",
+        transformationDimension: "STRUCTURAL_ANALOGY",
+        semanticDistance: 6,
+        comprehensionStrength: 8,
+        distinctivenessStrength: 7,
+        literalizationRisk: 2,
+        reasoning: "Clear illustration of execution strain and drag for general management audience."
+      })
+    }
   } else if (concept.toLowerCase().includes("trust erosion") || subject.toLowerCase().includes("trust erosion")) {
     candidates.push({
       family: "cliche shield / lock",
       clicheRisk: "HIGH",
       riskReason: "Shields, padlocks, and broken hearts are standard clichés for security and trust.",
-      physicalDescription: "A cracked shield or a broken padlock."
+      physicalDescription: "A cracked shield or a broken padlock.",
+      transformationDimension: "LOW_TRANSFORMATION",
+      semanticDistance: 2,
+      comprehensionStrength: 7,
+      distinctivenessStrength: 2,
+      literalizationRisk: 4,
+      reasoning: "Standard padlock imagery represents access control, not the progressive erosion of relationship trust."
     })
     candidates.push({
       family: "sandstone arch under continuous water droplets",
       clicheRisk: "LOW",
       riskReason: "Demonstrates physical friction and steady structural deterioration without relying on standard safety badges.",
-      physicalDescription: "A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water."
+      physicalDescription: "A solid stone archway showing a deep groove worn into the capstone by a slow, single-source drip of water.",
+      transformationDimension: "STRUCTURAL_ANALOGY",
+      semanticDistance: 8,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 9,
+      literalizationRisk: 1,
+      reasoning: "Represents slow, inevitable degradation from a seemingly harmless recurring force."
+    })
+    candidates.push({
+      family: "weathered coastal cliff face",
+      clicheRisk: "LOW",
+      riskReason: "Literal physical erosion analogy.",
+      physicalDescription: "A vertical soil cliff collapsing into a turbulent ocean wave below.",
+      transformationDimension: "DIRECT_LITERALIZATION",
+      semanticDistance: 1,
+      comprehensionStrength: 8,
+      distinctivenessStrength: 4,
+      literalizationRisk: 9,
+      reasoning: "Literalization risk is high; mapping trust erosion directly to physical dirt erosion offers low conceptual transformation."
     })
   } else if (concept.toLowerCase().includes("operational bottleneck") || subject.toLowerCase().includes("operational bottleneck")) {
     candidates.push({
       family: "cliche funnel / traffic jam",
       clicheRisk: "HIGH",
       riskReason: "Funnels and highway traffic jams are used universally for workflow bottlenecks.",
-      physicalDescription: "Cars stuck in a bottleneck road structure."
+      physicalDescription: "Cars stuck in a bottleneck road structure.",
+      transformationDimension: "LOW_TRANSFORMATION",
+      semanticDistance: 3,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 2,
+      literalizationRisk: 5,
+      reasoning: "Traffic jam is a literal bottleneck description, lacking design distinctiveness."
     })
     candidates.push({
       family: "gravity-fed sphere runway with narrow gate gates",
       clicheRisk: "LOW",
       riskReason: "Exposes physical speed and mass restrictions through concrete gravity dynamics.",
-      physicalDescription: "A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow."
+      physicalDescription: "A sloping track where metal balls roll down; the track narrows to let only one ball pass, while three other balls accumulate behind it, stopping the flow.",
+      transformationDimension: "STRUCTURAL_ANALOGY",
+      semanticDistance: 7,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 8,
+      literalizationRisk: 2,
+      reasoning: "A mechanical track maps queues and transit limits without using highway/traffic cliches."
+    })
+    candidates.push({
+      family: "narrow neck glass flask",
+      clicheRisk: "LOW",
+      riskReason: "A literal physical bottleneck.",
+      physicalDescription: "An hourglass container where sand grains block each other at the central glass neck.",
+      transformationDimension: "DIRECT_LITERALIZATION",
+      semanticDistance: 1,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 3,
+      literalizationRisk: 10,
+      reasoning: "Highly literalized representation of bottleneck using a literal glass bottle neck. High literalization risk."
     })
   } else {
     // Fallback/Generic concept metaphor
@@ -117,26 +211,59 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
       family: "cliche lightbulb / jigsaw puzzle",
       clicheRisk: "HIGH",
       riskReason: "Lightbulbs for ideas and puzzle pieces for collaboration are the highest-risk visual clichés.",
-      physicalDescription: "A shining lightbulb in a dark room or jigsaw pieces slotting together."
+      physicalDescription: "A shining lightbulb in a dark room or jigsaw pieces slotting together.",
+      transformationDimension: "LOW_TRANSFORMATION",
+      semanticDistance: 2,
+      comprehensionStrength: 8,
+      distinctivenessStrength: 1,
+      literalizationRisk: 3,
+      reasoning: "Universal business slide cliches."
     })
     candidates.push({
       family: "lever and fulcrum imbalance system",
       clicheRisk: "LOW",
       riskReason: "Translates imbalance or effort relationships through mechanical physics.",
-      physicalDescription: "A long wooden beam resting off-center on a sharp metal wedge, showing a small gold weight balancing a huge lead block."
+      physicalDescription: "A long wooden beam resting off-center on a sharp metal wedge, showing a small gold weight balancing a huge lead block.",
+      transformationDimension: "STRUCTURAL_ANALOGY",
+      semanticDistance: 7,
+      comprehensionStrength: 9,
+      distinctivenessStrength: 8,
+      literalizationRisk: 2,
+      reasoning: "Leverage and fulcrum mechanical balance."
+    })
+    candidates.push({
+      family: "interlocking gears system with mismatched teeth",
+      clicheRisk: "LOW",
+      riskReason: "Mechanical integration friction.",
+      physicalDescription: "Two large iron gears grinding against each other because one gear has teeth twice as wide as the other.",
+      transformationDimension: "STRUCTURAL_ANALOGY",
+      semanticDistance: 6,
+      comprehensionStrength: 8,
+      distinctivenessStrength: 7,
+      literalizationRisk: 1,
+      reasoning: "Shows system synchronization failure cleanly."
     })
   }
 
-  // 2. Select low-risk / high-fit candidate
-  const lowRiskCandidates = candidates.filter(c => c.clicheRisk === "LOW")
-  const selected = lowRiskCandidates.length > 0 ? lowRiskCandidates[0]! : candidates[0]!
+  // 2. Select low-risk / high-fit candidate balancing the dimensions
+  // Fit function: score = comprehensionStrength + distinctivenessStrength - literalizationRisk
+  // Exclude HIGH clicheRisk.
+  const eligible = candidates.filter(c => c.clicheRisk !== "HIGH")
+  
+  // Sort candidates by fit score descending
+  const scoredCandidates = eligible.map(c => {
+    const fitScore = c.comprehensionStrength + c.distinctivenessStrength - c.literalizationRisk
+    return { candidate: c, fitScore }
+  })
+  scoredCandidates.sort((a, b) => b.fitScore - a.fitScore)
+  
+  const selected = scoredCandidates.length > 0 ? scoredCandidates[0]!.candidate : candidates[0]!
 
   // Reject candidates logs
   const rejectedAlternative = candidates.filter(c => c.family !== selected.family).map(c => c.family).join(" | ")
 
-  // Cognitive Action mapping:
-  // Turning the abstract concept into ONE physical relation / force interaction.
-  const cognitiveAnchor = `Understand how accumulative structural load shifts from designed elements to inadequate temporary workarounds.`
+  // Cognitive Action mapping
+  const cognitiveAnchor = `Understand how ${selected.family} models the core relationship of "${concept}".`
   const sceneProposition = `Draw: ${selected.physicalDescription}`
 
   // Format signatures
@@ -146,22 +273,22 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
   const rawOutputs: Record<string, string> = {
     conceptSummary: `Explain the mechanics of "${concept}" to "${audience}". (${debugContext})`,
     cognitiveAnchor,
-    relationToCommunicate: `The relationship of structural dependency and weight distribution between temporary workarounds and canonical granite blocks.`,
+    relationToCommunicate: `The structural relationship of ${selected.family} conveying ${concept} mechanics.`,
     candidateMetaphorFamilies: JSON.stringify(candidates),
-    clicheRiskAssessment: `Identified and rejected "${rejectedAlternative}" due to high cliché exposure in this category.`,
+    clicheRiskAssessment: `Identified and rejected "${rejectedAlternative}" due to high cliché exposure or literalization risks. Selected "${selected.family}".`,
     selectedPhysicalMetaphor: selected.family,
-    actorForce: "Gravity pulling weight down on granite blocks.",
+    actorForce: `Physical forces matching ${selected.family}.`,
     objectSystem: selected.physicalDescription,
-    physicalAction: "Granite blocks bowing the wooden sticks.",
-    consequence: "An imminent threat of structural collapse if the sticks crack.",
-    oneCognitiveAction: "Exposing the mechanical instability of temporary fixes.",
+    physicalAction: `Interaction matching ${selected.family} dynamics.`,
+    consequence: `Physical collapse or block representing the systemic result of ${concept}.`,
+    oneCognitiveAction: `Exposing the structural limits and consequences of ${selected.family}.`,
     sceneProposition,
     alternativeRejectedMetaphors: rejectedAlternative,
     projectSpecificSymbols: projectSymbols,
-    visualHierarchy: "Primary focus: the bowing wooden sticks (center). Secondary focus: the heavy granite blocks (top). Foreground context: empty space.",
-    labelPolicy: "Add single label 'STICK FIX' in minimal monospace font next to the wooden pillars.",
-    failureRisks: "Risk that the illustrator adds a stylized character or decorative background, diverting from the singular relationship.",
-    validationTest: `Show the illustration without text labels or titles. Ask: "What happens if the wooden stick breaks, and why is it there?" If they answer "The main stone block collapses because the stick was holding it", the cognitive action is successful.`,
+    visualHierarchy: `Primary focus: ${selected.physicalDescription.slice(0, 60)}. Secondary focus: background contrast.`,
+    labelPolicy: `Minimal annotation matching ${selected.family} elements.`,
+    failureRisks: `Risk that the illustrator relies on a literalised description or standard business icons.`,
+    validationTest: `Show the illustration without text labels or titles. Ask: "What happens in this system?" If they identify the mechanical tension matching "${selected.family}", the cognitive action is successful.`,
     inputFingerprint,
     outputFingerprint
   }
@@ -176,7 +303,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     },
     {
       sectionKey: "cliche-review",
-      label: "Cliché Risk Review",
+      label: "Cliché & Literalization Risk Review",
       content: `Selected Metaphor Family: ${selected.family}\n` +
                `Cliché Assessment:\n${rawOutputs.clicheRiskAssessment}\n\n` +
                `Rejected Alternatives: ${rejectedAlternative}`
@@ -210,7 +337,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     status: "COMPLETE",
     steps: [
       { stepIndex: 1, label: "Identify Concept Anchor", instruction: `Define the primary cognitive relationship for concept: "${concept}".`, outputKey: "metaphor-conceptualization" },
-      { stepIndex: 2, label: "Audit Cliché Risks", instruction: "List and reject common visual cliches.", outputKey: "cliche-review" },
+      { stepIndex: 2, label: "Audit Cliché & Literalization Risks", instruction: "List and reject common visual cliches and literalized versions of concepts.", outputKey: "cliche-review" },
       { stepIndex: 3, label: "Select Metaphor Architecture", instruction: "Choose a physical analogy based on structural/mechanical laws.", outputKey: "scene-proposition" },
       { stepIndex: 4, label: "Formulate Scene Composition", instruction: "Define the visual hierarchy and spatial layout for the metaphor.", outputKey: "visual-hierarchy" },
       { stepIndex: 5, label: "Write Validation Plan", instruction: "Design a silent comprehension test.", outputKey: "validation-plan" }
@@ -269,6 +396,34 @@ export const cognitiveMetaphorIllustratorGates: CreativeMethodQualityGate[] = [
         label: "Cliché Risk Reviewed",
         passed,
         failReasons: passed ? [] : ["The cliché risk audit is missing or did not reject common category clichés."]
+      }
+    }
+  },
+  {
+    gateId: "cmi.literalization-risk-reviewed",
+    label: "Literalization Risk Reviewed",
+    description: "Ensure candidate metaphors are evaluated for literalization risk and high literalization versions are avoided.",
+    passCriteria: ["candidateMetaphorFamilies evaluates literalizationRisk and DIRECT_LITERALIZATION"],
+    evaluate: (result: CreativeMethodResult): CreativeMethodQualityResult => {
+      try {
+        const candidates = JSON.parse(result.rawOutputs.candidateMetaphorFamilies ?? "[]") as MetaphorCandidate[]
+        const selected = result.rawOutputs.selectedPhysicalMetaphor ?? ""
+        const selectedCandidate = candidates.find(c => c.family === selected)
+        // If a highly literalized version was selected, fail.
+        const passed = selectedCandidate && selectedCandidate.transformationDimension !== "DIRECT_LITERALIZATION" && selectedCandidate.literalizationRisk < 7
+        return {
+          gateId: "cmi.literalization-risk-reviewed",
+          label: "Literalization Risk Reviewed",
+          passed: !!passed,
+          failReasons: passed ? [] : ["Selected metaphor has high literalization risk or direct literalization dimension."]
+        }
+      } catch {
+        return {
+          gateId: "cmi.literalization-risk-reviewed",
+          label: "Literalization Risk Reviewed",
+          passed: false,
+          failReasons: ["Failed to parse candidate metaphors for literalization risk check."]
+        }
       }
     }
   },

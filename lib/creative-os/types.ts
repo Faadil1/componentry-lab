@@ -73,6 +73,12 @@ export interface ResourceMetadata {
   level3Data?: {
     providerManifest: Record<string, unknown>
   }
+  // V2 Extension: Compatibility Governance
+  supportedFrameworks?: string[]
+  supportedSurfaces?: string[]
+  supportedArtifacts?: string[]
+  supportedCapabilities?: string[]
+  compatibilityEvidenceStatus?: "VERIFIED" | "DECLARED" | "UNKNOWN" | "INCOMPATIBLE"
 }
 
 export interface ResourceEvaluation {
@@ -94,6 +100,7 @@ export interface RouterInputs {
   phase: CreativeProjectPhase
   artifactType?: string
   evaluator?: string
+  frameworkOrSurface?: string
   capabilityGap?: string
   activationTags?: string[]
   lifecycleState?: ResourceLifecycleState

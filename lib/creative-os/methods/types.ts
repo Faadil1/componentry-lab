@@ -8,6 +8,7 @@ export type CreativeMethodStatus =
   | "COMPLETE"
   | "FAILED"
   | "BLOCKED"
+  | "PARTIAL"
 
 /**
  * Definition contract for a Creative Method.
