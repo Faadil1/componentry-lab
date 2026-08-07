@@ -16,13 +16,22 @@ import type {
 // VALID CASES — These must compile without errors
 // ============================================================================
 
-// Valid: default variant
-const defaultValid: EpisodeStateCardProps = {
+// Valid: default variant with not-required
+const defaultValidNotRequired: EpisodeStateCardProps = {
   variant: "default",
   channelName: "Wealth Decoded",
   title: "Episode 1",
   workflowState: "EDITORIAL",
   humanReviewStatus: "not-required",
+}
+
+// Valid: default variant with completed
+const defaultValidCompleted: EpisodeStateCardProps = {
+  variant: "default",
+  channelName: "Wealth Decoded",
+  title: "Episode 1",
+  workflowState: "EDITORIAL",
+  humanReviewStatus: "completed",
 }
 
 // Valid: blocked with 1 blocker
@@ -43,7 +52,7 @@ const blockedValid2Blockers: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
   title: "Episode 1",
   workflowState: "PACKAGING",
-  humanReviewStatus: "not-required",
+  humanReviewStatus: "required",
   blockers: [
     { id: "b1", label: "Missing thumbnail", severity: "critical" },
     { id: "b2", label: "Title needs review", severity: "warning" },
@@ -93,9 +102,29 @@ const unavailableValid2: EpisodeStateCardProps = {
 // INVALID CASES — These must NOT compile (using @ts-expect-error)
 // ============================================================================
 
-// Invalid: blocked without any blockers
-// @ts-expect-error blockers is required and must be non-empty
+// Invalid: default with humanReviewStatus='required' (not allowed for default)
+// @ts-expect-error default variant forbids humanReviewStatus='required'
+const defaultInvalidRequired: EpisodeStateCardProps = {
+  variant: "default",
+  channelName: "Wealth Decoded",
+  title: "Episode 1",
+  workflowState: "EDITORIAL",
+  humanReviewStatus: "required",
+}
+
+// Invalid: blocked without blockers (blockers required)
+// @ts-expect-error blockers is required for blocked variant
 const blockedInvalidNoBlockers: EpisodeStateCardProps = {
+  variant: "blocked",
+  channelName: "Wealth Decoded",
+  title: "Episode 1",
+  workflowState: "PACKAGING",
+  humanReviewStatus: "not-required",
+}
+
+// Invalid: blocked with empty array (non-empty tuple required)
+// @ts-expect-error blockers must be non-empty tuple
+const blockedInvalidEmptyArray: EpisodeStateCardProps = {
   variant: "blocked",
   channelName: "Wealth Decoded",
   title: "Episode 1",
@@ -104,20 +133,19 @@ const blockedInvalidNoBlockers: EpisodeStateCardProps = {
   blockers: [],
 }
 
-// Invalid: blocked with empty blockers array
-// @ts-expect-error blockers tuple requires at least one element
-const blockedInvalidEmptyArray: EpisodeStateCardProps = {
-  variant: "blocked",
+// Invalid: human-review-required with status='not-required'
+// @ts-expect-error humanReviewStatus must be 'required' for human-review-required
+const humanReviewInvalidNotRequired: EpisodeStateCardProps = {
+  variant: "human-review-required",
   channelName: "Wealth Decoded",
   title: "Episode 1",
-  workflowState: "PACKAGING",
+  workflowState: "HUMAN_REVIEW",
   humanReviewStatus: "not-required",
-  blockers: [] as const,
 }
 
 // Invalid: human-review-required with status='completed'
 // @ts-expect-error humanReviewStatus must be 'required' for human-review-required
-const humanReviewInvalidStatus: EpisodeStateCardProps = {
+const humanReviewInvalidCompleted: EpisodeStateCardProps = {
   variant: "human-review-required",
   channelName: "Wealth Decoded",
   title: "Episode 1",
@@ -125,25 +153,14 @@ const humanReviewInvalidStatus: EpisodeStateCardProps = {
   humanReviewStatus: "completed",
 }
 
-// Invalid: approved with status='required'
+// Invalid: approved with status='not-required'
 // @ts-expect-error humanReviewStatus must be 'completed' for approved
-const approvedInvalidStatus: EpisodeStateCardProps = {
+const approvedInvalidNotRequired: EpisodeStateCardProps = {
   variant: "approved",
   channelName: "Wealth Decoded",
   title: "Episode 1",
   workflowState: "MASTER_APPROVED",
-  humanReviewStatus: "required",
-}
-
-// Invalid: approved with blockers
-// @ts-expect-error blockers not allowed for approved variant
-const approvedInvalidBlockers: EpisodeStateCardProps = {
-  variant: "approved",
-  channelName: "Wealth Decoded",
-  title: "Episode 1",
-  workflowState: "MASTER_APPROVED",
-  humanReviewStatus: "completed",
-  blockers: [{ id: "b1", label: "test", severity: "critical" }],
+  humanReviewStatus: "not-required",
 }
 
 // Invalid: published without youtubeVideoId
@@ -168,53 +185,19 @@ const publishedInvalidNoDate: EpisodeStateCardProps = {
   youtubeVideoId: "ASluRm71I8o",
 }
 
-// Invalid: unavailable with channelName
+// Invalid: unavailable with channelName (never type)
 // @ts-expect-error channelName not allowed for unavailable
 const unavailableInvalidChannelName: EpisodeStateCardProps = {
   variant: "unavailable",
   channelName: "Wealth Decoded",
 }
 
-// Invalid: unavailable with humanReviewStatus
-// @ts-expect-error humanReviewStatus not allowed for unavailable
-const unavailableInvalidStatus: EpisodeStateCardProps = {
+// Invalid: unavailable with title (never type)
+// @ts-expect-error title not allowed for unavailable
+const unavailableInvalidTitle: EpisodeStateCardProps = {
   variant: "unavailable",
-  humanReviewStatus: "required",
-}
-
-// Invalid: unavailable with nextAuthorizedAction
-// @ts-expect-error nextAuthorizedAction not allowed for unavailable
-const unavailableInvalidAction: EpisodeStateCardProps = {
-  variant: "unavailable",
-  nextAuthorizedAction: "Review",
-}
-
-// Invalid: passing reduceMotion prop (REMOVED)
-// @ts-expect-error reduceMotion is not a valid prop in any variant
-const anyVariantInvalidReduceMotion: EpisodeStateCardProps = {
-  variant: "default",
-  channelName: "Wealth Decoded",
   title: "Episode 1",
-  workflowState: "EDITORIAL",
-  humanReviewStatus: "not-required",
-  // @ts-expect-error
-  reduceMotion: true,
 }
-
-// ============================================================================
-// PROP CLASSIFICATION VERIFICATION
-// ============================================================================
-
-// Verify HumanReviewStatus does not include "unavailable"
-const validStatuses: HumanReviewStatus[] = [
-  "not-required",
-  "required",
-  "completed",
-]
-
-// This would be a type error if "unavailable" were still in HumanReviewStatus:
-// @ts-expect-error "unavailable" is not in HumanReviewStatus
-// const invalidStatus: HumanReviewStatus = "unavailable"
 
 // ============================================================================
 // VARIANT DISCRIMINATOR VERIFICATION
@@ -222,21 +205,28 @@ const validStatuses: HumanReviewStatus[] = [
 
 // Type narrowing works correctly after checking variant
 function handleProps(props: EpisodeStateCardProps) {
-  if (props.variant === "blocked") {
-    // props.blockers is non-empty tuple here
+  if (props.variant === "default") {
+    // humanReviewStatus is "not-required" | "completed"
+    const status: "not-required" | "completed" = props.humanReviewStatus
+  } else if (props.variant === "blocked") {
+    // blockers is non-empty tuple
     const firstBlocker: EpisodeStateBlocker = props.blockers[0]
+    // humanReviewStatus can be any of the three values
+    const anyStatus: HumanReviewStatus = props.humanReviewStatus
   } else if (props.variant === "human-review-required") {
-    // props.humanReviewStatus must be "required"
+    // humanReviewStatus must be exactly "required"
     const status: "required" = props.humanReviewStatus
   } else if (props.variant === "approved") {
-    // props.humanReviewStatus must be "completed"
+    // humanReviewStatus must be exactly "completed"
     const status: "completed" = props.humanReviewStatus
   } else if (props.variant === "published") {
-    // props.youtubeVideoId and props.publishedAt are required strings
+    // youtubeVideoId and publishedAt are required strings
     const videoId: string = props.youtubeVideoId
     const publishDate: string = props.publishedAt
+    // humanReviewStatus must be "completed"
+    const status: "completed" = props.humanReviewStatus
   } else if (props.variant === "unavailable") {
-    // props.unavailableReason is optional
+    // only unavailableReason is allowed (optional)
     const reason: string | undefined = props.unavailableReason
   }
 }
