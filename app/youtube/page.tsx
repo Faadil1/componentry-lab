@@ -46,13 +46,15 @@ export default async function YouTubeOSPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm text-amber-900">
-          <strong>Development notice:</strong> This is a fixture-backed
-          development surface. Future versions will connect to the canonical
-          YouTube Operating System state source.
-        </p>
-      </section>
+      {process.env.YOUTUBE_EPISODE_SOURCE === "fixture" && (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm text-amber-900">
+            <strong>Development notice:</strong> This is a fixture-backed
+            development surface. Future versions will connect to the canonical
+            YouTube Operating System state source.
+          </p>
+        </section>
+      )}
     </div>
   )
 }

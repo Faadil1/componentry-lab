@@ -8,11 +8,12 @@ import type { EpisodeStateCardProps } from "@/components/workflow/episode-state-
 import { getEpisodeState } from "@/lib/youtube/get-episode-state"
 
 interface PageProps {
-  params: { episodeId: string }
+  params: Promise<{ episodeId: string }>
 }
 
 export default async function EpisodeDetailPage({ params }: PageProps) {
-  const snapshot = await getEpisodeState(params.episodeId)
+  const { episodeId } = await params
+  const snapshot = await getEpisodeState(episodeId)
 
   if (!snapshot) {
     notFound()
@@ -92,12 +93,14 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <p className="text-sm text-amber-900">
-          <strong>Development notice:</strong> Episode state is fixture-backed.
-          Adapter and component are production-ready; state source is development-only.
-        </p>
-      </section>
+      {process.env.YOUTUBE_EPISODE_SOURCE === "fixture" && (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p className="text-sm text-amber-900">
+            <strong>Development notice:</strong> Episode state is fixture-backed.
+            Adapter and component are production-ready; state source is development-only.
+          </p>
+        </section>
+      )}
     </div>
   )
 }
