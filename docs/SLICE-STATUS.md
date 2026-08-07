@@ -43,5 +43,10 @@
 ## SLICE 3B.3 — Creative OS Integration Gate
 **Status: FROZEN (HUMAN APPROVED)**
 
-### Next Action
-Begin planning Slice 3C — External Capability / Film Kit Integration Layer.
+## SLICE 3C — External Capability + Film Kit Planning Layer
+**Status: FROZEN (HUMAN APPROVED)**
+
+- **External provider execution**: NONE
+- **Provider execute calls**: 0
+- **Execution mode**: NOT_EXECUTED (PLAN_ONLY)
+

@@ -20,6 +20,13 @@
       "provenanceState": "CURRENT",
       "description": "Creative OS Slice 3B.3 Integration Gate evidence packet.",
       "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3c",
+      "path": "docs/evidence/creative-os-slice-3c",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3C External Capability & Film Kit Planning Layer evidence packet.",
+      "version": "v1"
     }
   ],
   "supersededPackets": [
