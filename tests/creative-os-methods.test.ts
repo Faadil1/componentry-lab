@@ -1,5 +1,7 @@
 import { test } from "node:test"
 import assert from "node:assert"
+import fs from "node:fs"
+import path from "node:path"
 import {
   METHOD_DEFINITIONS,
   METHOD_RUNTIME_CONTEXT,
@@ -8,6 +10,7 @@ import {
   runRelationshipPreservingAbstraction,
   runCognitiveMetaphorIllustrator,
   runPhysicalSituationStoryboarder,
+  physicalSituationStoryboarderGates,
   runLibraryFirstCompositionRouter,
   SACRED_RULES_BREAKER_ID,
   SOMATIC_RESPONSE_DESIGN_ID,
@@ -321,7 +324,7 @@ const pssInput = {
   methodId: PHYSICAL_SITUATION_STORYBOARDER_ID,
   projectMode: "MARA" as const,
   phase: "build" as const,
-  subjectDescription: "Mara's eight-bar journey",
+  subjectDescription: "Mara pottery sequence",
   subjectContext: "Short film",
   capabilityGap: "narrative-staging",
   supplementaryFields: {
@@ -385,6 +388,124 @@ test("Physical Situation Storyboarder: context sensitivity (pottery vs invisible
   assert.notDeepEqual(resA.result.rawOutputs.sceneNodes, resB.result.rawOutputs.sceneNodes)
 })
 
+test("Physical Situation Storyboarder: pss.no-cross-fixture-semantic-leak prevents musicology leak in non-music inputs", () => {
+  const result = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    subjectDescription: "Mara pottery sequence",
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      projectObjective: "observe and mirror incompleteness",
+      narrativeBeat: "accepting incompleteness",
+      emotionalTension: "existential anxiety / incompleteness",
+      propConstraints: "unfinished clay pot"
+    }
+  })
+  const text = JSON.stringify(result.result.rawOutputs)
+  assert.ok(!text.toLowerCase().includes("eight-bar"))
+  assert.ok(!text.toLowerCase().includes("musicology"))
+  assert.ok(!text.toLowerCase().includes("1987-f"))
+  assert.ok(!text.toLowerCase().includes("horn in f"))
+})
+
+test("Physical Situation Storyboarder: pss.beat-specificity verifies custom beat narrative generation", () => {
+  const result = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    subjectDescription: "accountability drift sequence",
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      projectObjective: "maintain scene boundaries under pressure",
+      narrativeBeat: "fading boundaries",
+      emotionalTension: "boundary erosion",
+      propConstraints: "broken office desk"
+    }
+  })
+  const firstNode = JSON.parse(result.result.rawOutputs.sceneNodes)[0]
+  assert.ok(firstNode.beatId.includes("fading_boundaries"))
+  assert.ok(firstNode.narrativeFunction.includes("maintain scene boundaries under pressure"))
+  assert.ok(firstNode.physicalAction.includes("broken office desk"))
+})
+
+test("Physical Situation Storyboarder: accountability does not become acceptance and uses input desiredTransformation", () => {
+  const result = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    subjectDescription: "accountability drift sequence",
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      projectObjective: "make responsibility tangible",
+      narrativeBeat: "accountability drift",
+      desiredTransformation: "visible ownership",
+      propConstraints: "broken office desk"
+    }
+  })
+  const text = JSON.stringify(result.result.rawOutputs)
+  assert.ok(text.toLowerCase().includes("visible ownership"))
+  assert.ok(!text.toLowerCase().includes("acceptance")) // Should not leak acceptance
+})
+
+test("Physical Situation Storyboarder: same character with different desiredTransformation differs", () => {
+  const resA = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      desiredTransformation: "visible ownership",
+      propConstraints: "broken office desk"
+    }
+  })
+  const resB = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      desiredTransformation: "abandonment",
+      propConstraints: "broken office desk"
+    }
+  })
+  assert.notDeepEqual(resA.result.rawOutputs.sceneNodes, resB.result.rawOutputs.sceneNodes)
+})
+
+test("Physical Situation Storyboarder: same transformation with different environment differs", () => {
+  const resA = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      desiredTransformation: "visible ownership",
+      locationConstraints: "office lobby",
+      propConstraints: "broken office desk"
+    }
+  })
+  const resB = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      ...pssInput.supplementaryFields,
+      desiredTransformation: "visible ownership",
+      locationConstraints: "warehouse floor",
+      propConstraints: "broken office desk"
+    }
+  })
+  assert.notDeepEqual(resA.result.rawOutputs.sceneNodes, resB.result.rawOutputs.sceneNodes)
+})
+
+test("Physical Situation Storyboarder: semantic domain coherence checks", () => {
+  const result = runPhysicalSituationStoryboarder({
+    ...pssInput,
+    supplementaryFields: {
+      projectObjective: "make responsibility tangible",
+      narrativeBeat: "accountability drift",
+      desiredTransformation: "visible ownership",
+      emotionalTension: "accountability drift",
+      locationConstraints: "office workspace",
+      propConstraints: "broken office desk"
+    }
+  })
+  const coherentGate = result.qualityResults.find(g => g.gateId === "pss.semantic-domain-coherent")!
+  assert.strictEqual(coherentGate.passed, true)
+})
+
+test("Physical Situation Storyboarder: pss.no-generic-placeholder-language rejects generic placeholder terms", () => {
+  const result = runPhysicalSituationStoryboarder(pssInput)
+  const genericGate = result.qualityResults.find(g => g.gateId === "pss.no-generic-placeholder-language")!
+  assert.strictEqual(genericGate.passed, true)
+})
+
 // ───────────────────────────────────────────────────────────────
 // Relationship-Preserving Abstraction — V1 Tests
 // ───────────────────────────────────────────────────────────────
@@ -401,7 +522,13 @@ const rpaInput = {
     projectObjective: "convey vertical architectural height",
     communicationIntent: "highlight grid scale ratios",
     sourceType: "architectural",
-    abstractionLevel: "high"
+    abstractionLevel: "high",
+    knownSpatialRelationships: JSON.stringify([
+      "Extreme vertical height ratio compared to horizontal width (3:1).",
+      "Regular repeating vertical window column intervals (50px).",
+      "Upper structure occludes lower supporting frame elements.",
+      "Perfect symmetrical alignment about central vertical axis."
+    ])
   }
 }
 
@@ -409,6 +536,22 @@ test("Relationship-Preserving Abstraction executes and passes all quality gates"
   const result = runRelationshipPreservingAbstraction(rpaInput)
   assert.strictEqual(result.status, "COMPLETE")
   assert.strictEqual(result.allGatesPassed, true)
+})
+
+test("Relationship-Preserving Abstraction: fewer than 3 facts returns PARTIAL and fails 3-6 gate", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      sourceType: "custom-insufficient",
+      sourceDescription: "minimalist dot",
+      projectObjective: "test empty relationships"
+    }
+  })
+  assert.strictEqual(result.status, "PARTIAL")
+  assert.strictEqual(result.allGatesPassed, false)
+  const selectionGate = result.qualityResults.find(g => g.gateId === "rpa.high-information-selection")!
+  assert.strictEqual(selectionGate.passed, false)
+  assert.ok(selectionGate.failReasons.includes("INSUFFICIENT_HIGH_INFORMATION_RELATIONSHIPS"))
 })
 
 test("Relationship-Preserving Abstraction: relationships-not-contours forces geometric relationships", () => {
@@ -518,16 +661,43 @@ test("Library-First Composition Router: native-first prefers native route for si
   assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
 })
 
-test("Library-First Composition Router: recommends experimental resource for complex animation", () => {
+test("Library-First Composition Router: Svelte + web-component-animation rejects OriginKit", () => {
   const result = runLibraryFirstCompositionRouter({
     ...lfcrInput,
     supplementaryFields: {
       ...lfcrInput.supplementaryFields,
-      requestedCapability: "web-component-animation"
+      requestedCapability: "web-component-animation",
+      frameworkOrSurface: "Svelte"
+    }
+  })
+  assert.strictEqual(result.result.rawOutputs.selectedRoute, "NO_MATCH")
+  assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
+})
+
+test("Library-First Composition Router: React/NextJS + complex scroll choreography is DISCOVERY_REQUIRED due to UNKNOWN Remocn evidence", () => {
+  const result = runLibraryFirstCompositionRouter({
+    ...lfcrInput,
+    supplementaryFields: {
+      ...lfcrInput.supplementaryFields,
+      requestedCapability: "complex scroll choreography",
+      frameworkOrSurface: "React/NextJS"
+    }
+  })
+  assert.strictEqual(result.result.rawOutputs.selectedRoute, "DISCOVERY_REQUIRED")
+  assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
+})
+
+test("Library-First Composition Router: React/NextJS + web-component-animation recommends experimental OriginKit", () => {
+  const result = runLibraryFirstCompositionRouter({
+    ...lfcrInput,
+    supplementaryFields: {
+      ...lfcrInput.supplementaryFields,
+      requestedCapability: "web-component-animation",
+      frameworkOrSurface: "React/NextJS"
     }
   })
   assert.strictEqual(result.result.rawOutputs.selectedRoute, "CONSIDER_EXPERIMENTAL_RESOURCE")
-  assert.ok(result.result.rawOutputs.selectedResource === "res_originkit" || result.result.rawOutputs.selectedResource === "res_remocn")
+  assert.strictEqual(result.result.rawOutputs.selectedResource, "res_originkit")
 })
 
 test("Library-First Composition Router reports UNKNOWN for missing metrics evidence", () => {
@@ -569,24 +739,28 @@ test("cross-method governance: all six methods resolve through the same runtime 
   }
 })
 
-test("cross-method governance: all four new methods remain in TEST_CANDIDATE lifecycleState", () => {
+test("cross-method governance: all six internal methods are VALIDATED", () => {
   const pss = RESOURCE_REGISTRY.find(r => r.id === "res_physical_situation_storyboarder")!
   const rpa = RESOURCE_REGISTRY.find(r => r.id === "res_relationship_preserving_abstraction")!
   const cmi = RESOURCE_REGISTRY.find(r => r.id === "res_cognitive_metaphor_illustrator")!
   const lfcr = RESOURCE_REGISTRY.find(r => r.id === "res_library_first_composition_router")!
-
-  assert.strictEqual(pss.lifecycleState, "TEST_CANDIDATE")
-  assert.strictEqual(rpa.lifecycleState, "TEST_CANDIDATE")
-  assert.strictEqual(cmi.lifecycleState, "TEST_CANDIDATE")
-  assert.strictEqual(lfcr.lifecycleState, "TEST_CANDIDATE")
-})
-
-test("cross-method governance: only SRB and SRD are VALIDATED", () => {
   const srb = RESOURCE_REGISTRY.find(r => r.id === "res_sacred_rules_breaker")!
   const srd = RESOURCE_REGISTRY.find(r => r.id === "res_somatic_response_design")!
 
+  assert.strictEqual(pss.lifecycleState, "VALIDATED")
+  assert.strictEqual(rpa.lifecycleState, "VALIDATED")
+  assert.strictEqual(cmi.lifecycleState, "VALIDATED")
+  assert.strictEqual(lfcr.lifecycleState, "VALIDATED")
   assert.strictEqual(srb.lifecycleState, "VALIDATED")
   assert.strictEqual(srd.lifecycleState, "VALIDATED")
+})
+
+test("cross-method governance: exactly six internal CORE_METHOD resources are VALIDATED", () => {
+  const coreMethods = RESOURCE_REGISTRY.filter(r => r.type === "CORE_METHOD")
+  assert.strictEqual(coreMethods.length, 6)
+  for (const method of coreMethods) {
+    assert.strictEqual(method.lifecycleState, "VALIDATED", `${method.id} must be VALIDATED`)
+  }
 })
 
 test("cross-method governance: zero methods are APPROVED", () => {
@@ -594,5 +768,208 @@ test("cross-method governance: zero methods are APPROVED", () => {
     assert.notStrictEqual(res.lifecycleState, "APPROVED", `${res.id} must not be APPROVED`)
   }
 })
+
+// ───────────────────────────────────────────────────────────────
+// RPA Source Grounding and Provenance Tests
+// ───────────────────────────────────────────────────────────────
+
+interface TestRelationalFact {
+  provenance: string
+}
+
+interface TestManifestPacket {
+  packetId: string
+  provenanceState: string
+}
+
+test("RPA: unknown visual details cannot become selected facts", () => {
+  // Test with "a portrait" - should not select any invented limbs/pose facts since they are UNKNOWN
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    subjectDescription: "a portrait",
+    supplementaryFields: {
+      sourceDescription: "a portrait",
+      sourceType: "human"
+    }
+  })
+  const selected = JSON.parse(result.result.rawOutputs.selectedFacts ?? "[]") as TestRelationalFact[]
+  assert.strictEqual(selected.length, 0)
+  assert.strictEqual(result.status, "PARTIAL")
+})
+
+test("RPA: PROVIDED facts may count toward selection", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      knownSpatialRelationships: JSON.stringify([
+        "gaze line intersects off-center focal point",
+        "negative space exceeds subject mass",
+        "shoulders form horizontal stabilizing axis"
+      ])
+    }
+  })
+  const selected = JSON.parse(result.result.rawOutputs.selectedFacts ?? "[]") as TestRelationalFact[]
+  assert.strictEqual(selected.length, 3)
+  assert.ok(selected.every((f: TestRelationalFact) => f.provenance === "PROVIDED"))
+  assert.strictEqual(result.status, "COMPLETE")
+})
+
+test("RPA: valid DERIVED facts may count toward selection", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      sourceDescription: "architectural photograph of high-rise facade",
+      sourceType: "architectural"
+    }
+  })
+  const selected = JSON.parse(result.result.rawOutputs.selectedFacts ?? "[]") as TestRelationalFact[]
+  // Should select only the 2 DERIVED facts (Extreme vertical height ratio, Perfect symmetrical alignment)
+  assert.strictEqual(selected.length, 2)
+  assert.ok(selected.every((f: TestRelationalFact) => f.provenance === "DERIVED"))
+  assert.strictEqual(result.status, "PARTIAL") // Less than 3 facts -> PARTIAL
+})
+
+test("RPA: UNKNOWN facts do not count toward high-information selection gate", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      sourceDescription: "exponential line chart",
+      sourceType: "chart"
+    }
+  })
+  const selected = JSON.parse(result.result.rawOutputs.selectedFacts ?? "[]") as TestRelationalFact[]
+  const hasUnknown = selected.some((f: TestRelationalFact) => f.provenance === "UNKNOWN")
+  assert.strictEqual(hasUnknown, false)
+})
+
+test("RPA: fewer than 3 grounded facts returns PARTIAL status", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      sourceDescription: "exponential line chart",
+      sourceType: "chart"
+    }
+  })
+  assert.strictEqual(result.status, "PARTIAL")
+})
+
+test("RPA: 3-6 grounded facts returns COMPLETE status", () => {
+  const result = runRelationshipPreservingAbstraction({
+    ...rpaInput,
+    supplementaryFields: {
+      knownSpatialRelationships: JSON.stringify([
+        "gaze line intersects off-center focal point",
+        "negative space exceeds subject mass",
+        "shoulders form horizontal stabilizing axis"
+      ])
+    }
+  })
+  assert.strictEqual(result.status, "COMPLETE")
+})
+
+test("Evidence: stale/superseded packet cannot be treated as current canonical evidence", () => {
+  const manifestPath = path.join(process.cwd(), "docs", "evidence", "manifest.json")
+  assert.ok(fs.existsSync(manifestPath), "Manifest file must exist")
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
+  
+  const stale = (manifest.supersededPackets as TestManifestPacket[]).find((p: TestManifestPacket) => p.packetId === "director-design-review")
+  assert.ok(stale)
+  assert.strictEqual(stale.provenanceState, "SUPERSEDED")
+
+  const current = (manifest.activePackets as TestManifestPacket[]).find((p: TestManifestPacket) => p.packetId === "director-design-review-v4")
+  assert.ok(current)
+  assert.strictEqual(current.provenanceState, "CURRENT")
+})
+
+test("PSS: transformation contrast regression (ownership vs abandonment vs repair)", () => {
+  const baseInput = {
+    methodId: "method_physical_situation_storyboarder",
+    projectMode: "MARA" as const,
+    phase: "build" as const,
+    subjectDescription: "accountability drift sequence",
+    subjectContext: "Short film",
+    capabilityGap: "narrative-staging",
+    supplementaryFields: {
+      projectObjective: "make responsibility tangible",
+      narrativeBeat: "accountability drift",
+      subjectOrCharacter: "John",
+      emotionalTension: "accountability drift",
+      locationConstraints: "broken office desk",
+      propConstraints: "broken office desk"
+    }
+  }
+
+  const resultA = runPhysicalSituationStoryboarder({
+    ...baseInput,
+    supplementaryFields: {
+      ...baseInput.supplementaryFields,
+      desiredTransformation: "visible ownership"
+    }
+  })
+
+  const resultB = runPhysicalSituationStoryboarder({
+    ...baseInput,
+    supplementaryFields: {
+      ...baseInput.supplementaryFields,
+      desiredTransformation: "abandonment"
+    }
+  })
+
+  const resultC = runPhysicalSituationStoryboarder({
+    ...baseInput,
+    supplementaryFields: {
+      ...baseInput.supplementaryFields,
+      desiredTransformation: "repair commitment"
+    }
+  })
+
+  const actionA = JSON.parse(resultA.result.rawOutputs.sceneNodes)[1].physicalAction.toLowerCase()
+  const actionB = JSON.parse(resultB.result.rawOutputs.sceneNodes)[1].physicalAction.toLowerCase()
+  const actionC = JSON.parse(resultC.result.rawOutputs.sceneNodes)[1].physicalAction.toLowerCase()
+
+  // Verify that stripping literal labels still leaves the physical actions distinct
+  assert.notStrictEqual(actionA.replace("visible ownership", ""), actionB.replace("abandonment", ""))
+  assert.notStrictEqual(actionA.replace("visible ownership", ""), actionC.replace("repair commitment", ""))
+  assert.notStrictEqual(actionB.replace("abandonment", ""), actionC.replace("repair commitment", ""))
+})
+
+test("PSS: label-free transformation grounding evaluation", () => {
+  const result = runPhysicalSituationStoryboarder({
+    methodId: "method_physical_situation_storyboarder",
+    projectMode: "MARA" as const,
+    phase: "build" as const,
+    subjectDescription: "accountability drift sequence",
+    subjectContext: "Short film",
+    capabilityGap: "narrative-staging",
+    supplementaryFields: {
+      projectObjective: "make responsibility tangible",
+      narrativeBeat: "accountability drift",
+      subjectOrCharacter: "John",
+      emotionalTension: "accountability drift",
+      desiredTransformation: "visible ownership",
+      locationConstraints: "broken office desk",
+      propConstraints: "broken office desk"
+    }
+  })
+
+  // Strip literal transformation label from raw outputs
+  const strippedResult = {
+    methodId: "method_physical_situation_storyboarder",
+    status: "COMPLETE" as const,
+    steps: [],
+    outputSections: [],
+    rawOutputs: {
+      ...result.result.rawOutputs,
+      // Overwrite nodes and state to strip literal string "visible ownership"
+      sceneNodes: result.result.rawOutputs.sceneNodes.replace(/visible ownership/g, "claimed workspace"),
+      endingPhysicalState: result.result.rawOutputs.endingPhysicalState.replace(/visible ownership/g, "claimed workspace")
+    }
+  }
+
+  // The grounded/evidence gate should still pass via the derived transformationEvidence metadata!
+  const groundedGate = physicalSituationStoryboarderGates.find(g => g.gateId === "pss.transformation-input-grounded")!.evaluate(strippedResult)
+  assert.strictEqual(groundedGate.passed, true)
+})
+
 
 
