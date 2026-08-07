@@ -11,7 +11,8 @@ export type {
   CreativeMethodRuntimeContext,
   CreativeMethodExecutionResult,
   CreativeMethodStatus,
-  CreativeMethodAuthority
+  CreativeMethodAuthority,
+  CreativeMethodEvaluationRecord
 } from "./types"
 
 export { executeMethod, createRuntimeContext } from "./runtime"

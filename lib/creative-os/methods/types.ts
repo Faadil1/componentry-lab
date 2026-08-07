@@ -118,3 +118,18 @@ export interface CreativeMethodExecutionResult {
 export interface CreativeMethodRuntimeContext {
   methods: Map<string, CreativeMethodDefinition>
 }
+
+/**
+ * Audit log structure for method executions.
+ * Links input metadata, output fingerprints, evaluation results, and human review status.
+ */
+export interface CreativeMethodEvaluationRecord {
+  methodId: string
+  projectId: string
+  capabilityGap: string
+  inputFingerprint: string
+  outputFingerprint: string
+  qualityResults: CreativeMethodQualityResult[]
+  humanReviewStatus: "PENDING" | "APPROVED" | "REJECTED"
+  notes?: string
+}
