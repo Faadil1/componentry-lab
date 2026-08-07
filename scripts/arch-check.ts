@@ -27,12 +27,14 @@ const allowedPaths = [
   "lib/persistence/episode-repository.ts",
   "lib/persistence/db.ts",
   "lib/youtube/get-episode-state-from-db.ts",
+  "lib/youtube/get-published-episodes-from-db.ts",
   // The internal modules themselves
   "lib/persistence/episode-repository-live-core.ts",
   "lib/persistence/db-core.ts",
   // Live tests that directly validate Neon behavior
   "tests/persistence/episode-repository.live.test.ts",
   "tests/youtube/get-episode-state-from-db.test.ts",
+  "tests/youtube/get-published-episodes-from-db.test.ts",
   // Migration runner (internal infrastructure)
   "scripts/run-migrations.ts",
   // This script itself

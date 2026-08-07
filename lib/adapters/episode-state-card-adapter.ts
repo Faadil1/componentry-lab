@@ -63,7 +63,7 @@ export function episodeStateSnapshotToCardProps(
       publishedAt: snapshot.publication.publishedAt,
       episodeNumber: snapshot.episodeNumber,
       lastDecision: snapshot.lastDecision,
-      canonicalSource: `episode-${snapshot.episodeId}`,
+      canonicalSource: snapshot.episodeId,
       manifestVersion: snapshot.source?.version,
     }
   }
@@ -84,7 +84,7 @@ export function episodeStateSnapshotToCardProps(
       episodeNumber: snapshot.episodeNumber,
       lastDecision: snapshot.lastDecision,
       nextExpectedState: "ASSET_REPLACEMENT",
-      canonicalSource: `episode-${snapshot.episodeId}`,
+      canonicalSource: snapshot.episodeId,
       manifestVersion: snapshot.source?.version,
     }
   }
@@ -101,7 +101,7 @@ export function episodeStateSnapshotToCardProps(
       episodeNumber: snapshot.episodeNumber,
       nextAuthorizedAction:
         snapshot.nextAuthorizedAction || "Proceed with review",
-      canonicalSource: `episode-${snapshot.episodeId}`,
+      canonicalSource: snapshot.episodeId,
       manifestVersion: snapshot.source?.version,
     }
   }
@@ -126,7 +126,7 @@ export function episodeStateSnapshotToCardProps(
         lastDecision: snapshot.lastDecision,
         nextAuthorizedAction:
           snapshot.nextAuthorizedAction || "Resolve blocking conditions",
-        canonicalSource: `episode-${snapshot.episodeId}`,
+        canonicalSource: snapshot.episodeId,
         manifestVersion: snapshot.source?.version,
       }
     }
