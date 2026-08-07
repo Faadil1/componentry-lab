@@ -1,6 +1,6 @@
 import { test, describe } from "node:test"
 import assert from "node:assert/strict"
-import { episodeStateSnapshotToCardProps } from "@/lib/adapters/episode-state-card-adapter"
+import { episodeStateSnapshotToCardProps } from "../../lib/adapters/episode-state-card-adapter.ts"
 import {
   snapshotDefaultEditorial,
   snapshotDefaultPackaging,
@@ -20,7 +20,7 @@ import {
   snapshotMalformedPublicationMissingId,
   snapshotMalformedPublicationMissingDate,
   snapshotReworkDecision,
-} from "@/lib/fixtures/episode-state-snapshots"
+} from "../../lib/fixtures/episode-state-snapshots.ts"
 
 describe("episodeStateSnapshotToCardProps", () => {
   // ─── NULL AND UNAVAILABLE ─────────────────────────────────
