@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { listEpisodes } from "@/lib/youtube/get-episode-state"
 
+export const dynamic = "force-dynamic"
+
 export default async function YouTubeOSPage() {
   const episodes = await listEpisodes()
 

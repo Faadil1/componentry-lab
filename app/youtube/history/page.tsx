@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { listPublishedEpisodes } from "@/lib/youtube/get-published-episodes"
 
+export const dynamic = "force-dynamic"
+
 export default async function PublishedArchivePage() {
   const published = await listPublishedEpisodes()
 
