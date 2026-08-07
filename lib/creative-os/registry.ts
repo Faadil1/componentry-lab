@@ -5,148 +5,110 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     id: "res_sacred_rules_breaker",
     name: "Sacred Rules Breaker",
     type: "CORE_METHOD",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "SUGGEST",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:sacred-rules-breaker",
     modes: ["DAY_CHALLENGE"],
     capabilities: {
       actions: ["validate-rules-break"],
       artifactTypes: ["workflow-rules"],
-      capabilityGaps: ["rules-governance"]
+      capabilityGaps: ["rules-governance", "category-differentiation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "verify", requiredTags: ["strict-governance"] }
-    ],
-    level2Data: {
-      operationalInstructions: "Break rules only when safety parameters are satisfied."
-    },
-    level3Data: {
-      providerManifest: { version: "1.0.0", executor: "local-evaluator" }
-    }
+    activationRules: []
   },
   {
     id: "res_somatic_response_design",
     name: "Somatic Response Design",
     type: "CORE_METHOD",
-    lifecycleState: "VALIDATED",
-    authorityCeiling: "SUGGEST",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:somatic-response",
     modes: ["DAY_CHALLENGE"],
     capabilities: {
       actions: ["evaluate-somatic-response"],
       artifactTypes: ["somatic-profile"],
-      capabilityGaps: ["somatic-design"]
+      capabilityGaps: ["somatic-design", "bodily-response-art-direction"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Measure somatic user pulse during design interaction."
-    },
-    level3Data: {
-      providerManifest: { sensor: "local" }
-    }
+    activationRules: []
   },
   {
     id: "res_relationship_preserving_abstraction",
     name: "Relationship-Preserving Abstraction",
     type: "CORE_METHOD",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "PREPARE",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "PREPARE",
     license: "Apache-2.0",
     provenance: "internal:method:relationship-preserving-abstraction",
     modes: ["DATA_STORY"],
     capabilities: {
       actions: ["abstract-relationships"],
       artifactTypes: ["data-privacy-model"],
-      capabilityGaps: ["data-privacy"]
+      capabilityGaps: ["data-privacy", "editorial-abstraction"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "publish", requiredEvaluator: "client" }
-    ],
-    level2Data: {
-      operationalInstructions: "Keep entity connections without revealing identifiers."
-    },
-    level3Data: {
-      providerManifest: { algorithm: "deterministic-mapping" }
-    }
+    activationRules: []
   },
   {
     id: "res_cognitive_metaphor_illustrator",
     name: "Cognitive Metaphor Illustrator",
     type: "CORE_METHOD",
-    lifecycleState: "VALIDATED",
-    authorityCeiling: "SUGGEST",
+    lifecycleState: "AUDITED",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:cognitive-metaphor",
     modes: ["DATA_STORY"],
     capabilities: {
       actions: ["illustrate-cognitive-metaphor"],
       artifactTypes: ["metaphor-illustration"],
-      capabilityGaps: ["visual-metaphor"]
+      capabilityGaps: ["visual-metaphor"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Draft concepts as mental illustrations."
-    },
-    level3Data: {
-      providerManifest: { renderMode: "svg" }
-    }
+    activationRules: []
   },
   {
     id: "res_physical_situation_storyboarder",
     name: "Physical Situation Storyboarder",
     type: "CORE_METHOD",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "SUGGEST",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "internal:method:physical-storyboarder",
     modes: ["MARA"],
     capabilities: {
       actions: ["storyboard-physical-scene"],
       artifactTypes: ["cinematic-storyboard"],
-      capabilityGaps: ["physical-space-mapping"]
+      capabilityGaps: ["physical-space-mapping", "narrative-staging"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "verify" }
-    ],
-    level2Data: {
-      operationalInstructions: "Draw storyboard frames capturing physical limits."
-    },
-    level3Data: {
-      providerManifest: { resolution: "16:9" }
-    }
+    activationRules: []
   },
   {
     id: "res_library_first_composition_router",
     name: "Library-First Composition Router",
     type: "CORE_METHOD",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "PREPARE",
+    lifecycleState: "AUDITED",
+    maxExecutionAuthority: "PREPARE",
     license: "MIT",
     provenance: "internal:method:library-first-router",
     modes: ["HACKATHON"],
     capabilities: {
       actions: ["route-library-composition"],
       artifactTypes: ["composition-tree"],
-      capabilityGaps: ["library-composition"]
+      capabilityGaps: ["library-composition"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "submit" }
-    ],
-    level2Data: {
-      operationalInstructions: "Route composition packages in dependency order."
-    },
-    level3Data: {
-      providerManifest: { packageManager: "npm" }
-    }
+    activationRules: []
   },
   {
     id: "res_ai_camera_movements",
     name: "AI Camera Movements",
-    type: "PROVIDER",
+    type: "KNOWLEDGE_PACK",
     lifecycleState: "TEST_CANDIDATE",
-    authorityCeiling: "READ_ONLY",
+    maxExecutionAuthority: "READ_ONLY",
     license: "Proprietary",
     provenance: "external:github:ai-camera-movements",
     sourceUrl: "https://github.com/example/ai-camera-movements",
@@ -154,22 +116,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["generate-camera-path"],
       artifactTypes: ["camera-path-data"],
-      capabilityGaps: ["ai-camera-movements"]
+      capabilityGaps: ["ai-camera-movements", "camera-motion-language"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Calculate camera trajectories automatically."
-    },
-    level3Data: {
-      providerManifest: { apiEndpoint: "https://api.camera.ai" }
-    }
+    activationRules: []
   },
   {
     id: "res_cinematography_intelligence_layer",
     name: "Cinematography Intelligence Layer",
-    type: "PROVIDER",
-    lifecycleState: "TESTING",
-    authorityCeiling: "READ_ONLY",
+    type: "KNOWLEDGE_PACK",
+    lifecycleState: "CAPTURED",
+    maxExecutionAuthority: "READ_ONLY",
     license: "Proprietary",
     provenance: "external:npm:cinematography-intelligence",
     sourceUrl: "https://npmjs.com/package/cinematography-intelligence",
@@ -177,68 +134,53 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["analyze-shot-composition"],
       artifactTypes: ["cinematography-metrics"],
-      capabilityGaps: ["cinematography-layer"]
+      capabilityGaps: ["cinematography-layer"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Assess color balance and focal length suitability."
-    },
-    level3Data: {
-      providerManifest: { version: "2.1.0" }
-    }
+    activationRules: []
   },
   {
     id: "res_remocn",
     name: "Remocn",
-    type: "PROVIDER",
-    lifecycleState: "DEPRECATED",
-    authorityCeiling: "PROHIBITED",
+    type: "COMPONENT_SOURCE",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "LOCAL_REVERSIBLE",
     license: "GPL-3.0",
     provenance: "external:github:remocn",
     sourceUrl: "https://github.com/example/remocn",
-    modes: ["MARA"],
+    modes: ["MARA", "HACKATHON"],
     capabilities: {
-      actions: ["legacy-render"],
-      artifactTypes: ["legacy-frame"],
-      capabilityGaps: ["remocn-render"]
+      actions: ["legacy-render", "recommend-component"],
+      artifactTypes: ["legacy-frame", "web-component-animation"],
+      capabilityGaps: ["remocn-render", "web-component-animation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Legacy renderer for backward compatibility."
-    },
-    level3Data: {
-      providerManifest: { status: "deprecated" }
-    }
+    activationRules: []
   },
   {
     id: "res_originkit",
     name: "OriginKit",
-    type: "PROVIDER",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "READ_ONLY",
+    type: "COMPONENT_SOURCE",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "READ_ONLY",
     license: "Apache-2.0",
     provenance: "external:github:originkit",
     sourceUrl: "https://github.com/example/originkit",
     modes: ["HACKATHON"],
     capabilities: {
       actions: ["bootstrap-originkit-asset"],
-      artifactTypes: ["originkit-asset"],
-      capabilityGaps: ["bootstrap-kit"]
+      artifactTypes: ["originkit-asset", "web-component-animation"],
+      capabilityGaps: ["bootstrap-kit", "web-component-animation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Extract foundational components."
-    },
-    level3Data: {
-      providerManifest: { source: "git" }
-    }
+    activationRules: []
   },
   {
     id: "res_cineprompt",
     name: "CinePrompt",
     type: "PROVIDER",
-    lifecycleState: "SUPERSEDED",
-    authorityCeiling: "PROHIBITED",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "EXPLICIT_EXTERNAL",
     license: "Proprietary",
     provenance: "external:github:cineprompt",
     sourceUrl: "https://github.com/example/cineprompt",
@@ -246,22 +188,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["prompt-camera-path"],
       artifactTypes: ["shotlist"],
-      capabilityGaps: ["ai-camera-movements"]
+      capabilityGaps: ["ai-camera-movements"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Generates prompts for camera rigs."
-    },
-    level3Data: {
-      providerManifest: { replacedBy: "res_ai_camera_movements" }
-    }
+    activationRules: []
   },
   {
     id: "res_ai_world_builder",
     name: "AI World Builder",
     type: "PROVIDER",
-    lifecycleState: "REJECTED",
-    authorityCeiling: "PROHIBITED",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "PROHIBITED",
     license: "Proprietary",
     provenance: "external:github:ai-world-builder",
     sourceUrl: "https://github.com/example/ai-world-builder",
@@ -269,22 +206,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["generate-3d-scene"],
       artifactTypes: ["3d-scene-model"],
-      capabilityGaps: ["world-building"]
+      capabilityGaps: ["world-building"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Generates 3D models from descriptions."
-    },
-    level3Data: {
-      providerManifest: { status: "unsafe" }
-    }
+    activationRules: []
   },
   {
     id: "res_open_kimi_ppt",
     name: "Open Kimi PPT",
-    type: "DISCOVERY_FEED",
-    lifecycleState: "CAPTURED",
-    authorityCeiling: "READ_ONLY",
+    type: "PROVIDER",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "READ_ONLY",
     license: "MIT",
     provenance: "external:github:open-kimi-ppt",
     sourceUrl: "https://github.com/example/open-kimi-ppt",
@@ -292,22 +224,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["scan-presentation-feeds"],
       artifactTypes: ["ppt-template"],
-      capabilityGaps: ["ppt-generation"]
+      capabilityGaps: ["ppt-generation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Scrapes presentation slide feeds."
-    },
-    level3Data: {
-      providerManifest: { query: "presentation" }
-    }
+    activationRules: []
   },
   {
     id: "res_tait_crt_interface_skill",
     name: "TaiT CRT Interface Skill",
     type: "SKILL",
-    lifecycleState: "AUDITED",
-    authorityCeiling: "READ_ONLY",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "READ_ONLY",
     license: "MIT",
     provenance: "external:github:tait-crt",
     sourceUrl: "https://github.com/example/tait-crt",
@@ -315,45 +242,35 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["render-crt-screen"],
       artifactTypes: ["crt-interface-layout"],
-      capabilityGaps: ["crt-visualization"]
+      capabilityGaps: ["crt-visualization"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Renders visual data with retro green phosphorus feel."
-    },
-    level3Data: {
-      providerManifest: { color: "phosphor-green" }
-    }
+    activationRules: []
   },
   {
     id: "res_video_shotcraft",
     name: "Video Shotcraft",
     type: "PRODUCTION_PIPELINE",
     lifecycleState: "TEST_CANDIDATE",
-    authorityCeiling: "READ_ONLY",
+    maxExecutionAuthority: "READ_ONLY",
     license: "Proprietary",
     provenance: "external:github:video-shotcraft",
     sourceUrl: "https://github.com/example/video-shotcraft",
-    modes: ["MARA"],
+    modes: ["MARA", "HACKATHON"],
     capabilities: {
       actions: ["process-video-draft"],
-      artifactTypes: ["rough-cut-video"],
-      capabilityGaps: ["video-editing"]
+      artifactTypes: ["rough-cut-video", "product-demo-film"],
+      capabilityGaps: ["video-editing", "cinematic-product-demo"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Orchestrate raw footage compilation."
-    },
-    level3Data: {
-      providerManifest: { codec: "h264" }
-    }
+    activationRules: []
   },
   {
     id: "res_gbro_collage_b_roll",
     name: "GBRO Collage B-roll",
     type: "PRODUCTION_PIPELINE",
-    lifecycleState: "TESTING",
-    authorityCeiling: "READ_ONLY",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "EXPLICIT_EXTERNAL",
     license: "Proprietary",
     provenance: "external:github:gbro-collage",
     sourceUrl: "https://github.com/example/gbro-collage",
@@ -361,22 +278,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["compile-collage-broll"],
       artifactTypes: ["collage-broll-video"],
-      capabilityGaps: ["b-roll-generation"]
+      capabilityGaps: ["b-roll-generation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Assemble rapid-sequence montage clips."
-    },
-    level3Data: {
-      providerManifest: { aspect: "16:9" }
-    }
+    activationRules: []
   },
   {
     id: "res_openmontage",
     name: "OpenMontage",
     type: "PRODUCTION_PIPELINE",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "SUGGEST",
+    lifecycleState: "AUDITED",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "external:github:openmontage",
     sourceUrl: "https://github.com/example/openmontage",
@@ -384,49 +296,35 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["compose-open-montage"],
       artifactTypes: ["montage-video"],
-      capabilityGaps: ["montage-generation"]
+      capabilityGaps: ["montage-generation"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "verify" }
-    ],
-    level2Data: {
-      operationalInstructions: "Assemble scenes using open-source timeline parameters."
-    },
-    level3Data: {
-      providerManifest: { mode: "ffmpeg" }
-    }
+    activationRules: []
   },
   {
     id: "res_awesome_claude_code_skills",
     name: "Awesome Claude Code Skills",
-    type: "SKILL",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "SUGGEST",
+    type: "DISCOVERY_FEED",
+    lifecycleState: "AUDITED",
+    maxExecutionAuthority: "SUGGEST",
     license: "MIT",
     provenance: "external:github:awesome-claude",
     sourceUrl: "https://github.com/example/awesome-claude",
     modes: ["HACKATHON"],
     capabilities: {
-      actions: ["implement-claude-agent-code"],
-      artifactTypes: ["autonomous-code-snippet"],
-      capabilityGaps: ["code-generation"]
+      actions: ["discover-skills"],
+      artifactTypes: ["skill-feed"],
+      capabilityGaps: ["skill-discovery"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "submit" }
-    ],
-    level2Data: {
-      operationalInstructions: "Inject high-performance assistant logic blocks."
-    },
-    level3Data: {
-      providerManifest: { engine: "claude-v3.5" }
-    }
+    activationRules: []
   },
   {
     id: "res_helloianneo_ecosystem",
     name: "helloianneo ecosystem",
-    type: "PROVIDER",
-    lifecycleState: "CAPTURED",
-    authorityCeiling: "READ_ONLY",
+    type: "DISCOVERY_FEED",
+    lifecycleState: "AUDITED",
+    maxExecutionAuthority: "READ_ONLY",
     license: "MIT",
     provenance: "external:github:helloianneo",
     sourceUrl: "https://github.com/example/helloianneo",
@@ -434,38 +332,26 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     capabilities: {
       actions: ["scan-ianneo-ecosystem"],
       artifactTypes: ["ecosystem-nodes"],
-      capabilityGaps: ["ecosystem-discovery"]
+      capabilityGaps: ["ecosystem-discovery"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [],
-    level2Data: {
-      operationalInstructions: "Scans repository connectivity graphs."
-    },
-    level3Data: {
-      providerManifest: { target: "ecosystem" }
-    }
+    activationRules: []
   },
   {
     id: "res_yummy_design_sprint",
     name: "Yummy Design Sprint",
-    type: "CORE_METHOD",
-    lifecycleState: "APPROVED",
-    authorityCeiling: "LOCAL_REVERSIBLE",
+    type: "DISCOVERY_FEED",
+    lifecycleState: "CAPTURED",
+    maxExecutionAuthority: "LOCAL_REVERSIBLE",
     license: "MIT",
     provenance: "internal:method:yummy-sprint",
     modes: ["DAY_CHALLENGE"],
     capabilities: {
       actions: ["run-rapid-design-sprint"],
       artifactTypes: ["rapid-sprint-backlog"],
-      capabilityGaps: ["rapid-prototyping"]
+      capabilityGaps: ["skill-discovery"],
+      requiredAuthority: "SUGGEST"
     },
-    activationRules: [
-      { requiredPhase: "verify" }
-    ],
-    level2Data: {
-      operationalInstructions: "Plan 1-day collaborative sprints."
-    },
-    level3Data: {
-      providerManifest: { participants: 5 }
-    }
+    activationRules: []
   }
 ]

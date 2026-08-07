@@ -39,7 +39,15 @@ export default function CreativeOSRegistryPage() {
             </thead>
             <tbody className="divide-y divide-stone-200 bg-white text-stone-700">
               {RESOURCE_REGISTRY.map((res) => {
-                const isRecommendable = res.lifecycleState === "APPROVED" || res.lifecycleState === "VALIDATED"
+                const isRecommendable = ["TEST_CANDIDATE", "TESTING", "AUDITED", "CAPTURED"].includes(res.lifecycleState)
+                
+                let recommendationTypeLabel = "Not yet human-approved"
+                if (res.type === "DISCOVERY_FEED") {
+                  recommendationTypeLabel = "Discovery only"
+                } else if (isRecommendable) {
+                  recommendationTypeLabel = "Experimental"
+                }
+
                 return (
                   <tr key={res.id} className="hover:bg-stone-50/50 transition-colors">
                     {/* Name & ID */}
@@ -69,7 +77,7 @@ export default function CreativeOSRegistryPage() {
                     </td>
                     {/* Authority Ceiling */}
                     <td className="px-6 py-4.5 whitespace-nowrap">
-                      <span className="font-semibold text-stone-800">{res.authorityCeiling}</span>
+                      <span className="font-semibold text-stone-800">{res.maxExecutionAuthority}</span>
                     </td>
                     {/* Modes */}
                     <td className="px-6 py-4.5">
@@ -98,9 +106,12 @@ export default function CreativeOSRegistryPage() {
                     </td>
                     {/* Recommendable Status */}
                     <td className="px-6 py-4.5 whitespace-nowrap text-center">
-                      <span className={`inline-flex h-2 w-2 rounded-full ring-4 ${
-                        isRecommendable ? "bg-emerald-500 ring-emerald-500/20" : "bg-stone-300 ring-stone-300/20"
-                      }`} aria-label={isRecommendable ? "Recommendable" : "Not Recommendable"}></span>
+                      <div className="flex flex-col items-center gap-1">
+                        <span className={`inline-flex h-2 w-2 rounded-full ring-4 ${
+                          isRecommendable ? "bg-amber-500 ring-amber-500/20" : "bg-stone-300 ring-stone-300/20"
+                        }`} aria-label={isRecommendable ? "Recommendable" : "Not Recommendable"}></span>
+                        <span className="text-[9px] text-stone-500">{recommendationTypeLabel}</span>
+                      </div>
                     </td>
                   </tr>
                 )
