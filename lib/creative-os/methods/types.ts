@@ -119,6 +119,41 @@ export interface CreativeMethodRuntimeContext {
   methods: Map<string, CreativeMethodDefinition>
 }
 
+// ─── Trust Evaluation Types (SRB V3) ────────────────────────────────────────
+
+export type TrustConventionEffect = "SUPPORTS" | "WEAKENS" | "NEUTRAL" | "CONTEXT_DEPENDENT"
+
+export interface TrustImpactEvaluation {
+  requirement: string
+  audienceBelief: string
+  conventionEffect: TrustConventionEffect
+  reasoning: string
+}
+
+// ─── Somatic Perceptual & Formal Types (SRD V3) ──────────────────────────────
+
+export interface SomaticPerceptualPrinciple {
+  responseTarget: string
+  principle: string
+  reasoning: string
+}
+
+export type StereotypeRiskRating = "LOW" | "MEDIUM" | "HIGH"
+
+export interface SomaticFormalOption {
+  option: string
+  whyItSupportsResponse: string
+  contextFit: string
+  stereotypeRisk: StereotypeRiskRating
+  stereotypeRiskReason: string
+}
+
+export interface SomaticSelectedDirection {
+  chosenExpression: string
+  because: string
+  rejectedAlternatives: string[]
+}
+
 /**
  * Audit log structure for method executions.
  * Links input metadata, output fingerprints, evaluation results, and human review status.

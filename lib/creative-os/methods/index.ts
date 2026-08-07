@@ -12,7 +12,13 @@ export type {
   CreativeMethodExecutionResult,
   CreativeMethodStatus,
   CreativeMethodAuthority,
-  CreativeMethodEvaluationRecord
+  CreativeMethodEvaluationRecord,
+  TrustConventionEffect,
+  TrustImpactEvaluation,
+  SomaticPerceptualPrinciple,
+  StereotypeRiskRating,
+  SomaticFormalOption,
+  SomaticSelectedDirection
 } from "./types"
 
 export { executeMethod, createRuntimeContext } from "./runtime"
