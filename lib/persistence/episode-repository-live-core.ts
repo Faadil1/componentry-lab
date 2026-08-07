@@ -1,8 +1,13 @@
 // ─────────────────────────────────────────────────────────────
-// Episode Repository Live Implementation (Internal)
+// Episode Repository Live Core (INTERNAL - TEST USE ONLY)
 // ─────────────────────────────────────────────────────────────
-// PostgreSQL implementation without server-only boundary.
-// For internal use; public API re-exports via episode-repository.ts
+// PostgreSQL implementation. Testable by Node (no server-only).
+//
+// ⚠️  APPLICATION CODE MUST NOT IMPORT THIS DIRECTLY.
+// Application code must import only from episode-repository.ts
+// which enforces the server-only boundary.
+//
+// Live tests may import this directly for Neon validation.
 // ─────────────────────────────────────────────────────────────
 
 import type {

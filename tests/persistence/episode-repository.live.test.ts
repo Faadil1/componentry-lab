@@ -14,10 +14,9 @@ config({ path: resolve(process.cwd(), ".env.local") })
 import { test, describe, before, after } from "node:test"
 import * as assert from "node:assert"
 import postgres from "postgres"
-import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-impl.ts"
+import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
 import type { EpisodeRepository } from "../../lib/persistence/episode-repository-core.ts"
 import type {
-  CanonicalEpisode,
   CanonicalBlocker,
   CanonicalDecision,
 } from "../../lib/persistence/canonical-types.ts"
@@ -379,7 +378,7 @@ describe("Live Neon Integration Tests", () => {
         actor: "test",
         idempotencyKey: "fk-test-005",
       })
-    } catch (err) {
+    } catch {
       caught = true
     }
 

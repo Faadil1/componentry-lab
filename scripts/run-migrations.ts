@@ -73,7 +73,7 @@ async function runMigrations() {
   try {
     await sql.end()
     console.log("✓ Connection closed")
-  } catch (err) {
+  } catch {
     console.error("Warning: Failed to close connection gracefully")
   }
 
