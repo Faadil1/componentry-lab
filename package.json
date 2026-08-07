@@ -9,7 +9,8 @@
         "lint": "eslint",
         "test:director": "node --experimental-strip-types --test tests/director.test.ts",
         "test:episode-state-adapter": "node --experimental-strip-types --test tests/adapters/episode-state-card-adapter.test.ts",
-        "test:youtube-provider": "node --experimental-strip-types --test tests/youtube/episode-state-provider.test.ts"
+        "test:youtube-provider": "node --experimental-strip-types --test tests/youtube/episode-state-provider.test.ts",
+        "test:episode-repository": "node --experimental-strip-types --test tests/persistence/episode-repository.test.ts"
     },
     "dependencies": {
         "@base-ui/react": "^1.6.0",
@@ -21,6 +22,7 @@
         "framer-motion": "^12.42.2",
         "lucide-react": "^1.26.0",
         "next": "16.2.11",
+        "postgres": "^3.4.9",
         "react": "19.2.4",
         "react-dom": "19.2.4",
         "shadcn": "^4.14.1",

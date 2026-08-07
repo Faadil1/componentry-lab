@@ -36,6 +36,7 @@
     "tests/episode-state-card-api.test.ts",
     "tests/episode-state-card-accessibility.test.ts",
     "tests/adapters/episode-state-card-adapter.test.ts",
-    "tests/youtube/episode-state-provider.test.ts"
+    "tests/youtube/episode-state-provider.test.ts",
+    "tests/persistence/episode-repository.test.ts"
   ]
 }
