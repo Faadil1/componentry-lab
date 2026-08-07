@@ -1,7 +1,5 @@
-"use client"
-
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { notFound } from "next/navigation"
 import { EpisodeStateCard } from "@/components/workflow/episode-state-card"
 import {
   episodeStateSnapshotToCardProps,
@@ -13,58 +11,20 @@ interface PageProps {
   params: { episodeId: string }
 }
 
-export default function EpisodeDetailPage({ params }: PageProps) {
-  const [cardProps, setCardProps] = useState<EpisodeStateCardProps | null>(null)
-  const [error, setError] = useState(false)
+export default async function EpisodeDetailPage({ params }: PageProps) {
+  const snapshot = await getEpisodeState(params.episodeId)
 
-  useEffect(() => {
-    getEpisodeState(params.episodeId).then((snapshot) => {
-      if (!snapshot) {
-        setError(true)
-        return
-      }
-      setCardProps(episodeStateSnapshotToCardProps(snapshot))
-    })
-  }, [params.episodeId])
-
-  if (error) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-neutral-900">
-              Episode not found
-            </h1>
-            <p className="mt-2 text-neutral-600">
-              Episode {params.episodeId} could not be loaded.
-            </p>
-          </div>
-          <Link
-            href="/youtube"
-            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-4 py-2 font-medium text-neutral-700 transition hover:bg-neutral-50"
-          >
-            Back to episodes
-          </Link>
-        </div>
-      </div>
-    )
+  if (!snapshot) {
+    notFound()
   }
 
-  if (!cardProps) {
-    return (
-      <div className="space-y-6">
-        <div className="h-32 rounded-lg border border-neutral-200 bg-neutral-50 animate-pulse" />
-      </div>
-    )
-  }
+  const cardProps: EpisodeStateCardProps =
+    episodeStateSnapshotToCardProps(snapshot)
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900">
-            YouTube OS
-          </h1>
           {cardProps.variant !== "unavailable" && (
             <>
               {cardProps.episodeNumber && (
@@ -134,9 +94,8 @@ export default function EpisodeDetailPage({ params }: PageProps) {
 
       <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
         <p className="text-sm text-amber-900">
-          <strong>Development notice:</strong> This surface consumes fixture-backed
-          episode state. The adapter and component are production-ready; state
-          source is development-only.
+          <strong>Development notice:</strong> Episode state is fixture-backed.
+          Adapter and component are production-ready; state source is development-only.
         </p>
       </section>
     </div>

@@ -1,17 +1,8 @@
-"use client"
-
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import { listEpisodes } from "@/lib/youtube/get-episode-state"
 
-export default function YouTubeOSPage() {
-  const [episodes, setEpisodes] = useState<
-    Array<{ id: string; title: string; episodeNumber?: number }>
-  >([])
-
-  useEffect(() => {
-    listEpisodes().then(setEpisodes)
-  }, [])
+export default async function YouTubeOSPage() {
+  const episodes = await listEpisodes()
 
   return (
     <div className="space-y-8">
@@ -20,7 +11,7 @@ export default function YouTubeOSPage() {
           Episode Operations
         </h2>
         <p className="mt-2 text-neutral-600">
-          Real-time workflow state visibility for Wealth Decoded episodes.
+          Workflow state visibility for Wealth Decoded episodes.
         </p>
       </section>
 
