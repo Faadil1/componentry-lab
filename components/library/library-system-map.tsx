@@ -35,7 +35,7 @@ export function LibrarySystemMap({ className }: LibrarySystemMapProps) {
     <div className={cn("rounded-lg border border-stone-850 bg-[#0c0b0a] p-4 space-y-4 text-left select-none text-xs", className)}>
       <div className="border-b border-stone-900 pb-2 flex justify-between items-center">
         <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-stone-500 font-bold">
-          Composition System Map
+          Component System Map
         </span>
         <span className="font-mono text-[8px] text-stone-600">Relations Hierarchy</span>
       </div>

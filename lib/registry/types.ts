@@ -249,6 +249,7 @@ export interface RegistryContext {
   actions: {
     setQuery: (q: string) => void
     toggleSourceKind: (kind: string) => void
+    setExactSourceKinds: (kinds: string[]) => void
     toggleResourceType: (type: string) => void
     toggleLifecycle: (lifecycle: string) => void
     toggleKind: (kind: RegistryEntryKind) => void

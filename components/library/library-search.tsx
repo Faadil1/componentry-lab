@@ -5,7 +5,7 @@ import { useComponentLibrary } from "./library-provider"
 
 export function LibrarySearch() {
   const { state, actions } = useComponentLibrary()
-  const { query } = state
+  const { query, selectedSourceKinds } = state
   const inputRef = React.useRef<HTMLInputElement | null>(null)
 
   // Listen to '/' to focus and Escape to clear
@@ -37,6 +37,12 @@ export function LibrarySearch() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [actions])
 
+  let placeholderStr = "Search components, resources, or capabilities... (Press '/' to focus)"
+  if (selectedSourceKinds.length === 1) {
+    if (selectedSourceKinds[0] === "COMPONENT") placeholderStr = "Search components... (Press '/' to focus)"
+    if (selectedSourceKinds[0] === "CREATIVE_RESOURCE") placeholderStr = "Search resources... (Press '/' to focus)"
+  }
+
   return (
     <div className="relative max-w-xl w-full">
       <input
@@ -44,7 +50,7 @@ export function LibrarySearch() {
         type="search"
         value={query}
         onChange={(e) => actions.setQuery(e.target.value)}
-        placeholder="Search components, resources, or capabilities... (Press '/' to focus)"
+        placeholder={placeholderStr}
         className="w-full rounded-lg border border-stone-850 bg-[#0e0d0c] text-stone-200 px-4 py-3 font-mono text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 placeholder-stone-600 transition-colors"
         aria-label="Search component registry"
       />

@@ -34,10 +34,6 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
 
   if (!filtersVisible) return null
 
-  const sourceKinds = [
-    { key: "COMPONENT", label: "Components" },
-    { key: "CREATIVE_RESOURCE", label: "Creative Resources" },
-  ]
 
   const resourceTypes = [
     { key: "CORE_METHOD", label: "Core Method" },
@@ -112,47 +108,70 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
 
   const showComponentFilters = selectedSourceKinds.length === 0 || selectedSourceKinds.includes("COMPONENT")
   const showResourceFilters = selectedSourceKinds.length === 0 || selectedSourceKinds.includes("CREATIVE_RESOURCE")
+  const isAll = selectedSourceKinds.length === 0
+  const isComponentsOnly = selectedSourceKinds.length === 1 && selectedSourceKinds[0] === "COMPONENT"
+  const isResourcesOnly = selectedSourceKinds.length === 1 && selectedSourceKinds[0] === "CREATIVE_RESOURCE"
 
   return (
-    <aside className={cn("space-y-6 rounded-xl border border-stone-850 bg-[#0c0b0a] p-5 shrink-0 select-none text-xs", className)}>
-      <div className="flex justify-between items-center border-b border-stone-900 pb-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-500 font-bold">
-          Filter Options
-        </span>
-        <button
-          type="button"
-          onClick={actions.clearFilters}
-          className="font-mono text-[9px] text-cyan-500 uppercase tracking-widest font-bold hover:text-cyan-300 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500"
-        >
-          Clear All
-        </button>
-      </div>
-
-      {/* Source Kind Checklist */}
+    <aside className={cn("w-64 shrink-0 space-y-6 rounded-xl border border-stone-850 bg-[#0c0b0a] p-5 select-none text-xs", className)}>
+      
+      {/* Source Kind Switcher (Primary Orientation) */}
       <div className="space-y-2">
         <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
-          Source Kind
+          Library Scope
         </span>
-        <div className="space-y-1.5">
-          {sourceKinds.map((k) => {
-            const checked = selectedSourceKinds.includes(k.key)
-            const count = k.key === "COMPONENT" ? counts.components : counts.resources
-            return (
-              <label key={k.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => actions.toggleSourceKind(k.key)}
-                    className="accent-cyan-500"
-                  />
-                  <span>{k.label}</span>
-                </div>
-                <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
-              </label>
-            )
-          })}
+        <div className="flex flex-col gap-1.5">
+          <button
+            onClick={() => actions.setExactSourceKinds([])}
+            className={cn(
+              "flex items-center justify-between px-3 py-2 rounded border text-left transition-colors font-mono text-[10px] uppercase font-bold",
+              isAll
+                ? "border-cyan-500/40 bg-cyan-950/20 text-cyan-400"
+                : "border-stone-850 bg-[#0e0d0c] text-stone-500 hover:border-stone-800 hover:text-stone-300"
+            )}
+          >
+            <span>All Sources</span>
+            <span className="text-stone-600 text-[9px]">{counts.total}</span>
+          </button>
+          
+          <button
+            onClick={() => actions.setExactSourceKinds(["COMPONENT"])}
+            className={cn(
+              "flex items-center justify-between px-3 py-2 rounded border text-left transition-colors font-mono text-[10px] uppercase font-bold",
+              isComponentsOnly
+                ? "border-cyan-500/40 bg-cyan-950/20 text-cyan-400"
+                : "border-stone-850 bg-[#0e0d0c] text-stone-500 hover:border-stone-800 hover:text-stone-300"
+            )}
+          >
+            <span>Components</span>
+            <span className="text-stone-600 text-[9px]">{counts.components}</span>
+          </button>
+
+          <button
+            onClick={() => actions.setExactSourceKinds(["CREATIVE_RESOURCE"])}
+            className={cn(
+              "flex items-center justify-between px-3 py-2 rounded border text-left transition-colors font-mono text-[10px] uppercase font-bold",
+              isResourcesOnly
+                ? "border-cyan-500/40 bg-cyan-950/20 text-cyan-400"
+                : "border-stone-850 bg-[#0e0d0c] text-stone-500 hover:border-stone-800 hover:text-stone-300"
+            )}
+          >
+            <span>Creative Resources</span>
+            <span className="text-stone-600 text-[9px]">{counts.resources}</span>
+          </button>
         </div>
+      </div>
+
+      <div className="flex items-center justify-between border-t border-stone-900 pt-6">
+        <span className="font-mono text-[11px] font-bold text-stone-300 uppercase tracking-wider">
+          Filters
+        </span>
+        <button
+          onClick={actions.clearFilters}
+          className="font-mono text-[9px] text-stone-500 hover:text-stone-300 uppercase font-bold"
+        >
+          Clear
+        </button>
       </div>
 
       {showComponentFilters && (

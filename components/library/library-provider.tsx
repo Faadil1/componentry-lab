@@ -228,7 +228,33 @@ export function LibraryProvider({
   const actions = React.useMemo(() => ({
     setQuery: (q: string) => setQuery(q),
     toggleSourceKind: (kind: string) => {
-      setSelectedSourceKinds(prev => prev.includes(kind) ? prev.filter(k => k !== kind) : [...prev, kind])
+      setSelectedSourceKinds(prev => {
+        const next = prev.includes(kind) ? prev.filter(k => k !== kind) : [...prev, kind]
+        
+        // Clear incompatible filters based on new scope
+        if (next.length === 1 && next[0] === "COMPONENT") {
+          setSelectedResourceTypes([])
+          setSelectedLifecycles([])
+        } else if (next.length === 1 && next[0] === "CREATIVE_RESOURCE") {
+          setSelectedKinds([])
+          setSelectedMaturities([])
+          setSelectedViewports([])
+          setSelectedRuntime("all")
+        }
+        return next
+      })
+    },
+    setExactSourceKinds: (kinds: string[]) => {
+      setSelectedSourceKinds(kinds)
+      if (kinds.length === 1 && kinds[0] === "COMPONENT") {
+        setSelectedResourceTypes([])
+        setSelectedLifecycles([])
+      } else if (kinds.length === 1 && kinds[0] === "CREATIVE_RESOURCE") {
+        setSelectedKinds([])
+        setSelectedMaturities([])
+        setSelectedViewports([])
+        setSelectedRuntime("all")
+      }
     },
     toggleResourceType: (type: string) => {
       setSelectedResourceTypes(prev => prev.includes(type) ? prev.filter(k => k !== type) : [...prev, type])

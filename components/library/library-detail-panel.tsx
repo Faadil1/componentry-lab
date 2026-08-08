@@ -132,17 +132,43 @@ export function LibraryDetailPanel({ className }: LibraryDetailPanelProps) {
         </div>
       )}
 
-      {/* Resource specs grid */}
+      {/* Creative Resource Semantic Sections */}
       {item.sourceKind === "CREATIVE_RESOURCE" && item.resourceDetails && (
-        <div className="grid grid-cols-2 gap-2 text-[10px] font-mono border-t border-stone-900 pt-4">
-          <div>
-            <span className="text-stone-500 block uppercase">Auth Ceiling</span>
-            <span className="text-stone-300 font-bold uppercase">{item.resourceDetails.maxExecutionAuthority.replace(/_/g, " ")}</span>
+        <div className="space-y-4 border-t border-stone-900 pt-4 text-left">
+          
+          <div className="space-y-1">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-widest block font-bold">Capabilities</span>
+            <div className="flex flex-wrap gap-1.5">
+              {item.capabilityRefs.map((cap) => (
+                <span key={cap} className="font-mono text-[9px] text-stone-300 bg-stone-950 px-1.5 py-0.5 rounded border border-stone-850">
+                  {cap.replace(/-/g, " ").replace(/_/g, " ")}
+                </span>
+              ))}
+            </div>
           </div>
-          <div>
-            <span className="text-stone-500 block uppercase">License</span>
-            <span className="text-stone-300 font-bold uppercase">{item.resourceDetails.license}</span>
+
+          <div className="space-y-1">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-widest block font-bold">Governance</span>
+            <div className="grid grid-cols-2 gap-2 text-[10px] font-mono bg-[#11100f] border border-stone-850 rounded p-2.5">
+              <div>
+                <span className="text-stone-600 block uppercase text-[8px]">Lifecycle</span>
+                <span className="text-stone-300 uppercase">{item.status.value.replace(/_/g, " ")}</span>
+              </div>
+              <div>
+                <span className="text-stone-600 block uppercase text-[8px]">Authority</span>
+                <span className={cn("uppercase", (item.resourceDetails.maxExecutionAuthority as string) === "UNKNOWN" ? "text-amber-500/80" : "text-stone-300")}>
+                  {item.resourceDetails.maxExecutionAuthority.replace(/_/g, " ")}
+                </span>
+              </div>
+              <div className="col-span-2 pt-1 mt-1 border-t border-stone-900">
+                <span className="text-stone-600 block uppercase text-[8px]">License</span>
+                <span className={cn("uppercase", item.resourceDetails.license === "UNKNOWN" ? "text-amber-500/80" : "text-stone-300")}>
+                  {item.resourceDetails.license}
+                </span>
+              </div>
+            </div>
           </div>
+
         </div>
       )}
 
