@@ -2,8 +2,6 @@
 
 import * as React from "react"
 import { useComponentLibrary } from "./library-provider"
-import { getRegistryEntryById } from "@/lib/registry/selectors"
-import type { RegistryEntry } from "@/lib/registry/types"
 import { cn } from "@/lib/utils"
 
 export interface LibrarySystemMapProps {
@@ -12,19 +10,26 @@ export interface LibrarySystemMapProps {
 
 export function LibrarySystemMap({ className }: LibrarySystemMapProps) {
   const { state, actions } = useComponentLibrary()
-  const { activeEntryId, detailVisible } = state
+  const { activeEntryId, detailVisible, results } = state
 
-  const entry = React.useMemo(() => {
-    return activeEntryId ? getRegistryEntryById(activeEntryId) || null : null
-  }, [activeEntryId])
+  const item = React.useMemo(() => {
+    return activeEntryId ? results.find(r => r.projectionId === activeEntryId) || null : null
+  }, [activeEntryId, results])
 
-  if (!detailVisible || !entry) return null
+  if (!detailVisible || !item) return null
 
-  // Collect dependencies entries
+  // System map only applies to components for now
+  if (item.sourceKind !== "COMPONENT" || !item.componentDetails) {
+    return null
+  }
+
+  const entry = item.componentDetails.entry
+
+  // Collect dependencies entries from the projection results
   const dependencies = entry.relations
     .filter((rel) => rel.type === "uses" || rel.type === "composes" || rel.type === "depends-on")
-    .map((rel) => getRegistryEntryById(rel.targetId))
-    .filter((e): e is RegistryEntry => !!e)
+    .map((rel) => results.find(r => r.sourceKind === "COMPONENT" && r.sourceId === rel.targetId))
+    .filter(e => !!e)
 
   return (
     <div className={cn("rounded-lg border border-stone-850 bg-[#0c0b0a] p-4 space-y-4 text-left select-none text-xs", className)}>
@@ -43,13 +48,13 @@ export function LibrarySystemMap({ className }: LibrarySystemMapProps) {
             <div className="grid gap-2 sm:grid-cols-2">
               {dependencies.map((dep) => (
                 <div
-                  key={dep.id}
-                  onClick={() => actions.selectEntry(dep.id)}
+                  key={dep!.projectionId}
+                  onClick={() => actions.selectEntry(dep!.projectionId)}
                   className="p-2 rounded border border-stone-900 bg-stone-950/60 hover:border-stone-850 cursor-pointer flex justify-between items-center"
                 >
                   <div>
-                    <span className="font-mono text-[9.5px] text-stone-300 font-bold block uppercase">{dep.label}</span>
-                    <span className="font-mono text-[8px] text-stone-500 block uppercase">{dep.kind}</span>
+                    <span className="font-mono text-[9.5px] text-stone-300 font-bold block uppercase">{dep!.title}</span>
+                    <span className="font-mono text-[8px] text-stone-500 block uppercase">{dep!.componentDetails?.kind}</span>
                   </div>
                   <span className="font-mono text-[10px] text-stone-600">→</span>
                 </div>
@@ -66,10 +71,10 @@ export function LibrarySystemMap({ className }: LibrarySystemMapProps) {
         <div className="p-3 rounded border border-cyan-500/20 bg-cyan-950/10 flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="font-mono text-[8px] text-cyan-400 uppercase tracking-wider font-bold">Active Focus Node</span>
-            <span className="font-mono text-[10px] text-stone-200 uppercase font-bold block">{entry.label}</span>
+            <span className="font-mono text-[10px] text-stone-200 uppercase font-bold block">{item.title}</span>
           </div>
           <span className="font-mono text-[8.5px] text-cyan-500 border border-cyan-900 px-1 py-0.2 rounded uppercase">
-            {entry.kind}
+            {item.componentDetails.kind}
           </span>
         </div>
       </div>

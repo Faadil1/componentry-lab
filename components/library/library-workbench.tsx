@@ -17,11 +17,11 @@ import { LibraryDetailPanel } from "./library-detail-panel"
 import { LibrarySystemMap } from "./library-system-map"
 import { LibraryExport } from "./library-export"
 import { LibraryEmptyState } from "./library-empty-state"
-import type { RegistryEntry } from "@/lib/registry/types"
+import type { LibraryProjectionItem } from "@/lib/library/types"
 import { cn } from "@/lib/utils"
 
 export interface LibraryWorkbenchProps {
-  entries?: RegistryEntry[]
+  entries?: LibraryProjectionItem[]
   categories?: unknown
   initialQuery?: string
   initialViewMode?: "grid" | "list"
@@ -29,7 +29,7 @@ export interface LibraryWorkbenchProps {
   showFilters?: boolean
   showStats?: boolean
   className?: string
-  onEntrySelect?: (entry: RegistryEntry | null) => void
+  onEntrySelect?: (entry: LibraryProjectionItem | null) => void
 }
 
 function WorkbenchContent({

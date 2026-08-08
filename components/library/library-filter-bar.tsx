@@ -19,6 +19,9 @@ export interface LibraryFilterBarProps {
 export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
   const { state, actions } = useComponentLibrary()
   const {
+    selectedSourceKinds,
+    selectedResourceTypes,
+    selectedLifecycles,
     selectedKinds,
     selectedCategories,
     selectedMaturities,
@@ -30,6 +33,34 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
   } = state
 
   if (!filtersVisible) return null
+
+  const sourceKinds = [
+    { key: "COMPONENT", label: "Components" },
+    { key: "CREATIVE_RESOURCE", label: "Creative Resources" },
+  ]
+
+  const resourceTypes = [
+    { key: "CORE_METHOD", label: "Core Method" },
+    { key: "KNOWLEDGE_PACK", label: "Knowledge Pack" },
+    { key: "SKILL", label: "Skill" },
+    { key: "PROVIDER", label: "Provider" },
+    { key: "COMPONENT_SOURCE", label: "Component Source" },
+    { key: "PRODUCTION_PIPELINE", label: "Production Pipeline" },
+    { key: "DISCOVERY_FEED", label: "Discovery Feed" },
+    { key: "REFERENCE_ONLY", label: "Reference Only" },
+  ]
+
+  const lifecycles = [
+    { key: "CAPTURED", label: "Captured" },
+    { key: "AUDITED", label: "Audited" },
+    { key: "TEST_CANDIDATE", label: "Test Candidate" },
+    { key: "TESTING", label: "Testing" },
+    { key: "VALIDATED", label: "Validated" },
+    { key: "APPROVED", label: "Approved" },
+    { key: "DEPRECATED", label: "Deprecated" },
+    { key: "SUPERSEDED", label: "Superseded" },
+    { key: "REJECTED", label: "Rejected" },
+  ]
 
   const kinds: Array<{ key: RegistryEntryKind; label: string }> = [
     { key: "interaction", label: "Interactions" },
@@ -79,6 +110,9 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
 
   const categories = Object.values(registryCategories)
 
+  const showComponentFilters = selectedSourceKinds.length === 0 || selectedSourceKinds.includes("COMPONENT")
+  const showResourceFilters = selectedSourceKinds.length === 0 || selectedSourceKinds.includes("CREATIVE_RESOURCE")
+
   return (
     <aside className={cn("space-y-6 rounded-xl border border-stone-850 bg-[#0c0b0a] p-5 shrink-0 select-none text-xs", className)}>
       <div className="flex justify-between items-center border-b border-stone-900 pb-2">
@@ -94,41 +128,22 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
         </button>
       </div>
 
-      {/* Runtimes Dropdown Select */}
-      <div className="space-y-2">
-        <label htmlFor="runtime-selector" className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
-          Runtime Platform
-        </label>
-        <select
-          id="runtime-selector"
-          value={selectedRuntime}
-          onChange={(e) => actions.setRuntime(e.target.value as RegistryRuntime | "all")}
-          className="w-full bg-stone-900 border border-stone-850 rounded px-2.5 py-1.5 font-mono text-[10px] text-stone-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 cursor-pointer"
-        >
-          {runtimes.map((rt) => (
-            <option key={rt.key} value={rt.key}>
-              {rt.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Kinds Checklist */}
+      {/* Source Kind Checklist */}
       <div className="space-y-2">
         <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
-          Entry Kinds
+          Source Kind
         </span>
         <div className="space-y-1.5">
-          {kinds.map((k) => {
-            const checked = selectedKinds.includes(k.key)
-            const count = counts.kinds[k.key] || 0
+          {sourceKinds.map((k) => {
+            const checked = selectedSourceKinds.includes(k.key)
+            const count = k.key === "COMPONENT" ? counts.components : counts.resources
             return (
               <label key={k.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     checked={checked}
-                    onChange={() => actions.toggleKind(k.key)}
+                    onChange={() => actions.toggleSourceKind(k.key)}
                     className="accent-cyan-500"
                   />
                   <span>{k.label}</span>
@@ -140,34 +155,138 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
         </div>
       </div>
 
-      {/* Maturities Checklist */}
-      <div className="space-y-2 border-t border-stone-900 pt-3">
-        <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
-          Maturity Levels
-        </span>
-        <div className="space-y-1.5">
-          {maturities.map((m) => {
-            const checked = selectedMaturities.includes(m.key)
-            const count = counts.maturities[m.key] || 0
-            return (
-              <label key={m.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => actions.toggleMaturity(m.key)}
-                    className="accent-cyan-500"
-                  />
-                  <span>{m.label}</span>
-                </div>
-                <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
-              </label>
-            )
-          })}
-        </div>
-      </div>
+      {showComponentFilters && (
+        <>
+          {/* Runtimes Dropdown Select */}
+          <div className="space-y-2 border-t border-stone-900 pt-3">
+            <label htmlFor="runtime-selector" className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+              Runtime Platform
+            </label>
+            <select
+              id="runtime-selector"
+              value={selectedRuntime}
+              onChange={(e) => actions.setRuntime(e.target.value as RegistryRuntime | "all")}
+              className="w-full bg-stone-900 border border-stone-850 rounded px-2.5 py-1.5 font-mono text-[10px] text-stone-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 cursor-pointer"
+            >
+              {runtimes.map((rt) => (
+                <option key={rt.key} value={rt.key}>
+                  {rt.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      {/* Categories Checklist */}
+          {/* Kinds Checklist */}
+          <div className="space-y-2 border-t border-stone-900 pt-3">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+              Entry Kinds
+            </span>
+            <div className="space-y-1.5">
+              {kinds.map((k) => {
+                const checked = selectedKinds.includes(k.key)
+                const count = counts.kinds[k.key] || 0
+                return (
+                  <label key={k.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => actions.toggleKind(k.key)}
+                        className="accent-cyan-500"
+                      />
+                      <span>{k.label}</span>
+                    </div>
+                    <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Maturities Checklist */}
+          <div className="space-y-2 border-t border-stone-900 pt-3">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+              Maturity Levels
+            </span>
+            <div className="space-y-1.5">
+              {maturities.map((m) => {
+                const checked = selectedMaturities.includes(m.key)
+                const count = counts.maturities[m.key] || 0
+                return (
+                  <label key={m.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => actions.toggleMaturity(m.key)}
+                        className="accent-cyan-500"
+                      />
+                      <span>{m.label}</span>
+                    </div>
+                    <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
+                  </label>
+                )
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {showResourceFilters && (
+        <>
+          {/* Resource Types Checklist */}
+          <div className="space-y-2 border-t border-stone-900 pt-3">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+              Resource Types
+            </span>
+            <div className="space-y-1.5 max-h-[150px] overflow-y-auto pr-1">
+              {resourceTypes.map((k) => {
+                const checked = selectedResourceTypes.includes(k.key)
+                return (
+                  <label key={k.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => actions.toggleResourceType(k.key)}
+                        className="accent-cyan-500"
+                      />
+                      <span>{k.label}</span>
+                    </div>
+                  </label>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Lifecycles Checklist */}
+          <div className="space-y-2 border-t border-stone-900 pt-3">
+            <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+              Lifecycles
+            </span>
+            <div className="space-y-1.5 max-h-[150px] overflow-y-auto pr-1">
+              {lifecycles.map((m) => {
+                const checked = selectedLifecycles.includes(m.key)
+                return (
+                  <label key={m.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => actions.toggleLifecycle(m.key)}
+                        className="accent-cyan-500"
+                      />
+                      <span>{m.label}</span>
+                    </div>
+                  </label>
+                )
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Categories Checklist (Shared conceptually but categories mostly map to components) */}
       <div className="space-y-2 border-t border-stone-900 pt-3">
         <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
           Categories Taxonomy
@@ -222,31 +341,33 @@ export function LibraryFilterBar({ className }: LibraryFilterBarProps) {
       </div>
 
       {/* Viewports Checklist */}
-      <div className="space-y-2 border-t border-stone-900 pt-3">
-        <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
-          Viewports Layouts
-        </span>
-        <div className="space-y-1.5">
-          {viewports.map((vp) => {
-            const checked = selectedViewports.includes(vp.key)
-            const count = counts.viewports[vp.key] || 0
-            return (
-              <label key={vp.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => actions.toggleViewport(vp.key)}
-                    className="accent-cyan-500"
-                  />
-                  <span>{vp.label}</span>
-                </div>
-                <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
-              </label>
-            )
-          })}
+      {showComponentFilters && (
+        <div className="space-y-2 border-t border-stone-900 pt-3">
+          <span className="font-mono text-[9px] text-stone-500 uppercase tracking-wider block font-bold">
+            Viewports Layouts
+          </span>
+          <div className="space-y-1.5">
+            {viewports.map((vp) => {
+              const checked = selectedViewports.includes(vp.key)
+              const count = counts.viewports[vp.key] || 0
+              return (
+                <label key={vp.key} className="flex items-center justify-between gap-2 cursor-pointer font-mono text-[10px] text-stone-400 hover:text-stone-200">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => actions.toggleViewport(vp.key)}
+                      className="accent-cyan-500"
+                    />
+                    <span>{vp.label}</span>
+                  </div>
+                  <span className="text-stone-600 text-[9px] font-semibold">{count}</span>
+                </label>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   )
 }

@@ -44,7 +44,7 @@ export function LibrarySearch() {
         type="search"
         value={query}
         onChange={(e) => actions.setQuery(e.target.value)}
-        placeholder="Search components or exports... (Press '/' to focus)"
+        placeholder="Search components, resources, or capabilities... (Press '/' to focus)"
         className="w-full rounded-lg border border-stone-850 bg-[#0e0d0c] text-stone-200 px-4 py-3 font-mono text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 placeholder-stone-600 transition-colors"
         aria-label="Search component registry"
       />

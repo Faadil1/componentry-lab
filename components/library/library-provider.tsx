@@ -7,23 +7,15 @@
 import * as React from "react"
 import type {
   RegistryContext,
-  RegistryEntryId,
   RegistryEntryKind,
   RegistryCategoryId,
   RegistryMaturity,
   RegistryCapability,
   RegistryViewport,
   RegistryRuntime,
-  RegistryEntry,
-  RegistryFilterState,
 } from "@/lib/registry/types"
-import {
-  registryComponents,
-  filterRegistryEntries,
-  searchRegistryEntries,
-  countRegistryFacets,
-  getRegistryEntryById,
-} from "@/lib/registry"
+import type { LibraryProjectionItem } from "@/lib/library/types"
+import { getLibraryProjection } from "@/lib/library/types"
 
 const LibraryContext = React.createContext<RegistryContext | null>(null)
 
@@ -42,7 +34,7 @@ export interface LibraryProviderProps {
   initialQuery?: string
   initialViewMode?: "grid" | "list"
   children: React.ReactNode
-  onEntrySelect?: (entry: RegistryEntry | null) => void
+  onEntrySelect?: (entry: LibraryProjectionItem | null) => void
 }
 
 export function LibraryProvider({
@@ -52,6 +44,9 @@ export function LibraryProvider({
   onEntrySelect,
 }: LibraryProviderProps) {
   const [query, setQuery] = React.useState(initialQuery)
+  const [selectedSourceKinds, setSelectedSourceKinds] = React.useState<string[]>([])
+  const [selectedResourceTypes, setSelectedResourceTypes] = React.useState<string[]>([])
+  const [selectedLifecycles, setSelectedLifecycles] = React.useState<string[]>([])
   const [selectedKinds, setSelectedKinds] = React.useState<RegistryEntryKind[]>([])
   const [selectedCategories, setSelectedCategories] = React.useState<RegistryCategoryId[]>([])
   const [selectedMaturities, setSelectedMaturities] = React.useState<RegistryMaturity[]>([])
@@ -59,7 +54,7 @@ export function LibraryProvider({
   const [selectedViewports, setSelectedViewports] = React.useState<RegistryViewport[]>([])
   const [selectedRuntime, setSelectedRuntime] = React.useState<RegistryRuntime | "all">("all")
   const [viewMode, setViewMode] = React.useState<"grid" | "list">(initialViewMode)
-  const [activeEntryId, setActiveEntryId] = React.useState<RegistryEntryId | null>(null)
+  const [activeEntryId, setActiveEntryId] = React.useState<string | null>(null)
   const [filtersVisible, setFiltersVisible] = React.useState(true)
   const [detailVisible, setDetailVisible] = React.useState(false)
 
@@ -69,59 +64,121 @@ export function LibraryProvider({
     onEntrySelectRef.current = onEntrySelect
   }, [onEntrySelect])
 
+  const allItems = React.useMemo(() => getLibraryProjection(), [])
+
   // Sync state parameters from URL search params on mount
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search)
       const qParam = params.get("q")
+      const skParam = params.get("sourceKind")
+      const rtParam = params.get("resourceType")
+      const lcParam = params.get("lifecycle")
       const kindParam = params.get("kind")
       const catParam = params.get("category")
       const matParam = params.get("maturity")
       const capParam = params.get("capability")
       const vpParam = params.get("viewport")
-      const rtParam = params.get("runtime")
+      const runParam = params.get("runtime")
       const viewParam = params.get("view")
-      const itemParam = params.get("item") as RegistryEntryId
+      const itemParam = params.get("item")
 
       setTimeout(() => {
         if (qParam) setQuery(qParam)
+        if (skParam) setSelectedSourceKinds(skParam.split(","))
+        if (rtParam) setSelectedResourceTypes(rtParam.split(","))
+        if (lcParam) setSelectedLifecycles(lcParam.split(","))
         if (kindParam) setSelectedKinds(kindParam.split(",") as RegistryEntryKind[])
         if (catParam) setSelectedCategories(catParam.split(",") as RegistryCategoryId[])
         if (matParam) setSelectedMaturities(matParam.split(",") as RegistryMaturity[])
         if (capParam) setSelectedCapabilities(capParam.split(",") as RegistryCapability[])
         if (vpParam) setSelectedViewports(vpParam.split(",") as RegistryViewport[])
-        if (rtParam) setSelectedRuntime(rtParam as RegistryRuntime | "all")
+        if (runParam) setSelectedRuntime(runParam as RegistryRuntime | "all")
         if (viewParam === "list" || viewParam === "grid") setViewMode(viewParam)
-        if (itemParam && registryComponents.some(e => e.id === itemParam)) {
+        if (itemParam && allItems.some(e => e.projectionId === itemParam)) {
           setActiveEntryId(itemParam)
           setDetailVisible(true)
         }
       }, 0)
     }
-  }, [])
+  }, [allItems])
 
   // Filter and Search evaluations
   const results = React.useMemo(() => {
-    const filterState: Partial<RegistryFilterState> = {
-      selectedKinds,
-      selectedCategories,
-      selectedMaturities,
-      selectedCapabilities,
-      selectedViewports,
-      selectedRuntime,
+    let filtered = allItems
+
+    if (selectedSourceKinds.length > 0) {
+      filtered = filtered.filter(item => selectedSourceKinds.includes(item.sourceKind))
     }
-    const filtered = filterRegistryEntries(filterState, registryComponents)
-    const searched = searchRegistryEntries(query, filtered)
-    return searched.map(s => s.entry)
-  }, [query, selectedKinds, selectedCategories, selectedMaturities, selectedCapabilities, selectedViewports, selectedRuntime])
+    if (selectedResourceTypes.length > 0) {
+      filtered = filtered.filter(item => item.resourceDetails && selectedResourceTypes.includes(item.resourceDetails.resourceType))
+    }
+    if (selectedLifecycles.length > 0) {
+      filtered = filtered.filter(item => selectedLifecycles.includes(item.status.value))
+    }
+    if (selectedKinds.length > 0) {
+      filtered = filtered.filter(item => item.componentDetails && selectedKinds.includes(item.componentDetails.kind))
+    }
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(item => item.category && selectedCategories.includes(item.category as RegistryCategoryId))
+    }
+    if (selectedMaturities.length > 0) {
+      filtered = filtered.filter(item => item.componentDetails && selectedMaturities.includes(item.componentDetails.maturity))
+    }
+    if (selectedCapabilities.length > 0) {
+      filtered = filtered.filter(item => selectedCapabilities.some(c => item.capabilityRefs.includes(c)))
+    }
+    if (selectedViewports.length > 0) {
+      filtered = filtered.filter(item => item.componentDetails && selectedViewports.some(vp => item.componentDetails!.viewports.includes(vp)))
+    }
+    if (selectedRuntime !== "all") {
+      filtered = filtered.filter(item => item.componentDetails && item.componentDetails.runtimes.includes(selectedRuntime))
+    }
+
+    if (query) {
+      const lowerQuery = query.toLowerCase()
+      filtered = filtered.filter(item => item.searchText.includes(lowerQuery))
+    }
+
+    return filtered
+  }, [allItems, query, selectedSourceKinds, selectedResourceTypes, selectedLifecycles, selectedKinds, selectedCategories, selectedMaturities, selectedCapabilities, selectedViewports, selectedRuntime])
 
   const counts = React.useMemo(() => {
-    return countRegistryFacets(results)
+    const counts = {
+      total: results.length,
+      components: 0,
+      resources: 0,
+      kinds: {} as Record<RegistryEntryKind, number>,
+      categories: {} as Record<RegistryCategoryId, number>,
+      maturities: {} as Record<RegistryMaturity, number>,
+      capabilities: {} as Record<RegistryCapability, number>,
+      viewports: {} as Record<RegistryViewport, number>,
+    }
+
+    for (const item of results) {
+      if (item.sourceKind === "COMPONENT") counts.components++
+      if (item.sourceKind === "CREATIVE_RESOURCE") counts.resources++
+
+      if (item.componentDetails) {
+        counts.kinds[item.componentDetails.kind] = (counts.kinds[item.componentDetails.kind] || 0) + 1
+        counts.maturities[item.componentDetails.maturity] = (counts.maturities[item.componentDetails.maturity] || 0) + 1
+        for (const vp of item.componentDetails.viewports) {
+          counts.viewports[vp] = (counts.viewports[vp] || 0) + 1
+        }
+      }
+      if (item.category) {
+        counts.categories[item.category as RegistryCategoryId] = (counts.categories[item.category as RegistryCategoryId] || 0) + 1
+      }
+      for (const cap of item.capabilityRefs) {
+        counts.capabilities[cap as RegistryCapability] = (counts.capabilities[cap as RegistryCapability] || 0) + 1
+      }
+    }
+    return counts
   }, [results])
 
   const activeEntry = React.useMemo(() => {
-    return activeEntryId ? getRegistryEntryById(activeEntryId) || null : null
-  }, [activeEntryId])
+    return activeEntryId ? allItems.find(e => e.projectionId === activeEntryId) || null : null
+  }, [activeEntryId, allItems])
 
   // Fire callback on active entry change
   React.useEffect(() => {
@@ -131,6 +188,9 @@ export function LibraryProvider({
   const snapshot = React.useMemo(() => {
     return {
       query,
+      selectedSourceKinds,
+      selectedResourceTypes,
+      selectedLifecycles,
       selectedKinds,
       selectedCategories,
       selectedMaturities,
@@ -140,13 +200,16 @@ export function LibraryProvider({
       viewMode,
       activeEntryId,
     }
-  }, [query, selectedKinds, selectedCategories, selectedMaturities, selectedCapabilities, selectedViewports, selectedRuntime, viewMode, activeEntryId])
+  }, [query, selectedSourceKinds, selectedResourceTypes, selectedLifecycles, selectedKinds, selectedCategories, selectedMaturities, selectedCapabilities, selectedViewports, selectedRuntime, viewMode, activeEntryId])
 
   // Update URL search parameters when snapshot updates
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       const q = new URLSearchParams()
       if (snapshot.query) q.set("q", snapshot.query)
+      if (snapshot.selectedSourceKinds.length > 0) q.set("sourceKind", snapshot.selectedSourceKinds.join(","))
+      if (snapshot.selectedResourceTypes.length > 0) q.set("resourceType", snapshot.selectedResourceTypes.join(","))
+      if (snapshot.selectedLifecycles.length > 0) q.set("lifecycle", snapshot.selectedLifecycles.join(","))
       if (snapshot.selectedKinds.length > 0) q.set("kind", snapshot.selectedKinds.join(","))
       if (snapshot.selectedCategories.length > 0) q.set("category", snapshot.selectedCategories.join(","))
       if (snapshot.selectedMaturities.length > 0) q.set("maturity", snapshot.selectedMaturities.join(","))
@@ -164,6 +227,15 @@ export function LibraryProvider({
 
   const actions = React.useMemo(() => ({
     setQuery: (q: string) => setQuery(q),
+    toggleSourceKind: (kind: string) => {
+      setSelectedSourceKinds(prev => prev.includes(kind) ? prev.filter(k => k !== kind) : [...prev, kind])
+    },
+    toggleResourceType: (type: string) => {
+      setSelectedResourceTypes(prev => prev.includes(type) ? prev.filter(k => k !== type) : [...prev, type])
+    },
+    toggleLifecycle: (lc: string) => {
+      setSelectedLifecycles(prev => prev.includes(lc) ? prev.filter(k => k !== lc) : [...prev, lc])
+    },
     toggleKind: (kind: RegistryEntryKind) => {
       setSelectedKinds(prev =>
         prev.includes(kind) ? prev.filter(k => k !== kind) : [...prev, kind]
@@ -191,7 +263,7 @@ export function LibraryProvider({
     },
     setRuntime: (runtime: RegistryRuntime | "all") => setSelectedRuntime(runtime),
     setViewMode: (mode: "grid" | "list") => setViewMode(mode),
-    selectEntry: (id: RegistryEntryId | null) => {
+    selectEntry: (id: string | null) => {
       setActiveEntryId(id)
       setDetailVisible(!!id)
     },
@@ -200,6 +272,9 @@ export function LibraryProvider({
       setDetailVisible(false)
     },
     clearFilters: () => {
+      setSelectedSourceKinds([])
+      setSelectedResourceTypes([])
+      setSelectedLifecycles([])
       setSelectedKinds([])
       setSelectedCategories([])
       setSelectedMaturities([])
@@ -209,6 +284,9 @@ export function LibraryProvider({
       setQuery("")
     },
     resetLibrary: () => {
+      setSelectedSourceKinds([])
+      setSelectedResourceTypes([])
+      setSelectedLifecycles([])
       setSelectedKinds([])
       setSelectedCategories([])
       setSelectedMaturities([])
@@ -223,25 +301,28 @@ export function LibraryProvider({
     copySnapshot: async () => {
       await navigator.clipboard.writeText(JSON.stringify(snapshot, null, 2))
     },
-    copyEntry: async (id: RegistryEntryId) => {
-      const target = getRegistryEntryById(id)
+    copyEntry: async (id: string) => {
+      const target = allItems.find(e => e.projectionId === id)
       if (target) {
         await navigator.clipboard.writeText(JSON.stringify(target, null, 2))
       }
     },
-    copyUsageExample: async (id: RegistryEntryId) => {
-      const target = getRegistryEntryById(id)
-      if (target && target.usageExamples && target.usageExamples.length > 0) {
-        await navigator.clipboard.writeText(target.usageExamples[0].code)
+    copyUsageExample: async (id: string) => {
+      const target = allItems.find(e => e.projectionId === id)
+      if (target?.componentDetails?.entry.usageExamples && target.componentDetails.entry.usageExamples.length > 0) {
+        await navigator.clipboard.writeText(target.componentDetails.entry.usageExamples[0].code)
       }
     },
     toggleFiltersVisible: () => setFiltersVisible(v => !v),
-  }), [snapshot])
+  }), [snapshot, allItems])
 
   const contextValue = React.useMemo<RegistryContext>(() => {
     return {
       state: {
         query,
+        selectedSourceKinds,
+        selectedResourceTypes,
+        selectedLifecycles,
         selectedKinds,
         selectedCategories,
         selectedMaturities,
@@ -261,6 +342,9 @@ export function LibraryProvider({
     }
   }, [
     query,
+    selectedSourceKinds,
+    selectedResourceTypes,
+    selectedLifecycles,
     selectedKinds,
     selectedCategories,
     selectedMaturities,

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useComponentLibrary } from "./library-provider"
-import { getRegistryEntryById } from "@/lib/registry/selectors"
 import { cn } from "@/lib/utils"
 
 type ExportTab = "entry-ts" | "entry-json" | "snapshot" | "usage" | "search-res"
@@ -17,9 +16,9 @@ export function LibraryExport({ className }: LibraryExportProps) {
   const [activeTab, setActiveTab] = React.useState<ExportTab>("snapshot")
   const [copied, setCopied] = React.useState(false)
 
-  const entry = React.useMemo(() => {
-    return activeEntryId ? getRegistryEntryById(activeEntryId) || null : null
-  }, [activeEntryId])
+  const item = React.useMemo(() => {
+    return activeEntryId ? results.find(r => r.projectionId === activeEntryId) || null : null
+  }, [activeEntryId, results])
 
   // Sync tab selection depending on detailVisible
   React.useEffect(() => {
@@ -31,30 +30,30 @@ export function LibraryExport({ className }: LibraryExportProps) {
   }, [detailVisible])
 
   const entryTsExport = React.useMemo(() => {
-    if (!entry) return "// Select a component card to see its TypeScript configuration."
-    return `export const componentConfig = ${JSON.stringify(entry, null, 2)} as const`
-  }, [entry])
+    if (!item) return "// Select an item card to see its configuration."
+    return `export const itemConfig = ${JSON.stringify(item, null, 2)} as const`
+  }, [item])
 
   const entryJsonExport = React.useMemo(() => {
-    if (!entry) return "{}"
-    return JSON.stringify(entry, null, 2)
-  }, [entry])
+    if (!item) return "{}"
+    return JSON.stringify(item, null, 2)
+  }, [item])
 
   const snapshotExport = React.useMemo(() => {
     return JSON.stringify(snapshot, null, 2)
   }, [snapshot])
 
   const searchExport = React.useMemo(() => {
-    return JSON.stringify(results.map(r => ({ id: r.id, label: r.label, route: r.route })), null, 2)
+    return JSON.stringify(results.map(r => ({ id: r.projectionId, title: r.title, sourceKind: r.sourceKind })), null, 2)
   }, [results])
 
   const usageExport = React.useMemo(() => {
-    if (!entry) return "// Select a component card to see its usage example."
-    if (entry.usageExamples && entry.usageExamples.length > 0) {
-      return entry.usageExamples[0].code
+    if (!item) return "// Select an item card to see its usage example."
+    if (item.sourceKind === "COMPONENT" && item.componentDetails?.entry.usageExamples && item.componentDetails.entry.usageExamples.length > 0) {
+      return item.componentDetails.entry.usageExamples[0].code
     }
-    return `// No usage code example documented for: ${entry.id}`
-  }, [entry])
+    return `// No usage code example documented for: ${item.projectionId}`
+  }, [item])
 
   const contents: Record<ExportTab, string> = React.useMemo(() => ({
     "entry-ts": entryTsExport,
@@ -75,7 +74,7 @@ export function LibraryExport({ className }: LibraryExportProps) {
   }, [activeTab, contents])
 
   const tabs: Array<{ key: ExportTab; label: string; detailOnly: boolean }> = [
-    { key: "usage", label: "React Usage", detailOnly: true },
+    { key: "usage", label: "Usage Example", detailOnly: true },
     { key: "entry-ts", label: "Entry TS", detailOnly: true },
     { key: "entry-json", label: "Entry JSON", detailOnly: true },
     { key: "snapshot", label: "Filter Snapshot", detailOnly: false },
@@ -99,31 +98,25 @@ export function LibraryExport({ className }: LibraryExportProps) {
               className={cn(
                 "px-2.5 py-1 rounded font-mono text-[9px] font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500",
                 activeTab === tab.key
-                  ? "bg-stone-800 text-stone-200"
-                  : "text-stone-500 hover:text-stone-300"
+                  ? "bg-cyan-950/40 text-cyan-400 border border-cyan-900"
+                  : "bg-transparent hover:bg-stone-800 text-stone-500 border border-transparent"
               )}
-              aria-pressed={activeTab === tab.key}
             >
               {tab.label}
             </button>
           ))}
         </div>
-
         <button
           type="button"
           onClick={handleCopy}
-          className={cn(
-            "flex items-center gap-1.5 px-2.5 py-1 rounded font-mono text-[9.5px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500",
-            copied ? "text-emerald-300" : "text-stone-500 hover:text-stone-300"
-          )}
-          aria-label={`Copy ${activeTab} data`}
+          className="px-2.5 py-1 rounded border border-stone-700 bg-stone-800 hover:bg-stone-700 text-stone-200 font-mono text-[9px] uppercase tracking-wider font-bold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 shrink-0"
         >
-          {copied ? "Copied" : "Copy"}
+          {copied ? "Copied!" : "Copy Output"}
         </button>
       </div>
 
-      <div className="overflow-x-auto p-4 max-h-[300px] text-left">
-        <pre className="font-mono text-[10.5px] leading-relaxed text-stone-300 whitespace-pre select-all">
+      <div className="p-4 bg-[#0a0908] max-h-[300px] overflow-auto">
+        <pre className="font-mono text-[10px] text-stone-400 whitespace-pre-wrap leading-loose">
           {contents[activeTab]}
         </pre>
       </div>

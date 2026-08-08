@@ -194,6 +194,9 @@ export interface RegistryCategory {
 
 export interface RegistryFilterState {
   query: string
+  selectedSourceKinds: string[]
+  selectedResourceTypes: string[]
+  selectedLifecycles: string[]
   selectedKinds: RegistryEntryKind[]
   selectedCategories: RegistryCategoryId[]
   selectedMaturities: RegistryMaturity[]
@@ -221,12 +224,17 @@ export interface RegistryIntegrityReport {
   orphanEntries: RegistryEntryId[]
 }
 
+import type { LibraryProjectionItem } from "@/lib/library/types"
+
 export interface RegistryContext {
   state: RegistryFilterState & {
     viewMode: "grid" | "list"
-    activeEntryId: RegistryEntryId | null
-    results: RegistryEntry[]
+    activeEntryId: string | null
+    results: LibraryProjectionItem[]
     counts: {
+      total: number
+      components: number
+      resources: number
       kinds: Record<RegistryEntryKind, number>
       categories: Record<RegistryCategoryId, number>
       maturities: Record<RegistryMaturity, number>
@@ -240,6 +248,9 @@ export interface RegistryContext {
   }
   actions: {
     setQuery: (q: string) => void
+    toggleSourceKind: (kind: string) => void
+    toggleResourceType: (type: string) => void
+    toggleLifecycle: (lifecycle: string) => void
     toggleKind: (kind: RegistryEntryKind) => void
     toggleCategory: (cat: RegistryCategoryId) => void
     toggleMaturity: (maturity: RegistryMaturity) => void
@@ -247,13 +258,13 @@ export interface RegistryContext {
     toggleViewport: (vp: RegistryViewport) => void
     setRuntime: (runtime: RegistryRuntime | "all") => void
     setViewMode: (mode: "grid" | "list") => void
-    selectEntry: (id: RegistryEntryId | null) => void
+    selectEntry: (id: string | null) => void
     closeDetail: () => void
     clearFilters: () => void
     resetLibrary: () => void
     copySnapshot: () => Promise<void>
-    copyEntry: (id: RegistryEntryId) => Promise<void>
-    copyUsageExample: (id: RegistryEntryId) => Promise<void>
+    copyEntry: (id: string) => Promise<void>
+    copyUsageExample: (id: string) => Promise<void>
     toggleFiltersVisible: () => void
   }
 }
