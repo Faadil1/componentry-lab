@@ -24,6 +24,8 @@ export type RegistryEntryId =
   | "operational-workspace-recipe"
   | "data-story-recipe"
   | "broadcast-package-recipe"
+  // Workflow components
+  | "episode-state-card"
   // Sub-entries / Primitives
   | "layout-shell"
   | "layout-stage"
@@ -37,7 +39,7 @@ export type RegistryEntryId =
 
 export type RegistryEntrySlug = string
 
-export type RegistryEntryKind = "interaction" | "foundation" | "layout" | "system" | "recipe"
+export type RegistryEntryKind = "interaction" | "foundation" | "layout" | "system" | "recipe" | "workflow"
 
 export type RegistryCategoryId =
   | "interaction"
@@ -51,6 +53,7 @@ export type RegistryCategoryId =
   | "operational-composition"
   | "editorial-composition"
   | "broadcast-composition"
+  | "workflow"
 
 export type RegistryMaturity = "experimental" | "reusable" | "production-candidate"
 

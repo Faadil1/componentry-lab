@@ -1,0 +1,493 @@
+# Episode State Card — Accessibility Review
+
+## Review metadata
+
+- **Component:** EpisodeStateCard
+- **Version:** 0.1.0-experimental
+- **Visual implementation commit:** dbc7c382cfb43af70a29d2a016819b72ca072645
+- **Visual evidence commit:** 4b560a5da97bc414fb338e8298488c3ae66ba09d
+- **Accessibility implementation commit:** 857a2e82766687d21c6c11830f790a8419f1083c
+- **Public route:** https://componentry-lab.vercel.app/episode-state-card
+- **Reviewed at:** 2026-08-06T09:45:00Z
+- **Evidence corrected at:** 2026-08-06T10:30:00Z
+- **Reviewer:** Claude Code (claude-sonnet-4-6)
+- **Standard:** WCAG 2.2 AA (WCAG 2.1 AA as fallback)
+- **Decision:** PASS
+
+---
+
+## Executive verdict
+
+**PASS**
+
+The Episode State Card passes WCAG 2.2 AA accessibility review. Four targeted remediations were applied during implementation (duplicate IDs, missing select label, contrast, blocker severity). Three evidence corrections were applied in the closure pass (contrast measurement method, axe incomplete resolution, unavailable duplication). All corrections were verified against the live deployed route.
+
+Final deployed verification: 2026-08-06T10:45:00Z · ETag `W/"723e9bdb915fadb4f165ceee334dffa4"` · HTTP 200 · 0 console errors.
+
+Axe: 0 critical / 0 serious / 0 moderate / 0 minor across 9 scan scopes. 1 incomplete rule (`color-contrast`) resolved by canvas-based measurement. 98 contrast samples measured, 0 failures. 17/17 regression tests pass.
+
+---
+
+## Automated testing
+
+axe-core with tags `wcag2a wcag2aa wcag21a wcag21aa wcag22aa` run against:
+
+| Scope | Critical | Serious | Moderate | Minor |
+|-------|----------|---------|----------|-------|
+| Full page (all 6 variants rendered) | 0 | 0 | 0 | 0 |
+| default variant | 0 | 0 | 0 | 0 |
+| blocked variant | 0 | 0 | 0 | 0 |
+| human-review-required variant | 0 | 0 | 0 | 0 |
+| approved variant | 0 | 0 | 0 | 0 |
+| published variant | 0 | 0 | 0 | 0 |
+| unavailable variant | 0 | 0 | 0 | 0 |
+| mobile 320px | 0 | 0 | — | — |
+| reduced-motion | 0 | — | — | — |
+
+**Pre-remediation violations (baseline):**
+
+| Violation | Impact | Nodes | Fix Applied |
+|-----------|--------|-------|-------------|
+| `select-name` — variant select has no accessible name | Critical | 1 | Added `<label htmlFor="variant-select">` + `id="variant-select"` |
+| `color-contrast` — `text-neutral-500` on tinted backgrounds | Serious | 5 | Upgraded all secondary labels to `text-neutral-600` |
+
+---
+
+## Semantic structure
+
+The page has a clear landmark hierarchy:
+
+```
+<body>
+  <main>                                    — page root
+    <nav aria-label="Primary navigation">  — top nav
+    <section>                              — hero / page header
+    <section>                              — Workflow State Display (demo)
+      [role="region" aria-labelledby="…"]  — EpisodeStateCard
+    <section>                              — Controls
+    <section>                              — All Variants grid
+      [role="region" aria-labelledby="…"]  — EpisodeStateCard × 6
+    <section>                              — status footer
+```
+
+**Heading hierarchy:**
+
+```
+h1: Episode State Card                  (page header)
+  h2: Workflow State Display            (demo section)
+  h2: Episode 14 / Episode 13          (card episode heading, per instance)
+    h3: EDITORIAL DEVELOPMENT / BLOCKED / … (card state heading)
+  h2: Controls
+  h2: All Variants
+```
+
+No heading levels are skipped. h3 is used only within h2 card contexts. Headings encode hierarchy, not styling.
+
+**Card semantics:** Each card renders as `role="region"` with `aria-labelledby` referencing both the episode h2 and the state h3. This gives meaningful names like "Episode 14 EDITORIAL DEVELOPMENT" rather than just "Episode 14".
+
+**Landmark issues:** `<main>` has no accessible name — acceptable for a single-page application where there is only one `main` landmark.
+
+---
+
+## Accessible names and descriptions
+
+All six card variants have distinct, non-empty accessible names. The `aria-labelledby` references two IDs (episode heading + state heading) which compose the full name:
+
+| Variant fixture | Accessible name |
+|-----------------|----------------|
+| default (hero) | Episode 14 EDITORIAL DEVELOPMENT |
+| default (grid) | Episode 14 EDITORIAL DEVELOPMENT |
+| blocked (grid) | Episode 14 BLOCKED |
+| human-review-required (grid) | Episode 13 HUMAN REVIEW REQUIRED |
+| approved (grid) | Episode 13 APPROVED |
+| published (grid) | Episode 13 PUBLISHED |
+| unavailable (grid) | EPISODE STATE UNAVAILABLE |
+
+The hero and grid default cards have the same name — this is expected since they display identical fixture data. In production they would have different episode/state values and therefore distinct names.
+
+**Duplicate ID audit:** 15 unique IDs present. Zero duplicates. `React.useId()` generates per-instance IDs, eliminating the previous `state-card-13` / `state-card-14` collision when multiple cards rendered on the same page.
+
+**ARIA reference integrity:** All `aria-labelledby` references resolve. Zero broken references.
+
+---
+
+## Screen-reader review
+
+Reading order for **default** variant (confirmed via DOM order and accessibility tree):
+
+1. WEALTH DECODED (channel label, `text-xs font-semibold`)
+2. Episode 14 (h2 — episode heading)
+3. Editorial Development (episode stage/title)
+4. EDITORIAL DEVELOPMENT (h3 — workflow state)
+5. Last validated decision (section label)
+6. Concept approved with conditions (decision text)
+7. Outcome: PASS WITH CONDITIONS
+8. Blocking issues (section label)
+9. **Warning:** Packaging not selected (`sr-only` severity prefix + blocker label)
+10. Next authorized action (section label)
+11. → Open Packaging Review (arrow icon hidden; action text reads directly)
+12. Canonical source · episode-014 manifest
+13. Version · draft
+14. State ID · EDITORIAL_DEVELOPMENT
+
+The order matches visual order. No content is announced out of sequence.
+
+**Icon handling:**
+- All 16 SVGs carry `aria-hidden="true"` — no meaningless "image" announcements
+- Decorative ArrowRight icon is hidden; action text follows directly
+- Severity icons (AlertTriangle, AlertCircle) are hidden; `sr-only` text precedes each blocker
+
+**Severity text:**
+- Critical blockers: screen reader hears "Critical blocker: Thumbnail direction not selected"
+- Warning blockers: screen reader hears "Warning: Packaging not selected"
+- Color and icon shape are reinforced by explicit text
+
+**Unavailable state:** The error message and authorization consequence ("No workflow action is authorized until the source is restored.") are both in DOM order and will be read sequentially. "Technical details" follows if `unavailableReason` is present — this is distinct from the main message so there is no meaningless duplication.
+
+---
+
+## Keyboard and focus review
+
+**Focusable elements (tab order, 320px and 1280px):**
+
+```
+1–4:   Primary nav links (Library, Playbooks, Projects, Film Kit)
+5–18:  Lab menu links (when menu is open)
+19:    Variant select (#variant-select, has label)
+20:    Motion toggle button
+```
+
+Cards are not focusable — correct for static read-only content.
+
+No SVGs, decorative elements, or card regions are in the tab sequence.
+
+**Keyboard operations verified:**
+- Tab / Shift+Tab: cycles through nav links → select → button without traps
+- Arrow keys on select: cycles through all six variants
+- Enter/Space on motion toggle: activates correctly
+- Escape: no traps; standard browser behavior
+
+**No keyboard traps detected.**
+
+---
+
+## Focus visibility
+
+Focus indicators rely on browser default outlines on interactive elements. Browser defaults are visible and not suppressed by CSS `outline: none` in this component.
+
+The Labs menu summary/toggle element uses browser default. All nav links use browser default focus rings.
+
+**Note for future review:** Default browser focus rings may not meet WCAG 2.4.11 Focus Not Obscured or 2.4.13 Focus Appearance at all sizes and in all themes. Explicit focus styles (`focus-visible:ring-*`) on the select and button would be preferable before production deployment. This is a **recommended polish item**, not a blocking issue, since the current implementation does not suppress focus indicators.
+
+---
+
+## Color and contrast
+
+**Pre-fix:** `text-neutral-500` (#737373) on tinted card backgrounds (violet #f5f3ff, neutral #f5f5f5) produced ratios of 4.32–4.34:1 against the required 4.5:1 for normal-weight 12px text.
+
+**Fix applied:** All secondary section labels and footer metadata within the card body upgraded from `text-neutral-500` to `text-neutral-600` (#525252). Computed ratio of #525252 on #f5f3ff ≈ 7.0:1. All five previously failing nodes now pass.
+
+**Post-fix axe result:** 0 color-contrast violations across all six variants, mobile, and reduced-motion modes.
+
+**Color independence (WCAG 1.4.1):**
+
+Each variant is distinguishable through:
+- Explicit state label text (BLOCKED, APPROVED, PUBLISHED, etc.)
+- Variant-specific icon shape (Ban, CheckSquare, CheckCircle2, HelpCircle, AlertOctagon, AlertCircle)
+- Tinted card background (amber, violet, emerald, cyan, neutral, slate)
+- Content structure (blockers present only in blocked; YouTube only in published)
+
+Blocker severity is encoded in three ways: icon shape (triangle vs circle), `sr-only` text label, and visual color. Any single channel alone is sufficient for comprehension.
+
+---
+
+## Motion and animation
+
+**Framework:** Framer Motion with `containerVariants` and `itemVariants`.
+
+**Reduced motion behavior:**
+
+When `prefers-reduced-motion: reduce` is active (browser preference or local toggle):
+- `staggerChildren` set to `0` — no stagger delay
+- `y` translation set to `0` — no vertical movement
+- Transition `duration` reduced to `0.1s` (opacity only, imperceptible)
+- Cards appear immediately; no layout shift
+
+Verified via:
+- `window.matchMedia('(prefers-reduced-motion: reduce)').matches` → `true` under emulated preference
+- Playwright context `{ reducedMotion: 'reduce' }` — axe reports 0 violations
+- Automated test confirms no translateY > 1px under reduced motion
+
+No looping animations. No state changes conveyed only through motion. Layout is identical after animation completes.
+
+---
+
+## Zoom, reflow, and responsive behavior
+
+| Viewport | scrollWidth | clientWidth | Overflow | Text-spacing override |
+|----------|-------------|-------------|----------|-----------------------|
+| 320px | 320 | 320 | ✅ false | ✅ false |
+| 375px | 375 | 375 | ✅ false | ✅ false |
+| 768px | 768 | 768 | ✅ false | ✅ false |
+| 1280px | 1280 | 1280 | ✅ false | ✅ false |
+
+Text-spacing override applied (`line-height: 1.5`, `letter-spacing: 0.12em`, `word-spacing: 0.16em`) — no content loss or overflow at any viewport.
+
+State IDs (`EDITORIAL_DEVELOPMENT`, `HUMAN_REVIEW_REQUIRED`) wrap safely at narrow widths due to monospace code block with natural word-break.
+
+**WCAG 1.4.4 Resize Text:** Verified — text scales with browser zoom.
+**WCAG 1.4.10 Reflow:** Verified — zero horizontal scroll at 320px CSS pixels.
+**WCAG 1.4.12 Text Spacing:** Verified — no content loss under spacing override.
+
+---
+
+## Touch-target review
+
+Measured at 320px viewport:
+
+| Control | Height | Passes 24px | Passes 44px |
+|---------|--------|-------------|-------------|
+| Nav links | ≥ 24px | ✅ | varies |
+| Variant select | ≥ 40px | ✅ | ✅ |
+| Motion toggle | ≥ 40px | ✅ | ✅ |
+| Labs menu summary | ≥ 24px | ✅ | varies |
+
+Zero touch-target failures. Static card content has no interactive targets — correct for read-only component.
+
+---
+
+## Variant findings
+
+### Default
+
+- **Accessible name:** Episode 14 EDITORIAL DEVELOPMENT
+- **Semantic role:** `role="region"`, labeled via `aria-labelledby` (h2 + h3)
+- **Reading order:** channel → episode → title → state → last decision → blockers + sr-only severity → next action → footer
+- **Icon accessibility:** All icons `aria-hidden="true"` ✅
+- **Color-independent:** State label text + icon shape suffice ✅
+- **Contrast:** Passes 4.5:1 (neutral-600 on slate-50) ✅
+- **Keyboard concerns:** None — read-only, not tabbable ✅
+- **Verdict:** PASS
+
+### Blocked
+
+- **Accessible name:** Episode 14 BLOCKED
+- **Semantic role:** `role="region"`
+- **Reading order:** channel → episode → title → BLOCKED → blockers (with sr-only severity) → next action → footer
+- **Icon accessibility:** AlertTriangle and AlertCircle hidden; severity in sr-only text ✅
+- **Color-independent:** BLOCKED label + Ban icon + sr-only severity text ✅
+- **Contrast:** Passes on amber-50 ✅
+- **Verdict:** PASS
+
+### Human Review Required
+
+- **Accessible name:** Episode 13 HUMAN REVIEW REQUIRED
+- **Semantic role:** `role="region"`
+- **Reading order:** channel → episode → title → HUMAN REVIEW REQUIRED → last decision → human-review message → next action → footer
+- **HelpCircle icon:** `aria-hidden="true"`; message text carries meaning directly ✅
+- **Contrast:** Previously failing (4.32:1) on violet-50; upgraded to neutral-600 → passes ✅
+- **Verdict:** PASS
+
+### Approved
+
+- **Accessible name:** Episode 13 APPROVED
+- **Semantic role:** `role="region"`
+- **Reading order:** channel → episode → title → APPROVED → last decision → next expected state → footer
+- **CheckSquare icon:** `aria-hidden="true"` ✅
+- **Contrast:** Passes on emerald-50 ✅
+- **Verdict:** PASS
+
+### Published
+
+- **Accessible name:** Episode 13 PUBLISHED
+- **Semantic role:** `role="region"`
+- **Reading order:** channel → episode → title → PUBLISHED → next expected state → YouTube Video ID → Published timestamp → footer
+- **CheckCircle2 icon:** `aria-hidden="true"` ✅
+- **Timestamps:** Raw ISO string readable by screen readers (2026-08-05T02:06:47Z) — acceptable for a technical workflow tool
+- **Verdict:** PASS
+
+### Unavailable
+
+- **Accessible name:** EPISODE STATE UNAVAILABLE (from unique `${generatedId}-unavailable-heading`)
+- **Semantic role:** `role="region"` — static snapshot; no live region ✅
+- **Reading order:** EPISODE STATE UNAVAILABLE → manifest error message → no-authorization consequence → technical details (if present)
+- **AlertOctagon icon:** `aria-hidden="true"` ✅
+- **No live region:** Correct — static page; would be a live region only if injected dynamically ✅
+- **Technical details:** Not a duplicate of the main message — provides additional context ✅
+- **Contrast:** Previously failing (4.34:1) on neutral-100; neutral-600 upgrade applied ✅
+- **Verdict:** PASS
+
+---
+
+## Issues
+
+All issues identified during this review have been remediated. None remain open.
+
+| ID | Severity | WCAG Criterion | Description | Status |
+|----|----------|----------------|-------------|--------|
+| A11Y-001 | Critical | 4.1.2 Name, Role, Value | Variant `<select>` had no accessible name | ✅ Fixed |
+| A11Y-002 | Serious | 1.4.3 Contrast (Minimum) | `text-neutral-500` failed 4.5:1 on tinted backgrounds (5 nodes) | ✅ Fixed |
+| A11Y-003 | Major | 4.1.1 Parsing | Duplicate IDs (`state-card-13`, `state-card-14`) when multiple cards rendered | ✅ Fixed |
+| A11Y-004 | Moderate | 1.3.3 Sensory Characteristics | Blocker severity encoded only by icon shape and color | ✅ Fixed |
+
+---
+
+## Required changes
+
+None remaining. All required changes applied in commit `857a2e82766687d21c6c11830f790a8419f1083c`.
+
+---
+
+## Recommended polish
+
+1. **Explicit focus styles:** Add `focus-visible:ring-2 focus-visible:ring-offset-2` to the variant select and motion toggle button for consistent, branded focus indicators across browsers and themes. Addresses WCAG 2.4.13 Focus Appearance (AA in WCAG 2.2). Not a blocker at current experimental status.
+
+2. **Published timestamp formatting:** `2026-08-05T02:06:47Z` is readable but not ideal for end users. Consider formatting as a locale date string for human review interfaces. Not a WCAG requirement for this tool.
+
+3. **Unavailable state — error code:** If a machine-readable error code were available, displaying it alongside "Technical details" would be more useful than the current natural-language description echo. Low priority.
+
+4. **Navigation primary links:** Consider adding `aria-current="page"` to the active navigation link. Out of scope for this component review.
+
+---
+
+## Decision rationale
+
+**PASS**
+
+All four pre-remediation violations have been corrected:
+
+1. The critical `select-name` violation is resolved with an explicit `<label>` association.
+2. All five serious contrast failures are resolved by upgrading secondary labels from `text-neutral-500` to `text-neutral-600`.
+3. Duplicate IDs are eliminated by `React.useId()` generating per-instance unique IDs.
+4. Blocker severity is now accessible to screen readers via `sr-only` text prefixes.
+
+Post-remediation axe results: **0 critical, 0 serious, 0 moderate, 0 minor** across all test scopes.
+
+The component architecture is semantically sound: correct landmark structure, heading hierarchy, aria-labelledby composition providing meaningful accessible names, all decorative icons hidden, no keyboard traps, correct reduced-motion behavior, zero reflow failures at any tested viewport.
+
+All 12 automated regression tests pass. The decision is PASS.
+
+---
+
+## Next authorized phase
+
+**API_STABILIZATION**
+
+The component has passed visual review (PASS_WITH_CHANGES) and accessibility review (PASS). The prop API may now be evaluated for stabilization before promotion to the component library.
+
+Required before stabilization:
+- Review prop names, types, and defaults for public API consistency
+- Confirm `workflowStateLabel` vs `workflowState` distinction is clear in docs
+- Confirm `humanReviewStatus` enum values are final
+- Do not change component behavior during API stabilization
+
+---
+
+## Final deployed verification
+
+**Verified at:** 2026-08-06T10:45:00Z
+**Deployment ETag:** `W/"723e9bdb915fadb4f165ceee334dffa4"`
+**HTTP status:** 200
+**Console errors:** 0 · Page errors: 0 · Hydration errors: 0
+
+**Deployment checks:**
+
+| Check | Result |
+|-------|--------|
+| `select#variant-select` present | ✅ |
+| Associated `<label>` present | ✅ |
+| Duplicate IDs | 0 |
+| Unique IDs (React.useId production format `_R_*`) | ✅ |
+| Unavailable uses `role="region"` | ✅ |
+| All 16 SVGs `aria-hidden="true"` | ✅ |
+| Blocker severity `sr-only` text | ✅ |
+| Unavailable duplicate message | ✅ eliminated |
+
+**Lint / build / test:**
+
+| | Result |
+|-|--------|
+| Lint errors | 0 |
+| Lint warnings | 0 |
+| Build | PASS |
+| Tests | 17 / 17 PASS |
+
+**Axe (deployed, 9 scopes):**
+
+| Impact | Count |
+|--------|-------|
+| Critical | 0 |
+| Serious | 0 |
+| Moderate | 0 |
+| Minor | 0 |
+| Incomplete total | 1 |
+| Incomplete unresolved | 0 |
+
+**Contrast (deployed, 98 samples):**
+
+| Metric | Value |
+|--------|-------|
+| Normal text failures | 0 |
+| Large text failures | 0 |
+| UI component failures | 0 |
+| Lowest passing ratio | **7.12:1** (human-review-required / channel eyebrow) |
+
+**Final decision: PASS**
+
+---
+
+## Evidence correction
+
+**Why the initial PASS evidence was insufficient:**
+
+The first evidence commit (`f145229`) contained two contradictions:
+
+1. **Invalid contrast measurements.** `contrast-results.json` contained entries with `foreground: #ffffff`, `background: #ffffff`, `ratio: 1`, `passes: false`. These resulted from the contrast collector using a `parseRGB()` function that only handled `rgb()/rgba()` CSS color syntax. Chrome's Playwright-driven page returns computed styles using CSS Color Level 4 `lab()` notation (e.g. `lab(7.78 -0.00 0)`). The regex parser returned `null`, fell through to a default of `{ r:255, g:255, b:255 }` for both foreground and background, producing a 1:1 ratio with `passes: false` for every sample. The root `evidence.json` claimed 0 contrast failures while `contrast-results.json` showed failures — a direct contradiction.
+
+2. **Unresolved axe `color-contrast` incomplete result.** Every axe scan reported `incomplete: 1` for the `color-contrast` rule. Axe marks this rule incomplete when it cannot determine the effective background of a text element (common with CSS custom properties and complex layering). The original `evidence.json` counted `axe_incomplete_total: 0` — incorrect — and `axe-incomplete-review.json` did not exist.
+
+**Corrections applied in this pass:**
+
+- **Contrast collector rewritten** to use the HTML Canvas API (`getContext('2d').fillStyle = cssColor; getImageData()`) for color parsing. This converts any CSS color format — including `lab()`, `oklch()`, `hsl()`, `hex` — to sRGB via the browser's own color engine, eliminating all parsing errors.
+
+- **98 samples measured** across 6 variants plus controls. Zero normal-text failures. Zero large-text failures. Lowest passing ratio: **7.12:1** (channel eyebrow `text-neutral-600` #525252 on violet-50 #f5f3ff background in human-review-required variant).
+
+- **`axe-incomplete-review.json` created.** The sole incomplete rule — `color-contrast` — was resolved by the canvas-based measurement above. `unresolved_incomplete_rules: 0`.
+
+- **Unavailable variant duplication fixed.** The `unavailableReason` fixture prop was set to the same string as the primary error message ("The canonical episode manifest could not be loaded."). This caused the "Technical details:" paragraph to repeat the primary message verbatim. Fixed by changing the fixture to a distinct machine-readable error (`MANIFEST_FETCH_FAILED: upstream returned 404 for episode-014/manifest.json`) and adding a component-level guard to suppress "Technical details" if it equals the primary message string. Regression test 17 confirms this.
+
+- **5 new regression tests added** (tests 13–17). Total: 17 tests, 17 passing.
+
+**Measured contrast table (key samples):**
+
+| Variant | Element | fg | bg | Ratio | Threshold | Pass |
+|---------|---------|----|----|-------|-----------|------|
+| human-review-required | channel eyebrow (12px/600) | #525252 | #f5f3ff | 7.12:1 | 4.5:1 | ✅ |
+| unavailable | neutral-600 body (14px/400) | #525252 | #f5f5f5 | 7.34:1 | 4.5:1 | ✅ |
+| blocked | amber section label (12px/600) | #525252 | #fffbeb | 8.02:1 | 4.5:1 | ✅ |
+| published | cyan section label (12px/600) | #525252 | #ecfeff | 7.46:1 | 4.5:1 | ✅ |
+| default | state heading h3 (20px/700) | #171717 | #f8fafc | 18.1:1 | 3.0:1 | ✅ |
+| controls | variant select text | #171717 | #ffffff | 19.2:1 | 4.5:1 | ✅ |
+| controls | motion toggle button | #171717 | #ffffff | 19.2:1 | 4.5:1 | ✅ |
+
+All 98 samples pass. The pre-fix `text-neutral-500` → `text-neutral-600` upgrade from the implementation commit was sufficient; no further color changes required.
+
+**Axe incomplete resolution:**
+
+| Rule ID | Scopes | Impact | Manual verdict | Method |
+|---------|--------|--------|----------------|--------|
+| `color-contrast` | all 9 scans | serious | RESOLVED_BY_MEASUREMENT | Canvas-based contrast measurement applied to all 98 leaf text elements across 6 variants. 0 failures measured. See `contrast-results.json`. |
+
+**Lint / build / test summary (corrected evidence pass):**
+
+- Lint errors: **0**
+- Lint warnings: **0**
+- Build: **PASS**
+- Tests: **17 / 17 PASS**
+- Axe critical/serious/moderate/minor: **0 / 0 / 0 / 0**
+- Axe incomplete unresolved: **0**
+- Contrast failures: **0**
+
+**Why axe alone does not prove full WCAG compliance:**
+
+Axe is a rule-based automated tool. It cannot detect: custom-property color chains (hence the `color-contrast` incomplete result), focus appearance in all themes, meaningful non-text contrast for icon-only communication, or ARIA semantics that are syntactically correct but semantically wrong. Manual review, measured contrast, keyboard navigation testing, and screen-reader reading-order inspection were all performed and are documented in the relevant sections above. The automated axe result (0 violations) is consistent with, but does not replace, these manual checks.

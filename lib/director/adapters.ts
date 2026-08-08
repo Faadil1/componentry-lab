@@ -292,7 +292,7 @@ export function adaptEpisodeStateCardToDirectorProjection(
     severity: blocker.severity,
     status: "open" as const,
     source: "EpisodeStateCard",
-    blockingScope: card.workflowState,
+    blockingScope: card.workflowState ?? "",
     resolutionCondition: blocker.label,
     humanActionRequired: card.humanReviewStatus === "required",
   }))
@@ -389,13 +389,4 @@ export function adaptDirectorResultWithAdvisoryEvidence(
 
   return baseResult
 }
-
-
-
-
-
-
-
-
-
 

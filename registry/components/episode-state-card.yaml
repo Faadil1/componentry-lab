@@ -1,6 +1,6 @@
 name: Episode State Card
 description: Read-only workflow component for displaying canonical episode state
-status: EXPERIMENTAL
+status: PROMOTED
 
 component:
   name: EpisodeStateCard
@@ -8,103 +8,82 @@ component:
   type: display
   category: workflow
 
-props:
-  - name: channelName
-    type: string
-    required: true
-    description: Channel name (e.g., "Wealth Decoded")
-
-  - name: episodeId
-    type: string
-    required: true
-    description: Unique episode identifier
-
-  - name: episodeNumber
-    type: number | null
-    required: false
-    description: Episode sequence number
-
-  - name: title
-    type: string
-    required: true
-    description: Episode title
-
-  - name: workflowState
-    type: string
-    required: true
-    description: Technical workflow state identifier
-
-  - name: variant
-    type: EpisodeStateCardVariant
-    required: true
-    description: Visual variant (default, blocked, human-review-required, approved, published, unavailable)
-
-  - name: lastDecision
-    type: EpisodeStateDecision | null
-    required: false
-    description: Last validated human decision
-
-  - name: blockers
-    type: EpisodeStateBlocker[]
-    required: false
-    description: List of blocking conditions
-
-  - name: humanReviewStatus
-    type: HumanReviewStatus
-    required: true
-    description: Current human review status
-
-  - name: youtubeVideoId
-    type: string
-    required: false
-    description: YouTube video ID for published episodes
-
-variants:
-  - name: default
-    description: Normal workflow state with decision history
-    props:
-      variant: default
-
-  - name: blocked
-    description: Episode blocked by conditions
-    props:
-      variant: blocked
-
-  - name: human-review-required
-    description: Awaiting human judgment
-    props:
-      variant: human-review-required
-
-  - name: approved
-    description: Decision approved, ready to proceed
-    props:
-      variant: approved
-
-  - name: published
-    description: Episode live on YouTube
-    props:
-      variant: published
-
-  - name: unavailable
-    description: Manifest could not be loaded
-    props:
-      variant: unavailable
-
 source:
   repository: Faadil1/componentry-lab
-  commit: 376006d4076712b7ebfe571293e1aa8c52731df8
+  commit: 41026169529285101a2fcccf7ce63b281142d044
   path: components/workflow/episode-state-card.tsx
   branch: master
 
 review_status:
-  visual_review: NOT_STARTED
-  accessibility_review: NOT_STARTED
-  api_stabilized: false
-  approved: false
-  promoted: false
+  visual_review: PASS
+  accessibility_review: PASS
+  api_stabilized: true
+  approved: true
+  promoted: true
+
+visual_review:
+  evidence_commit: 4b560a5da97bc414fb338e8298488c3ae66ba09d
+  report: docs/reviews/episode-state-card-visual-review.md
+  decision: PASS
+
+accessibility_review:
+  standard: WCAG 2.2 AA
+  implementation_commit: ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff
+  evidence_commit: 3de31ebfa3d6001fb633d261de495f862757fc3a
+  evidence: artifacts/episode-state-card/accessibility-evidence/evidence.json
+  regression_tests: tests/episode-state-card-accessibility.test.ts
+  report: docs/reviews/episode-state-card-accessibility-review.md
+  decision: PASS
+  regression_tests_pass: 17
+  regression_tests_fail: 0
+
+api_stabilization:
+  stabilized_at: 2026-08-06T11:00:00Z
+  decision: PASS
+  implementation_commit: 41026169529285101a2fcccf7ce63b281142d044
+  api_surface: artifacts/episode-state-card/api-stabilization/api-surface.json
+  api_documentation: docs/components/episode-state-card-api.md
+  adr: docs/decisions/ADR-episode-state-card-api-stabilization.md
+  migration: docs/migrations/episode-state-card-experimental-to-stable.md
+  api_tests: tests/episode-state-card-api.test.ts
+  api_tests_pass: 20
+  api_tests_fail: 0
 
 metadata:
   created_at: 2026-08-06T00:47:00Z
   created_by: claude-code
-  version: 0.1.0-experimental
-  next_phase: VISUAL_REVIEW
+  version: 1.0.0
+  next_phase: INTEGRATION_READY
+
+approval_review:
+  approved_at: 2026-08-06T23:00:00Z
+  decision: APPROVED
+  implementation_commit: 41026169529285101a2fcccf7ce63b281142d044
+  evidence_head: 0c26d96e00607b0509672f3749dff47f542ed168
+  report: docs/reviews/episode-state-card-approval-review.md
+  gates:
+    visual_review: PASS
+    accessibility_review: PASS
+    api_stabilized: PASS
+    typescript: PASS
+    unused_ts_expect_error: 0
+    lint: PASS
+    build: PASS
+    api_tests: 20/20 PASS
+    remote_deployment: SUCCESS
+
+promotion_review:
+  promoted_at: 2026-08-06T23:30:00Z
+  decision: PROMOTE
+  implementation_commit: 41026169529285101a2fcccf7ce63b281142d044
+  report: docs/reviews/episode-state-card-promotion-review.md
+  registry_entry: lib/registry/components.ts
+  maturity: production-candidate
+  kind: workflow
+  category: workflow
+  gates:
+    typescript: PASS
+    unused_ts_expect_error: 0
+    lint: PASS
+    build: PASS
+    api_tests: 20/20 PASS

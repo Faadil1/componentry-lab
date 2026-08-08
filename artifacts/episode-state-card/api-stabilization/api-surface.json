@@ -1,0 +1,121 @@
+{
+  "component": "EpisodeStateCard",
+  "version": "1.0.0-stable",
+  "status": "API_STABILIZED",
+  "stability_date": "2026-08-06",
+  "discriminator": "variant",
+  "discriminated_union": {
+    "members": [
+      "DefaultEpisodeStateCardProps",
+      "BlockedEpisodeStateCardProps",
+      "HumanReviewRequiredEpisodeStateCardProps",
+      "ApprovedEpisodeStateCardProps",
+      "PublishedEpisodeStateCardProps",
+      "UnavailableEpisodeStateCardProps"
+    ]
+  },
+  "public_props": [
+    "variant",
+    "className",
+    "channelName",
+    "episodeNumber",
+    "title",
+    "workflowState",
+    "workflowStateLabel",
+    "humanReviewStatus",
+    "lastDecision",
+    "blockers",
+    "nextExpectedState",
+    "nextAuthorizedAction",
+    "youtubeVideoId",
+    "publishedAt",
+    "canonicalSource",
+    "manifestVersion",
+    "unavailableReason"
+  ],
+  "human_review_status": [
+    "not-required",
+    "required",
+    "completed"
+  ],
+  "variant_invariants": {
+    "default": {
+      "humanReviewStatus": ["not-required", "completed"]
+    },
+    "blocked": {
+      "blockers": "readonly [EpisodeStateBlocker, ...EpisodeStateBlocker[]]"
+    },
+    "human-review-required": {
+      "humanReviewStatus": "required",
+      "forbidden": ["lastDecision", "blockers", "youtubeVideoId", "publishedAt"]
+    },
+    "approved": {
+      "humanReviewStatus": "completed",
+      "forbidden": ["blockers", "youtubeVideoId", "publishedAt"]
+    },
+    "published": {
+      "humanReviewStatus": "completed",
+      "required": ["youtubeVideoId", "publishedAt"],
+      "forbidden": ["blockers", "nextAuthorizedAction"]
+    },
+    "unavailable": {
+      "optional": ["unavailableReason", "className"],
+      "forbidden": [
+        "channelName",
+        "episodeNumber",
+        "title",
+        "workflowState",
+        "workflowStateLabel",
+        "humanReviewStatus",
+        "lastDecision",
+        "blockers",
+        "nextExpectedState",
+        "nextAuthorizedAction",
+        "youtubeVideoId",
+        "publishedAt",
+        "canonicalSource",
+        "manifestVersion"
+      ]
+    }
+  },
+  "removed_props": [
+    "episodeId",
+    "updatedAt",
+    "reduceMotion"
+  ],
+  "motion_contract": {
+    "public_override": false,
+    "system_preference": "prefers-reduced-motion",
+    "implementation": "framer-motion useReducedMotion"
+  },
+  "public_exports": [
+    "EpisodeStateCard",
+    "EpisodeStateCardProps",
+    "EpisodeStateCardVariant",
+    "HumanReviewStatus",
+    "EpisodeStateDecision",
+    "EpisodeStateBlocker",
+    "DefaultEpisodeStateCardProps",
+    "BlockedEpisodeStateCardProps",
+    "HumanReviewRequiredEpisodeStateCardProps",
+    "ApprovedEpisodeStateCardProps",
+    "PublishedEpisodeStateCardProps",
+    "UnavailableEpisodeStateCardProps"
+  ],
+  "accessibility": {
+    "review": "PASS",
+    "baseline_commit": "3de31ebfa3d6001fb633d261de495f862757fc3a",
+    "features": [
+      "React.useId per instance",
+      "aria-labelledby composed accessible name",
+      "sr-only blocker severity text",
+      "decorative icons aria-hidden",
+      "prefers-reduced-motion respected"
+    ]
+  },
+  "api_tests": {
+    "expected": 20,
+    "reported_pass": 20,
+    "reported_fail": 0
+  }
+}

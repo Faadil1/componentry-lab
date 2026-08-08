@@ -1,0 +1,53 @@
+? Episode State Card ï¿½ API Stabilization
+  ? 1. Variant-specific discriminated union: 6 variants (1.2513ms)
+  ? 2. HumanReviewStatus excludes 'unavailable' (0.1615ms)
+  ? 3. Variant-specific props are enforced by type system (0.1464ms)
+  ? 4. Lab-only reduceMotion is not a public prop (0.1266ms)
+  ? 5. Unavailable variant forbids canonical/presentation props (0.1299ms)
+  ? 6. Blocked variant requires non-empty blockers tuple (0.1455ms)
+  ? 7. HumanReviewRequired variant requires humanReviewStatus='required' (0.1595ms)
+  ? 8. Approved and Published variants require humanReviewStatus='completed' (0.124ms)
+  ? 9. Published variant requires youtubeVideoId and publishedAt as required strings (0.8326ms)
+  ? 10. Ref forwarding typed as HTMLDivElement (0.7357ms)
+  ? 11. Exported types are minimal and intentional (0.6477ms)
+  ? 12. No lab controls, icon maps, or style helpers exported (0.1838ms)
+  ? 13. All fixtures validate against new variant-specific types (0.6957ms)
+  ? 14. API surface document reflects new variant-specific contracts (0.5457ms)
+  ? 15. Documentation reflects variant-specific requirements (1.5289ms)
+  ? 16. ADR explains variant-specific discriminated union decision (0.4112ms)
+  ? 17. Migration guide covers removed reduceMotion and variant invariants (0.3701ms)
+  ? 18. All 6 variants compile and have distinct prop contracts (0.149ms)
+  ? 19. HumanReviewStatus does not leak into unavailable variant (0.1208ms)
+  ? 20. Public API version is 1.0.0 and registry reflects APPROVAL_REVIEW state (0.3783ms)
+? Episode State Card ï¿½ API Stabilization (12.488ms)
+? tests 20
+? suites 1
+? pass 19
+? fail 1
+? cancelled 0
+? skipped 0
+? todo 0
+? duration_ms 210.1903
+
+? failing tests:
+
+test at tests\episode-state-card-api.test.ts:176:3
+? 15. Documentation reflects variant-specific requirements (1.5289ms)
+  AssertionError [ERR_ASSERTION]: reduceMotion mention should indicate it's removed: - `reduceMotion`
+
+  false !== true
+
+      at TestContext.<anonymous> (C:\Users\fboussari\componentry-lab\tests\episode-state-card-api.test.ts:190:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Suite.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -14,6 +14,7 @@ const primaryLinks: NavLink[] = [
   { href: "/playbooks", label: "Playbooks" },
   { href: "/projects", label: "Projects" },
   { href: "/film-kit", label: "Film Kit" },
+  { href: "/youtube", label: "YouTube OS" },
 ]
 
 const groupedLabLinks: Array<{ label: string; links: NavLink[] }> = [

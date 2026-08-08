@@ -1,0 +1,89 @@
+{
+  "component_id": "episode-state-card",
+  "visual_evidence_commit": "4b560a5da97bc414fb338e8298488c3ae66ba09d",
+  "accessibility_implementation_commit": "ef3f6c3c1195eac2dcfdd839a2d02054cc5969ff",
+  "accessibility_evidence_commit": "3de31ebfa3d6001fb633d261de495f862757fc3a",
+  "public_route": "https://componentry-lab.vercel.app/episode-state-card",
+  "standard": "WCAG 2.2 AA",
+  "captured_at": "2026-08-06T09:57:14.903Z",
+  "runtime": {
+    "http_status": 200,
+    "console_errors": 0,
+    "page_errors": 0,
+    "hydration_errors": 0
+  },
+  "deployment": {
+    "timestamp": "2026-08-06T10:45:00Z",
+    "etag": "W/\"723e9bdb915fadb4f165ceee334dffa4\"",
+    "select_variant_select_exists": true,
+    "select_has_label": true,
+    "duplicate_ids": 0,
+    "react_id_derived": true,
+    "unavailable_uses_region": true,
+    "all_svgs_hidden": true,
+    "severity_sr_only_present": true
+  },
+  "automated": {
+    "axe_critical": 0,
+    "axe_serious": 0,
+    "axe_moderate": 0,
+    "axe_minor": 0,
+    "axe_incomplete_total": 1,
+    "axe_incomplete_unresolved": 0,
+    "axe_incomplete_rule_ids": [
+      "color-contrast"
+    ],
+    "axe_tags": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa",
+      "wcag22aa"
+    ],
+    "axe_scopes": [
+      "full_page",
+      "default",
+      "blocked",
+      "human-review-required",
+      "approved",
+      "published",
+      "unavailable",
+      "mobile_320px",
+      "reduced_motion"
+    ]
+  },
+  "semantics": {
+    "duplicate_ids": 0,
+    "broken_aria_references": 0,
+    "cards_with_accessible_names": 7
+  },
+  "contrast": {
+    "measurement_method_valid": true,
+    "measurement_method": "Canvas-based CSS color parsing (getContext(\"2d\").fillStyle + getImageData) with ancestor-chain background resolution; WCAG 2.1 relative luminance formula.",
+    "samples_measured": 98,
+    "failed_normal_text": 0,
+    "failed_large_text": 0,
+    "failed_ui_components": 0,
+    "lowest_measured_passing_ratio": 7.12,
+    "lowest_passing_sample": "human-review-required / channel eyebrow (#525252 on #f5f3ff)"
+  },
+  "keyboard": {
+    "keyboard_traps": 0,
+    "unexpected_tabbable_cards": 0
+  },
+  "motion": {
+    "reduced_motion_translation": false,
+    "reduced_motion_stagger": false
+  },
+  "reflow": {
+    "mobile_horizontal_overflow": false,
+    "text_spacing_loss": false
+  },
+  "regression_tests": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0
+  },
+  "unavailable_duplicate_message": false,
+  "decision": "PASS"
+}

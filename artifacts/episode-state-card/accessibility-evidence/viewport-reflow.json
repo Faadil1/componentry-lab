@@ -1,0 +1,36 @@
+{
+  "viewports_tested": [
+    320,
+    375,
+    768,
+    1280
+  ],
+  "results": [
+    {
+      "viewport_width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflow": false
+    },
+    {
+      "viewport_width": 375,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    {
+      "viewport_width": 768,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    {
+      "viewport_width": 1280,
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    }
+  ],
+  "any_overflow": false,
+  "timestamp": "2026-08-06T09:57:11.152Z"
+}

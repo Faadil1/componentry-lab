@@ -2,7 +2,6 @@ import type { EpisodeStateCardProps } from "@/components/workflow/episode-state-
 
 export const episode14EditorialDevelopment: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
-  episodeId: "14",
   episodeNumber: 14,
   title: "Editorial Development",
   workflowState: "EDITORIAL_DEVELOPMENT",
@@ -27,7 +26,6 @@ export const episode14EditorialDevelopment: EpisodeStateCardProps = {
 
 export const episode14Blocked: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
-  episodeId: "14",
   episodeNumber: 14,
   title: "Packaging Review",
   workflowState: "PACKAGING_REVIEW",
@@ -53,17 +51,12 @@ export const episode14Blocked: EpisodeStateCardProps = {
 
 export const episode13HumanReview: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
-  episodeId: "13",
   episodeNumber: 13,
   title: "Master V2",
   workflowState: "HUMAN_REVIEW_REQUIRED",
   workflowStateLabel: "HUMAN REVIEW REQUIRED",
   variant: "human-review-required",
   humanReviewStatus: "required",
-  lastDecision: {
-    label: "Automated QA: PASS",
-    outcome: "pass",
-  },
   nextAuthorizedAction: "Review Master V2",
   canonicalSource: "episode-013 manifest",
   manifestVersion: "1.1.0",
@@ -71,7 +64,6 @@ export const episode13HumanReview: EpisodeStateCardProps = {
 
 export const episode13Approved: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
-  episodeId: "13",
   episodeNumber: 13,
   title: "Master Approved",
   workflowState: "MASTER_APPROVED",
@@ -89,7 +81,6 @@ export const episode13Approved: EpisodeStateCardProps = {
 
 export const episode13Published: EpisodeStateCardProps = {
   channelName: "Wealth Decoded",
-  episodeId: "13",
   episodeNumber: 13,
   title: "$1,000 a Month in Dividends: How Much Do You Need?",
   workflowState: "PUBLISHED",
@@ -104,13 +95,6 @@ export const episode13Published: EpisodeStateCardProps = {
 }
 
 export const episodeUnavailable: EpisodeStateCardProps = {
-  channelName: "Wealth Decoded",
-  episodeId: "unknown",
-  episodeNumber: null,
-  title: "Unknown",
-  workflowState: "UNAVAILABLE",
-  workflowStateLabel: "EPISODE STATE UNAVAILABLE",
   variant: "unavailable",
-  humanReviewStatus: "unavailable",
-  unavailableReason: "The canonical episode manifest could not be loaded.",
+  unavailableReason: "MANIFEST_FETCH_FAILED: upstream returned 404 for episode-014/manifest.json",
 }

@@ -1,0 +1,168 @@
+{
+  "viewport": 320,
+  "controls": [
+    {
+      "tag": "a",
+      "text": "Library",
+      "width": 77,
+      "height": 32,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Playbooks",
+      "width": 99,
+      "height": 32,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Projects",
+      "width": 85,
+      "height": 32,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Film Kit",
+      "width": 80,
+      "height": 32,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Spotlight Lab",
+      "width": 99,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Split Flap Lab",
+      "width": 101,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Scrub Input Lab",
+      "width": 113,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Kinetic Text Lab",
+      "width": 114,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Layouts",
+      "width": 71,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Scroll Choreography Lab",
+      "width": 160,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "WebGL Liquid Lab",
+      "width": 125,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Image Ripple Lab",
+      "width": 120,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Typography",
+      "width": 93,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Foundations",
+      "width": 95,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Interaction Player",
+      "width": 122,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Decision Systems",
+      "width": 124,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Capture Systems",
+      "width": 120,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "a",
+      "text": "Composition Recipes",
+      "width": 141,
+      "height": 35,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "select",
+      "text": "DEFAULTBLOCKEDHUMAN-REVIEW-REQUIREDAPPRO",
+      "width": 288,
+      "height": 37,
+      "passes_24px": true,
+      "passes_44px": false
+    },
+    {
+      "tag": "button",
+      "text": "Normal Motion",
+      "width": 288,
+      "height": 38,
+      "passes_24px": true,
+      "passes_44px": false
+    }
+  ],
+  "total": 20,
+  "failures_24px": 0,
+  "timestamp": "2026-08-06T09:57:12.366Z"
+}

@@ -35,15 +35,15 @@ async function captureVariant(browser, variant) {
     await page.waitForTimeout(1000);
 
     // Capture the hero section
-    const heroSection = await page.$('section:has(h2:has-text("Hero Demo"))');
+    const heroSection = await page.$('section:has(h2:has-text("Workflow State Display"))');
     if (heroSection) {
       const filePath = path.join(OUTPUT_DIR, variant.file);
       await heroSection.screenshot({ path: filePath });
-      console.log(`✓ Captured ${variant.file}`);
+      console.log(`? Captured ${variant.file}`);
       return true;
     }
 
-    console.error(`✗ Could not find hero section for ${variant.value}`);
+    console.error(`? Could not find hero section for ${variant.value}`);
     return false;
   } catch (error) {
     console.error(`Error capturing ${variant.value}:`, error.message);
@@ -74,15 +74,15 @@ async function captureMobile(browser) {
 
     console.log(`Mobile overflow check: scrollWidth=${scrollWidth}, clientWidth=${clientWidth}, overflow=${scrollWidth > clientWidth}`);
 
-    const heroSection = await page.$('section:has(h2:has-text("Hero Demo"))');
+    const heroSection = await page.$('section:has(h2:has-text("Workflow State Display"))');
     if (heroSection) {
       const filePath = path.join(OUTPUT_DIR, 'episode-state-card-mobile-320.png');
       await heroSection.screenshot({ path: filePath });
-      console.log(`✓ Captured episode-state-card-mobile-320.png`);
+      console.log(`? Captured episode-state-card-mobile-320.png`);
       return true;
     }
 
-    console.error(`✗ Could not find hero section for mobile`);
+    console.error(`? Could not find hero section for mobile`);
     return false;
   } catch (error) {
     console.error('Error capturing mobile:', error.message);
@@ -119,15 +119,15 @@ async function captureReducedMotion(browser) {
       }
     }
 
-    const heroSection = await page.$('section:has(h2:has-text("Hero Demo"))');
+    const heroSection = await page.$('section:has(h2:has-text("Workflow State Display"))');
     if (heroSection) {
       const filePath = path.join(OUTPUT_DIR, 'episode-state-card-reduced-motion.png');
       await heroSection.screenshot({ path: filePath });
-      console.log(`✓ Captured episode-state-card-reduced-motion.png`);
+      console.log(`? Captured episode-state-card-reduced-motion.png`);
       return true;
     }
 
-    console.error(`✗ Could not find hero section for reduced motion`);
+    console.error(`? Could not find hero section for reduced motion`);
     return false;
   } catch (error) {
     console.error('Error capturing reduced motion:', error.message);
@@ -170,7 +170,7 @@ async function main() {
   // Summary
   console.log('\n=== Capture Summary ===');
   results.forEach(r => {
-    const status = r.captured ? '✓' : '✗';
+    const status = r.captured ? '?' : '?';
     console.log(`${status} ${r.variant}: ${r.file}`);
   });
 

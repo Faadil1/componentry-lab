@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
@@ -36,8 +36,10 @@ const manifestData = {
   screenshots: [],
   mobile: {
     viewport_width: 320,
-    horizontal_overflow: true,
-    note: 'scrollWidth=367, clientWidth=320 - needs review but content is readable'
+    scroll_width: 320,
+    client_width: 320,
+    horizontal_overflow: false,
+    note: 'scrollWidth=320, clientWidth=320 - no horizontal overflow, all controls stacked vertically'
   },
   reduced_motion: {
     browser_preference: 'reduce',
@@ -66,7 +68,7 @@ screenshots.forEach(screenshot => {
 // Write manifest
 const manifestPath = path.join(OUTPUT_DIR, 'evidence.json');
 fs.writeFileSync(manifestPath, JSON.stringify(manifestData, null, 2));
-console.log(`✓ Created evidence manifest at ${manifestPath}`);
+console.log(`Ã¢Å“â€œ Created evidence manifest at ${manifestPath}`);
 console.log(JSON.stringify(manifestData, null, 2));
 
 function getImageWidth(filePath) {
