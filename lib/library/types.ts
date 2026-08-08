@@ -1,7 +1,7 @@
-import { registryComponents } from "@/lib/registry/components"
-import { RESOURCE_REGISTRY } from "@/lib/creative-os/registry"
-import type { RegistryEntry, RegistryEntryKind, RegistryCategoryId, RegistryMaturity, RegistryRuntime, RegistryViewport } from "@/lib/registry/types"
-import type { ResourceMetadata, ResourceType, AuthorityCeiling } from "@/lib/creative-os/types"
+import { registryComponents } from "../registry/components"
+import { RESOURCE_REGISTRY } from "../creative-os/registry"
+import type { RegistryEntry, RegistryEntryKind, RegistryCategoryId, RegistryMaturity, RegistryRuntime, RegistryViewport } from "../registry/types"
+import type { ResourceMetadata, ResourceType, AuthorityCeiling } from "../creative-os/types"
 
 export type LibrarySourceKind = "COMPONENT" | "CREATIVE_RESOURCE"
 
