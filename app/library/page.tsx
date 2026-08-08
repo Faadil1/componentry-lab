@@ -16,11 +16,7 @@ export default function LibraryPage() {
     <main className="min-h-screen bg-[#0a0a09] text-stone-100 selection:bg-cyan-400/20 selection:text-stone-100 font-sans">
       {/* Shared Navigation Header */}
       <header className="sticky top-0 z-50 border-b border-stone-800/80 bg-[#0a0a09]/95 px-4 py-3 backdrop-blur-md md:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-stone-500 font-bold">Componentry Lab</p>
-            <h1 className="text-base font-bold tracking-tight text-stone-100">Library</h1>
-          </div>
+        <div className="mx-auto flex max-w-6xl flex-col gap-3">
           <LabNavigation
             className="contents"
             linkClassName="px-3.5"

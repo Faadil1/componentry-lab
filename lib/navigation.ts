@@ -17,7 +17,7 @@ export const SITE_NAVIGATION: SiteNavigationItem[] = [
   { id: "film-kit", label: "Film Kit", href: "/film-kit", group: "CORE" },
 
   // WORKSPACES
-  { id: "youtube", label: "YouTube OS", href: "/youtube", group: "WORKSPACE" },
+  { id: "youtube", label: "YouTube", href: "/youtube", group: "WORKSPACE" },
 
   // LABS - Interaction labs
   { id: "spotlight-lab", label: "Spotlight Lab", href: "/", group: "LAB", subGroup: "Interaction labs" },

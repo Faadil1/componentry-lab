@@ -94,4 +94,8 @@ test("shell contextual metadata functions correctly", () => {
   const context = getSurfaceContext("/library")
   assert.equal(context.brand, "Componentry Lab")
   assert.equal(context.title, "Library")
+  
+  const ytContext = getSurfaceContext("/youtube")
+  assert.equal(ytContext.brand, "Componentry Lab")
+  assert.equal(ytContext.title, "YouTube")
 })
