@@ -3,47 +3,8 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-
-type NavLink = {
-  href: string
-  label: string
-}
-
-const primaryLinks: NavLink[] = [
-  { href: "/library", label: "Library" },
-  { href: "/playbooks", label: "Playbooks" },
-  { href: "/projects", label: "Projects" },
-  { href: "/film-kit", label: "Film Kit" },
-  { href: "/youtube", label: "YouTube OS" },
-]
-
-const groupedLabLinks: Array<{ label: string; links: NavLink[] }> = [
-  {
-    label: "Interaction labs",
-    links: [
-      { href: "/", label: "Spotlight Lab" },
-      { href: "/split-flap", label: "Split Flap Lab" },
-      { href: "/scrub-input", label: "Scrub Input Lab" },
-      { href: "/kinetic-text", label: "Kinetic Text Lab" },
-      { href: "/layouts", label: "Layouts" },
-      { href: "/scroll-choreography", label: "Scroll Choreography Lab" },
-      { href: "/webgl-liquid", label: "WebGL Liquid Lab" },
-      { href: "/image-ripple", label: "Image Ripple Lab" },
-    ],
-  },
-  {
-    label: "System labs",
-    links: [
-      { href: "/typography", label: "Typography" },
-      { href: "/foundations", label: "Foundations" },
-      { href: "/player", label: "Interaction Player" },
-      { href: "/decisions", label: "Decision Systems" },
-      { href: "/director", label: "Creative Director" },
-      { href: "/capture", label: "Capture Systems" },
-      { href: "/recipes", label: "Composition Recipes" },
-    ],
-  },
-]
+import { SITE_NAVIGATION, getActiveNavigationItem, SiteNavigationItem } from "@/lib/navigation"
+import { useMemo } from "react"
 
 export interface LabNavigationProps {
   className?: string
@@ -61,7 +22,9 @@ function NavLinkButton({
   activeClassName,
   inactiveClassName,
   compact,
-}: NavLink & {
+}: {
+  href: string
+  label: string
   isActive: boolean
   linkClassName?: string
   activeClassName: string
@@ -93,26 +56,70 @@ export function LabNavigation({
 }: LabNavigationProps) {
   const pathname = usePathname()
 
+  const coreLinks = useMemo(() => SITE_NAVIGATION.filter(item => item.group === "CORE"), [])
+  const workspaceLinks = useMemo(() => SITE_NAVIGATION.filter(item => item.group === "WORKSPACE"), [])
+  const labLinks = useMemo(() => SITE_NAVIGATION.filter(item => item.group === "LAB"), [])
+
+  const groupedLabs = useMemo(() => {
+    const groups: Record<string, SiteNavigationItem[]> = {}
+    labLinks.forEach(link => {
+      const g = link.subGroup || "Other"
+      if (!groups[g]) groups[g] = []
+      groups[g].push(link)
+    })
+    return Object.entries(groups).map(([label, links]) => ({ label, links }))
+  }, [labLinks])
+
+  const activeItem = getActiveNavigationItem(pathname)
+
   return (
     <div className={cn("flex flex-col min-w-0", compact ? "gap-1.5" : "gap-3", className)}>
       <nav className="flex flex-wrap items-center gap-1.5 text-xs" aria-label="Primary navigation">
-        {primaryLinks.map((link) => {
-          const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)
-          return (
-            <NavLinkButton
-              key={link.href}
-              href={link.href}
-              label={link.label}
-              isActive={isActive}
-              linkClassName={linkClassName}
-              activeClassName={activeClassName}
-              inactiveClassName={inactiveClassName}
-              compact={compact}
-            />
-          )
-        })}
+        {/* Core Navigation */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {coreLinks.map((link) => {
+            const isActive = activeItem?.id === link.id
+            return (
+              <NavLinkButton
+                key={link.href}
+                href={link.href}
+                label={link.label}
+                isActive={isActive}
+                linkClassName={linkClassName}
+                activeClassName={activeClassName}
+                inactiveClassName={inactiveClassName}
+                compact={compact}
+              />
+            )
+          })}
+        </div>
+
+        {/* Workspace Separator (only visual) */}
+        {workspaceLinks.length > 0 && (
+          <>
+            <div className="w-px h-4 bg-stone-300 mx-1 hidden sm:block" aria-hidden="true" />
+            <div className="flex flex-wrap items-center gap-1.5">
+              {workspaceLinks.map((link) => {
+                const isActive = activeItem?.id === link.id
+                return (
+                  <NavLinkButton
+                    key={link.href}
+                    href={link.href}
+                    label={link.label}
+                    isActive={isActive}
+                    linkClassName={cn(linkClassName, "text-stone-600 font-mono tracking-tight")}
+                    activeClassName={activeClassName}
+                    inactiveClassName={inactiveClassName}
+                    compact={compact}
+                  />
+                )
+              })}
+            </div>
+          </>
+        )}
       </nav>
 
+      {/* Labs Menu */}
       <details className={cn("group border border-stone-300 bg-white/70 shadow-xs backdrop-blur-sm", compact ? "rounded-lg p-1.5 text-[11px]" : "rounded-2xl p-3")}>
         <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-0.5 font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
           <span className={compact ? "text-[10px]" : "text-xs"}>Labs menu</span>
@@ -120,12 +127,12 @@ export function LabNavigation({
           <span className="hidden text-[9px] tracking-[0.22em] text-stone-400 group-open:inline">Close</span>
         </summary>
         <div className={cn("grid gap-2.5 md:grid-cols-2 xl:grid-cols-4", compact ? "mt-1.5 text-xs" : "mt-3")}>
-          {groupedLabLinks.map((group) => (
+          {groupedLabs.map((group) => (
             <section key={group.label} className={cn("rounded-lg border border-stone-200 bg-stone-50 p-2.5", compact ? "space-y-1 p-2" : "space-y-1.5 p-2.5")}>
               <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-stone-500">{group.label}</p>
               <div className="flex flex-wrap gap-1.5">
                 {group.links.map((link) => {
-                  const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`)
+                  const isActive = activeItem?.id === link.id
                   return (
                     <NavLinkButton
                       key={link.href}

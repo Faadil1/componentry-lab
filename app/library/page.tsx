@@ -19,7 +19,7 @@ export default function LibraryPage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-stone-500 font-bold">Componentry Lab</p>
-            <h1 className="text-base font-bold tracking-tight text-stone-100">Component Catalog Index</h1>
+            <h1 className="text-base font-bold tracking-tight text-stone-100">Library</h1>
           </div>
           <LabNavigation
             className="contents"
