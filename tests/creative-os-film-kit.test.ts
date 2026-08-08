@@ -20,7 +20,7 @@ test.beforeEach(() => {
 // 1. Film Kit Capability Decomposition
 // ─────────────────────────────────────────────────────────────
 
-test("FilmKit Decomposition: decomposes capability gaps and artifact types into Film Kit capabilities", () => {
+test("FilmKit Decomposition: decomposes capability gaps and artifact types into Film Kit capabilities", async () => {
   const cap1 = decomposeFilmKitCapabilities({ capabilityGap: "remocn-render" })
   assert.ok(cap1.includes("MOTION_COMPOSITION"))
   assert.ok(cap1.includes("UI_CAPTURE"))
@@ -41,9 +41,9 @@ test("FilmKit Decomposition: decomposes capability gaps and artifact types into 
 // 2. Production Planning & Zero Provider Execution
 // ─────────────────────────────────────────────────────────────
 
-test("FilmKit Production: simple/native internal capability selects CORE_METHOD without external provider", () => {
+test("FilmKit Production: simple/native internal capability selects CORE_METHOD without external provider", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })
@@ -54,9 +54,9 @@ test("FilmKit Production: simple/native internal capability selects CORE_METHOD 
   assert.strictEqual(providerExecuteCallCount, 0, "Provider execute count must be strictly 0")
 })
 
-test("FilmKit Production: compatible external candidate creates PLAN_ONLY with provider.execute called 0 times", () => {
+test("FilmKit Production: compatible external candidate creates PLAN_ONLY with provider.execute called 0 times", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -69,9 +69,9 @@ test("FilmKit Production: compatible external candidate creates PLAN_ONLY with p
   assert.strictEqual(providerExecuteCallCount, 0, "Production routing must NEVER execute provider")
 })
 
-test("FilmKit Production: TEST_CANDIDATE provider produces EXTERNAL_EXPERIMENTAL_CANDIDATE label", () => {
+test("FilmKit Production: TEST_CANDIDATE provider produces EXTERNAL_EXPERIMENTAL_CANDIDATE label", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -87,9 +87,9 @@ test("FilmKit Production: TEST_CANDIDATE provider produces EXTERNAL_EXPERIMENTAL
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Production: UNKNOWN compatibility produces DISCOVERY_REQUIRED status", () => {
+test("FilmKit Production: UNKNOWN compatibility produces DISCOVERY_REQUIRED status", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -102,9 +102,9 @@ test("FilmKit Production: UNKNOWN compatibility produces DISCOVERY_REQUIRED stat
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Production: insufficient authority ceiling yields BLOCKED and 0 execution", () => {
+test("FilmKit Production: insufficient authority ceiling yields BLOCKED and 0 execution", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -115,9 +115,9 @@ test("FilmKit Production: insufficient authority ceiling yields BLOCKED and 0 ex
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Production: EXPLICIT_EXTERNAL required authority yields HUMAN_APPROVAL_REQUIRED", () => {
+test("FilmKit Production: EXPLICIT_EXTERNAL required authority yields HUMAN_APPROVAL_REQUIRED", async () => {
   resetProviderExecuteCount()
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("mara-episode"),
     currentAuthority: "EXPLICIT_EXTERNAL" as const,
     optionalRequestedCapabilityGap: "b-roll-generation" // res_gbro_collage_b_roll has maxExecutionAuthority EXPLICIT_EXTERNAL
@@ -130,7 +130,7 @@ test("FilmKit Production: EXPLICIT_EXTERNAL required authority yields HUMAN_APPR
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Truth: missing cost and license are marked UNKNOWN", () => {
+test("FilmKit Truth: missing cost and license are marked UNKNOWN", async () => {
   const plan = planExternalCapability(
     {
       capabilityGap: "remocn-render",
@@ -159,7 +159,7 @@ test("FilmKit Truth: missing cost and license are marked UNKNOWN", () => {
   assert.ok(plan.missingEvidence.includes("Privacy retention policy missing"))
 })
 
-test("FilmKit Truth: DISCOVERY_FEED cannot become production provider", () => {
+test("FilmKit Truth: DISCOVERY_FEED cannot become production provider", async () => {
   const plan = planExternalCapability(
     {
       capabilityGap: "skill-discovery",
@@ -189,10 +189,10 @@ test("FilmKit Truth: DISCOVERY_FEED cannot become production provider", () => {
 // 3. Determinism & Continuity Regressions
 // ─────────────────────────────────────────────────────────────
 
-test("FilmKit Continuity: RUN A and RUN B produce identical plan fingerprint and MATCH status", () => {
+test("FilmKit Continuity: RUN A and RUN B produce identical plan fingerprint and MATCH status", async () => {
   const projectSnapshot = getProjectFixture("cleanverse-build-round-2")
 
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -200,7 +200,7 @@ test("FilmKit Continuity: RUN A and RUN B produce identical plan fingerprint and
 
   assert.ok(resultA.externalCapabilityPlan?.planFingerprint)
 
-  const resultB = runIntegration({
+  const resultB = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render",
@@ -215,10 +215,10 @@ test("FilmKit Continuity: RUN A and RUN B produce identical plan fingerprint and
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Continuity: RUN C with changed project yields STALE continuation status", () => {
+test("FilmKit Continuity: RUN C with changed project yields STALE continuation status", async () => {
   const projectSnapshot = getProjectFixture("cleanverse-build-round-2")
 
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -227,7 +227,7 @@ test("FilmKit Continuity: RUN C with changed project yields STALE continuation s
   const modifiedSnapshot = JSON.parse(JSON.stringify(projectSnapshot))
   modifiedSnapshot.description = "Modified description changing project brain fingerprint"
 
-  const resultC = runIntegration({
+  const resultC = await runIntegration({
     projectBrainSnapshot: modifiedSnapshot,
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render",
@@ -238,7 +238,7 @@ test("FilmKit Continuity: RUN C with changed project yields STALE continuation s
   assert.strictEqual(providerExecuteCallCount, 0)
 })
 
-test("FilmKit Governance: Project Brain remains strictly immutable", () => {
+test("FilmKit Governance: Project Brain remains strictly immutable", async () => {
   const originalSnapshot = getProjectFixture("cleanverse-build-round-2")
   const snapshotCopy = JSON.parse(JSON.stringify(originalSnapshot))
 
@@ -251,8 +251,8 @@ test("FilmKit Governance: Project Brain remains strictly immutable", () => {
   assert.deepStrictEqual(originalSnapshot, snapshotCopy, "Project Brain snapshot must not be mutated")
 })
 
-test("FilmKit Governance: Director returns exactly one authorized next action", () => {
-  const result = runIntegration({
+test("FilmKit Governance: Director returns exactly one authorized next action", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"

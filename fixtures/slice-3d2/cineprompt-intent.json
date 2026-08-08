@@ -1,0 +1,16 @@
+{
+  "description": "Canonical execution intent for CinePrompt share link pilot",
+  "projectId": "proj_3d2",
+  "projectBrainFingerprint": "brain_3d2",
+  "planFingerprint": "plan_3d2",
+  "resourceId": "res_cineprompt",
+  "capabilityId": "cap_cineprompt",
+  "adapterId": "adapter_cineprompt_share_link_v1",
+  "authority": "EXPLICIT_EXTERNAL",
+  "inputFingerprint": "<sha256-of-requiredInputs>",
+  "expectedArtifactType": "share-link",
+  "costCeiling": "7",
+  "approvalFingerprint": "<approval-fingerprint>",
+  "executionIntentFingerprint": "<sha256-of-all-above-fields-sorted>",
+  "notes": "executionIntentFingerprint is deterministic. Same inputs always produce same fingerprint. Changed bound field produces different fingerprint."
+}

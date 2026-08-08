@@ -57,7 +57,7 @@ const METHOD_RUNNERS: Record<string, (input: CreativeMethodInput) => CreativeMet
   "res_library_first_composition_router": runLibraryFirstCompositionRouter
 }
 
-export function runIntegration(request: CreativeOSIntegrationRequest): CreativeOSIntegrationResult {
+export async function runIntegration(request: CreativeOSIntegrationRequest): Promise<CreativeOSIntegrationResult> {
   // 1. Deep clone project to guarantee immutability
   const project: ProjectBrain = JSON.parse(JSON.stringify(request.projectBrainSnapshot))
   const projectBrainFingerprint = computeFingerprint(project)
@@ -266,7 +266,7 @@ export function runIntegration(request: CreativeOSIntegrationRequest): CreativeO
       } else if (plan.executionStatus === "HUMAN_APPROVAL_REQUIRED" || plan.executionStatus === "EXTERNAL_PLAN_READY" || plan.executionStatus === "EXTERNAL_EXPERIMENTAL_CANDIDATE") {
         
         // Let the sandbox handle all execution, approvals, freshness, and authority limits.
-        const sandboxResult = executeSandboxedPlan(plan, projectId, projectBrainFingerprint, parsedApproval, request.currentAuthority)
+        const sandboxResult = await executeSandboxedPlan(plan, projectId, projectBrainFingerprint, parsedApproval, request.currentAuthority, {})
         
         // Update plan executionStatus based on Sandbox result
         plan.executionStatus = sandboxResult.status

@@ -190,11 +190,11 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     license: "Proprietary",
     provenance: "external:github:cineprompt",
     sourceUrl: "https://github.com/example/cineprompt",
-    modes: ["MARA"],
+    modes: ["MARA", "DAY_CHALLENGE"],
     capabilities: {
       actions: ["prompt-camera-path"],
-      artifactTypes: ["shotlist"],
-      capabilityGaps: ["ai-camera-movements"],
+      artifactTypes: ["shotlist", "EXTERNAL_SHARE_REFERENCE"],
+      capabilityGaps: ["ai-camera-movements", "PROMPT_SHARE_LINK_CREATION"],
       requiredAuthority: "SUGGEST"
     },
     activationRules: []

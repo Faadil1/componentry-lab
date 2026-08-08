@@ -1,0 +1,14 @@
+{
+  "description": "Valid human approval decision for CinePrompt share link pilot",
+  "approvalState": "GRANTED",
+  "projectId": "proj_3d2",
+  "projectBrainFingerprint": "brain_3d2",
+  "planFingerprint": "plan_3d2",
+  "resourceId": "res_cineprompt",
+  "capabilityId": "cap_cineprompt",
+  "providerAdapterId": "adapter_cineprompt_share_link_v1",
+  "approvedAuthority": "EXPLICIT_EXTERNAL",
+  "costCeiling": "7",
+  "approvalFingerprint": "<computed-deterministically-at-test-time>",
+  "notes": "Approved for synthetic pilot payload only. No PII. No client confidential data. Subscription ceiling: 7 USD/month. Downstream generation budget: 0 USD."
+}

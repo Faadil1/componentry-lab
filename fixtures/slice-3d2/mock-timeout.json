@@ -1,0 +1,1 @@
+{ "description": "CinePrompt request timed out after 10 000ms", "errorCode": "TIMEOUT", "timeoutMs": 10000, "adapterResult": { "status": "FAILED", "error": "TIMEOUT: Request timed out after 10 000ms." }, "retryPolicy": "Do NOT retry automatically. Outcome may or may not have reached provider." }

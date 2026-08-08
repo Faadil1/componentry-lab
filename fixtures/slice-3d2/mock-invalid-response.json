@@ -1,0 +1,1 @@
+{ "description": "Malformed CinePrompt response — missing share_url", "transportOutcome": "ERROR", "errorCode": "INVALID_RESPONSE", "rawBody": { "status": "ok" }, "adapterResult": { "status": "FAILED", "error": "INVALID_RESPONSE: Response missing expected share_url field." } }

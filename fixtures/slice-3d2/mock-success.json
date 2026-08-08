@@ -1,0 +1,20 @@
+{
+  "description": "Mock successful CinePrompt share link response",
+  "transportOutcome": "SUCCESS",
+  "providerResponse": {
+    "share_url": "https://cineprompt.io/share/pilot-abc123",
+    "share_id": "pilot-abc123",
+    "created_at": "2026-08-07T16:00:00Z"
+  },
+  "adapterResult": {
+    "status": "COMPLETE",
+    "rawOutput": {
+      "shareUrl": "https://cineprompt.io/share/pilot-abc123",
+      "shareId": "pilot-abc123",
+      "artifactClassification": "EXTERNAL_SHARE_REFERENCE",
+      "createdAt": "2026-08-07T16:00:00Z"
+    }
+  },
+  "artifactClassification": "EXTERNAL_SHARE_REFERENCE",
+  "notes": "Share URL is NOT assumed PRIVATE, DELETABLE, or REVOCABLE unless provider evidence explicitly proves otherwise."
+}

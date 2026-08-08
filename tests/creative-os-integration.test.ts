@@ -18,7 +18,7 @@ function getProjectFixture(key: string) {
 // 1. Project Brain Immutability
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: project-brain-immutable - Project Brain snapshot is never mutated", () => {
+test("Integration: project-brain-immutable - Project Brain snapshot is never mutated", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
   const beforeStr = JSON.stringify(projectSnapshot)
 
@@ -35,9 +35,9 @@ test("Integration: project-brain-immutable - Project Brain snapshot is never mut
 // 2. Project Identity Throughout Pipeline
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: project-identity-preserved - projectId is traceable through Director, Router, Method and ContinuationState", () => {
+test("Integration: project-identity-preserved - projectId is traceable through Director, Router, Method and ContinuationState", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "SUGGEST" as const
   })
@@ -51,8 +51,8 @@ test("Integration: project-identity-preserved - projectId is traceable through D
 // 3. Exactly One Authorized Next Action (all method statuses)
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: exactly-one-next-action - COMPLETE path returns exactly one authorized action", () => {
-  const result = runIntegration({
+test("Integration: exactly-one-next-action - COMPLETE path returns exactly one authorized action", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })
@@ -62,9 +62,9 @@ test("Integration: exactly-one-next-action - COMPLETE path returns exactly one a
   assert.ok(result.authorizedNextAction.title.length > 0)
 })
 
-test("Integration: exactly-one-next-action on METHOD_PARTIAL - Director still returns one action", () => {
+test("Integration: exactly-one-next-action on METHOD_PARTIAL - Director still returns one action", async () => {
   // DATA_STORY with PREPARE: RPA executes but quality gates partially fail on generic fixture
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("power-bi-service-performance"),
     currentAuthority: "PREPARE" as const
   })
@@ -75,9 +75,9 @@ test("Integration: exactly-one-next-action on METHOD_PARTIAL - Director still re
   assert.ok(result.authorizedNextAction.title.length > 0)
 })
 
-test("Integration: exactly-one-next-action on INTEGRATION_BLOCKED - Director still returns one action", () => {
+test("Integration: exactly-one-next-action on INTEGRATION_BLOCKED - Director still returns one action", async () => {
   // remocn-render gap with SUGGEST: res_remocn maxExecutionAuthority=LOCAL_REVERSIBLE > SUGGEST
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -88,8 +88,8 @@ test("Integration: exactly-one-next-action on INTEGRATION_BLOCKED - Director sti
   assert.ok(typeof result.authorizedNextAction.title === "string")
 })
 
-test("Integration: exactly-one-next-action on NO_MATCH - Director still returns one action", () => {
-  const result = runIntegration({
+test("Integration: exactly-one-next-action on NO_MATCH - Director still returns one action", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "b-roll-generation" // no match in registry for this mode
@@ -104,10 +104,10 @@ test("Integration: exactly-one-next-action on NO_MATCH - Director still returns 
 // 4. Authority Escalation — Genuine Scenarios
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: no-authority-escalation - remocn-render gap requires LOCAL_REVERSIBLE but ceiling is SUGGEST", () => {
+test("Integration: no-authority-escalation - remocn-render gap requires LOCAL_REVERSIBLE but ceiling is SUGGEST", async () => {
   // res_remocn has maxExecutionAuthority=LOCAL_REVERSIBLE.
   // With currentAuthority=SUGGEST (< LOCAL_REVERSIBLE), the integration layer must block execution.
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -120,9 +120,9 @@ test("Integration: no-authority-escalation - remocn-render gap requires LOCAL_RE
   assert.strictEqual(result.selectedResource, null)
 })
 
-test("Integration: no-authority-escalation - same gap with sufficient authority proceeds", () => {
+test("Integration: no-authority-escalation - same gap with sufficient authority proceeds", async () => {
   // With currentAuthority=LOCAL_REVERSIBLE, remocn-render should be reachable
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "LOCAL_REVERSIBLE" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -138,8 +138,8 @@ test("Integration: no-authority-escalation - same gap with sufficient authority 
 // 5. Method Advisory — Never Direct Action
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: method-advisory-not-action - method output is advisory evidence, not the Director action", () => {
-  const result = runIntegration({
+test("Integration: method-advisory-not-action - method output is advisory evidence, not the Director action", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })
@@ -159,8 +159,8 @@ test("Integration: method-advisory-not-action - method output is advisory eviden
 // 6. Four-Mode Matrix — Orchestration Truth
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: four-mode matrix - DAY_CHALLENGE routes to Sacred Rules Breaker (COMPLETE)", () => {
-  const result = runIntegration({
+test("Integration: four-mode matrix - DAY_CHALLENGE routes to Sacred Rules Breaker (COMPLETE)", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })
@@ -170,8 +170,8 @@ test("Integration: four-mode matrix - DAY_CHALLENGE routes to Sacred Rules Break
   assert.ok(result.authorizedNextAction)
 })
 
-test("Integration: four-mode matrix - MARA routes to Physical Situation Storyboarder (COMPLETE)", () => {
-  const result = runIntegration({
+test("Integration: four-mode matrix - MARA routes to Physical Situation Storyboarder (COMPLETE)", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("mara-episode"),
     currentAuthority: "SUGGEST" as const
   })
@@ -181,8 +181,8 @@ test("Integration: four-mode matrix - MARA routes to Physical Situation Storyboa
   assert.ok(result.authorizedNextAction)
 })
 
-test("Integration: four-mode matrix - HACKATHON routes to Library-First Composition Router (COMPLETE)", () => {
-  const result = runIntegration({
+test("Integration: four-mode matrix - HACKATHON routes to Library-First Composition Router (COMPLETE)", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "PREPARE" as const
   })
@@ -192,10 +192,10 @@ test("Integration: four-mode matrix - HACKATHON routes to Library-First Composit
   assert.ok(result.authorizedNextAction)
 })
 
-test("Integration: four-mode matrix - DATA_STORY routes to RPA (METHOD_PARTIAL on generic fixture)", () => {
+test("Integration: four-mode matrix - DATA_STORY routes to RPA (METHOD_PARTIAL on generic fixture)", async () => {
   // The generic power-bi fixture has no source evidence, so RPA quality gates partially fail.
   // METHOD_PARTIAL is the honest integration result — it is not forced to COMPLETE.
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("power-bi-service-performance"),
     currentAuthority: "PREPARE" as const
   })
@@ -207,9 +207,9 @@ test("Integration: four-mode matrix - DATA_STORY routes to RPA (METHOD_PARTIAL o
   assert.ok(result.authorizedNextAction)
 })
 
-test("Integration: four-mode matrix - DATA_STORY SUGGEST is INTEGRATION_BLOCKED (RPA maxAuth=PREPARE)", () => {
+test("Integration: four-mode matrix - DATA_STORY SUGGEST is INTEGRATION_BLOCKED (RPA maxAuth=PREPARE)", async () => {
   // RPA maxExecutionAuthority is PREPARE. SUGGEST < PREPARE → authority escalation blocked.
-  const result = runIntegration({
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("power-bi-service-performance"),
     currentAuthority: "SUGGEST" as const
   })
@@ -222,9 +222,9 @@ test("Integration: four-mode matrix - DATA_STORY SUGGEST is INTEGRATION_BLOCKED 
 // 7. Continuity Acceptance Test (RUN A / B / C / incompatible)
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: continuity-acceptance - RUN A produces fingerprints", () => {
+test("Integration: continuity-acceptance - RUN A produces fingerprints", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "SUGGEST" as const
   })
@@ -239,14 +239,14 @@ test("Integration: continuity-acceptance - RUN A produces fingerprints", () => {
   assert.strictEqual(resultA.continuationState.continuationCompatibility, "NONE")
 })
 
-test("Integration: continuity-acceptance - RUN B (same project + continuation) produces MATCH", () => {
+test("Integration: continuity-acceptance - RUN B (same project + continuation) produces MATCH", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "SUGGEST" as const
   })
 
-  const resultB = runIntegration({
+  const resultB = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "SUGGEST" as const,
     optionalPreviousContinuationState: resultA.continuationState
@@ -270,9 +270,9 @@ test("Integration: continuity-acceptance - RUN B (same project + continuation) p
   )
 })
 
-test("Integration: continuity-acceptance - RUN C (changed project brain) produces STALE", () => {
+test("Integration: continuity-acceptance - RUN C (changed project brain) produces STALE", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectSnapshot,
     currentAuthority: "SUGGEST" as const
   })
@@ -283,7 +283,7 @@ test("Integration: continuity-acceptance - RUN C (changed project brain) produce
     primaryGoal: "Completely new objective introduced in this session"
   }
 
-  const resultC = runIntegration({
+  const resultC = await runIntegration({
     projectBrainSnapshot: mutatedProject,
     currentAuthority: "SUGGEST" as const,
     optionalPreviousContinuationState: resultA.continuationState
@@ -294,15 +294,15 @@ test("Integration: continuity-acceptance - RUN C (changed project brain) produce
   assert.strictEqual(resultC.continuationState.continuationCompatibility, "STALE")
 })
 
-test("Integration: continuity-acceptance - different projectId produces INCOMPATIBLE", () => {
+test("Integration: continuity-acceptance - different projectId produces INCOMPATIBLE", async () => {
   const projectA = getProjectFixture("the-second-absence")
-  const resultA = runIntegration({
+  const resultA = await runIntegration({
     projectBrainSnapshot: projectA,
     currentAuthority: "SUGGEST" as const
   })
 
   const projectB = getProjectFixture("mara-episode") // different projectId
-  const resultB = runIntegration({
+  const resultB = await runIntegration({
     projectBrainSnapshot: projectB,
     currentAuthority: "SUGGEST" as const,
     optionalPreviousContinuationState: resultA.continuationState // from different project
@@ -316,11 +316,11 @@ test("Integration: continuity-acceptance - different projectId produces INCOMPAT
 // 8. Determinism
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: determinism - identical canonical inputs produce identical outputs", () => {
+test("Integration: determinism - identical canonical inputs produce identical outputs", async () => {
   const projectSnapshot = getProjectFixture("the-second-absence")
 
-  const r1 = runIntegration({ projectBrainSnapshot: projectSnapshot, currentAuthority: "SUGGEST" as const })
-  const r2 = runIntegration({ projectBrainSnapshot: projectSnapshot, currentAuthority: "SUGGEST" as const })
+  const r1 = await runIntegration({ projectBrainSnapshot: projectSnapshot, currentAuthority: "SUGGEST" as const })
+  const r2 = await runIntegration({ projectBrainSnapshot: projectSnapshot, currentAuthority: "SUGGEST" as const })
 
   assert.strictEqual(r1.projectBrainFingerprint, r2.projectBrainFingerprint)
   assert.strictEqual(r1.continuationState.integrationFingerprint, r2.continuationState.integrationFingerprint)
@@ -333,8 +333,8 @@ test("Integration: determinism - identical canonical inputs produce identical ou
 // 9. Partial Evidence Semantics Preserved
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: partial-advisory-preserved - METHOD_PARTIAL status is not converted to COMPLETE", () => {
-  const result = runIntegration({
+test("Integration: partial-advisory-preserved - METHOD_PARTIAL status is not converted to COMPLETE", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("power-bi-service-performance"),
     currentAuthority: "PREPARE" as const
   })
@@ -345,8 +345,8 @@ test("Integration: partial-advisory-preserved - METHOD_PARTIAL status is not con
   assert.ok(result.methodQualityEvidence!.qualityResults.length > 0)
 })
 
-test("Integration: method-blocked-no-positive-evidence - INTEGRATION_BLOCKED produces no methodQualityEvidence", () => {
-  const result = runIntegration({
+test("Integration: method-blocked-no-positive-evidence - INTEGRATION_BLOCKED produces no methodQualityEvidence", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "remocn-render"
@@ -356,8 +356,8 @@ test("Integration: method-blocked-no-positive-evidence - INTEGRATION_BLOCKED pro
   assert.strictEqual(result.methodQualityEvidence, null)
 })
 
-test("Integration: no-match-no-method - NO_MATCH does not call method runtime", () => {
-  const result = runIntegration({
+test("Integration: no-match-no-method - NO_MATCH does not call method runtime", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST" as const,
     optionalRequestedCapabilityGap: "b-roll-generation"
@@ -371,7 +371,7 @@ test("Integration: no-match-no-method - NO_MATCH does not call method runtime", 
 // 10. Superseded Evidence Governance
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: superseded-evidence-rejected - obsolete evidence packets cannot be canonical", () => {
+test("Integration: superseded-evidence-rejected - obsolete evidence packets cannot be canonical", async () => {
   const manifestPath = path.join(process.cwd(), "docs", "evidence", "manifest.json")
   assert.ok(fs.existsSync(manifestPath), "manifest.json must exist")
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
@@ -391,8 +391,8 @@ test("Integration: superseded-evidence-rejected - obsolete evidence packets cann
 // 11. Semantic Isolation — No Cross-Mode Leakage
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: semantic-isolation - MARA output contains no Power BI / SaaS / Cleanverse terms", () => {
-  const result = runIntegration({
+test("Integration: semantic-isolation - MARA output contains no Power BI / SaaS / Cleanverse terms", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("mara-episode"),
     currentAuthority: "SUGGEST" as const
   })
@@ -402,8 +402,8 @@ test("Integration: semantic-isolation - MARA output contains no Power BI / SaaS 
   assert.ok(!text.includes("cleanverse"), "MARA must not contain Cleanverse concepts")
 })
 
-test("Integration: semantic-isolation - DAY_CHALLENGE output contains no MARA musicology / episode concepts", () => {
-  const result = runIntegration({
+test("Integration: semantic-isolation - DAY_CHALLENGE output contains no MARA musicology / episode concepts", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })
@@ -416,8 +416,8 @@ test("Integration: semantic-isolation - DAY_CHALLENGE output contains no MARA mu
 // 12. Side Effects — None
 // ─────────────────────────────────────────────────────────────
 
-test("Integration: side-effects-none - method execution has null sideEffects", () => {
-  const result = runIntegration({
+test("Integration: side-effects-none - method execution has null sideEffects", async () => {
+  const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("the-second-absence"),
     currentAuthority: "SUGGEST" as const
   })

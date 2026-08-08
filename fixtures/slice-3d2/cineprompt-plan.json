@@ -1,0 +1,30 @@
+{
+  "description": "Valid CinePrompt share link plan — approved synthetic pilot payload",
+  "projectId": "proj_3d2",
+  "projectBrainFingerprint": "brain_3d2",
+  "resourceId": "res_cineprompt",
+  "capabilityId": "cap_cineprompt",
+  "decomposedCapabilities": ["CINEMATIC_PROMPTING"],
+  "requestedArtifact": "share-link",
+  "compatibilityStatus": "DECLARED",
+  "lifecycleState": "TEST_CANDIDATE",
+  "currentAuthority": "EXPLICIT_EXTERNAL",
+  "requiredAuthority": "EXPLICIT_EXTERNAL",
+  "requiredHumanApproval": true,
+  "humanApprovalState": "REQUIRED",
+  "costStatus": "FREE",
+  "estimatedCost": "0",
+  "privacyStatus": "LOCAL_ONLY",
+  "cinepromptInput": {
+    "media_type": "commercial",
+    "subjectType": "object",
+    "subject": "translucent red ceramic perfume bottle",
+    "staging": "stone pedestal",
+    "shot": "close-up",
+    "lens": "85mm",
+    "camera": "slow dolly in",
+    "lighting": "single soft side light",
+    "mood": "quiet, luxurious, slightly uncanny"
+  },
+  "planFingerprint": "plan_3d2"
+}

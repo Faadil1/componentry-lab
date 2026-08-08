@@ -1,4 +1,4 @@
-import type { ExternalCapabilityPlan, ExternalCapabilityExecutionResult } from "./types"
+import type { ExternalCapabilityPlan, ExternalCapabilityExecutionResult, ExternalExecutionIntent } from "./types"
 
 /**
  * Production provider execution adapters.
@@ -22,7 +22,8 @@ export interface ProviderAdapter {
   }
   supportedCapabilities: string[]
   canExecute(plan: ExternalCapabilityPlan): boolean
-  execute(plan: ExternalCapabilityPlan, intent: import("./types").ExternalExecutionIntent): Promise<ExternalCapabilityExecutionResult> | ExternalCapabilityExecutionResult
+  validatePreconditions?(plan: ExternalCapabilityPlan, intent: ExternalExecutionIntent, inputPayload: import("./types").ExternalExecutionInput): { status: "OK" | "PRECONDITION_BLOCKED", reason?: string }
+  execute(plan: ExternalCapabilityPlan, intent: ExternalExecutionIntent, inputPayload: import("./types").ExternalExecutionInput): Promise<ExternalCapabilityExecutionResult>
 }
 
 const adapters: ProviderAdapter[] = []

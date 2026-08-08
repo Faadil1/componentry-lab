@@ -1,3 +1,4 @@
+import { getExecutionLedger } from "./execution-ledger"
 import type { ExternalCapabilityPlan, ExternalExecutionIntent, ExternalExecutionReceipt, HumanApprovalDecision } from "./types"
 import { getProviderAdapterForPlan } from "./adapters"
 import crypto from "crypto"
@@ -16,8 +17,8 @@ function hasAuthority(current: import("../types").AuthorityCeiling, required: im
   return AUTHORITY_RANK[current] >= AUTHORITY_RANK[required]
 }
 
-// In-memory receipt store for idempotency (3D.1 requirement)
-const receiptStore = new Map<string, ExternalExecutionReceipt>()
+// In-memory receipt store for idempotency (3D.1 requirement) and concurrency (3D.2)
+
 
 function hash(obj: unknown): string {
   // simple stable stringify + hash for sandbox idempotency
@@ -25,13 +26,31 @@ function hash(obj: unknown): string {
   return crypto.createHash("sha256").update(stableStr).digest("hex").slice(0, 16)
 }
 
+export const RUNTIME_CONTRACT_VERSION = "3d2_incident_audit_03"
+
+// Canonical governed execution-boundary semantics that define the runtime identity
+const RUNTIME_CONTRACT_SEMANTICS = {
+  version: RUNTIME_CONTRACT_VERSION,
+  sandboxContract: "ExternalExecutionSandbox_v2",
+  preflightOrdering: ["authority", "approval", "lifecycle", "cost", "idempotency", "precondition"],
+  idempotencySemantics: "strict-plan-fingerprint-collision-rejection",
+  durableLiveIdempotency: "strict-cross-process-ledger-required",
+  providerOutcomeTaxonomy: ["LOCAL_PRECONDITION_FAILURE", "DETERMINISTIC_PROVIDER_FAILURE", "PROVIDER_OUTCOME_UNKNOWN"],
+  secretPreflightSemantics: "validatePreconditions-adapter-hook",
+  adapterInterface: "async-Promise-ExternalCapabilityExecutionResult",
+  costExceptionIdentityConstraint: "strict-canonical-registry-binding"
+}
+
+export const RUNTIME_CONTRACT_FINGERPRINT = hash(RUNTIME_CONTRACT_SEMANTICS)
+
 export function buildExecutionIntent(
   plan: ExternalCapabilityPlan,
   projectId: string,
   projectBrainFingerprint: string,
   adapterId: string,
   approval: HumanApprovalDecision | null,
-  currentAuthority: import("../types").AuthorityCeiling
+  currentAuthority: import("../types").AuthorityCeiling,
+  providerInputPayload: import("./types").ExternalExecutionInput
 ): ExternalExecutionIntent {
   const intent: Omit<ExternalExecutionIntent, "executionIntentFingerprint"> = {
     projectId,
@@ -41,10 +60,11 @@ export function buildExecutionIntent(
     capabilityId: plan.capabilityId,
     adapterId,
     authority: currentAuthority,
-    inputFingerprint: hash(plan.requiredInputs),
+    inputFingerprint: hash(providerInputPayload),
     expectedArtifactType: plan.requestedArtifact,
     costCeiling: approval?.costCeiling || null,
-    approvalFingerprint: approval?.approvalFingerprint || null
+    approvalFingerprint: approval?.approvalFingerprint || null,
+    runtimeContractFingerprint: RUNTIME_CONTRACT_FINGERPRINT
   }
   return {
     ...intent,
@@ -52,13 +72,14 @@ export function buildExecutionIntent(
   }
 }
 
-export function executeSandboxedPlan(
+export async function executeSandboxedPlan(
   plan: ExternalCapabilityPlan,
   projectId: string,
   projectBrainFingerprint: string,
   approval: HumanApprovalDecision | null,
-  currentAuthority: import("../types").AuthorityCeiling
-): { status: import("./types").ExternalCapabilityExecutionStatus; receipt?: ExternalExecutionReceipt; error?: string } {
+  currentAuthority: import("../types").AuthorityCeiling,
+  providerInputPayload: import("./types").ExternalExecutionInput
+): Promise<{ status: import("./types").ExternalCapabilityExecutionStatus; receipt?: ExternalExecutionReceipt; error?: string }> {
   
   // 1. Plan freshness validation
   if (plan.projectId && plan.projectId !== projectId) {
@@ -109,10 +130,16 @@ export function executeSandboxedPlan(
       capabilityId: approval.capabilityId,
       providerAdapterId: approval.providerAdapterId,
       approvedAuthority: approval.approvedAuthority,
-      costCeiling: approval.costCeiling
+      costCeiling: approval.costCeiling,
+      approvedConstraints: approval.approvedConstraints,
+      runtimeContractFingerprint: RUNTIME_CONTRACT_FINGERPRINT
     })
     if (approval.approvalFingerprint !== expectedApprovalHash) {
       return { status: "APPROVAL_INVALID", error: "Approval fingerprint integrity check failed." }
+    }
+    
+    if (approval.runtimeContractFingerprint !== RUNTIME_CONTRACT_FINGERPRINT) {
+      return { status: "APPROVAL_INVALID", error: "Approval runtime contract fingerprint mismatch." }
     }
 
     // Bindings check
@@ -136,19 +163,61 @@ export function executeSandboxedPlan(
     return { status: "APPROVAL_INVALID", error: "Approval provider adapter does not match resolved adapter." }
   }
   if (adapter.environment !== "TEST_ONLY") {
-    if (plan.costStatus === "UNKNOWN") {
-      return { status: "COST_BLOCKED", error: "UNKNOWN cost for non-test adapter blocks execution." }
+    if (adapter.environment === "PRODUCTION") {
+      // 3D.2: PRODUCTION adapters require EXPLICIT_EXTERNAL authority + GRANTED approval (defense-in-depth)
+      if (!hasAuthority(currentAuthority, "EXPLICIT_EXTERNAL")) {
+        return { status: "AUTHORITY_BLOCKED", error: "PRODUCTION adapter requires EXPLICIT_EXTERNAL authority." }
+      }
+      if (!approval || approval.approvalState !== "GRANTED") {
+        return { status: "APPROVAL_REQUIRED", error: "PRODUCTION adapter requires explicit GRANTED human approval." }
+      }
+      // UNKNOWN incremental cost for production blocks unless explicitly cleared
+      if (plan.costStatus === "UNKNOWN") {
+        const isCinepromptPilotException =
+          plan.resourceId === "res_cineprompt" &&
+          plan.capabilityId === "PROMPT_SHARE_LINK_CREATION" &&
+          adapter.id === "adapter_cineprompt_share_link_v2" &&
+          approval?.approvedConstraints?.subscriptionEntitlement === "HUMAN_ATTESTED_ACTIVE" &&
+          approval?.costCeiling === "0" &&
+          approval?.approvedConstraints?.downstreamSpend === "PROHIBITED" &&
+          approval?.approvedConstraints?.endpoint === "https://cineprompt.io/api/share"
+
+        if (!isCinepromptPilotException) {
+          return { status: "COST_BLOCKED", error: "UNKNOWN incremental cost for PRODUCTION adapter. New human approval required." }
+        }
+      }
+      // PRODUCTION is allowed — fall through to execution
+    } else {
+      // SANDBOX or unrecognized environment: not executable
+      return { status: "ADAPTER_NOT_EXECUTABLE", error: "Adapter environment is not executable in current governance scope." }
     }
-    // 3D.1 policy: only TEST_ONLY allowed
-    return { status: "ADAPTER_NOT_EXECUTABLE", error: "Only TEST_ONLY adapters are executable in 3D.1." }
   }
 
   // 5. Execution Intent and Idempotency
-  const intent = buildExecutionIntent(plan, projectId, projectBrainFingerprint, adapter.id, approval, currentAuthority)
+  const intent = buildExecutionIntent(plan, projectId, projectBrainFingerprint, adapter.id, approval, currentAuthority, providerInputPayload)
   
-  if (receiptStore.has(intent.executionIntentFingerprint)) {
-    return { status: "ALREADY_EXECUTED", receipt: receiptStore.get(intent.executionIntentFingerprint) }
+  const ledger = getExecutionLedger()
+  if (adapter.environment === "PRODUCTION" && !ledger.isPersistent) {
+    return { status: "LOCAL_PRECONDITION_FAILURE", error: "Live execution requires a persistent ledger." }
   }
+
+  const reservation = ledger.get(intent.executionIntentFingerprint)
+  if (reservation) {
+    if (reservation.state === "IN_FLIGHT") return { status: "EXECUTION_IN_PROGRESS", error: "Execution is currently in progress for this intent." }
+    if (reservation.state === "TERMINAL_OUTCOME_UNKNOWN") return { status: "OUTCOME_UNKNOWN_LOCKED", receipt: reservation.receipt }
+    return { status: "ALREADY_EXECUTED", receipt: reservation.receipt }
+  }
+
+  // Preflight validation (e.g. secret checking) before reservation
+  if (adapter.validatePreconditions) {
+    const preflight = adapter.validatePreconditions(plan, intent, providerInputPayload)
+    if (preflight.status === "PRECONDITION_BLOCKED") {
+      return { status: "LOCAL_PRECONDITION_FAILURE", error: preflight.reason || "Local precondition failed." }
+    }
+  }
+
+  // Reserve the intent
+  ledger.reserve(intent.executionIntentFingerprint)
 
   // 6. Execute Provider
   let providerResult: unknown
@@ -158,15 +227,21 @@ export function executeSandboxedPlan(
   let providerUsed: string = "test-ref"
 
   try {
-    providerResult = adapter.execute(plan, intent)
-    if (providerResult instanceof Promise) {
-      throw new Error("Async execution not supported.")
-    }
+    providerResult = await adapter.execute(plan, intent, providerInputPayload)
     const resultObj = providerResult as import("./types").ExternalCapabilityExecutionResult
     rawOutput = resultObj.rawOutput || {}
     providerUsed = resultObj.providerUsed || "test-ref"
     if (resultObj.status === "PARTIAL") {
       finalStatus = "EXECUTED_PARTIAL"
+    } else if (resultObj.status === "PROVIDER_OUTCOME_UNKNOWN") {
+      finalStatus = "PROVIDER_OUTCOME_UNKNOWN"
+      receiptError = { code: "PROVIDER_OUTCOME_UNKNOWN", message: resultObj.error || "Provider outcome unknown", retryable: false }
+    } else if (resultObj.status === "DETERMINISTIC_PROVIDER_FAILURE" as unknown as import("./types").ExternalCapabilityExecutionStatus) {
+      finalStatus = "DETERMINISTIC_PROVIDER_FAILURE"
+      receiptError = { code: "DETERMINISTIC_PROVIDER_FAILURE", message: resultObj.error || "Provider failed deterministically", retryable: false }
+    } else if (resultObj.status === "LOCAL_PRECONDITION_FAILURE" as unknown as import("./types").ExternalCapabilityExecutionStatus) {
+      finalStatus = "LOCAL_PRECONDITION_FAILURE"
+      receiptError = { code: "LOCAL_PRECONDITION_FAILURE", message: resultObj.error || "Precondition failed", retryable: false }
     } else if (resultObj.status === "FAILED" || resultObj.status === "BLOCKED") {
       finalStatus = "PROVIDER_ERROR"
       receiptError = { code: "ERR", message: resultObj.error || "Provider error", retryable: false }
@@ -191,6 +266,7 @@ export function executeSandboxedPlan(
     inputFingerprint: intent.inputFingerprint,
     providerOutputFingerprint: finalStatus === "PROVIDER_ERROR" ? null : hash(rawOutput),
     artifactReferences: [],
+    runtimeContractFingerprint: RUNTIME_CONTRACT_FINGERPRINT,
     cost: { estimated: null, actual: null, currency: "TEST", status: "FREE" },
     providerReference: providerUsed,
     error: receiptError,
@@ -202,8 +278,11 @@ export function executeSandboxedPlan(
     receiptFingerprint: hash(partialReceipt)
   }
 
-  // Store receipt for idempotency
-  receiptStore.set(intent.executionIntentFingerprint, receipt)
+  const terminalState = finalStatus === "PROVIDER_OUTCOME_UNKNOWN" 
+    ? "TERMINAL_OUTCOME_UNKNOWN" 
+    : (finalStatus === "DETERMINISTIC_PROVIDER_FAILURE" || finalStatus === "PROVIDER_ERROR" || finalStatus === "LOCAL_PRECONDITION_FAILURE" ? "TERMINAL_FAILURE" : "TERMINAL_SUCCESS")
+
+  if (terminalState === "TERMINAL_OUTCOME_UNKNOWN") { ledger.markOutcomeUnknown(intent.executionIntentFingerprint, receipt) } else { ledger.complete(intent.executionIntentFingerprint, receipt!) }
 
   return { status: finalStatus, receipt }
 }

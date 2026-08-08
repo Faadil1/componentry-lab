@@ -1,0 +1,1 @@
+{ "description": "CinePrompt 429 — rate limited", "httpStatus": 429, "errorCode": "RATE_LIMITED", "retryable": true, "adapterResult": { "status": "FAILED", "error": "RATE_LIMITED: Rate limit exceeded (429)." }, "retryPolicy": "Do NOT retry automatically. Human review required." }

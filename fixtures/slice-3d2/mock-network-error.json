@@ -1,0 +1,1 @@
+{ "description": "Network failure before request was accepted — no side effects possible", "errorCode": "NETWORK_ERROR", "networkReached": false, "adapterResult": { "status": "FAILED", "error": "NETWORK_ERROR: Network error before request was accepted." }, "sideEffects": 0 }

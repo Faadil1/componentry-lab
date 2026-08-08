@@ -43,7 +43,7 @@ export function decomposeFilmKitCapabilities(input: CapabilityDecompositionInput
   }
 
   // 5. Cinematic Prompting
-  if (gap.includes("prompting") || gap.includes("cineprompt") || artifact.includes("prompt")) {
+  if (gap.includes("prompting") || gap.includes("cineprompt") || gap === "prompt_share_link_creation" || artifact.includes("prompt")) {
     capabilities.add("CINEMATIC_PROMPTING")
   }
 
@@ -52,16 +52,7 @@ export function decomposeFilmKitCapabilities(input: CapabilityDecompositionInput
     capabilities.add("SOUND_DESIGN")
   }
 
-  // Fallback: If no explicit match, infer default capabilities based on artifact or gap presence
-  if (capabilities.size === 0) {
-    if (artifact.includes("video") || artifact.includes("film")) {
-      capabilities.add("PRODUCT_FILM")
-    } else if (gap) {
-      capabilities.add("SHOT_PLANNING")
-    } else {
-      capabilities.add("ASSEMBLY")
-    }
-  }
+
 
   return Array.from(capabilities)
 }

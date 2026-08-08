@@ -14,6 +14,8 @@ export type FilmKitCapabilityType =
 
 export type ExternalCapabilityExecutionMode = "NOT_EXECUTED" | "SIMULATED"
 
+export type ExternalExecutionInput = Record<string, unknown>
+
 export type ExternalCapabilityExecutionStatus =
   // Slice 3C statuses (retained for backward compatibility or refactored)
   | "USE_NATIVE"
@@ -36,10 +38,15 @@ export type ExternalCapabilityExecutionStatus =
   | "ADAPTER_MISSING"
   | "ADAPTER_NOT_EXECUTABLE"
   | "EXECUTION_READY"
+  | "EXECUTION_IN_PROGRESS"
   | "EXECUTED"
   | "EXECUTED_PARTIAL"
   | "ALREADY_EXECUTED"
+  | "LOCAL_PRECONDITION_FAILURE"
+  | "DETERMINISTIC_PROVIDER_FAILURE"
   | "PROVIDER_ERROR"
+  | "PROVIDER_OUTCOME_UNKNOWN"
+  | "OUTCOME_UNKNOWN_LOCKED"
 
 export type HumanApprovalState = "NOT_REQUIRED" | "REQUIRED" | "GRANTED" | "DENIED" | "INVALID"
 
@@ -114,6 +121,7 @@ export interface HumanApprovalDecision {
   approvedInputFingerprint?: string
   approvedConstraints?: Record<string, unknown>
   approvalFingerprint: string
+  runtimeContractFingerprint?: string
 }
 
 export interface ExternalExecutionIntent {
@@ -129,6 +137,7 @@ export interface ExternalExecutionIntent {
   costCeiling: string | null
   approvalFingerprint: string | null
   executionIntentFingerprint: string
+  runtimeContractFingerprint: string
 }
 
 export interface ExternalExecutionReceipt {
@@ -146,6 +155,7 @@ export interface ExternalExecutionReceipt {
   inputFingerprint: string
   providerOutputFingerprint: string | null
   artifactReferences: string[]
+  runtimeContractFingerprint: string
   cost: {
     estimated: string | null
     actual: string | null
@@ -166,7 +176,7 @@ export interface ExternalCapabilityExecutionResult {
   executionId: string
   planFingerprint: string
   providerUsed: string
-  status: "COMPLETE" | "PARTIAL" | "BLOCKED" | "FAILED"
+  status: "COMPLETE" | "PARTIAL" | "BLOCKED" | "FAILED" | "PROVIDER_OUTCOME_UNKNOWN" | "LOCAL_PRECONDITION_FAILURE" | "DETERMINISTIC_PROVIDER_FAILURE"
   rawOutput: Record<string, unknown>
   executionTimeMs: number
   error?: string

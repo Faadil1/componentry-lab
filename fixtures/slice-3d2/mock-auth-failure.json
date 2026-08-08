@@ -1,0 +1,1 @@
+{ "description": "CinePrompt 401 — authentication failed", "httpStatus": 401, "errorCode": "AUTHENTICATION_FAILED", "adapterResult": { "status": "FAILED", "error": "AUTHENTICATION_FAILED: Authentication failed (401)." }, "secretIncluded": false }

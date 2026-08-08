@@ -34,6 +34,20 @@
       "provenanceState": "CURRENT",
       "description": "Creative OS Slice 3D.1 Sandbox Execution Infrastructure security evidence packet. Human Security Approved 2026-08-07. Zero real providers. Zero external side effects.",
       "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3d2",
+      "path": "docs/evidence/creative-os-slice-3d2",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3D.2 CinePrompt Provider Pilot evidence packet. FROZEN. Real-Provider Tested, Live Success (Attempt #5), Durability Tested. 247/247 tests pass.",
+      "version": "v1"
+    },
+    {
+      "provenanceState": "FROZEN",
+      "path": "docs/evidence/creative-os-slice-3e1",
+      "description": "Creative OS Slice 3E.1 Production Integration Contract & Artifact Spine evidence packet. FROZEN. HUMAN ARCHITECTURE APPROVED.",
+      "packetId": "creative-os-slice-3e1",
+      "version": "v1"
     }
   ],
   "supersededPackets": [
