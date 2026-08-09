@@ -24,7 +24,9 @@
         "test:episode-history-mapper": "node --experimental-strip-types --test tests/youtube/canonical-episode-event-to-history.test.ts",
         "test:episode-history-provider": "node --experimental-strip-types --test tests/youtube/get-episode-history-from-db.test.ts",
         "test:episode-brief-commands": "node --experimental-strip-types --test tests/youtube/episode-commands-brief.test.ts",
-        "test:episode-brief-commands:live": "node --experimental-strip-types --test tests/youtube/episode-commands-brief-live.test.ts"
+        "test:episode-brief-commands:live": "node --experimental-strip-types --test tests/youtube/episode-commands-brief-live.test.ts",
+        "test:episode-research-commands": "node --experimental-strip-types --test tests/youtube/episode-commands-research.test.ts",
+        "test:episode-research-commands:live": "node --experimental-strip-types --test tests/youtube/episode-commands-research-live.test.ts"
     },
     "dependencies": {
         "@base-ui/react": "^1.6.0",
