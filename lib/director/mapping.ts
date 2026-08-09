@@ -13,8 +13,9 @@ export function mapProjectKindToCreativeMode(kind: ProjectKind): CreativeProject
       return "DAY_CHALLENGE"
     case "demo-film":
     case "broadcast-interface":
-    case "portfolio-case-study":
     case "client-product":
+      return "DAY_CHALLENGE"
+    case "portfolio-case-study":
       return "MARA"
     case "data-story":
       return "DATA_STORY"

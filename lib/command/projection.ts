@@ -1,6 +1,8 @@
 import { registryComponents } from "../registry/components"
 import { RESOURCE_REGISTRY } from "../creative-os/registry"
-import { getProjectById, CANONICAL_DEFAULT_PROJECT_ID } from "../projects"
+import { CANONICAL_DEFAULT_PROJECT_ID } from "../projects"
+import { getProjectById } from "../projects/repository"
+import { validateProjectBrain } from "../projects/validation"
 import type { ProjectBrain } from "../projects"
 import { adaptDirectorResult, adaptProjectBrainToDirectorInput, mapProjectKindToCreativeMode } from "../director"
 import { getFilmProjectById, getFilmProductionIntent, getFilmProductionTruth } from "../film-kit"
@@ -65,7 +67,7 @@ export function buildCommandProjection(projectId: string | null | undefined): Co
   return {
     activeProject,
     projectPhase: directorResult.resolvedPhase,
-    readiness: activeProject.readiness,
+    readiness: validateProjectBrain(activeProject).readinessScore,
     blockers: [...activeProject.blockers, ...activeProject.blockedBy],
     directorAvailability: "AVAILABLE",
     directorNextAction: {

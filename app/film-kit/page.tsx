@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+
 import { LabNavigation } from "@/components/navigation/lab-navigation"
-import { getFilmProjectIndex } from "@/lib/film-kit"
+import { getFilmProjectById, getFilmProductionTruth, getFilmProjectIndex } from "@/lib/film-kit"
+import { getProjectById } from "@/lib/projects/repository"
 
 export const metadata: Metadata = {
   title: "Universal Demo Film Kit",
@@ -14,7 +16,16 @@ const routeNotes = {
   "glow-atelier": "Cinematic product route tuned for mood, capture, and composited handoff.",
 } as const
 
-export default function FilmKitIndexPage() {
+export default async function FilmKitIndexPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const params = searchParams ? await searchParams : {}
+  const projectId = typeof params.project === "string" ? params.project : undefined
+  const activeProject = projectId ? getProjectById(projectId) ?? null : null
+  const filmProject = projectId ? getFilmProjectById(projectId) : null
+  const productionTruth = projectId ? getFilmProductionTruth(projectId) : null
   const films = getFilmProjectIndex()
 
   return (
@@ -33,6 +44,38 @@ export default function FilmKitIndexPage() {
       </header>
 
       <div className="mx-auto max-w-7xl space-y-10 px-4 py-8 md:px-6 md:py-10 xl:px-8 xl:py-12">
+        {projectId ? (
+          <section className="grid gap-6 rounded-[2rem] border border-stone-800 bg-[#0e0d0c] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] md:p-8 xl:grid-cols-[1.25fr_0.75fr]">
+            <div className="space-y-4">
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Project-aware shell</p>
+              <h2 className="max-w-3xl text-balance text-4xl font-black leading-[0.94] tracking-tight md:text-6xl">{activeProject?.title ?? projectId}</h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-stone-300 md:text-base">
+                {activeProject
+                  ? activeProject.description
+                  : "The selected project exists in Projects, but no FilmProject has been initialized."}
+              </p>
+            </div>
+            <div className="grid gap-3 rounded-[1.5rem] border border-stone-800 bg-stone-950/60 p-4 text-sm text-stone-300">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Film Project</p>
+                <p className="mt-1 leading-relaxed">{filmProject ? filmProject.brief.title : "NONE / NOT INITIALIZED"}</p>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Production intent</p>
+                <p className="mt-1 leading-relaxed">{filmProject ? "DEFINED" : "UNAVAILABLE / NOT INITIALIZED"}</p>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Canonical production spine</p>
+                <p className="mt-1 leading-relaxed">{productionTruth?.availability ?? "NO_CANONICAL_PRODUCTION_SPINE"}</p>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Routes / artifacts / manifest</p>
+                <p className="mt-1 leading-relaxed">{productionTruth ? `${productionTruth.routes.length} / ${productionTruth.artifacts.length} / ${productionTruth.manifest ? "present" : "none"}` : "0 / 0 / none"}</p>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         <section className="grid gap-6 rounded-[2rem] border border-stone-800 bg-[#0e0d0c] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] md:p-8 xl:grid-cols-[1.25fr_0.75fr]">
           <div className="space-y-4">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Film Kit index</p>
