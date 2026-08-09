@@ -35,7 +35,7 @@ function FilmKitWorkspaceFallback() {
       </p>
 
       <p className="mt-3 text-sm text-stone-600">
-        Loading the project film workspace…
+        Loading the project film workspaceÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦
       </p>
     </section>
   )
@@ -95,6 +95,7 @@ export default async function FilmKitProjectPage({
           </div>
 
           <LabNavigation
+            projectId={projectId}
             className="contents"
             linkClassName="px-3.5"
             activeClassName="bg-neutral-950 font-semibold text-white shadow-xs"

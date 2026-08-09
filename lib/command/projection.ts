@@ -1,0 +1,95 @@
+import { registryComponents } from "../registry/components"
+import { RESOURCE_REGISTRY } from "../creative-os/registry"
+import { getProjectById, CANONICAL_DEFAULT_PROJECT_ID } from "../projects"
+import type { ProjectBrain } from "../projects"
+import { adaptDirectorResult, adaptProjectBrainToDirectorInput, mapProjectKindToCreativeMode } from "../director"
+import { getFilmProjectById, getFilmProductionIntent, getFilmProductionTruth } from "../film-kit"
+
+export interface CommandProjection {
+  activeProject: ProjectBrain | null
+  projectPhase: string
+  readiness: number
+  blockers: string[]
+  directorAvailability: "AVAILABLE" | "UNAVAILABLE"
+  directorNextAction: { title: string; rationale: string } | null
+  directorRationaleSummary: string | null
+  heroDemo: { title: string; readinessStatus: string; visibleTransformationOrProof: string } | null
+  productionIntentSummary: { availability: string; intentDefined: boolean } | null
+  canonicalProductionAvailability: { availability: string; routes: number; artifacts: number; manifest: "present" | "none"; nextAssemblyStep: string | null } | null
+  librarySummary: { components: number; creativeResources: number }
+}
+
+export function buildCommandProjection(projectId: string | null | undefined): CommandProjection {
+  const activeProjectId = projectId ?? CANONICAL_DEFAULT_PROJECT_ID
+  const activeProject = getProjectById(activeProjectId) ?? null
+  const components = registryComponents.length
+  const creativeResources = RESOURCE_REGISTRY.length
+
+  if (!activeProject) {
+    return {
+      activeProject: null,
+      projectPhase: "unavailable",
+      readiness: 0,
+      blockers: ["Project context unavailable"],
+      directorAvailability: "UNAVAILABLE",
+      directorNextAction: null,
+      directorRationaleSummary: null,
+      heroDemo: null,
+      productionIntentSummary: null,
+      canonicalProductionAvailability: null,
+      librarySummary: { components, creativeResources },
+    }
+  }
+
+  const mode = mapProjectKindToCreativeMode(activeProject.kind)
+  const directorInput = adaptProjectBrainToDirectorInput(
+    activeProject,
+    mode,
+    activeProject.currentPhase,
+    {
+      authorityLevel: "suggest",
+      requestedAction: activeProject.nextActions[0]?.label ?? "Review project",
+      target: activeProject.id,
+      reversibility: "unknown",
+      risk: "low",
+      approvalRequirement: "none",
+      grantedScope: [],
+      status: "pending",
+    }
+  )
+  const directorResult = adaptDirectorResult(directorInput)
+  const filmProject = getFilmProjectById(activeProject.id)
+  const filmIntent = filmProject ? getFilmProductionIntent(filmProject) : null
+  const filmTruth = filmProject ? getFilmProductionTruth(filmProject.id) : null
+
+  return {
+    activeProject,
+    projectPhase: directorResult.resolvedPhase,
+    readiness: activeProject.readiness,
+    blockers: [...activeProject.blockers, ...activeProject.blockedBy],
+    directorAvailability: "AVAILABLE",
+    directorNextAction: {
+      title: directorResult.nextAction.title,
+      rationale: directorResult.nextAction.rationale,
+    },
+    directorRationaleSummary: directorResult.nextAction.rationale,
+    heroDemo: {
+      title: directorResult.heroDemoMoment.title,
+      readinessStatus: directorResult.heroDemoMoment.readinessStatus,
+      visibleTransformationOrProof: directorResult.heroDemoMoment.visibleTransformationOrProof,
+    },
+    productionIntentSummary: filmIntent
+      ? { availability: "DEFINED", intentDefined: true }
+      : null,
+    canonicalProductionAvailability: filmTruth
+      ? {
+          availability: filmTruth.availability,
+          routes: filmTruth.routes.length,
+          artifacts: filmTruth.artifacts.length,
+          manifest: filmTruth.manifest ? "present" : "none",
+          nextAssemblyStep: filmTruth.manifest?.nextAssemblyStep ?? null,
+        }
+      : null,
+    librarySummary: { components, creativeResources },
+  }
+}

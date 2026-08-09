@@ -5,22 +5,19 @@ export interface SiteNavigationItem {
   label: string
   href: string
   group: SiteNavigationGroup
-  // For LABS, they might have sub-groups conceptually, but we can just add a subGroup string if needed.
   subGroup?: string
 }
 
 export const SITE_NAVIGATION: SiteNavigationItem[] = [
-  // CORE SURFACES
+  { id: "command", label: "Command", href: "/", group: "CORE" },
   { id: "library", label: "Library", href: "/library", group: "CORE" },
   { id: "playbooks", label: "Playbooks", href: "/playbooks", group: "CORE" },
   { id: "projects", label: "Projects", href: "/projects", group: "CORE" },
   { id: "film-kit", label: "Film Kit", href: "/film-kit", group: "CORE" },
 
-  // WORKSPACES
   { id: "youtube", label: "YouTube", href: "/youtube", group: "WORKSPACE" },
 
-  // LABS - Interaction labs
-  { id: "spotlight-lab", label: "Spotlight Lab", href: "/", group: "LAB", subGroup: "Interaction labs" },
+  { id: "spotlight-lab", label: "Spotlight Lab", href: "/spotlight", group: "LAB", subGroup: "Interaction labs" },
   { id: "split-flap-lab", label: "Split Flap Lab", href: "/split-flap", group: "LAB", subGroup: "Interaction labs" },
   { id: "scrub-input-lab", label: "Scrub Input Lab", href: "/scrub-input", group: "LAB", subGroup: "Interaction labs" },
   { id: "kinetic-text-lab", label: "Kinetic Text Lab", href: "/kinetic-text", group: "LAB", subGroup: "Interaction labs" },
@@ -29,7 +26,6 @@ export const SITE_NAVIGATION: SiteNavigationItem[] = [
   { id: "webgl-liquid-lab", label: "WebGL Liquid Lab", href: "/webgl-liquid", group: "LAB", subGroup: "Interaction labs" },
   { id: "image-ripple-lab", label: "Image Ripple Lab", href: "/image-ripple", group: "LAB", subGroup: "Interaction labs" },
 
-  // LABS - System labs
   { id: "typography", label: "Typography", href: "/typography", group: "LAB", subGroup: "System labs" },
   { id: "foundations", label: "Foundations", href: "/foundations", group: "LAB", subGroup: "System labs" },
   { id: "interaction-player", label: "Interaction Player", href: "/player", group: "LAB", subGroup: "System labs" },
@@ -40,12 +36,9 @@ export const SITE_NAVIGATION: SiteNavigationItem[] = [
 ]
 
 export function getActiveNavigationItem(pathname: string): SiteNavigationItem | null {
-  // Try exact match first
   const exactMatch = SITE_NAVIGATION.find((item) => item.href === pathname)
   if (exactMatch) return exactMatch
 
-  // For nested routes, we sort by descending href length to match the most specific root
-  // We must skip '/' so we don't accidentally match the root lab on every route
   const possibleMatches = SITE_NAVIGATION.filter(
     (item) => item.href !== "/" && pathname.startsWith(`${item.href}/`)
   ).sort((a, b) => b.href.length - a.href.length)
@@ -54,7 +47,6 @@ export function getActiveNavigationItem(pathname: string): SiteNavigationItem | 
     return possibleMatches[0]
   }
 
-  // Fallback: if it's the root path and we haven't matched, match the Spotlight Lab explicitly
   if (pathname === "/") {
     return SITE_NAVIGATION.find((item) => item.href === "/") || null
   }
