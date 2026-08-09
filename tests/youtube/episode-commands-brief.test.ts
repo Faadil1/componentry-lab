@@ -4,6 +4,14 @@ import { createMockRepository } from "../../lib/persistence/episode-repository-c
 import type { EpisodeRepository } from "../../lib/persistence/episode-repository-core.ts"
 import { setEpisodeBrief } from "../../lib/youtube/commands/set-episode-brief.ts"
 
+// Type definitions for callback parameters and payloads
+type EventPayload = {
+  operation?: "created" | "updated"
+  briefVersionBefore?: number | null
+  briefVersionAfter?: number
+  changedFields: string[]
+}
+
 let repository: EpisodeRepository
 
 const TEST_EPISODE_ID = "test-brief-episode-001"
@@ -191,11 +199,13 @@ describe("Episode Brief Commands", () => {
   })
 
   test("10. setEpisodeBrief: invalid research questions → invalid_input", async () => {
+    // Intentionally pass invalid type to test validation
+    const invalidInput = "not-an-array" as unknown as string[]
     const result = await setEpisodeBrief(repository, {
       episodeId: TEST_EPISODE_ID,
       expectedBriefVersion: null,
       topic: "Topic",
-      researchQuestions: "not-an-array" as any,
+      researchQuestions: invalidInput,
       actor: "H:web",
     })
 
@@ -221,7 +231,7 @@ describe("Episode Brief Commands", () => {
 
     assert.ok(briefEvent, "episode_brief_set event should exist")
     assert.strictEqual(briefEvent!.actor, "H:web")
-    const payload = briefEvent!.payload as any
+    const payload = briefEvent!.payload as EventPayload
     assert.strictEqual(payload.operation, "created")
     assert.strictEqual(payload.briefVersionBefore, null)
     assert.strictEqual(payload.briefVersionAfter, 1)
@@ -250,11 +260,11 @@ describe("Episode Brief Commands", () => {
 
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
     const updateEvent = events.find(
-      (e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated"
+      (e) => e.eventType === "episode_brief_set" && (e.payload as EventPayload).operation === "updated"
     )
 
     assert.ok(updateEvent, "episode_brief_set update event should exist")
-    const payload = updateEvent!.payload as any
+    const payload = updateEvent!.payload as EventPayload
     assert.strictEqual(payload.operation, "updated")
     assert.strictEqual(payload.briefVersionBefore, 1)
     assert.strictEqual(payload.briefVersionAfter, 2)
@@ -329,9 +339,11 @@ describe("Episode Brief Commands", () => {
   })
 
   test("16. setEpisodeBrief: invalid expected version type → invalid_input", async () => {
+    // Intentionally pass invalid type to test validation
+    const invalidVersion = "not-a-number" as unknown as number
     const result = await setEpisodeBrief(repository, {
       episodeId: TEST_EPISODE_ID,
-      expectedBriefVersion: "not-a-number" as any,
+      expectedBriefVersion: invalidVersion,
       topic: "Topic",
       actor: "H:web",
     })
@@ -374,7 +386,7 @@ describe("Episode Brief Commands", () => {
 
     // Verify no audit event was created for the no-op update
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
     assert.strictEqual(updateEvents.length, 0, "no audit event should be created on no-op update")
   })
 
@@ -475,7 +487,7 @@ describe("Episode Brief Commands", () => {
 
     // Verify no audit event
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
     assert.strictEqual(updateEvents.length, 0, "no audit event should be created on research questions no-op")
   })
 
@@ -511,9 +523,9 @@ describe("Episode Brief Commands", () => {
 
     // Verify audit event recorded the change
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
     assert.ok(updateEvent, "update event should exist")
-    const payload = updateEvent!.payload as any
+    const payload = updateEvent!.payload as EventPayload
     assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
   })
 
@@ -543,9 +555,9 @@ describe("Episode Brief Commands", () => {
 
     // Verify audit event
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
     assert.ok(updateEvent, "update event should exist")
-    const payload = updateEvent!.payload as any
+    const payload = updateEvent!.payload as EventPayload
     assert.ok(payload.changedFields.includes("researchQuestions"), "changedFields should include researchQuestions")
   })
 
@@ -575,7 +587,7 @@ describe("Episode Brief Commands", () => {
 
     // Verify no audit event
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
     assert.strictEqual(updateEvents.length, 0, "no audit event should be created on no-op clear")
   })
 
@@ -613,8 +625,8 @@ describe("Episode Brief Commands", () => {
 
     // Verify audit event
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
-    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
-    const payload = updateEvent!.payload as any
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as { operation?: string }).operation === "updated")
+    const payload = updateEvent!.payload as EventPayload
     assert.strictEqual(payload.changedFields.length, 2, "exactly 2 fields changed")
     assert.ok(payload.changedFields.includes("angle"))
     assert.ok(payload.changedFields.includes("audience"))

@@ -14,6 +14,26 @@ import { runCommandInTransaction } from "../../lib/youtube/commands/transactiona
 
 const TEST_EPISODE_ID = "integration-brief-episode-001"
 
+// Type definitions for database rows
+type BriefVersionRow = { brief_version: number }
+type BriefRow = {
+  brief_version: number
+  topic: string
+  angle: string | null
+  hook: string | null
+  thesis: string | null
+  research_questions: string[]
+  updated_at: Date | string
+}
+type CountRow = { count: string | number }
+type JsonTypeRow = { json_type: string | null }
+type EventPayload = {
+  operation?: "created" | "updated"
+  changedFields: string[]
+}
+type EventRow = { payload: EventPayload }
+type StateVersionRow = { state_version: number }
+
 let sql: ReturnType<typeof postgres>
 let repository: EpisodeRepository
 
@@ -96,7 +116,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       SELECT * FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
     assert.strictEqual(rows.length, 1)
-    const briefRow = rows[0] as any
+    const briefRow = rows[0] as BriefRow
     assert.strictEqual(briefRow.topic, "Dividend Investing Strategies")
     assert.strictEqual(briefRow.brief_version, 1)
   })
@@ -124,9 +144,9 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     `
 
     assert.ok(events.length > 0, "episode_brief_set event should exist")
-    const event = events[events.length - 1] as any
+    const event = events[events.length - 1] as EventRow
     // Payload is now a structured object from postgres.js JSONB handling
-    const payload = event.payload as any
+    const payload = event.payload
     assert.strictEqual(payload.operation, "created")
     assert.ok(Array.isArray(payload.changedFields))
 
@@ -135,7 +155,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       SELECT jsonb_typeof(payload) as json_type FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}
       AND event_type = 'episode_brief_set'
     `
-    assert.strictEqual((payloadType[0] as any).json_type, "object", "payload should be stored as JSONB object, not string")
+    assert.strictEqual((payloadType[0] as JsonTypeRow).json_type, "object", "payload should be stored as JSONB object, not string")
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -171,7 +191,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const rows = await sql`
       SELECT brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    assert.strictEqual((rows[0] as any).brief_version, 2)
+    assert.strictEqual((rows[0] as BriefVersionRow).brief_version, 2)
   })
 
   test("B2. Update brief creates correct audit event", async () => {
@@ -179,7 +199,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const briefRows = await sql`
       SELECT brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    const currentVersion = (briefRows[0] as any).brief_version
+    const currentVersion = (briefRows[0] as BriefVersionRow).brief_version
 
     await setEpisodeBrief(repository, {
       episodeId: TEST_EPISODE_ID,
@@ -195,9 +215,9 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     `
 
     assert.ok(events.length > 0)
-    const event = events[0] as any
+    const event = events[0] as EventRow
     // Payload is now a structured object from postgres.js JSONB handling
-    const payload = event.payload as any
+    const payload = event.payload
     assert.strictEqual(payload.operation, "updated")
     assert.ok(payload.changedFields.includes("coreQuestion"))
 
@@ -207,7 +227,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       AND event_type = 'episode_brief_set'
       ORDER BY created_at DESC LIMIT 1
     `
-    assert.strictEqual((payloadType[0] as any).json_type, "object", "payload should be stored as JSONB object, not string")
+    assert.strictEqual((payloadType[0] as JsonTypeRow).json_type, "object", "payload should be stored as JSONB object, not string")
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -232,8 +252,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const briefRows = await sql`
       SELECT hook, brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    const hookBefore = (briefRows[0] as any).hook
-    const versionBefore = (briefRows[0] as any).brief_version
+    const hookBefore = (briefRows[0] as BriefRow).hook
+    const versionBefore = (briefRows[0] as BriefRow).brief_version
 
     // Attempt update with wrong version
     await setEpisodeBrief(repository, {
@@ -247,8 +267,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const briefRowsAfter = await sql`
       SELECT hook, brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    assert.strictEqual((briefRowsAfter[0] as any).hook, hookBefore)
-    assert.strictEqual((briefRowsAfter[0] as any).brief_version, versionBefore)
+    assert.strictEqual((briefRowsAfter[0] as BriefRow).hook, hookBefore)
+    assert.strictEqual((briefRowsAfter[0] as BriefRow).brief_version, versionBefore)
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -260,13 +280,13 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const episodeRows = await sql`
       SELECT state_version FROM episodes WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    const stateVersionBefore = (episodeRows[0] as any).state_version
+    const stateVersionBefore = (episodeRows[0] as StateVersionRow).state_version
 
     // Update brief
     const briefRowsBefore = await sql`
       SELECT brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    const briefVersionBefore = (briefRowsBefore[0] as any).brief_version
+    const briefVersionBefore = (briefRowsBefore[0] as BriefVersionRow).brief_version
 
     await setEpisodeBrief(repository, {
       episodeId: TEST_EPISODE_ID,
@@ -280,7 +300,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       SELECT state_version FROM episodes WHERE episode_id = ${TEST_EPISODE_ID}
     `
     assert.strictEqual(
-      (episodeRowsAfter[0] as any).state_version,
+      (episodeRowsAfter[0] as StateVersionRow).state_version,
       stateVersionBefore,
       "episode stateVersion must not change on brief update"
     )
@@ -319,7 +339,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefRows = await sql`
         SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      const versionBefore = (briefRows[0] as any).brief_version
+      const versionBefore = (briefRows[0] as BriefVersionRow).brief_version
 
       // Force a transaction failure by throwing inside the command
       // The brief mutation should be rolled back
@@ -348,14 +368,14 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefRowsAfter = await sql`
         SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((briefRowsAfter[0] as any).brief_version, versionBefore, "version should be unchanged after rollback")
+      assert.strictEqual((briefRowsAfter[0] as BriefVersionRow).brief_version, versionBefore, "version should be unchanged after rollback")
 
       // Verify no new event was created
       const events = await sql`
         SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
         AND event_type = 'episode_brief_set'
       `
-      assert.strictEqual(Number((events[0] as any).count), 1, "only initial create event should exist")
+      assert.strictEqual(Number((events[0] as CountRow).count), 1, "only initial create event should exist")
     } finally {
       // Cleanup always runs, even if assertions fail
       try {
@@ -460,8 +480,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefBefore = await sql`
         SELECT brief_version, updated_at FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      const versionBefore = (briefBefore[0] as any).brief_version
-      const updatedAtBefore = (briefBefore[0] as any).updated_at
+      const versionBefore = (briefBefore[0] as BriefRow).brief_version
+      const updatedAtBefore = (briefBefore[0] as BriefRow).updated_at
 
       // Wait a moment to ensure time difference would be detectable
       await new Promise((resolve) => setTimeout(resolve, 100))
@@ -483,8 +503,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefAfter = await sql`
         SELECT brief_version, updated_at FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      const versionAfter = (briefAfter[0] as any).brief_version
-      const updatedAtAfter = (briefAfter[0] as any).updated_at
+      const versionAfter = (briefAfter[0] as BriefRow).brief_version
+      const updatedAtAfter = (briefAfter[0] as BriefRow).updated_at
 
       assert.strictEqual(versionAfter, versionBefore, "version should not increment on no-op")
 
@@ -497,7 +517,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const events = await sql`
         SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
       `
-      assert.strictEqual(Number((events[0] as any).count), 1, "only create event should exist (no update event)")
+      assert.strictEqual(Number((events[0] as CountRow).count), 1, "only create event should exist (no update event)")
     } finally {
       // Cleanup always runs, even if assertions fail
       try {
@@ -546,8 +566,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefBefore = await sql`
         SELECT angle, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((briefBefore[0] as any).angle, "Original Angle")
-      const versionBefore = (briefBefore[0] as any).brief_version
+      assert.strictEqual((briefBefore[0] as BriefRow).angle, "Original Angle")
+      const versionBefore = (briefBefore[0] as BriefRow).brief_version
 
       // Clear angle by sending empty string
       const clearResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
@@ -564,8 +584,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefAfter = await sql`
         SELECT angle, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((briefAfter[0] as any).angle, null, "angle should be NULL after clearing")
-      assert.strictEqual((briefAfter[0] as any).brief_version, versionBefore + 1, "version should increment")
+      assert.strictEqual((briefAfter[0] as BriefRow).angle, null, "angle should be NULL after clearing")
+      assert.strictEqual((briefAfter[0] as BriefRow).brief_version, versionBefore + 1, "version should increment")
 
       // Verify event shows only angle changed
       const events = await sql`
@@ -574,7 +594,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
         ORDER BY created_at DESC LIMIT 1
       `
       // Payload is now a structured object from postgres.js JSONB handling
-      const payload = (events[0] as any).payload as any
+      const payload = (events[0] as EventRow).payload
       assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
 
       // Verify payload is stored as JSONB object, not string
@@ -583,7 +603,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
         AND event_type = 'episode_brief_set'
         ORDER BY created_at DESC LIMIT 1
       `
-      assert.strictEqual((payloadType[0] as any).json_type, "object", "payload should be stored as JSONB object, not string")
+      assert.strictEqual((payloadType[0] as JsonTypeRow).json_type, "object", "payload should be stored as JSONB object, not string")
     } finally {
       // Cleanup always runs, even if assertions fail
       try {
@@ -632,14 +652,14 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefBefore = await sql`
         SELECT research_questions, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.deepStrictEqual((briefBefore[0] as any).research_questions, ["Q1", "Q2"])
-      const versionBefore = (briefBefore[0] as any).brief_version
+      assert.deepStrictEqual((briefBefore[0] as BriefRow).research_questions, ["Q1", "Q2"])
+      const versionBefore = (briefBefore[0] as BriefRow).brief_version
 
       // Verify JSONB type in database
       const typeCheckBefore = await sql`
         SELECT jsonb_typeof(research_questions) as json_type FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((typeCheckBefore[0] as any).json_type, "array", "research_questions should be stored as JSONB array, not string")
+      assert.strictEqual((typeCheckBefore[0] as JsonTypeRow).json_type, "array", "research_questions should be stored as JSONB array, not string")
 
       // Clear questions by sending empty array
       const clearResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
@@ -656,14 +676,14 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const briefAfter = await sql`
         SELECT research_questions, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.deepStrictEqual((briefAfter[0] as any).research_questions, [], "questions should be empty array")
-      assert.strictEqual((briefAfter[0] as any).brief_version, versionBefore + 1)
+      assert.deepStrictEqual((briefAfter[0] as BriefRow).research_questions, [], "questions should be empty array")
+      assert.strictEqual((briefAfter[0] as BriefRow).brief_version, versionBefore + 1)
 
       // Verify JSONB type after clearing
       const typeCheckAfter = await sql`
         SELECT jsonb_typeof(research_questions) as json_type FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((typeCheckAfter[0] as any).json_type, "array", "research_questions should remain JSONB array after clearing")
+      assert.strictEqual((typeCheckAfter[0] as JsonTypeRow).json_type, "array", "research_questions should remain JSONB array after clearing")
     } finally {
       // Cleanup always runs, even if assertions fail
       try {
@@ -700,7 +720,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const episodeBefore = await sql`
         SELECT state_version FROM episodes WHERE episode_id = ${tempId}
       `
-      const stateVersionBefore = (episodeBefore[0] as any).state_version
+      const stateVersionBefore = (episodeBefore[0] as StateVersionRow).state_version
 
       // Create brief
       const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
@@ -717,13 +737,13 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const episodeAfterBriefCreate = await sql`
         SELECT state_version FROM episodes WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((episodeAfterBriefCreate[0] as any).state_version, stateVersionBefore)
+      assert.strictEqual((episodeAfterBriefCreate[0] as StateVersionRow).state_version, stateVersionBefore)
 
       // Update brief
       const briefBefore = await sql`
         SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      const briefVersion = (briefBefore[0] as any).brief_version
+      const briefVersion = (briefBefore[0] as BriefVersionRow).brief_version
 
       const updateResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
         setEpisodeBrief(repo, {
@@ -739,7 +759,7 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const episodeAfterBriefUpdate = await sql`
         SELECT state_version FROM episodes WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((episodeAfterBriefUpdate[0] as any).state_version, stateVersionBefore)
+      assert.strictEqual((episodeAfterBriefUpdate[0] as StateVersionRow).state_version, stateVersionBefore)
 
       // Now update episode workflow state
       const workflowUpdateResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
@@ -756,12 +776,12 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       const episodeAfterWorkflow = await sql`
         SELECT state_version FROM episodes WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((episodeAfterWorkflow[0] as any).state_version, stateVersionBefore + 1)
+      assert.strictEqual((episodeAfterWorkflow[0] as StateVersionRow).state_version, stateVersionBefore + 1)
 
       const briefAfterWorkflow = await sql`
         SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
       `
-      assert.strictEqual((briefAfterWorkflow[0] as any).brief_version, briefVersion + 1)
+      assert.strictEqual((briefAfterWorkflow[0] as BriefVersionRow).brief_version, briefVersion + 1)
     } finally {
       // Cleanup always runs, even if assertions fail
       try {
