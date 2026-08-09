@@ -7,6 +7,7 @@ config({ path: resolve(process.cwd(), ".env.local") })
 import postgres from "postgres"
 import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
 import { setEpisodeResearch } from "../../lib/youtube/commands/set-episode-research.ts"
+import { setEpisodeBrief } from "../../lib/youtube/commands/set-episode-brief.ts"
 import type { EpisodeRepository } from "../../lib/persistence/episode-repository-core.ts"
 import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
 import type { ResearchFinding, ResearchSource, ResearchContradiction } from "../../lib/persistence/canonical-types.ts"
@@ -846,25 +847,25 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
         VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
       `
 
-      // Wrap repository to fail on createEpisodeEvent
-      const failingRepository: EpisodeRepository = {
-        ...repository,
-        createEpisodeEvent: async () => {
-          throw new Error("Intentional audit failure")
-        },
-      }
-
       // Try to create research - should fail during transaction
       let transactionThrew = false
       try {
-        await runCommandInTransaction(sql as unknown as PostgresSql, async () =>
-          setEpisodeResearch(failingRepository, {
+        await runCommandInTransaction(sql as unknown as PostgresSql, async (transactionRepository) => {
+          // Wrap transaction repository to fail on createEpisodeEvent
+          const failingRepository: EpisodeRepository = {
+            ...transactionRepository,
+            createEpisodeEvent: async () => {
+              throw new Error("Intentional audit failure")
+            },
+          }
+
+          return setEpisodeResearch(failingRepository, {
             episodeId: testEpisodeId,
             expectedResearchVersion: null,
             summary: "Will fail on audit",
             actor: "human:web",
           })
-        )
+        })
       } catch {
         transactionThrew = true
       }
@@ -891,15 +892,17 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
   })
 
   // ─────────────────────────────────────────────────────────────
-  // K. VERSION INDEPENDENCE
+  // K. BRIEF VERSION INDEPENDENCE
   // ─────────────────────────────────────────────────────────────
 
-  test("K1. researchVersion independent from episode stateVersion", async () => {
-    const testEpisodeId = "version-independence-test-episode"
+  test("K1. researchVersion independent from briefVersion", async () => {
+    const testEpisodeId = "brief-research-independence-test"
     const now = new Date().toISOString()
 
     // Pre-cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
     await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+    await sql`DELETE FROM episode_brief WHERE episode_id = ${testEpisodeId}`
     await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
 
     try {
@@ -912,61 +915,80 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
         VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
       `
 
+      // Create brief (briefVersion = 1)
+      const briefCreated = await setEpisodeBrief(repository, {
+        episodeId: testEpisodeId,
+        expectedBriefVersion: null,
+        topic: "Test Topic",
+        actor: "human:web",
+      })
+      assert.strictEqual(briefCreated.success, true)
+      assert.strictEqual(briefCreated.value?.briefVersion, 1, "Brief version should be 1")
+
       // Create research (researchVersion = 1)
-      await setEpisodeResearch(repository, {
+      const researchCreated = await setEpisodeResearch(repository, {
         episodeId: testEpisodeId,
         expectedResearchVersion: null,
         summary: "Initial",
         actor: "human:web",
       })
+      assert.strictEqual(researchCreated.success, true)
+      assert.strictEqual(researchCreated.value?.researchVersion, 1, "Research version should be 1")
 
-      // Verify initial state
-      let episodeRow = await sql`
-        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      // Verify both at v1
+      let briefRow = await sql`
+        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
       `
       let researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
       `
-      assert.strictEqual(episodeRow[0].state_version, 1, "Episode stateVersion should be 1")
-      assert.strictEqual(researchRow[0].research_version, 1, "Research version should be 1")
+      assert.strictEqual(briefRow[0].brief_version, 1)
+      assert.strictEqual(researchRow[0].research_version, 1)
 
-      // Update episode state (this increments stateVersion)
-      await sql`
-        UPDATE episodes
-        SET workflow_state = 'PRODUCTION', state_version = 2, updated_at = ${new Date().toISOString()}
-        WHERE episode_id = ${testEpisodeId}
-      `
+      // Update brief (briefVersion → 2, research stays 1)
+      const briefUpdated = await setEpisodeBrief(repository, {
+        episodeId: testEpisodeId,
+        expectedBriefVersion: 1,
+        topic: "Updated Topic",
+        actor: "human:web",
+      })
+      assert.strictEqual(briefUpdated.success, true)
+      assert.strictEqual(briefUpdated.value?.briefVersion, 2)
 
-      // Verify episode version changed but research version unchanged
-      episodeRow = await sql`
-        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      // Verify brief changed, research unchanged
+      briefRow = await sql`
+        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
       `
       researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
       `
-      assert.strictEqual(episodeRow[0].state_version, 2, "Episode stateVersion should be 2 after update")
+      assert.strictEqual(briefRow[0].brief_version, 2, "Brief version should be 2")
       assert.strictEqual(researchRow[0].research_version, 1, "Research version should still be 1")
 
-      // Now update research
-      await setEpisodeResearch(repository, {
+      // Update research (researchVersion → 2, brief stays 2)
+      const researchUpdated = await setEpisodeResearch(repository, {
         episodeId: testEpisodeId,
         expectedResearchVersion: 1,
         summary: "Updated",
         actor: "human:web",
       })
+      assert.strictEqual(researchUpdated.success, true)
+      assert.strictEqual(researchUpdated.value?.researchVersion, 2)
 
-      // Verify research version changed but episode version unchanged
-      episodeRow = await sql`
-        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      // Verify research changed, brief unchanged
+      briefRow = await sql`
+        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
       `
       researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
       `
-      assert.strictEqual(episodeRow[0].state_version, 2, "Episode stateVersion should still be 2")
-      assert.strictEqual(researchRow[0].research_version, 2, "Research version should be 2 after update")
+      assert.strictEqual(briefRow[0].brief_version, 2, "Brief version should still be 2")
+      assert.strictEqual(researchRow[0].research_version, 2, "Research version should be 2")
     } finally {
       // Cleanup
+      await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
       await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episode_brief WHERE episode_id = ${testEpisodeId}`
       await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
     }
   })
