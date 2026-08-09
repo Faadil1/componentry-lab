@@ -8,8 +8,10 @@ import { recordHumanDecision } from "@/lib/youtube/commands/record-human-decisio
 import { addEpisodeBlocker } from "@/lib/youtube/commands/add-episode-blocker.ts"
 import { resolveEpisodeBlocker } from "@/lib/youtube/commands/resolve-episode-blocker.ts"
 import { recordPublication } from "@/lib/youtube/commands/record-publication.ts"
+import { createEpisode } from "@/lib/youtube/commands/create-episode.ts"
 import { runCommandInTransaction } from "@/lib/youtube/commands/transactional-command-runner.ts"
 import type { CommandResult } from "@/lib/youtube/commands/command-result.ts"
+import type { CanonicalEpisode } from "@/lib/persistence/canonical-types.ts"
 
 // Server action: Transition episode state
 export async function transitionEpisodeStateAction(
@@ -183,6 +185,57 @@ export async function recordPublicationAction(
       success: false,
       reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
+    }
+  }
+}
+
+// Server action: Create new episode
+export async function createEpisodeAction(
+  episodeId: string,
+  episodeNumber: number,
+  channelName: string,
+  title: string
+): Promise<CommandResult<CanonicalEpisode>> {
+  try {
+    const sql = getDatabase()
+    const result = await runCommandInTransaction(sql, async (repository) => {
+      const commandResult = await createEpisode(repository, {
+        episodeId,
+        episodeNumber,
+        channelName,
+        title,
+        actor: "human:web",
+      })
+
+      if (commandResult.success) {
+        // Create episode_created event in same transaction
+        await repository.createEpisodeEvent({
+          episodeId: commandResult.value!.episodeId,
+          eventType: "episode_created",
+          actor: "human:web",
+          payload: {
+            episodeId,
+            episodeNumber,
+            channelName,
+            title,
+          },
+        })
+      }
+
+      return commandResult
+    })
+
+    if (result.success) {
+      revalidatePath("/youtube")
+    }
+
+    return result
+  } catch (error) {
+    console.error("createEpisodeAction failed:", error)
+    return {
+      success: false,
+      reason: "infrastructure_error",
+      message: "Something went wrong while creating the episode. Please try again.",
     }
   }
 }

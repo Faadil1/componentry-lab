@@ -22,12 +22,20 @@ export default async function YouTubeOSPage() {
           <h3 className="text-lg font-semibold text-neutral-900">
             Available episodes
           </h3>
-          <Link
-            href="/youtube/history"
-            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
-          >
-            Published Archive →
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              href="/youtube/intake"
+              className="inline-flex items-center justify-center rounded-lg border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100"
+            >
+              + New Episode
+            </Link>
+            <Link
+              href="/youtube/history"
+              className="inline-flex items-center justify-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50"
+            >
+              Published Archive →
+            </Link>
+          </div>
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           {episodes.map((episode) => (

@@ -50,6 +50,13 @@ export function createMockRepository(): EpisodeRepository {
     },
 
     async createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode> {
+      // Simulate PostgreSQL unique constraint: reject duplicate episodeId
+      if (episodes.has(input.episodeId)) {
+        const err = new Error("UNIQUE constraint violation: episode_id")
+        Object.assign(err, { code: "23505" })
+        throw err
+      }
+
       const now = new Date().toISOString()
       const episode: CanonicalEpisode = {
         ...input,
