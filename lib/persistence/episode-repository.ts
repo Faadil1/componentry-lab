@@ -9,4 +9,5 @@
 import "server-only"
 
 export { createMockRepository, type EpisodeRepository } from "./episode-repository-core"
-export { createEpisodeRepository, type PostgresSql } from "./episode-repository-live-core"
+export { createEpisodeRepository } from "./episode-repository-live-core"
+export type { PostgresSql } from "./sql-types"

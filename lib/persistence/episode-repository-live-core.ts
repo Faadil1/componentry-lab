@@ -26,14 +26,9 @@ import type { EpisodeRepository } from "./episode-repository-core.ts"
 import type { EpisodeRow, EpisodeEventRow, EpisodeBriefRow } from "./episode-row-mappers.ts"
 import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief } from "./episode-row-mappers.ts"
 
-/**
- * Structural type for postgres npm package SQL client.
- * Represents the callable interface and unsafe method.
- */
-export type PostgresSql = {
-  (strings: TemplateStringsArray, ...values: unknown[]): Promise<Array<Record<string, unknown>>>
-  unsafe: (query: string, values: unknown[]) => Promise<Array<Record<string, unknown>>>
-}
+// Re-export from sql-types for tests that import directly from this module
+export type { PostgresSql } from "./sql-types.ts"
+import type { PostgresSql } from "./sql-types.ts"
 
 /**
  * Create a live repository backed by PostgreSQL (Neon or self-hosted).
