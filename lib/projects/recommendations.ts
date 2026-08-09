@@ -154,9 +154,9 @@ export function getRecommendedRegistryEntries(project: ProjectBrain): ProjectRec
   return recommendations
 }
 
-export function getRecommendedNextPhase(project: ProjectBrain): ProjectRecommendation[] {
+export function getRecommendedNextPhase(): ProjectRecommendation[] {
   // Phase recommendations are now exclusively governed by the Creative Director.
-  // We return an empty array to ensure Smart Recommendations acts purely as SUPPORTING guidance.
+  // We return an empty array to ensure Supporting Recommendations acts purely as guidance.
   return []
 }
 
