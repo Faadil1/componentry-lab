@@ -30,7 +30,8 @@ import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief } from "./e
 
 // Re-export from sql-types for tests that import directly from this module
 export type { PostgresSql } from "./sql-types.ts"
-import type { PostgresSql, SqlParameter } from "./sql-types.ts"
+import type { PostgresSql } from "./sql-types.ts"
+import type postgres from "postgres"
 
 /**
  * Create a live repository backed by PostgreSQL (Neon or self-hosted).
@@ -95,7 +96,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
     async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {
       const now = new Date().toISOString()
       const updates: string[] = []
-      const values: (string | number | boolean | null | Date | Record<string, unknown> | CanonicalBlocker[] | CanonicalDecision)[] = []
+      const values: (string | number | CanonicalBlocker[] | CanonicalDecision | null)[] = []
       let paramIndex = 1
 
       if (input.workflowState !== undefined) {
@@ -154,7 +155,11 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       values.push(input.episodeId)
       values.push(input.expectedStateVersion)
 
-      const result = await sql.unsafe(updateSQL, values as SqlParameter[])
+      // Cast needed: all values are JSON-serializable (string, number, array, object, null)
+      // postgres.js accepts these, but TypeScript's structural typing requires explicit
+      // index signatures that custom interfaces don't have. This is a type-system limitation,
+      // not a correctness issue.
+      const result = await sql.unsafe(updateSQL, values as postgres.ParameterOrJSON<never>[])
 
       if (result.length === 0) {
         const checkRows = await sql`
@@ -189,8 +194,11 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
 
     async createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent> {
       const now = new Date().toISOString()
+      const payload = input.payload ?? null
 
-      const rows = await sql`
+      // Use sql.unsafe() for payload (complex object) to avoid template literal type restrictions
+      // All parameters are properly typed and JSON-serializable
+      const insertSQL = `
         INSERT INTO episode_events (
           episode_id,
           event_type,
@@ -201,19 +209,21 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
           idempotency_key,
           created_at
         )
-        VALUES (
-          ${input.episodeId},
-          ${input.eventType},
-          ${input.actor},
-          ${input.fromState ?? null},
-          ${input.toState ?? null},
-          ${(input.payload ?? null) as any},
-          ${input.idempotencyKey ?? null},
-          ${now}
-        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT (idempotency_key) DO NOTHING
         RETURNING *
       `
+
+      const rows = await sql.unsafe(insertSQL, [
+        input.episodeId,
+        input.eventType,
+        input.actor,
+        input.fromState ?? null,
+        input.toState ?? null,
+        payload as postgres.ParameterOrJSON<never>,
+        input.idempotencyKey ?? null,
+        now,
+      ])
 
       if (rows.length > 0) {
         return mapRowToEpisodeEvent(rows[0] as unknown as EpisodeEventRow)
@@ -339,7 +349,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       // UPDATE mode: expectedBriefVersion = N
       // Build dynamic update query with only provided fields
       const updates: string[] = []
-      const values: (string | number | boolean | null | Date | Record<string, unknown> | string[])[] = []
+      const values: (string | number | null | string[])[] = []
       let paramIndex = 1
 
       if (input.topic !== undefined) {
@@ -408,7 +418,10 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       values.push(input.episodeId)
       values.push(input.expectedBriefVersion)
 
-      const result = await sql.unsafe(updateSQL, values as SqlParameter[])
+      // Cast needed: all values are JSON-serializable (string, number, array, null)
+      // postgres.js accepts these, but TypeScript's structural typing is strict.
+      // This is a type-system limitation, not a correctness issue.
+      const result = await sql.unsafe(updateSQL, values as postgres.ParameterOrJSON<never>[])
 
       if (result.length === 0) {
         // Check if brief exists
