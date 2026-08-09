@@ -14,6 +14,8 @@ import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
   CanonicalEpisodeBrief,
+  CanonicalBlocker,
+  CanonicalDecision,
   CreateEpisodeEventInput,
   CreateEpisodeInput,
   CreateEpisodeRepositoryResult,
@@ -93,7 +95,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
     async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {
       const now = new Date().toISOString()
       const updates: string[] = []
-      const values: SqlParameter[] = []
+      const values: (string | number | boolean | null | Date | Record<string, unknown> | CanonicalBlocker[] | CanonicalDecision)[] = []
       let paramIndex = 1
 
       if (input.workflowState !== undefined) {
@@ -110,13 +112,15 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
 
       if (input.blockers !== undefined) {
         updates.push(`blockers = $${paramIndex}`)
-        values.push(JSON.stringify(input.blockers))
+        // CanonicalBlocker[] is JSON-serializable; postgres.js will handle serialization
+        values.push(input.blockers)
         paramIndex++
       }
 
       if (input.latestDecision !== undefined) {
         updates.push(`latest_decision = $${paramIndex}`)
-        values.push(input.latestDecision ? JSON.stringify(input.latestDecision) : null)
+        // CanonicalDecision is JSON-serializable; null or object both valid
+        values.push(input.latestDecision ?? null)
         paramIndex++
       }
 
@@ -150,7 +154,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       values.push(input.episodeId)
       values.push(input.expectedStateVersion)
 
-      const result = await sql.unsafe(updateSQL, values)
+      const result = await sql.unsafe(updateSQL, values as SqlParameter[])
 
       if (result.length === 0) {
         const checkRows = await sql`
@@ -203,7 +207,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
           ${input.actor},
           ${input.fromState ?? null},
           ${input.toState ?? null},
-          ${input.payload ? JSON.stringify(input.payload) : null},
+          ${(input.payload ?? null) as any},
           ${input.idempotencyKey ?? null},
           ${now}
         )
@@ -296,7 +300,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
             ${input.hook ?? null},
             ${input.thesis ?? null},
             ${input.editorialNotes ?? null},
-            ${JSON.stringify(input.researchQuestions || [])},
+            ${input.researchQuestions || []},
             1,
             1,
             ${now},
@@ -335,7 +339,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       // UPDATE mode: expectedBriefVersion = N
       // Build dynamic update query with only provided fields
       const updates: string[] = []
-      const values: SqlParameter[] = []
+      const values: (string | number | boolean | null | Date | Record<string, unknown> | string[])[] = []
       let paramIndex = 1
 
       if (input.topic !== undefined) {
@@ -382,7 +386,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
 
       if (input.researchQuestions !== undefined) {
         updates.push(`research_questions = $${paramIndex}`)
-        values.push(JSON.stringify(input.researchQuestions))
+        values.push(input.researchQuestions)
         paramIndex++
       }
 
@@ -404,7 +408,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       values.push(input.episodeId)
       values.push(input.expectedBriefVersion)
 
-      const result = await sql.unsafe(updateSQL, values)
+      const result = await sql.unsafe(updateSQL, values as SqlParameter[])
 
       if (result.length === 0) {
         // Check if brief exists

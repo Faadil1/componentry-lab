@@ -338,12 +338,17 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
       SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
       AND event_type = 'episode_brief_set'
     `
-    assert.strictEqual((events[0] as any).count, 1, "only initial create event should exist")
+    assert.strictEqual(Number((events[0] as any).count), 1, "only initial create event should exist")
 
     // Cleanup
-    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    try {
+      await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    } catch (err) {
+      // Cleanup is best-effort
+      console.error("Warning: cleanup failed for E1", err)
+    }
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -463,18 +468,27 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     const updatedAtAfter = (briefAfter[0] as any).updated_at
 
     assert.strictEqual(versionAfter, versionBefore, "version should not increment on no-op")
-    assert.strictEqual(updatedAtAfter, updatedAtBefore, "updated_at should not change on no-op")
+
+    // Compare timestamps by millisecond precision (postgres.js returns Date objects)
+    const beforeTime = new Date(updatedAtBefore).getTime()
+    const afterTime = new Date(updatedAtAfter).getTime()
+    assert.strictEqual(afterTime, beforeTime, "updated_at should not change on no-op")
 
     // Verify no event created
     const events = await sql`
       SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
     `
-    assert.strictEqual((events[0] as any).count, 1, "only create event should exist (no update event)")
+    assert.strictEqual(Number((events[0] as any).count), 1, "only create event should exist (no update event)")
 
     // Cleanup
-    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    try {
+      await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    } catch (err) {
+      // Cleanup is best-effort
+      console.error("Warning: cleanup failed for H1", err)
+    }
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -542,9 +556,14 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
 
     // Cleanup
-    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    try {
+      await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    } catch (err) {
+      // Cleanup is best-effort
+      console.error("Warning: cleanup failed for I1", err)
+    }
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -577,12 +596,18 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     )
     assert.strictEqual(createResult.success, true)
 
-    // Verify questions are set
+    // Verify questions are set and stored as proper JSONB array
     const briefBefore = await sql`
       SELECT research_questions, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
     `
     assert.deepStrictEqual((briefBefore[0] as any).research_questions, ["Q1", "Q2"])
     const versionBefore = (briefBefore[0] as any).brief_version
+
+    // Verify JSONB type in database
+    const typeCheckBefore = await sql`
+      SELECT jsonb_typeof(research_questions) as json_type FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((typeCheckBefore[0] as any).json_type, "array", "research_questions should be stored as JSONB array, not string")
 
     // Clear questions by sending empty array
     const clearResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
@@ -602,10 +627,21 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     assert.deepStrictEqual((briefAfter[0] as any).research_questions, [], "questions should be empty array")
     assert.strictEqual((briefAfter[0] as any).brief_version, versionBefore + 1)
 
+    // Verify JSONB type after clearing
+    const typeCheckAfter = await sql`
+      SELECT jsonb_typeof(research_questions) as json_type FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((typeCheckAfter[0] as any).json_type, "array", "research_questions should remain JSONB array after clearing")
+
     // Cleanup
-    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    try {
+      await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    } catch (err) {
+      // Cleanup is best-effort
+      console.error("Warning: cleanup failed for J1", err)
+    }
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -694,8 +730,13 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     assert.strictEqual((briefAfterWorkflow[0] as any).brief_version, briefVersion + 1)
 
     // Cleanup
-    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
-    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    try {
+      await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+    } catch (err) {
+      // Cleanup is best-effort
+      console.error("Warning: cleanup failed for K1", err)
+    }
   })
 })

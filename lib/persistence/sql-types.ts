@@ -24,12 +24,15 @@ export type TransactionSql = postgres.TransactionSql
 
 /**
  * Valid SQL parameter value type for use with sql.unsafe().
- * Re-exported directly from postgres npm package for type safety.
+ * Matches postgres.ParameterOrJSON from the postgres npm package.
  *
- * Supports: scalars, null, Date, objects, arrays, and postgres Helper/Parameter types.
+ * Supports: scalars (string, number, boolean, Date), null, objects, arrays,
+ * and postgres Helper/Parameter types. Custom JSON-serializable types are
+ * accepted and will be serialized by postgres.js.
+ *
  * This is the exact type expected by Sql.unsafe(query, parameters).
  */
-export type SqlParameter<T = never> = postgres.ParameterOrJSON<T>
+export type SqlParameter = postgres.ParameterOrJSON<never>
 
 // Re-export error type for convenience
 export { PostgresError } from "postgres"
