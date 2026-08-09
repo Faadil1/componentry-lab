@@ -1,40 +1,25 @@
 // Transaction runner for atomic mutations
 // Ensures state updates and audit events commit together or rollback together
+// Uses native postgres.js transaction API for proper connection pooling
 
 import type { PostgresSql } from "./episode-repository-live-core.ts"
 
 /**
- * Run a callback within a PostgreSQL transaction.
- * If callback throws, transaction rolls back automatically.
- * On success, transaction commits.
+ * Run a callback within a PostgreSQL transaction using native postgres.js API.
+ * All queries in callback execute on the same connection within the transaction.
+ * On error, transaction automatically rolls back.
  *
  * @param sql postgres client
  * @param callback function receiving transaction-scoped sql client
  * @returns callback result
+ * @throws if callback or transaction fails
  */
 export async function runInTransaction<T>(
   sql: PostgresSql,
   callback: (txn: PostgresSql) => Promise<T>
 ): Promise<T> {
-  try {
-    // Start transaction
-    await sql`BEGIN`
-
-    // Run callback with same client (transaction-scoped)
-    const result = await callback(sql)
-
-    // Commit
-    await sql`COMMIT`
-
-    return result
-  } catch (error) {
-    // Rollback on any error
-    try {
-      await sql`ROLLBACK`
-    } catch {
-      // Rollback failure - log but don't suppress original error
-    }
-
-    throw error
-  }
+  // Use native postgres.js transaction API
+  // sql.begin() ensures all queries execute on same connection
+  // and handles BEGIN/COMMIT/ROLLBACK automatically
+  return sql.begin((txn) => callback(txn as PostgresSql))
 }
