@@ -422,36 +422,357 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
     const testEpisodeId = "cascade-test-episode"
     const now = new Date().toISOString()
 
-    // Create episode
-    await sql`
-      INSERT INTO episodes (
-        episode_id, channel_name, title, workflow_state, review_status,
-        schema_version, state_version, created_at, updated_at
-      )
-      VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
-    `
+    try {
+      // Create episode
+      await sql`
+        INSERT INTO episodes (
+          episode_id, channel_name, title, workflow_state, review_status,
+          schema_version, state_version, created_at, updated_at
+        )
+        VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
+      `
 
-    // Create research
-    await setEpisodeResearch(repository, {
-      episodeId: testEpisodeId,
+      // Create research
+      await setEpisodeResearch(repository, {
+        episodeId: testEpisodeId,
+        expectedResearchVersion: null,
+        summary: "Will cascade delete",
+        actor: "human:web",
+      })
+
+      // Verify research exists
+      let researchRows = await sql`
+        SELECT * FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(researchRows.length, 1)
+
+      // Must delete events first (they have FK to episodes)
+      await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
+
+      // Delete episode
+      await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+
+      // Verify research deleted via CASCADE
+      researchRows = await sql`
+        SELECT * FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(researchRows.length, 0)
+    } finally {
+      // Cleanup
+      await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+    }
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // G. CLEAR SEMANTICS
+  // ─────────────────────────────────────────────────────────────
+
+  test("G1. Clear summary empty string", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    // Create with summary
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
       expectedResearchVersion: null,
-      summary: "Will cascade delete",
+      summary: "Initial summary",
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    // Clear summary with empty string
+    const cleared = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      summary: "",
+      actor: "human:web",
+    })
+    assert.strictEqual(cleared.success, true)
+
+    // Verify in database: empty string normalized to NULL
+    const rows = await sql`
+      SELECT summary FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.strictEqual(rows[0].summary, null)
+  })
+
+  test("G2. Clear findings array", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const finding: ResearchFinding = { id: "f1", statement: "Test", sourceIds: [] }
+
+    // Create with findings
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      keyFindings: [finding],
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    // Clear findings
+    const cleared = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      keyFindings: [],
+      actor: "human:web",
+    })
+    assert.strictEqual(cleared.success, true)
+
+    // Verify in database
+    const rows = await sql`
+      SELECT key_findings FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.deepStrictEqual(rows[0].key_findings, [])
+  })
+
+  test("G3. Clear sources array", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const source: ResearchSource = { id: "s1", title: "Test Source" }
+
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source],
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    const cleared = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      sources: [],
+      actor: "human:web",
+    })
+    assert.strictEqual(cleared.success, true)
+
+    const rows = await sql`
+      SELECT sources FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.deepStrictEqual(rows[0].sources, [])
+  })
+
+  test("G4. Clear contradictions array", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const contradiction: ResearchContradiction = { id: "c1", description: "Test", sourceIds: [] }
+
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      contradictions: [contradiction],
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    const cleared = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      contradictions: [],
+      actor: "human:web",
+    })
+    assert.strictEqual(cleared.success, true)
+
+    const rows = await sql`
+      SELECT contradictions FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.deepStrictEqual(rows[0].contradictions, [])
+  })
+
+  test("G5. Clear openQuestions array", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      openQuestions: ["Q1", "Q2"],
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    const cleared = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      openQuestions: [],
+      actor: "human:web",
+    })
+    assert.strictEqual(cleared.success, true)
+
+    const rows = await sql`
+      SELECT open_questions FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.deepStrictEqual(rows[0].open_questions, [])
+  })
+
+  test("B4. JSONB open_questions stored as array", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      openQuestions: ["Question 1", "Question 2"],
       actor: "human:web",
     })
 
-    // Verify research exists
-    let researchRows = await sql`
-      SELECT * FROM episode_research WHERE episode_id = ${testEpisodeId}
+    const rows = await sql`
+      SELECT open_questions, jsonb_typeof(open_questions) as json_type
+      FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
     `
-    assert.strictEqual(researchRows.length, 1)
 
-    // Delete episode
-    await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+    const row = rows[0] as ResearchRow & JsonTypeRow
+    assert.strictEqual(row.json_type, "array")
+    assert.strictEqual(Array.isArray(row.open_questions), true)
+    assert.strictEqual(row.open_questions.length, 2)
+  })
 
-    // Verify research deleted
-    researchRows = await sql`
-      SELECT * FROM episode_research WHERE episode_id = ${testEpisodeId}
+  // ─────────────────────────────────────────────────────────────
+  // H. EVENT PAYLOAD STORAGE
+  // ─────────────────────────────────────────────────────────────
+
+  test("H1. Episode_events payload stored as JSONB object", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+    await sql`DELETE FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const result = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeResearch(repo, {
+        episodeId: TEST_EPISODE_ID,
+        expectedResearchVersion: null,
+        summary: "Test",
+        actor: "human:web",
+      })
+    )
+
+    assert.strictEqual(result.success, true)
+
+    const events = await sql`
+      SELECT payload, jsonb_typeof(payload) as json_type
+      FROM episode_events
+      WHERE episode_id = ${TEST_EPISODE_ID} AND event_type = 'episode_research_set'
     `
-    assert.strictEqual(researchRows.length, 0)
+
+    assert.ok(events.length > 0)
+    const event = events[0] as EventRow & JsonTypeRow
+    assert.strictEqual(event.json_type, "object")
+    assert.ok(event.payload.operation)
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // I. VERSION INDEPENDENCE
+  // ─────────────────────────────────────────────────────────────
+
+  test("I1. researchVersion independent from episode stateVersion", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    // Create research (researchVersion = 1)
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      summary: "Test",
+      actor: "human:web",
+    })
+    assert.strictEqual(result.success, true)
+
+    // Episode stateVersion should still be 1
+    const episodeRows = await sql`
+      SELECT state_version FROM episodes WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.strictEqual(episodeRows[0].state_version, 1)
+
+    // Research version should be 1
+    const researchRows = await sql`
+      SELECT research_version FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.strictEqual(researchRows[0].research_version, 1)
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // J. EFFECTIVE PACKET REFERENTIAL VALIDATION
+  // ─────────────────────────────────────────────────────────────
+
+  test("J1. Update finding while preserving existing sources", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const source: ResearchSource = { id: "s1", title: "Source 1" }
+    const finding: ResearchFinding = { id: "f1", statement: "Finding", sourceIds: ["s1"] }
+
+    // Create with source and finding
+    const created = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source],
+      keyFindings: [finding],
+      actor: "human:web",
+    })
+    assert.strictEqual(created.success, true)
+
+    // Update finding only (preserves sources)
+    const updated = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      keyFindings: [{ id: "f1", statement: "Updated finding", sourceIds: ["s1"] }],
+      actor: "human:web",
+    })
+    assert.strictEqual(updated.success, true)
+
+    // Verify sources still exist
+    const rows = await sql`
+      SELECT sources FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}
+    `
+    assert.strictEqual(rows[0].sources.length, 1)
+  })
+
+  test("J2. Reject dangling finding reference when source cleared", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const source: ResearchSource = { id: "s1", title: "Source 1" }
+    const finding: ResearchFinding = { id: "f1", statement: "Finding", sourceIds: ["s1"] }
+
+    // Create
+    await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source],
+      keyFindings: [finding],
+      actor: "human:web",
+    })
+
+    // Try to clear sources while finding references them
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      sources: [],
+      actor: "human:web",
+    })
+
+    // Should fail due to dangling reference
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("J3. Reject dangling contradiction reference when source cleared", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    const source: ResearchSource = { id: "s1", title: "Source 1" }
+    const contradiction: ResearchContradiction = { id: "c1", description: "Contradiction", sourceIds: ["s1"] }
+
+    await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source],
+      contradictions: [contradiction],
+      actor: "human:web",
+    })
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      sources: [],
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
   })
 })

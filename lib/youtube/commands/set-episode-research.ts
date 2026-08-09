@@ -142,6 +142,40 @@ export async function setEpisodeResearch(
     }
   }
 
+  // For UPDATE, validate effective packet (merged payload + current research)
+  const effectiveSources = payload.sources !== undefined ? payload.sources : currentResearch.sources
+  const effectiveFindings = payload.keyFindings !== undefined ? payload.keyFindings : currentResearch.keyFindings
+  const effectiveContradictions = payload.contradictions !== undefined ? payload.contradictions : currentResearch.contradictions
+
+  // Build source ID set from effective sources
+  const effectiveSourceIds = new Set<string>(effectiveSources.map(s => s.id))
+
+  // Validate findings reference valid sources
+  for (const finding of effectiveFindings) {
+    for (const refSourceId of finding.sourceIds) {
+      if (!effectiveSourceIds.has(refSourceId)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Finding references non-existent source ID: ${refSourceId}`,
+        }
+      }
+    }
+  }
+
+  // Validate contradictions reference valid sources
+  for (const contradiction of effectiveContradictions) {
+    for (const refSourceId of contradiction.sourceIds) {
+      if (!effectiveSourceIds.has(refSourceId)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Contradiction references non-existent source ID: ${refSourceId}`,
+        }
+      }
+    }
+  }
+
   // Detect semantic changes
   const changedFields = detectSemanticChanges(payload, currentResearch)
 
@@ -552,7 +586,7 @@ function getChangedFields(payload: SetEpisodeResearchPayload): string[] {
 
 /**
  * Detect semantic changes between payload and current research.
- * Compares arrays by deep equality.
+ * Uses field-specific comparators (not JSON.stringify).
  */
 function detectSemanticChanges(
   payload: SetEpisodeResearchPayload,
@@ -560,17 +594,10 @@ function detectSemanticChanges(
 ): string[] {
   const changed: string[] = []
 
-  // Normalize string field: trim and convert empty to undefined
-  const normalize = (value: string | undefined): string | undefined => {
-    if (value === undefined) return undefined
-    const trimmed = value.trim()
-    return trimmed === "" ? undefined : trimmed
-  }
-
   // Summary: compare normalized values
   if (payload.summary !== undefined) {
-    const normalizedPayload = normalize(payload.summary)
-    const normalizedCurrent = normalize(currentResearch.summary)
+    const normalizedPayload = normalizeString(payload.summary)
+    const normalizedCurrent = normalizeString(currentResearch.summary)
     if (normalizedPayload !== normalizedCurrent) {
       changed.push("summary")
     }
@@ -580,7 +607,7 @@ function detectSemanticChanges(
   if (payload.keyFindings !== undefined) {
     const payloadFindings = payload.keyFindings || []
     const currentFindings = currentResearch.keyFindings || []
-    if (!deepArraysEqual(payloadFindings, currentFindings)) {
+    if (!findingArraysEqual(payloadFindings, currentFindings)) {
       changed.push("keyFindings")
     }
   }
@@ -589,7 +616,7 @@ function detectSemanticChanges(
   if (payload.sources !== undefined) {
     const payloadSources = payload.sources || []
     const currentSources = currentResearch.sources || []
-    if (!deepArraysEqual(payloadSources, currentSources)) {
+    if (!sourceArraysEqual(payloadSources, currentSources)) {
       changed.push("sources")
     }
   }
@@ -607,7 +634,7 @@ function detectSemanticChanges(
   if (payload.contradictions !== undefined) {
     const payloadContradictions = payload.contradictions || []
     const currentContradictions = currentResearch.contradictions || []
-    if (!deepArraysEqual(payloadContradictions, currentContradictions)) {
+    if (!contradictionArraysEqual(payloadContradictions, currentContradictions)) {
       changed.push("contradictions")
     }
   }
@@ -627,12 +654,93 @@ function arraysEqual(a: string[], b: string[]): boolean {
 }
 
 /**
- * Deep equality comparison for objects (findings, sources, contradictions).
+ * Compare two ResearchSource objects for semantic equality.
+ * Does not rely on JSON.stringify to handle JSONB key ordering.
  */
-function deepArraysEqual(a: unknown[], b: unknown[]): boolean {
+function sourcesEqual(a: ResearchSource, b: ResearchSource): boolean {
+  if (a.id !== b.id) return false
+  if (a.title !== b.title) return false
+  if (normalizeString(a.url) !== normalizeString(b.url)) return false
+  if (normalizeString(a.publisher) !== normalizeString(b.publisher)) return false
+  if (normalizeString(a.author) !== normalizeString(b.author)) return false
+  if ((a.publishedAt || undefined) !== (b.publishedAt || undefined)) return false
+  if ((a.accessedAt || undefined) !== (b.accessedAt || undefined)) return false
+  if (normalizeString(a.notes) !== normalizeString(b.notes)) return false
+  return true
+}
+
+/**
+ * Compare two ResearchFinding objects for semantic equality.
+ * Does not rely on JSON.stringify to handle JSONB key ordering.
+ */
+function findingsEqual(a: ResearchFinding, b: ResearchFinding): boolean {
+  if (a.id !== b.id) return false
+  if (a.statement !== b.statement) return false
+  if (normalizeString(a.notes) !== normalizeString(b.notes)) return false
+  if (!sourceIdArraysEqual(a.sourceIds, b.sourceIds)) return false
+  return true
+}
+
+/**
+ * Compare two ResearchContradiction objects for semantic equality.
+ * Does not rely on JSON.stringify to handle JSONB key ordering.
+ */
+function contradictionsEqual(a: ResearchContradiction, b: ResearchContradiction): boolean {
+  if (a.id !== b.id) return false
+  if (a.description !== b.description) return false
+  if (!sourceIdArraysEqual(a.sourceIds, b.sourceIds)) return false
+  return true
+}
+
+/**
+ * Compare source ID arrays for equality (order matters).
+ */
+function sourceIdArraysEqual(a: string[], b: string[]): boolean {
   if (a.length !== b.length) return false
   for (let i = 0; i < a.length; i++) {
-    if (JSON.stringify(a[i]) !== JSON.stringify(b[i])) return false
+    if (a[i] !== b[i]) return false
+  }
+  return true
+}
+
+/**
+ * Normalize optional string fields (trim and convert empty to undefined).
+ */
+function normalizeString(value: string | undefined): string | undefined {
+  if (value === undefined) return undefined
+  const trimmed = value.trim()
+  return trimmed === "" ? undefined : trimmed
+}
+
+/**
+ * Deep equality comparison for finding arrays.
+ */
+function findingArraysEqual(a: ResearchFinding[], b: ResearchFinding[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (!findingsEqual(a[i], b[i])) return false
+  }
+  return true
+}
+
+/**
+ * Deep equality comparison for source arrays.
+ */
+function sourceArraysEqual(a: ResearchSource[], b: ResearchSource[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (!sourcesEqual(a[i], b[i])) return false
+  }
+  return true
+}
+
+/**
+ * Deep equality comparison for contradiction arrays.
+ */
+function contradictionArraysEqual(a: ResearchContradiction[], b: ResearchContradiction[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (!contradictionsEqual(a[i], b[i])) return false
   }
   return true
 }
