@@ -902,7 +902,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
     // Pre-cleanup
     await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
     await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
-    await sql`DELETE FROM episode_brief WHERE episode_id = ${testEpisodeId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${testEpisodeId}`
     await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
 
     try {
@@ -937,7 +937,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
 
       // Verify both at v1
       let briefRow = await sql`
-        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
+        SELECT brief_version FROM episode_briefs WHERE episode_id = ${testEpisodeId}
       `
       let researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
@@ -957,7 +957,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
 
       // Verify brief changed, research unchanged
       briefRow = await sql`
-        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
+        SELECT brief_version FROM episode_briefs WHERE episode_id = ${testEpisodeId}
       `
       researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
@@ -977,7 +977,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
 
       // Verify research changed, brief unchanged
       briefRow = await sql`
-        SELECT brief_version FROM episode_brief WHERE episode_id = ${testEpisodeId}
+        SELECT brief_version FROM episode_briefs WHERE episode_id = ${testEpisodeId}
       `
       researchRow = await sql`
         SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
@@ -988,7 +988,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
       // Cleanup
       await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
       await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
-      await sql`DELETE FROM episode_brief WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episode_briefs WHERE episode_id = ${testEpisodeId}`
       await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
     }
   })
