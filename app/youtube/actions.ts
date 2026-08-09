@@ -37,12 +37,10 @@ export async function transitionEpisodeStateAction(
 
     return result
   } catch (error) {
-    // Infrastructure error: not a business error
-    // Do not misclassify as invalid_input
     console.error("transitionEpisodeStateAction failed:", error)
     return {
       success: false,
-      reason: "invalid_input",
+      reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
     }
   }
@@ -77,7 +75,7 @@ export async function recordHumanDecisionAction(
     console.error("recordHumanDecisionAction failed:", error)
     return {
       success: false,
-      reason: "invalid_input",
+      reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
     }
   }
@@ -114,7 +112,7 @@ export async function addEpisodeBlockerAction(
     console.error("addEpisodeBlockerAction failed:", error)
     return {
       success: false,
-      reason: "invalid_input",
+      reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
     }
   }
@@ -147,7 +145,7 @@ export async function resolveEpisodeBlockerAction(
     console.error("resolveEpisodeBlockerAction failed:", error)
     return {
       success: false,
-      reason: "invalid_input",
+      reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
     }
   }
@@ -183,7 +181,7 @@ export async function recordPublicationAction(
     console.error("recordPublicationAction failed:", error)
     return {
       success: false,
-      reason: "invalid_input",
+      reason: "infrastructure_error",
       message: "Something went wrong while saving this change. Please try again.",
     }
   }

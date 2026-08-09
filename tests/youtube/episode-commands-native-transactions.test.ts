@@ -69,8 +69,6 @@ describe("Native Postgres.js Transaction Tests", () => {
   })
 
   test("1. native sql.begin() executes callback", async () => {
-    const repository = createEpisodeRepository(sql as unknown as PostgresSql)
-
     let callbackExecuted = false
     await runInTransaction(sql, async () => {
       callbackExecuted = true
@@ -191,7 +189,7 @@ describe("Native Postgres.js Transaction Tests", () => {
           )
         `
       })
-    } catch (err) {
+    } catch {
       // Expected: transaction failed
     }
 
@@ -229,6 +227,7 @@ describe("Native Postgres.js Transaction Tests", () => {
 
     try {
       // Use null as sql to force an error
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await runCommandInTransaction(null as any, async () => ({
         success: true,
         stateVersion: 1,

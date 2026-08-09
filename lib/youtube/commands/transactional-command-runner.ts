@@ -2,10 +2,10 @@
 // Ensures command mutations (state + event) execute atomically within a transaction
 // Business errors return CommandResult; infrastructure errors throw
 
-import type { PostgresSql } from "@/lib/persistence/episode-repository-live-core.ts"
-import { createEpisodeRepository } from "@/lib/persistence/episode-repository-live-core.ts"
-import type { EpisodeRepository } from "@/lib/persistence/episode-repository-core.ts"
-import { runInTransaction } from "@/lib/persistence/transaction-runner.ts"
+import type { PostgresSql } from "../../persistence/sql-types.ts"
+import { createTransactionalEpisodeRepository } from "../../persistence/transactional-episode-repository.ts"
+import type { EpisodeRepository } from "../../persistence/episode-repository-core.ts"
+import { runInTransaction } from "../../persistence/transaction-runner.ts"
 import type { CommandResult } from "./command-result.ts"
 
 /**
@@ -23,7 +23,7 @@ export async function runCommandInTransaction<T>(
   // Let infrastructure errors throw through
   // Server Action catches at UI boundary
   return runInTransaction(sql, async (txnSql) => {
-    const repository = createEpisodeRepository(txnSql as any)
+    const repository = createTransactionalEpisodeRepository(txnSql)
     return await commandFn(repository)
   })
 }

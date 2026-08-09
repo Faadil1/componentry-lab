@@ -2,7 +2,8 @@
 // Ensures state updates and audit events commit together or rollback together
 // Uses native postgres.js transaction API for proper connection pooling
 
-import type { PostgresSql } from "./episode-repository-live-core.ts"
+import type { PostgresSql, TransactionSql } from "./sql-types.ts"
+// Documented cast: postgres.js sql.begin() has complex type unwrapping for Promise<T>
 
 /**
  * Run a callback within a PostgreSQL transaction using native postgres.js API.
@@ -16,10 +17,11 @@ import type { PostgresSql } from "./episode-repository-live-core.ts"
  */
 export async function runInTransaction<T>(
   sql: PostgresSql,
-  callback: (txn: PostgresSql) => Promise<T>
+  callback: (txn: TransactionSql) => Promise<T>
 ): Promise<T> {
   // Use native postgres.js transaction API
   // sql.begin() ensures all queries execute on same connection
   // and handles BEGIN/COMMIT/ROLLBACK automatically
-  return sql.begin((txn) => callback(txn as PostgresSql))
+  // postgres.js sql.begin() has complex type unwrapping;  for Promise<T> it returns T directly
+  return sql.begin((txn) => callback(txn)) as Promise<T>
 }

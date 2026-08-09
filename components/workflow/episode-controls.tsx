@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import type { EpisodeStateSnapshot } from "@/lib/domain/episode-state"
 import { getNextWorkflowStage } from "@/lib/youtube/commands/workflow-policy"
 import {
@@ -17,6 +18,7 @@ interface EpisodeControlsProps {
 }
 
 export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showDecisionForm, setShowDecisionForm] = useState(false)
@@ -43,8 +45,10 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
     )
 
     if (!result.success) {
-      if (result.reason === "conflict") {
-        setError("Episode changed. Please refresh the page.")
+      if (result.reason === "infrastructure_error") {
+        setError("Unable to save this change. Please try again.")
+      } else if (result.reason === "conflict") {
+        setError("This episode changed since the page loaded. Refresh and try again.")
       } else if (result.reason === "invalid_transition") {
         setError("Cannot advance from this stage")
       } else {
@@ -52,6 +56,7 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
       }
     } else {
       setError(null)
+      router.refresh()
       onSuccess?.()
     }
 
@@ -77,10 +82,15 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
     )
 
     if (!result.success) {
-      setError(result.message)
+      if (result.reason === "infrastructure_error") {
+        setError("Unable to save this change. Please try again.")
+      } else {
+        setError(result.message)
+      }
     } else {
       setError(null)
       setShowDecisionForm(false)
+      router.refresh()
       onSuccess?.()
     }
 
@@ -104,10 +114,15 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
     )
 
     if (!result.success) {
-      setError(result.message)
+      if (result.reason === "infrastructure_error") {
+        setError("Unable to save this change. Please try again.")
+      } else {
+        setError(result.message)
+      }
     } else {
       setError(null)
       setShowBlockerForm(false)
+      router.refresh()
       onSuccess?.()
     }
 
@@ -125,9 +140,14 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
     )
 
     if (!result.success) {
-      setError(result.message)
+      if (result.reason === "infrastructure_error") {
+        setError("Unable to save this change. Please try again.")
+      } else {
+        setError(result.message)
+      }
     } else {
       setError(null)
+      router.refresh()
       onSuccess?.()
     }
 
@@ -149,10 +169,15 @@ export function EpisodeControls({ episode, onSuccess }: EpisodeControlsProps) {
     )
 
     if (!result.success) {
-      setError(result.message)
+      if (result.reason === "infrastructure_error") {
+        setError("Unable to save this change. Please try again.")
+      } else {
+        setError(result.message)
+      }
     } else {
       setError(null)
       setShowPublicationForm(false)
+      router.refresh()
       onSuccess?.()
     }
 

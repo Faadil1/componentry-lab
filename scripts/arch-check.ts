@@ -26,6 +26,7 @@ const allowedPaths = [
   // Public server-only wrappers that enforce the boundary
   "lib/persistence/episode-repository.ts",
   "lib/persistence/db.ts",
+  "lib/persistence/transactional-episode-repository.ts",
   "lib/youtube/get-episode-state-from-db.ts",
   "lib/youtube/get-published-episodes-from-db.ts",
   "lib/youtube/get-episode-history-from-db.ts",

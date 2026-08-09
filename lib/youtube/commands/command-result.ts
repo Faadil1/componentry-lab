@@ -8,6 +8,7 @@ export type CommandFailureReason =
   | "invalid_input"
   | "already_resolved"
   | "already_published"
+  | "infrastructure_error"
 
 export type CommandResult<T = void> =
   | {
