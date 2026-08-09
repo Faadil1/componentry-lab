@@ -80,11 +80,13 @@ export async function recordPublication(
     }
   }
 
-  // Update episode with publication info
+  // Update episode with publication info (persists video ID, timestamp, and PUBLISH state atomically)
   const updateResult = await repository.updateEpisodeState({
     episodeId: input.episodeId,
     expectedStateVersion: input.expectedStateVersion,
     workflowState: "PUBLISH",
+    youtubeVideoId: input.youtubeVideoId,
+    publishedAt: input.publishedAt,
   })
 
   if (!updateResult.success) {

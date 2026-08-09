@@ -94,6 +94,8 @@ export function createMockRepository(): EpisodeRepository {
         reviewStatus: (input.reviewStatus ?? episode.reviewStatus) as "not-required" | "pending" | "in-progress" | "completed",
         blockers: input.blockers ?? episode.blockers,
         latestDecision: input.latestDecision !== undefined ? input.latestDecision || undefined : episode.latestDecision,
+        youtubeVideoId: input.youtubeVideoId ?? episode.youtubeVideoId,
+        publishedAt: input.publishedAt ?? episode.publishedAt,
         stateVersion: episode.stateVersion + 1,
         updatedAt: now,
       }

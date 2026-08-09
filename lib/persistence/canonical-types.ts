@@ -111,6 +111,8 @@ export interface UpdateEpisodeStateInput {
   reviewStatus?: string
   blockers?: CanonicalBlocker[]
   latestDecision?: CanonicalDecision | null
+  youtubeVideoId?: string              // Publication fields
+  publishedAt?: string                 // ISO8601 timestamp
 }
 
 /**

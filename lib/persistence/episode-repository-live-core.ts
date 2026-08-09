@@ -117,6 +117,18 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
         paramIndex++
       }
 
+      if (input.youtubeVideoId !== undefined) {
+        updates.push(`youtube_video_id = $${paramIndex}`)
+        values.push(input.youtubeVideoId)
+        paramIndex++
+      }
+
+      if (input.publishedAt !== undefined) {
+        updates.push(`published_at = $${paramIndex}`)
+        values.push(input.publishedAt)
+        paramIndex++
+      }
+
       updates.push(`updated_at = $${paramIndex}`)
       values.push(now)
       paramIndex++
