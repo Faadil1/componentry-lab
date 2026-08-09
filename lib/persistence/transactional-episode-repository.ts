@@ -2,6 +2,8 @@
 // ONLY this file imports episode-repository-live-core (internal implementation)
 // Application code must import from this factory, NOT directly from live-core
 
+import "server-only"
+
 import type { TransactionSql } from "./sql-types.ts"
 import type { EpisodeRepository } from "./episode-repository-core.ts"
 import { createEpisodeRepository } from "./episode-repository-live-core.ts"
