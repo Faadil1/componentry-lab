@@ -822,4 +822,152 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
     assert.strictEqual(result.success, false)
     assert.strictEqual(result.reason, "invalid_input")
   })
+
+  // ─────────────────────────────────────────────────────────────
+  // D. AUDIT FAILURE ROLLBACK
+  // ─────────────────────────────────────────────────────────────
+
+  test("D2. Audit failure rolls back research mutation", async () => {
+    const testEpisodeId = "audit-failure-test-episode"
+    const now = new Date().toISOString()
+
+    // Pre-cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
+    await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+
+    try {
+      // Create episode
+      await sql`
+        INSERT INTO episodes (
+          episode_id, channel_name, title, workflow_state, review_status,
+          schema_version, state_version, created_at, updated_at
+        )
+        VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
+      `
+
+      // Wrap repository to fail on createEpisodeEvent
+      const failingRepository: EpisodeRepository = {
+        ...repository,
+        createEpisodeEvent: async () => {
+          throw new Error("Intentional audit failure")
+        },
+      }
+
+      // Try to create research - should fail during transaction
+      let transactionThrew = false
+      try {
+        await runCommandInTransaction(sql as unknown as PostgresSql, async () =>
+          setEpisodeResearch(failingRepository, {
+            episodeId: testEpisodeId,
+            expectedResearchVersion: null,
+            summary: "Will fail on audit",
+            actor: "human:web",
+          })
+        )
+      } catch {
+        transactionThrew = true
+      }
+
+      assert.ok(transactionThrew, "Transaction should have thrown on audit failure")
+
+      // Verify research mutation was rolled back
+      const researchRows = await sql`
+        SELECT * FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(researchRows.length, 0, "Research mutation should be rolled back")
+
+      // Verify no audit event was created
+      const eventRows = await sql`
+        SELECT * FROM episode_events WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(eventRows.length, 0, "No audit event should be created on rollback")
+    } finally {
+      // Cleanup
+      await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+    }
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // K. VERSION INDEPENDENCE
+  // ─────────────────────────────────────────────────────────────
+
+  test("K1. researchVersion independent from episode stateVersion", async () => {
+    const testEpisodeId = "version-independence-test-episode"
+    const now = new Date().toISOString()
+
+    // Pre-cleanup
+    await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+
+    try {
+      // Create episode
+      await sql`
+        INSERT INTO episodes (
+          episode_id, channel_name, title, workflow_state, review_status,
+          schema_version, state_version, created_at, updated_at
+        )
+        VALUES (${testEpisodeId}, 'Test', 'Test', 'RESEARCH', 'not-required', 1, 1, ${now}, ${now})
+      `
+
+      // Create research (researchVersion = 1)
+      await setEpisodeResearch(repository, {
+        episodeId: testEpisodeId,
+        expectedResearchVersion: null,
+        summary: "Initial",
+        actor: "human:web",
+      })
+
+      // Verify initial state
+      let episodeRow = await sql`
+        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      `
+      let researchRow = await sql`
+        SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(episodeRow[0].state_version, 1, "Episode stateVersion should be 1")
+      assert.strictEqual(researchRow[0].research_version, 1, "Research version should be 1")
+
+      // Update episode state (this increments stateVersion)
+      await sql`
+        UPDATE episodes
+        SET workflow_state = 'PRODUCTION', state_version = 2, updated_at = ${new Date().toISOString()}
+        WHERE episode_id = ${testEpisodeId}
+      `
+
+      // Verify episode version changed but research version unchanged
+      episodeRow = await sql`
+        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      `
+      researchRow = await sql`
+        SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(episodeRow[0].state_version, 2, "Episode stateVersion should be 2 after update")
+      assert.strictEqual(researchRow[0].research_version, 1, "Research version should still be 1")
+
+      // Now update research
+      await setEpisodeResearch(repository, {
+        episodeId: testEpisodeId,
+        expectedResearchVersion: 1,
+        summary: "Updated",
+        actor: "human:web",
+      })
+
+      // Verify research version changed but episode version unchanged
+      episodeRow = await sql`
+        SELECT state_version FROM episodes WHERE episode_id = ${testEpisodeId}
+      `
+      researchRow = await sql`
+        SELECT research_version FROM episode_research WHERE episode_id = ${testEpisodeId}
+      `
+      assert.strictEqual(episodeRow[0].state_version, 2, "Episode stateVersion should still be 2")
+      assert.strictEqual(researchRow[0].research_version, 2, "Research version should be 2 after update")
+    } finally {
+      // Cleanup
+      await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+    }
+  })
 })
