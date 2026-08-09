@@ -6,10 +6,9 @@ import { EpisodeResearchDisplay } from "./episode-research-display"
 
 interface EpisodeResearchSectionProps {
   research: CanonicalEpisodeResearch | null
-  episodeId: string
 }
 
-export function EpisodeResearchSection({ research, episodeId }: EpisodeResearchSectionProps) {
+export function EpisodeResearchSection({ research }: EpisodeResearchSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
