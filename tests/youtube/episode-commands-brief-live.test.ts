@@ -125,9 +125,17 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
 
     assert.ok(events.length > 0, "episode_brief_set event should exist")
     const event = events[events.length - 1] as any
-    const payload = JSON.parse(event.payload)
+    // Payload is now a structured object from postgres.js JSONB handling
+    const payload = event.payload as any
     assert.strictEqual(payload.operation, "created")
     assert.ok(Array.isArray(payload.changedFields))
+
+    // Verify payload is stored as JSONB object
+    const payloadType = await sql`
+      SELECT jsonb_typeof(payload) as json_type FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}
+      AND event_type = 'episode_brief_set'
+    `
+    assert.strictEqual((payloadType[0] as any).json_type, "object", "payload should be stored as JSONB object, not string")
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -188,9 +196,18 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
 
     assert.ok(events.length > 0)
     const event = events[0] as any
-    const payload = JSON.parse(event.payload)
+    // Payload is now a structured object from postgres.js JSONB handling
+    const payload = event.payload as any
     assert.strictEqual(payload.operation, "updated")
     assert.ok(payload.changedFields.includes("coreQuestion"))
+
+    // Verify payload is stored as JSONB object
+    const payloadType = await sql`
+      SELECT jsonb_typeof(payload) as json_type FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}
+      AND event_type = 'episode_brief_set'
+      ORDER BY created_at DESC LIMIT 1
+    `
+    assert.strictEqual((payloadType[0] as any).json_type, "object", "payload should be stored as JSONB object, not string")
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -556,7 +573,8 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
         AND event_type = 'episode_brief_set'
         ORDER BY created_at DESC LIMIT 1
       `
-      const payload = JSON.parse((events[0] as any).payload)
+      // Payload is now a structured object from postgres.js JSONB handling
+      const payload = (events[0] as any).payload as any
       assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
 
       // Verify payload is stored as JSONB object, not string
