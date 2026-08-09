@@ -10,9 +10,10 @@ import { resolveEpisodeBlocker } from "@/lib/youtube/commands/resolve-episode-bl
 import { recordPublication } from "@/lib/youtube/commands/record-publication.ts"
 import { createEpisode } from "@/lib/youtube/commands/create-episode.ts"
 import { setEpisodeBrief } from "@/lib/youtube/commands/set-episode-brief.ts"
+import { setEpisodeResearch } from "@/lib/youtube/commands/set-episode-research.ts"
 import { runCommandInTransaction } from "@/lib/youtube/commands/transactional-command-runner.ts"
 import type { CommandResult } from "@/lib/youtube/commands/command-result.ts"
-import type { CanonicalEpisode, CanonicalEpisodeBrief } from "@/lib/persistence/canonical-types.ts"
+import type { CanonicalEpisode, CanonicalEpisodeBrief, CanonicalEpisodeResearch, ResearchFinding, ResearchSource, ResearchContradiction } from "@/lib/persistence/canonical-types.ts"
 
 // Server action: Transition episode state
 export async function transitionEpisodeStateAction(
@@ -267,6 +268,47 @@ export async function setEpisodeBriefAction(
       success: false,
       reason: "infrastructure_error",
       message: "Something went wrong while saving the brief. Please try again.",
+    }
+  }
+}
+
+// Server action: Set episode research
+export async function setEpisodeResearchAction(
+  episodeId: string,
+  expectedResearchVersion: number | null,
+  summary?: string,
+  keyFindings?: ResearchFinding[],
+  sources?: ResearchSource[],
+  openQuestions?: string[],
+  contradictions?: ResearchContradiction[]
+): Promise<CommandResult<CanonicalEpisodeResearch>> {
+  try {
+    const sql = getDatabase()
+    const result = await runCommandInTransaction(sql, async (repository) =>
+      setEpisodeResearch(repository, {
+        episodeId,
+        expectedResearchVersion,
+        summary,
+        keyFindings,
+        sources,
+        openQuestions,
+        contradictions,
+        actor: "human:web",
+      })
+    )
+
+    if (result.success) {
+      revalidatePath(`/youtube/episodes/${episodeId}`)
+      revalidatePath("/youtube")
+    }
+
+    return result
+  } catch (error) {
+    console.error("setEpisodeResearchAction failed:", error)
+    return {
+      success: false,
+      reason: "infrastructure_error",
+      message: "Something went wrong while saving the research. Please try again.",
     }
   }
 }
