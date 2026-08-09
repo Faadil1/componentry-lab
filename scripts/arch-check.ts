@@ -19,6 +19,7 @@ const internalModulesPattern = [
   "episode-repository-live-core",
   "episode-repository-live-impl",
   "db-core",
+  "transactional-command-runner-core",
 ]
 
 // Files that are allowed to import internal modules
@@ -27,11 +28,13 @@ const allowedPaths = [
   "lib/persistence/episode-repository.ts",
   "lib/persistence/db.ts",
   "lib/persistence/transactional-episode-repository.ts",
+  "lib/youtube/commands/transactional-command-runner.ts",
   "lib/youtube/get-episode-state-from-db.ts",
   "lib/youtube/get-published-episodes-from-db.ts",
   "lib/youtube/get-episode-history-from-db.ts",
-  // Testable persistence core (no server-only, used by tests)
+  // Testable core modules (no server-only, used by tests)
   "lib/persistence/transactional-episode-repository-core.ts",
+  "lib/youtube/commands/transactional-command-runner-core.ts",
   // The internal modules themselves
   "lib/persistence/episode-repository-live-core.ts",
   "lib/persistence/db-core.ts",

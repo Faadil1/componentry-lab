@@ -7,7 +7,7 @@ config({ path: resolve(process.cwd(), ".env.local") })
 import postgres from "postgres"
 import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
 import { runInTransaction } from "../../lib/persistence/transaction-runner.ts"
-import { runCommandInTransaction } from "../../lib/youtube/commands/transactional-command-runner.ts"
+import { runCommandInTransaction } from "../../lib/youtube/commands/transactional-command-runner-core.ts"
 import { transitionEpisodeState } from "../../lib/youtube/commands/transition-episode-state.ts"
 import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
 

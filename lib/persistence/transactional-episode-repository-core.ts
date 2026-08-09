@@ -9,6 +9,8 @@ import type { TransactionSql } from "./sql-types.ts"
 import type { EpisodeRepository } from "./episode-repository-core.ts"
 import { createEpisodeRepository } from "./episode-repository-live-core.ts"
 
+export type { EpisodeRepository }
+
 /**
  * Create a transaction-scoped episode repository.
  *
