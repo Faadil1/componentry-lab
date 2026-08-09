@@ -249,6 +249,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
       actor: "human:web",
     })
 
+    assert.strictEqual(created.success, true)
     assert.strictEqual(created.value?.researchVersion, 1)
 
     // Update
@@ -259,6 +260,7 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
       actor: "human:web",
     })
 
+    assert.strictEqual(updated.success, true)
     assert.strictEqual(updated.value?.researchVersion, 2)
 
     // Verify in database
@@ -354,8 +356,9 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
       actor: "human:web",
     })
 
-    const createdVersion = created.value?.researchVersion
-    const createdTimestamp = created.value?.updatedAt
+    assert.strictEqual(created.success, true)
+    const createdVersion = created.success ? created.value?.researchVersion : undefined
+    const createdTimestamp = created.success ? created.value?.updatedAt : undefined
 
     // Send identical data
     const noop = await setEpisodeResearch(repository, {
@@ -366,8 +369,9 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
       actor: "human:web",
     })
 
-    assert.strictEqual(noop.value?.researchVersion, createdVersion)
-    assert.strictEqual(noop.value?.updatedAt, createdTimestamp)
+    assert.strictEqual(noop.success, true)
+    assert.strictEqual(noop.success ? noop.value?.researchVersion : undefined, createdVersion)
+    assert.strictEqual(noop.success ? noop.value?.updatedAt : undefined, createdTimestamp)
 
     // Verify database
     const rows = await sql`

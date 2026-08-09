@@ -379,8 +379,9 @@ describe("Episode Research Commands", () => {
       actor: "human:web",
     })
 
-    const originalVersion = created.value?.researchVersion
-    const originalSummary = created.value?.summary
+    assert.strictEqual(created.success, true)
+    const originalVersion = created.success ? created.value?.researchVersion : undefined
+    const originalSummary = created.success ? created.value?.summary : undefined
 
     // Try to update with wrong version
     await setEpisodeResearch(repository, {
@@ -576,6 +577,9 @@ describe("Episode Research Commands", () => {
 
     // Repository allows this; validation at command layer optional for v1
     assert.strictEqual(result.success, true)
+    if (result.success) {
+      assert.strictEqual(result.value?.keyFindings.length, 1)
+    }
   })
 
   test("25. setEpisodeResearch: contradiction sourceIds reference validation", async () => {
@@ -594,6 +598,9 @@ describe("Episode Research Commands", () => {
     })
 
     assert.strictEqual(result.success, true)
+    if (result.success) {
+      assert.strictEqual(result.value?.contradictions.length, 1)
+    }
   })
 
   test("26. setEpisodeResearch: multiple updates increment version", async () => {
@@ -604,6 +611,7 @@ describe("Episode Research Commands", () => {
       actor: "human:web",
     })
 
+    assert.strictEqual(result.success, true)
     assert.strictEqual(result.value?.researchVersion, 1)
 
     for (let i = 2; i <= 4; i++) {
@@ -614,6 +622,7 @@ describe("Episode Research Commands", () => {
         actor: "human:web",
       })
 
+      assert.strictEqual(result.success, true)
       assert.strictEqual(result.value?.researchVersion, i)
     }
   })

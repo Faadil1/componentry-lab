@@ -482,7 +482,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       if (input.expectedResearchVersion === null) {
         const normalizedSummary = input.summary && input.summary.trim() ? input.summary : null
 
-        const rows = await sql`
+        const insertSQL = `
           INSERT INTO episode_research (
             episode_id,
             summary,
@@ -495,21 +495,21 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
             created_at,
             updated_at
           )
-          VALUES (
-            ${input.episodeId},
-            ${normalizedSummary},
-            ${input.keyFindings || []},
-            ${input.sources || []},
-            ${input.openQuestions || []},
-            ${input.contradictions || []},
-            1,
-            1,
-            ${now},
-            ${now}
-          )
+          VALUES ($1, $2, $3, $4, $5, $6, 1, 1, $7, $8)
           ON CONFLICT (episode_id) DO NOTHING
           RETURNING *
         `
+
+        const rows = await sql.unsafe(insertSQL, [
+          input.episodeId,
+          normalizedSummary,
+          input.keyFindings || [],
+          input.sources || [],
+          input.openQuestions || [],
+          input.contradictions || [],
+          now,
+          now,
+        ] as postgres.ParameterOrJSON<never>[])
 
         if (rows.length === 0) {
           // Research already exists, fetch current version for conflict response
