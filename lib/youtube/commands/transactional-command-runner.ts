@@ -1,9 +1,11 @@
 // Transactional command runner
 // Ensures command mutations (state + event) execute atomically within a transaction
 // Business errors return CommandResult; infrastructure errors throw
+//
+// Internal use only. Imports testable core (not server-only wrapper).
 
 import type { PostgresSql } from "../../persistence/sql-types.ts"
-import { createTransactionalEpisodeRepository } from "../../persistence/transactional-episode-repository.ts"
+import { createTransactionalEpisodeRepository } from "../../persistence/transactional-episode-repository-core.ts"
 import type { EpisodeRepository } from "../../persistence/episode-repository-core.ts"
 import { runInTransaction } from "../../persistence/transaction-runner.ts"
 import type { CommandResult } from "./command-result.ts"
