@@ -1,10 +1,11 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
 import type { ReactNode } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { getFilmProjectById } from "@/lib/film-kit"
-import type { FilmApprovalGate, FilmKitContextValue } from "@/lib/film-kit"
+import { getFilmProjectById } from "@/lib/film-kit/selectors"
+import type { FilmApprovalGate } from "@/lib/film-kit/types"
+import type { FilmKitContextValue } from "@/lib/film-kit/types"
 
 const FilmKitContext = React.createContext<FilmKitContextValue | null>(null)
 const validSections = new Set(["overview", "brief", "narrative", "scenes", "shots", "capture", "production", "broll", "voice", "music", "assets", "manifest", "timeline", "subtitles", "providers", "budget", "qa", "export"])

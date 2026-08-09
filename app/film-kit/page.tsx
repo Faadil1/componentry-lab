@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 import { LabNavigation } from "@/components/navigation/lab-navigation"
-import { getFilmProjectById, getFilmProductionTruth, getFilmProjectIndex } from "@/lib/film-kit"
+import { getFilmProjectById, getFilmProjectIndex } from "@/lib/film-kit/selectors"
+import { getFilmProductionTruth } from "@/lib/film-kit/production-adapter"
 import { getProjectById } from "@/lib/projects/repository"
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default async function FilmKitIndexPage({
 }) {
   const params = searchParams ? await searchParams : {}
   const projectId = typeof params.project === "string" ? params.project : undefined
-  const activeProject = projectId ? getProjectById(projectId) ?? null : null
+  const activeProject = projectId ? await getProjectById(projectId) ?? null : null
   const filmProject = projectId ? getFilmProjectById(projectId) : null
   const productionTruth = projectId ? getFilmProductionTruth(projectId) : null
   const films = getFilmProjectIndex()

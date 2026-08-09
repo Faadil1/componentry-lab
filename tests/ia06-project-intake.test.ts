@@ -5,8 +5,9 @@ import os from "node:os"
 import test, { describe, beforeEach, afterEach, after } from "node:test"
 
 import { buildCommandProjection } from "../lib/command/projection"
-import { getFilmProjectById, getFilmProjectSource, getFilmProductionTruth } from "../lib/film-kit"
-import { CANONICAL_DEFAULT_PROJECT_ID, getProjectById } from "../lib/projects"
+import { getFilmProjectById, getFilmProjectSource } from "../lib/film-kit/selectors"
+import { getFilmProductionTruth } from "../lib/film-kit/production-adapter"
+import { CANONICAL_DEFAULT_PROJECT_ID, getProjectById } from "../lib/projects/selectors"
 import type { AuthorityContext } from "../lib/director/types"
 import {
   clearProjectRepositoryForTests,

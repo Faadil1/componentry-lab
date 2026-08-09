@@ -4,7 +4,7 @@ import test from "node:test"
 
 import { buildCommandProjection } from "../lib/command/projection"
 import { getActiveNavigationItem, SITE_NAVIGATION } from "../lib/navigation"
-import { CANONICAL_DEFAULT_PROJECT_ID, getProjectById } from "../lib/projects"
+import { CANONICAL_DEFAULT_PROJECT_ID, getProjectById } from "../lib/projects/selectors"
 import { getFilmProjectSource } from "../lib/film-kit/selectors"
 
 test("IA-05 root command center resolves as the canonical CORE surface", () => {

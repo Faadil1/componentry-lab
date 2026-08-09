@@ -35,7 +35,7 @@ async function createProjectAction(formData: FormData) {
   const successDefinition = String(formData.get("successDefinition") ?? "")
   const brief = String(formData.get("brief") ?? "")
 
-  return createProject(
+  return await createProject(
     {
       title,
       kind: kind as (typeof PROJECT_KINDS)[number]["id"],

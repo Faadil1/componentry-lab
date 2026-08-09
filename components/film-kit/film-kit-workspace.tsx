@@ -1,7 +1,9 @@
-"use client"
+﻿"use client"
 
 import * as React from "react"
-import { buildAi33Packet, buildFilmKitPackets, getFilmProductionTruth, getFilmProductionIntent } from "@/lib/film-kit"
+import { buildAi33Packet } from "@/lib/film-kit/ai33-packet"
+import { buildFilmKitPackets } from "@/lib/film-kit/packets"
+import { getFilmProductionTruth, getFilmProductionIntent } from "@/lib/film-kit/production-adapter"
 import { useFilmKit } from "./film-kit-provider"
 
 const workflowGroups = [

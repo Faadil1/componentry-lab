@@ -6,7 +6,7 @@ import {
   adaptDirectorResult,
   resolveDirectorPhase
 } from "../lib/director"
-import { getProjectById } from "../lib/projects"
+import { getProjectById } from "../lib/projects/selectors"
 import { getAllRecommendations } from "../lib/projects/recommendations"
 
 describe("IA-03B Projects Director Projection", () => {

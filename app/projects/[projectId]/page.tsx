@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next"
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { LabNavigation } from "@/components/navigation/lab-navigation"
@@ -9,7 +9,7 @@ import { getProjectById, listProjects } from "@/lib/projects/repository"
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string }> }): Promise<Metadata> {
   const { projectId } = await params
-  const project = getProjectById(projectId)
+  const project = await getProjectById(projectId)
 
   if (!project) {
     return { title: "Not Found" }
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 
 export default async function ProjectDossierPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params
-  const project = getProjectById(projectId)
+  const project = await getProjectById(projectId)
   if (!project) notFound()
 
-  const projects = listProjects()
+  const projects = await listProjects()
 
   return (
     <div className="min-h-screen bg-white font-sans text-left">

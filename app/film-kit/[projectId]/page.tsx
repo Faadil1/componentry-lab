@@ -1,13 +1,19 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import { Suspense } from "react"
 import { notFound, redirect } from "next/navigation"
 
 import { FilmKitAi33Panel, FilmKitPacketExport, FilmKitProvider, FilmKitWorkspace } from "@/components/film-kit"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
-import { buildAi33Packet, buildFilmKitPackets, buildFilmProject, FILM_PROJECT_IDS, getFilmProjectById, getFilmProjectIndex, getFilmProductionIntent } from "@/lib/film-kit"
-import { getProjectById } from "@/lib/projects/repository"
+import { buildAi33Packet } from "@/lib/film-kit/presets"
+import { buildFilmKitPackets } from "@/lib/film-kit/packets"
+import { FILM_PROJECT_IDS } from "@/lib/film-kit/schema"
+import { getFilmProjectById, getFilmProjectIndex } from "@/lib/film-kit/selectors"
+import { getFilmProductionIntent } from "@/lib/film-kit/production-adapter"
+import type { ExternalCapabilityPlanRequest } from "@/lib/creative-os/film-kit/types"
+import { dispatchExternalCapabilityPlan } from "@/lib/creative-os/film-kit/dispatcher"
 import { buildProductionEntryProposal } from "@/lib/creative-os/production/entry"
 import { listPlansForProject, savePlan, getPlanningRepositoryPath } from "@/lib/creative-os/production/planning-repository"
+import { getProjectById } from "@/lib/projects/repository"
 import type { ResourceEvaluation } from "@/lib/creative-os/types"
 import { RESOURCE_REGISTRY } from "@/lib/creative-os/registry"
 
@@ -43,39 +49,53 @@ export async function generateMetadata({ params }: FilmKitProjectPageProps): Pro
   return { title: film.brief.title, description: film.brief.primaryProof }
 }
 
+export async function prepareProductionPlanAction(formData: FormData) {
+  "use server"
+  const projectId = String(formData.get("projectId") ?? "")
+  const projectBrain = getProjectById(projectId)
+  if (!projectBrain) notFound()
+  const film = getFilmProjectById(projectId)
+  if (!film) notFound()
+  const projectBrainResolved = projectBrain as NonNullable<typeof projectBrain>
+  const projectMode = projectBrainResolved.kind === "creative-experiment" ? "MARA" : projectBrainResolved.kind === "data-story" ? "DATA_STORY" : projectBrainResolved.kind === "hackathon" || projectBrainResolved.kind === "broadcast-interface" || projectBrainResolved.kind === "demo-film" ? "HACKATHON" : "DAY_CHALLENGE"
+  const proposal = buildProductionEntryProposal(projectBrainResolved, film)
+  const selectedResource = getSelectedResource(projectId)
+  const productionIntent = getFilmProductionIntent(film)
+  const preparedPlanRequest: ExternalCapabilityPlanRequest = {
+    capabilityGap: proposal.plan?.capabilityId ?? (productionIntent.requestedOutputs[0] ?? undefined),
+    artifactType: proposal.plan?.requestedArtifact ?? (productionIntent.requestedOutputs[0] ?? undefined),
+    projectMode,
+    phase: projectBrainResolved.currentPhase as never,
+    currentAuthority: "LOCAL_REVERSIBLE",
+    frameworkOrSurface: film.brief.title,
+    metadata: { projectId: projectBrainResolved.id, filmProjectId: film.id },
+  }
+  const preparedPlan = { ...dispatchExternalCapabilityPlan(preparedPlanRequest, selectedResource), projectId: projectBrainResolved.id, projectBrainFingerprint: projectBrainResolved.id }
+  const result = await savePlan(preparedPlan)
+  if (result.status === "SAVED" || result.status === "ALREADY_EXISTS") redirect(`/film-kit/${projectBrainResolved.id}?prepared=1`)
+}
+
 export default async function FilmKitProjectPage({ params }: FilmKitProjectPageProps) {
   const { projectId: routeProjectId } = await params
   const film = getFilmProjectById(routeProjectId)
   if (!film) notFound()
   const projectId = film.id as (typeof FILM_PROJECT_IDS)[number]
-  const filmProject = buildFilmProject(projectId)
+  const filmProject = film
   const packets = buildFilmKitPackets(filmProject)
   const ai33Packet = buildAi33Packet(projectId)
-  const projectBrain = getProjectById(projectId)!
+  const projectBrain = getProjectById(projectId)
+  if (!projectBrain) notFound()
+  const projectBrainResolved = projectBrain as NonNullable<typeof projectBrain>
 
-  const proposal = buildProductionEntryProposal(projectBrain, filmProject)
+  const getProjectMode = (kind: typeof projectBrainResolved.kind): ExternalCapabilityPlanRequest["projectMode"] => {
+    return kind === "creative-experiment" ? "MARA" : kind === "data-story" ? "DATA_STORY" : kind === "hackathon" || kind === "broadcast-interface" || kind === "demo-film" ? "HACKATHON" : "DAY_CHALLENGE"
+  }
+
+  const proposal = buildProductionEntryProposal(projectBrainResolved, filmProject)
   const savedPlans = listPlansForProject(projectId)
   const savedPlan = savedPlans[0] ?? null
   const selectedResource = getSelectedResource(projectId)
   const productionIntent = getFilmProductionIntent(filmProject)
-
-  async function prepareProductionPlanAction() {
-    "use server"
-    const result = savePlan({
-      project: projectBrain,
-      selectedResource,
-      request: {
-        capabilityGap: proposal.plan?.capabilityId ?? (productionIntent.requestedOutputs[0] ?? undefined),
-        artifactType: proposal.plan?.requestedArtifact ?? (productionIntent.requestedOutputs[0] ?? undefined),
-        projectMode: projectBrain.kind === "creative-experiment" ? "MARA" : projectBrain.kind === "data-story" ? "DATA_STORY" : projectBrain.kind === "hackathon" || projectBrain.kind === "broadcast-interface" || projectBrain.kind === "demo-film" ? "HACKATHON" : "DAY_CHALLENGE",
-        phase: projectBrain.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: film?.brief.title ?? projectBrain.title,
-        metadata: { projectId: projectBrain.id, filmProjectId: film?.id ?? null },
-      },
-    })
-    if (result.status === "SAVED" || result.status === "ALREADY_EXISTS") redirect(`/film-kit/${projectBrain.id}?prepared=1`)
-  }
 
   return (
     <main className="min-h-screen overflow-x-clip bg-[#f4f1e8] text-neutral-950 selection:bg-neutral-950 selection:text-stone-100">
@@ -99,7 +119,7 @@ export default async function FilmKitProjectPage({ params }: FilmKitProjectPageP
             <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-stone-500">Production plan</p>
             <h2 className="text-3xl font-black tracking-tight text-neutral-950 md:text-4xl">{proposal.routeTruth?.requestedArtifactType ?? "Unavailable"}</h2>
             <p className="max-w-2xl text-sm leading-relaxed text-stone-700">Requested output: {proposal.plan?.requestedArtifact ?? "none"}. Capability: {proposal.plan?.capabilityId ?? "none"}. Resource: {selectedResource?.name ?? proposal.plan?.resourceId ?? "none"}. Authority: LOCAL_REVERSIBLE.</p>
-            <form action={prepareProductionPlanAction}><button type="submit" className="rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">Prepare Production Plan</button></form>
+            <form action={prepareProductionPlanAction}><input type="hidden" name="projectId" value={projectId} /><button type="submit" className="rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">Prepare Production Plan</button></form>
           </div>
           <div className="space-y-3 rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">
             <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">License</span><p className="mt-1">{proposal.routeTruth?.licenseState ?? "UNKNOWN"}</p></div>

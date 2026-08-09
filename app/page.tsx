@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next"
+import type { Metadata } from "next"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { buildCommandProjection } from "@/lib/command/projection"
 
@@ -14,7 +14,7 @@ export default async function CommandPage({
 }) {
   const params = searchParams ? await searchParams : {}
   const projectId = typeof params.project === "string" ? params.project : undefined
-  const projection = buildCommandProjection(projectId)
+  const projection = await buildCommandProjection(projectId)
   const activeProject = projection.activeProject
 
   return (

@@ -53,7 +53,7 @@ export async function createProjectPostgres(input: {
   primaryGoal: string
   successDefinition?: string
   brief?: string
-}, authorityContext: AuthorityContext): Promise<{ status: string; project?: ProjectBrain; error?: string; duplicateId?: string }> {
+}, authorityContext: AuthorityContext ): Promise<import("./repository-local").CreateProjectResult> {
   if (
     authorityContext.status !== "granted" ||
     authorityContext.authorityLevel !== "local-reversible-execution" ||
@@ -61,7 +61,7 @@ export async function createProjectPostgres(input: {
     authorityContext.reversibility !== "reversible" ||
     !authorityContext.grantedScope.includes("project:create")
   ) {
-    return { status: "INSUFFICIENT_AUTHORITY", error: "Local reversible authority with explicit approval is required." }
+    return { status: "INSUFFICIENT_AUTHORITY", error: "Local reversible authority with explicit approval is required." } as import("./repository-local").CreateProjectResult
   }
 
   const sql = getDatabase()
@@ -70,7 +70,7 @@ export async function createProjectPostgres(input: {
   const problem = input.problem.trim()
   const primaryGoal = input.primaryGoal.trim()
   if (!title || !problem || !primaryGoal) {
-    return { status: "VALIDATION_FAILED", error: "Title, problem, and primary goal are required." }
+    return { status: "VALIDATION_FAILED", error: "Title, problem, and primary goal are required." } as import("./repository-local").CreateProjectResult
   }
 
   const now = new Date().toISOString()
@@ -189,7 +189,7 @@ export async function createProjectPostgres(input: {
 
   const validation = validateProjectBrain(project)
   if (!validation.valid) {
-    return { status: "VALIDATION_FAILED", error: validation.errors.join("; "), project }
+    return { status: "VALIDATION_FAILED", error: validation.errors.join("; "), project } as import("./repository-local").CreateProjectResult
   }
 
   await sql`
@@ -201,6 +201,6 @@ export async function createProjectPostgres(input: {
       updated_at = EXCLUDED.updated_at
   `
 
-  return { status: "CREATED", project: cloneProject(project) }
+  return { status: "CREATED", project: cloneProject(project) } as import("./repository-local").CreateProjectResult
 }
 

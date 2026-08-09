@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 
 import { LabNavigation } from "@/components/navigation/lab-navigation"
@@ -6,15 +6,15 @@ import { ProjectHero } from "@/components/projects/project-hero"
 import { ProjectWorkbench } from "@/components/projects/project-workbench"
 import { ProjectProvider } from "@/components/projects/project-provider"
 import { listProjects } from "@/lib/projects/repository"
-import { CANONICAL_DEFAULT_PROJECT_ID } from "@/lib/projects"
+import { CANONICAL_DEFAULT_PROJECT_ID } from "@/lib/projects/selectors"
 
 export const metadata: Metadata = {
   title: "Project Brain",
   description: "Project-aware memory for briefs, decisions, evidence, components, capture states, video plans, audits, and agent handoffs.",
 }
 
-export default function ProjectsIndexPage() {
-  const projects = listProjects()
+export default async function ProjectsIndexPage() {
+  const projects = await listProjects()
 
   return (
     <div className="min-h-screen bg-white font-sans text-left">

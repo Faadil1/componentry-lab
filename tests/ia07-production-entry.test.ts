@@ -6,6 +6,7 @@ import test, { after, beforeEach, describe } from "node:test"
 
 import { buildCommandProjection } from "../lib/command/projection"
 import { buildProductionEntryProposal } from "../lib/creative-os/production/entry"
+import { dispatchExternalCapabilityPlan } from "../lib/creative-os/film-kit/dispatcher"
 import {
   clearPlanningRepositoryForTests,
   getPlanningRepositoryHealth,
@@ -13,8 +14,8 @@ import {
   listPlansForProject,
   savePlan,
 } from "../lib/creative-os/production/planning-repository"
-import { getFilmProductionIntent, getFilmProjectById } from "../lib/film-kit"
-import { RESOURCE_REGISTRY } from "../lib/creative-os/registry"
+import { getFilmProductionIntent } from "../lib/film-kit/production-adapter"
+import { getFilmProjectById } from "../lib/film-kit/selectors"
 import type { ResourceEvaluation } from "../lib/creative-os/types"
 import {
   clearProjectRepositoryForTests,
@@ -22,6 +23,8 @@ import {
   getProjectRepositoryPath,
 } from "../lib/projects/repository"
 import type { AuthorityContext } from "../lib/director/types"
+import { RESOURCE_REGISTRY } from "../lib/creative-os/registry"
+import type { ExternalCapabilityPlanRequest } from "../lib/creative-os/film-kit/types"
 
 const tempRoot = mkdtempSync(join(os.tmpdir(), "ia07-production-entry-"))
 const projectRepositoryPath = join(tempRoot, "projects.json")
@@ -30,7 +33,7 @@ const planningRepositoryPath = join(tempRoot, "plans.json")
 process.env.COMPONENTRY_LAB_DATA_DIR = tempRoot
 process.env.COMPONENTRY_LAB_PROJECT_REPOSITORY_PATH = projectRepositoryPath
 
-type PlanningRequest = Parameters<typeof savePlan>[0]["request"]
+type PlanningRequest = ExternalCapabilityPlanRequest
 
 const LOCAL_CREATE_AUTHORITY: AuthorityContext = {
   authorityLevel: "local-reversible-execution",
@@ -64,6 +67,10 @@ beforeEach(() => {
 after(() => {
   rmSync(tempRoot, { recursive: true, force: true })
 })
+
+function makePlan(projectId: string, request: PlanningRequest, selectedResource: ResourceEvaluation | null) {
+  return dispatchExternalCapabilityPlan(request, selectedResource)
+}
 
 describe("IA-07A canonical planning truth persistence", () => {
   test("intent alone does not create canonical planning truth", () => {
@@ -108,7 +115,8 @@ describe("IA-07A canonical planning truth persistence", () => {
       metadata: { projectId: project.project!.id },
     }
 
-    const planResult = savePlan({ project: project.project!, selectedResource: null, request })
+    const plan = { ...makePlan(project.project!.id, request, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
+    const planResult = savePlan(plan)
     assert.equal(planResult.status, "SAVED")
     assert.equal(listPlansForProject(project.project!.id).length, 1)
 
@@ -140,8 +148,9 @@ describe("IA-07A canonical planning truth persistence", () => {
       metadata: { projectId: project.project!.id, purpose: "idempotency" },
     }
 
-    const first = savePlan({ project: project.project!, selectedResource: null, request })
-    const second = savePlan({ project: project.project!, selectedResource: null, request })
+    const firstPlan = { ...makePlan(project.project!.id, request, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
+    const first = savePlan(firstPlan)
+    const second = savePlan(firstPlan)
 
     assert.equal(first.status, "SAVED")
     assert.ok(first.plan)
@@ -160,32 +169,27 @@ describe("IA-07A canonical planning truth persistence", () => {
     }, LOCAL_CREATE_AUTHORITY)
     assert.equal(project.status, "CREATED")
 
-    const first = savePlan({
-      project: project.project!,
-      selectedResource: null,
-      request: {
-        capabilityGap: "PROMPT_SHARE_LINK_CREATION",
-        artifactType: "product-demo-film",
-        projectMode: "MARA",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Changed request A",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
-    const second = savePlan({
-      project: project.project!,
-      selectedResource: null,
-      request: {
-        capabilityGap: "PROMPT_SHARE_LINK_CREATION",
-        artifactType: "shotlist",
-        projectMode: "MARA",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Changed request B",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
+    const firstPlan = { ...makePlan(project.project!.id, {
+      capabilityGap: "PROMPT_SHARE_LINK_CREATION",
+      artifactType: "product-demo-film",
+      projectMode: "MARA",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Changed request A",
+      metadata: { projectId: project.project!.id },
+    }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
+    const secondPlan = { ...makePlan(project.project!.id, {
+      capabilityGap: "PROMPT_SHARE_LINK_CREATION",
+      artifactType: "shotlist",
+      projectMode: "MARA",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Changed request B",
+      metadata: { projectId: project.project!.id },
+    }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
+
+    const first = savePlan(firstPlan)
+    const second = savePlan(secondPlan)
 
     assert.equal(first.status, "SAVED")
     assert.equal(second.status, "SAVED")
@@ -203,19 +207,15 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(project.status, "CREATED")
 
     const discovery = RESOURCE_REGISTRY.find((resource) => resource.id === "res_awesome_claude_code_skills") as unknown as ResourceEvaluation
-    const result = savePlan({
-      project: project.project!,
-      selectedResource: discovery,
-      request: {
-        capabilityGap: "skill-discovery",
-        artifactType: "skill-feed",
-        projectMode: "HACKATHON",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Discovery feed review",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
+    const result = savePlan({ ...makePlan(project.project!.id, {
+      capabilityGap: "skill-discovery",
+      artifactType: "skill-feed",
+      projectMode: "HACKATHON",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Discovery feed review",
+      metadata: { projectId: project.project!.id },
+    }, discovery), projectId: project.project!.id, projectBrainFingerprint: project.project!.id })
 
     assert.equal(result.status, "SAVED")
     assert.equal(result.plan?.executionStatus, "DISCOVERY_REQUIRED")
@@ -233,26 +233,22 @@ describe("IA-07A canonical planning truth persistence", () => {
     }, LOCAL_CREATE_AUTHORITY)
     assert.equal(project.status, "CREATED")
 
-    const result = savePlan({
-      project: project.project!,
-      selectedResource: null,
-      request: {
-        capabilityGap: "PROMPT_SHARE_LINK_CREATION",
-        artifactType: "product-demo-film",
-        projectMode: "DAY_CHALLENGE",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Review source",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
+    const result = savePlan({ ...makePlan(project.project!.id, {
+      capabilityGap: "PROMPT_SHARE_LINK_CREATION",
+      artifactType: "product-demo-film",
+      projectMode: "DAY_CHALLENGE",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Review source",
+      metadata: { projectId: project.project!.id },
+    }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id })
 
     assert.equal(result.status, "SAVED")
     const disk = JSON.parse(readFileSync(getPlanningRepositoryPath(), "utf8")) as { plans: Array<Record<string, unknown>> }
     assert.equal(Array.isArray(disk.plans), true)
     assert.equal(disk.plans[0]?.projectId, project.project!.id)
     assert.equal(Object.prototype.hasOwnProperty.call(disk.plans[0] ?? {}, "request"), false)
-    assert.equal(Object.prototype.hasOwnProperty.call(disk.plans[0] ?? {}, "plan"), true)
+    assert.equal(typeof disk.plans[0]?.planFingerprint, "string")
   })
 
   test("corrupt planning repository blocks writes and preserves prior truth on disk", () => {
@@ -263,36 +259,28 @@ describe("IA-07A canonical planning truth persistence", () => {
       primaryGoal: "Fail closed before inventing a new plan truth.",
     }, LOCAL_CREATE_AUTHORITY)
 
-    const saved = savePlan({
-      project: project.project!,
-      selectedResource: null,
-      request: {
-        capabilityGap: "PROMPT_SHARE_LINK_CREATION",
-        artifactType: "product-demo-film",
-        projectMode: "DAY_CHALLENGE",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Stable review",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
+    const saved = savePlan({ ...makePlan(project.project!.id, {
+      capabilityGap: "PROMPT_SHARE_LINK_CREATION",
+      artifactType: "product-demo-film",
+      projectMode: "DAY_CHALLENGE",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Stable review",
+      metadata: { projectId: project.project!.id },
+    }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id })
     assert.equal(saved.status, "SAVED")
 
     writeFileSync(getPlanningRepositoryPath(), "{not-json", "utf8")
 
-    const failed = savePlan({
-      project: project.project!,
-      selectedResource: null,
-      request: {
-        capabilityGap: "PROMPT_SHARE_LINK_CREATION",
-        artifactType: "product-demo-film",
-        projectMode: "DAY_CHALLENGE",
-        phase: project.project!.currentPhase as never,
-        currentAuthority: "LOCAL_REVERSIBLE",
-        frameworkOrSurface: "Stable review",
-        metadata: { projectId: project.project!.id },
-      } satisfies PlanningRequest,
-    })
+    const failed = savePlan({ ...makePlan(project.project!.id, {
+      capabilityGap: "PROMPT_SHARE_LINK_CREATION",
+      artifactType: "product-demo-film",
+      projectMode: "DAY_CHALLENGE",
+      phase: project.project!.currentPhase as never,
+      currentAuthority: "LOCAL_REVERSIBLE",
+      frameworkOrSurface: "Stable review",
+      metadata: { projectId: project.project!.id },
+    }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id })
 
     assert.equal(failed.status, "REPOSITORY_CORRUPT")
     assert.equal(getPlanningRepositoryHealth(), "CORRUPT")
