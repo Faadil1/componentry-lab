@@ -8,11 +8,14 @@
 import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
+  CanonicalEpisodeBrief,
   OptimisticLockResult,
   CreateEpisodeInput,
   CreateEpisodeRepositoryResult,
   UpdateEpisodeStateInput,
   CreateEpisodeEventInput,
+  SetEpisodeBriefInput,
+  SetEpisodeBriefRepositoryResult,
 } from "./canonical-types"
 
 /**
@@ -26,6 +29,8 @@ export interface EpisodeRepository {
   updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult>
   createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent>
   getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]>
+  getEpisodeBrief(episodeId: string): Promise<CanonicalEpisodeBrief | null>
+  setEpisodeBrief(input: SetEpisodeBriefInput): Promise<SetEpisodeBriefRepositoryResult>
 }
 
 /**
@@ -39,6 +44,7 @@ export interface EpisodeRepository {
  */
 export function createMockRepository(): EpisodeRepository {
   const episodes = new Map<string, CanonicalEpisode>()
+  const briefs = new Map<string, CanonicalEpisodeBrief>()
   const events: CanonicalEpisodeEvent[] = []
 
   return {
@@ -145,6 +151,101 @@ export function createMockRepository(): EpisodeRepository {
           // Tie-break by eventId descending for determinism
           return b.eventId.localeCompare(a.eventId)
         })
+    },
+
+    async getEpisodeBrief(episodeId: string): Promise<CanonicalEpisodeBrief | null> {
+      return briefs.get(episodeId) || null
+    },
+
+    async setEpisodeBrief(input: SetEpisodeBriefInput): Promise<SetEpisodeBriefRepositoryResult> {
+      // Verify episode exists
+      if (!episodes.has(input.episodeId)) {
+        return {
+          success: false,
+          reason: "episode_not_found",
+        }
+      }
+
+      const now = new Date().toISOString()
+      const existingBrief = briefs.get(input.episodeId)
+
+      // CREATE mode: expectedBriefVersion = null
+      if (input.expectedBriefVersion === null) {
+        if (existingBrief) {
+          return {
+            success: false,
+            reason: "conflict",
+            currentBriefVersion: existingBrief.briefVersion,
+          }
+        }
+
+        // Create new brief with topic required
+        if (!input.topic || input.topic.trim() === "") {
+          return {
+            success: false,
+            reason: "conflict", // Using conflict to signal validation, let command layer handle
+          }
+        }
+
+        const newBrief: CanonicalEpisodeBrief = {
+          episodeId: input.episodeId,
+          topic: input.topic,
+          angle: input.angle,
+          audience: input.audience,
+          coreQuestion: input.coreQuestion,
+          hook: input.hook,
+          thesis: input.thesis,
+          editorialNotes: input.editorialNotes,
+          researchQuestions: input.researchQuestions || [],
+          schemaVersion: 1,
+          briefVersion: 1,
+          createdAt: now,
+          updatedAt: now,
+        }
+        briefs.set(input.episodeId, newBrief)
+        return {
+          success: true,
+          brief: newBrief,
+        }
+      }
+
+      // UPDATE mode: expectedBriefVersion = N
+      if (!existingBrief) {
+        return {
+          success: false,
+          reason: "not_found",
+        }
+      }
+
+      if (existingBrief.briefVersion !== input.expectedBriefVersion) {
+        return {
+          success: false,
+          reason: "conflict",
+          currentBriefVersion: existingBrief.briefVersion,
+        }
+      }
+
+      // Perform update
+      const updatedBrief: CanonicalEpisodeBrief = {
+        episodeId: input.episodeId,
+        topic: input.topic ?? existingBrief.topic,
+        angle: input.angle !== undefined ? input.angle : existingBrief.angle,
+        audience: input.audience !== undefined ? input.audience : existingBrief.audience,
+        coreQuestion: input.coreQuestion !== undefined ? input.coreQuestion : existingBrief.coreQuestion,
+        hook: input.hook !== undefined ? input.hook : existingBrief.hook,
+        thesis: input.thesis !== undefined ? input.thesis : existingBrief.thesis,
+        editorialNotes: input.editorialNotes !== undefined ? input.editorialNotes : existingBrief.editorialNotes,
+        researchQuestions: input.researchQuestions ?? existingBrief.researchQuestions,
+        schemaVersion: existingBrief.schemaVersion,
+        briefVersion: existingBrief.briefVersion + 1,
+        createdAt: existingBrief.createdAt,
+        updatedAt: now,
+      }
+      briefs.set(input.episodeId, updatedBrief)
+      return {
+        success: true,
+        brief: updatedBrief,
+      }
     },
   }
 }

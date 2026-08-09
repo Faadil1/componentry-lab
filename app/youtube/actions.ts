@@ -9,9 +9,10 @@ import { addEpisodeBlocker } from "@/lib/youtube/commands/add-episode-blocker.ts
 import { resolveEpisodeBlocker } from "@/lib/youtube/commands/resolve-episode-blocker.ts"
 import { recordPublication } from "@/lib/youtube/commands/record-publication.ts"
 import { createEpisode } from "@/lib/youtube/commands/create-episode.ts"
+import { setEpisodeBrief } from "@/lib/youtube/commands/set-episode-brief.ts"
 import { runCommandInTransaction } from "@/lib/youtube/commands/transactional-command-runner.ts"
 import type { CommandResult } from "@/lib/youtube/commands/command-result.ts"
-import type { CanonicalEpisode } from "@/lib/persistence/canonical-types.ts"
+import type { CanonicalEpisode, CanonicalEpisodeBrief } from "@/lib/persistence/canonical-types.ts"
 
 // Server action: Transition episode state
 export async function transitionEpisodeStateAction(
@@ -219,6 +220,53 @@ export async function createEpisodeAction(
       success: false,
       reason: "infrastructure_error",
       message: "Something went wrong while creating the episode. Please try again.",
+    }
+  }
+}
+
+// Server action: Set episode brief
+export async function setEpisodeBriefAction(
+  episodeId: string,
+  expectedBriefVersion: number | null,
+  topic?: string,
+  angle?: string,
+  audience?: string,
+  coreQuestion?: string,
+  hook?: string,
+  thesis?: string,
+  editorialNotes?: string,
+  researchQuestions?: string[]
+): Promise<CommandResult<CanonicalEpisodeBrief>> {
+  try {
+    const sql = getDatabase()
+    const result = await runCommandInTransaction(sql, async (repository) =>
+      setEpisodeBrief(repository, {
+        episodeId,
+        expectedBriefVersion,
+        topic,
+        angle,
+        audience,
+        coreQuestion,
+        hook,
+        thesis,
+        editorialNotes,
+        researchQuestions,
+        actor: "human:web",
+      })
+    )
+
+    if (result.success) {
+      revalidatePath(`/youtube/episodes/${episodeId}`)
+      revalidatePath("/youtube")
+    }
+
+    return result
+  } catch (error) {
+    console.error("setEpisodeBriefAction failed:", error)
+    return {
+      success: false,
+      reason: "infrastructure_error",
+      message: "Something went wrong while saving the brief. Please try again.",
     }
   }
 }

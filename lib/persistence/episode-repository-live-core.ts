@@ -13,15 +13,18 @@
 import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
+  CanonicalEpisodeBrief,
   CreateEpisodeEventInput,
   CreateEpisodeInput,
   CreateEpisodeRepositoryResult,
   UpdateEpisodeStateInput,
   OptimisticLockResult,
+  SetEpisodeBriefInput,
+  SetEpisodeBriefRepositoryResult,
 } from "./canonical-types.ts"
 import type { EpisodeRepository } from "./episode-repository-core.ts"
-import type { EpisodeRow, EpisodeEventRow } from "./episode-row-mappers.ts"
-import { mapRowToEpisode, mapRowToEpisodeEvent } from "./episode-row-mappers.ts"
+import type { EpisodeRow, EpisodeEventRow, EpisodeBriefRow } from "./episode-row-mappers.ts"
+import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief } from "./episode-row-mappers.ts"
 
 /**
  * Structural type for postgres npm package SQL client.
@@ -239,6 +242,200 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
         ORDER BY created_at DESC, event_id DESC
       `
       return rows.map((row) => mapRowToEpisodeEvent(row as unknown as EpisodeEventRow))
+    },
+
+    async getEpisodeBrief(episodeId: string): Promise<CanonicalEpisodeBrief | null> {
+      const rows = await sql`
+        SELECT * FROM episode_briefs WHERE episode_id = ${episodeId}
+      `
+      if (rows.length === 0) return null
+      return mapRowToEpisodeBrief(rows[0] as unknown as EpisodeBriefRow)
+    },
+
+    async setEpisodeBrief(input: SetEpisodeBriefInput): Promise<SetEpisodeBriefRepositoryResult> {
+      // Verify episode exists
+      const episodeCheck = await sql`
+        SELECT episode_id FROM episodes WHERE episode_id = ${input.episodeId}
+      `
+      if (episodeCheck.length === 0) {
+        return {
+          success: false,
+          reason: "episode_not_found",
+        }
+      }
+
+      const now = new Date().toISOString()
+
+      // CREATE mode: expectedBriefVersion = null
+      if (input.expectedBriefVersion === null) {
+        // Validate topic is provided and non-empty
+        if (!input.topic || input.topic.trim() === "") {
+          return {
+            success: false,
+            reason: "conflict", // Validation error, let command layer handle as invalid_input
+          }
+        }
+
+        const rows = await sql`
+          INSERT INTO episode_briefs (
+            episode_id,
+            topic,
+            angle,
+            audience,
+            core_question,
+            hook,
+            thesis,
+            editorial_notes,
+            research_questions,
+            schema_version,
+            brief_version,
+            created_at,
+            updated_at
+          )
+          VALUES (
+            ${input.episodeId},
+            ${input.topic},
+            ${input.angle ?? null},
+            ${input.audience ?? null},
+            ${input.coreQuestion ?? null},
+            ${input.hook ?? null},
+            ${input.thesis ?? null},
+            ${input.editorialNotes ?? null},
+            ${JSON.stringify(input.researchQuestions || [])},
+            1,
+            1,
+            ${now},
+            ${now}
+          )
+          ON CONFLICT (episode_id) DO NOTHING
+          RETURNING *
+        `
+
+        if (rows.length === 0) {
+          // Brief already exists, fetch current version for conflict response
+          const existing = await sql`
+            SELECT brief_version FROM episode_briefs WHERE episode_id = ${input.episodeId}
+          `
+          if (existing.length > 0) {
+            const currentVersion = (existing[0] as unknown as { brief_version: number }).brief_version
+            return {
+              success: false,
+              reason: "conflict",
+              currentBriefVersion: currentVersion,
+            }
+          }
+          // Shouldn't reach here, but handle gracefully
+          return {
+            success: false,
+            reason: "conflict",
+          }
+        }
+
+        return {
+          success: true,
+          brief: mapRowToEpisodeBrief(rows[0] as unknown as EpisodeBriefRow),
+        }
+      }
+
+      // UPDATE mode: expectedBriefVersion = N
+      // Build dynamic update query with only provided fields
+      const updates: string[] = []
+      const values: unknown[] = []
+      let paramIndex = 1
+
+      if (input.topic !== undefined) {
+        updates.push(`topic = $${paramIndex}`)
+        values.push(input.topic)
+        paramIndex++
+      }
+
+      if (input.angle !== undefined) {
+        updates.push(`angle = $${paramIndex}`)
+        values.push(input.angle || null)
+        paramIndex++
+      }
+
+      if (input.audience !== undefined) {
+        updates.push(`audience = $${paramIndex}`)
+        values.push(input.audience || null)
+        paramIndex++
+      }
+
+      if (input.coreQuestion !== undefined) {
+        updates.push(`core_question = $${paramIndex}`)
+        values.push(input.coreQuestion || null)
+        paramIndex++
+      }
+
+      if (input.hook !== undefined) {
+        updates.push(`hook = $${paramIndex}`)
+        values.push(input.hook || null)
+        paramIndex++
+      }
+
+      if (input.thesis !== undefined) {
+        updates.push(`thesis = $${paramIndex}`)
+        values.push(input.thesis || null)
+        paramIndex++
+      }
+
+      if (input.editorialNotes !== undefined) {
+        updates.push(`editorial_notes = $${paramIndex}`)
+        values.push(input.editorialNotes || null)
+        paramIndex++
+      }
+
+      if (input.researchQuestions !== undefined) {
+        updates.push(`research_questions = $${paramIndex}`)
+        values.push(JSON.stringify(input.researchQuestions))
+        paramIndex++
+      }
+
+      updates.push(`updated_at = $${paramIndex}`)
+      values.push(now)
+      paramIndex++
+
+      const updateSQL = `
+        UPDATE episode_briefs
+        SET
+          brief_version = brief_version + 1,
+          ${updates.join(",\n          ")}
+        WHERE
+          episode_id = $${paramIndex}
+          AND brief_version = $${paramIndex + 1}
+        RETURNING *
+      `
+
+      values.push(input.episodeId)
+      values.push(input.expectedBriefVersion)
+
+      const result = await sql.unsafe(updateSQL, values)
+
+      if (result.length === 0) {
+        // Check if brief exists
+        const checkRows = await sql`
+          SELECT brief_version FROM episode_briefs WHERE episode_id = ${input.episodeId}
+        `
+
+        if (checkRows.length === 0) {
+          return {
+            success: false,
+            reason: "not_found",
+          }
+        }
+
+        const actualVersion = (checkRows[0] as unknown as { brief_version: number }).brief_version
+        return {
+          success: false,
+          reason: "conflict",
+          currentBriefVersion: actualVersion,
+        }
+      }
+
+      return {
+        success: true,
+        brief: mapRowToEpisodeBrief(result[0] as unknown as EpisodeBriefRow),
+      }
     },
   }
 }

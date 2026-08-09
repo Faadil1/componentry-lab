@@ -8,6 +8,7 @@
 import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
+  CanonicalEpisodeBrief,
   CanonicalBlocker,
   CanonicalDecision,
 } from "./canonical-types"
@@ -47,6 +48,26 @@ export interface EpisodeEventRow {
   payload: unknown | null
   idempotency_key: string | null
   created_at: string | Date
+}
+
+/**
+ * Database row representation for episode briefs.
+ * Reflects actual PostgreSQL column types and names.
+ */
+export interface EpisodeBriefRow {
+  episode_id: string
+  topic: string
+  angle: string | null
+  audience: string | null
+  core_question: string | null
+  hook: string | null
+  thesis: string | null
+  editorial_notes: string | null
+  research_questions: string[] | null
+  schema_version: number
+  brief_version: number
+  created_at: string | Date
+  updated_at: string | Date
 }
 
 /**
@@ -135,5 +156,47 @@ export function mapRowToEpisodeEvent(row: EpisodeEventRow): CanonicalEpisodeEven
     payload: (row.payload ?? undefined) as Record<string, unknown> | undefined,
     idempotencyKey: row.idempotency_key ?? undefined,
     createdAt: normalizeTimestamp(row.created_at, "created_at", true) || "",
+  }
+}
+
+/**
+ * Convert database row to canonical episode brief domain object.
+ *
+ * @param row - database row
+ * @returns canonical episode brief with normalized types
+ * @throws if required fields are missing or malformed
+ */
+export function mapRowToEpisodeBrief(row: EpisodeBriefRow): CanonicalEpisodeBrief {
+  // Ensure research_questions is always an array
+  let questions: string[] = []
+  if (row.research_questions) {
+    if (Array.isArray(row.research_questions)) {
+      questions = row.research_questions
+    } else if (typeof row.research_questions === "string") {
+      try {
+        questions = JSON.parse(row.research_questions)
+        if (!Array.isArray(questions)) {
+          questions = []
+        }
+      } catch {
+        questions = []
+      }
+    }
+  }
+
+  return {
+    episodeId: row.episode_id,
+    topic: row.topic,
+    angle: row.angle ?? undefined,
+    audience: row.audience ?? undefined,
+    coreQuestion: row.core_question ?? undefined,
+    hook: row.hook ?? undefined,
+    thesis: row.thesis ?? undefined,
+    editorialNotes: row.editorial_notes ?? undefined,
+    researchQuestions: questions,
+    schemaVersion: row.schema_version,
+    briefVersion: row.brief_version,
+    createdAt: normalizeTimestamp(row.created_at, "created_at", true) || "",
+    updatedAt: normalizeTimestamp(row.updated_at, "updated_at", true) || "",
   }
 }

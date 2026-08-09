@@ -3,12 +3,14 @@ import { notFound } from "next/navigation"
 import { EpisodeStateCard } from "@/components/workflow/episode-state-card"
 import { EpisodeHistoryTimeline } from "@/components/workflow/episode-history-timeline"
 import { EpisodeControls } from "@/components/workflow/episode-controls"
+import { EpisodeBriefSection } from "@/components/workflow/episode-brief-section"
 import {
   episodeStateSnapshotToCardProps,
 } from "@/lib/adapters/episode-state-card-adapter"
 import type { EpisodeStateCardProps } from "@/components/workflow/episode-state-card"
 import { getEpisodeState } from "@/lib/youtube/get-episode-state"
 import { getEpisodeHistory } from "@/lib/youtube/get-episode-history"
+import { getEpisodeBrief } from "@/lib/youtube/get-episode-brief"
 
 interface PageProps {
   params: Promise<{ episodeId: string }>
@@ -26,6 +28,7 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
     episodeStateSnapshotToCardProps(snapshot)
 
   const history = await getEpisodeHistory(episodeId)
+  const brief = await getEpisodeBrief(episodeId)
 
   return (
     <div className="space-y-6">
@@ -100,6 +103,10 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
             )}
           </dl>
         </section>
+      )}
+
+      {cardProps.variant !== "unavailable" && "workflowState" in cardProps && (
+        <EpisodeBriefSection episodeId={episodeId} brief={brief} />
       )}
 
       <EpisodeHistoryTimeline history={history} />

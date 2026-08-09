@@ -168,3 +168,77 @@ export interface EpisodeEventRow {
   idempotency_key: string | null
   created_at: string
 }
+
+/**
+ * Canonical episode brief.
+ * Editorial context for upstream handoff to Perplexity, Claude Cowork, etc.
+ * 1:1 relationship with episodes.
+ * Topic is required; other fields are optional and progressively completed.
+ */
+export interface CanonicalEpisodeBrief {
+  episodeId: string
+
+  // Required: topic is the minimum viable brief
+  topic: string
+
+  // Optional: refined as editorial work progresses
+  angle?: string
+  audience?: string
+  coreQuestion?: string
+  hook?: string
+  thesis?: string
+  editorialNotes?: string
+
+  // Structured research questions for tool integration
+  researchQuestions: string[]
+
+  // System
+  schemaVersion: number
+  briefVersion: number
+  createdAt: string
+  updatedAt: string
+}
+
+/**
+ * Set episode brief input.
+ * Handles both create (expectedBriefVersion: null) and update (expectedBriefVersion: N) cases.
+ */
+export interface SetEpisodeBriefInput {
+  episodeId: string
+  expectedBriefVersion: number | null  // Optimistic lock: null for create, N for update
+  topic?: string
+  angle?: string
+  audience?: string
+  coreQuestion?: string
+  hook?: string
+  thesis?: string
+  editorialNotes?: string
+  researchQuestions?: string[]
+}
+
+/**
+ * Repository result for brief set operation.
+ * Distinguishes conflict/not_found from successful mutations without throwing.
+ */
+export type SetEpisodeBriefRepositoryResult =
+  | { success: true; brief: CanonicalEpisodeBrief }
+  | { success: false; reason: "conflict" | "not_found" | "episode_not_found"; currentBriefVersion?: number }
+
+/**
+ * Database row type for episode_briefs (snake_case from database).
+ */
+export interface EpisodeBriefRow {
+  episode_id: string
+  topic: string
+  angle: string | null
+  audience: string | null
+  core_question: string | null
+  hook: string | null
+  thesis: string | null
+  editorial_notes: string | null
+  research_questions: string[]
+  schema_version: number
+  brief_version: number
+  created_at: string
+  updated_at: string
+}
