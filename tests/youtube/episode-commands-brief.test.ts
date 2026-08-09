@@ -478,4 +478,145 @@ describe("Episode Brief Commands", () => {
     const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
     assert.strictEqual(updateEvents.length, 0, "no audit event should be created on research questions no-op")
   })
+
+  // ─────────────────────────────────────────────────────────────
+  // Clearing optional fields
+  // ─────────────────────────────────────────────────────────────
+
+  test("22. setEpisodeBrief: clear optional field (empty string signals clear)", async () => {
+    // Create brief with angle
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      angle: "Original Angle",
+      hook: "Original Hook",
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+    assert.strictEqual(createResult.value?.angle, "Original Angle")
+
+    // Update with empty angle (clear it)
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      angle: "",  // Empty string signals clear
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 2, "briefVersion should increment when clearing field")
+    assert.strictEqual(updateResult.value?.angle, undefined, "angle should be cleared (undefined)")
+    assert.strictEqual(updateResult.value?.hook, "Original Hook", "hook should be preserved")
+
+    // Verify audit event recorded the change
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    assert.ok(updateEvent, "update event should exist")
+    const payload = updateEvent!.payload as any
+    assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
+  })
+
+  test("23. setEpisodeBrief: clear all research questions (empty array signals clear)", async () => {
+    // Create brief with research questions
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      researchQuestions: ["Q1", "Q2", "Q3"],
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+    assert.deepStrictEqual(createResult.value?.researchQuestions, ["Q1", "Q2", "Q3"])
+
+    // Update with empty array (clear all questions)
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      researchQuestions: [],  // Empty array signals clear
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 2, "briefVersion should increment when clearing questions")
+    assert.deepStrictEqual(updateResult.value?.researchQuestions, [], "researchQuestions should be empty")
+
+    // Verify audit event
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    assert.ok(updateEvent, "update event should exist")
+    const payload = updateEvent!.payload as any
+    assert.ok(payload.changedFields.includes("researchQuestions"), "changedFields should include researchQuestions")
+  })
+
+  test("24. setEpisodeBrief: already-empty field (empty string on undefined) → no-op", async () => {
+    // Create brief without angle (undefined)
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      hook: "Hook",
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+    assert.strictEqual(createResult.value?.angle, undefined)
+
+    // Update with empty angle (no-op since already undefined)
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      angle: "",  // Empty string, but field already undefined
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 1, "briefVersion should not increment (no-op)")
+    assert.strictEqual(updateResult.value?.angle, undefined)
+
+    // Verify no audit event
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    assert.strictEqual(updateEvents.length, 0, "no audit event should be created on no-op clear")
+  })
+
+  test("25. setEpisodeBrief: multiple fields cleared in single update", async () => {
+    // Create brief with multiple fields
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      angle: "A",
+      audience: "Aud",
+      hook: "H",
+      thesis: "T",
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+
+    // Update clearing angle and audience, keeping hook and thesis
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      angle: "",  // Clear
+      audience: "",  // Clear
+      hook: "H",  // Keep
+      thesis: "T",  // Keep
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 2)
+    assert.strictEqual(updateResult.value?.angle, undefined)
+    assert.strictEqual(updateResult.value?.audience, undefined)
+    assert.strictEqual(updateResult.value?.hook, "H")
+    assert.strictEqual(updateResult.value?.thesis, "T")
+
+    // Verify audit event
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvent = events.find((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    const payload = updateEvent!.payload as any
+    assert.strictEqual(payload.changedFields.length, 2, "exactly 2 fields changed")
+    assert.ok(payload.changedFields.includes("angle"))
+    assert.ok(payload.changedFields.includes("audience"))
+  })
 })

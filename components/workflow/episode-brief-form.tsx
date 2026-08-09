@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import type { CanonicalEpisodeBrief } from "@/lib/persistence/canonical-types"
+import type { CommandResult } from "@/lib/youtube/commands/command-result"
 import { setEpisodeBriefAction } from "@/app/youtube/actions"
 
 interface EpisodeBriefFormProps {
@@ -44,36 +45,57 @@ export function EpisodeBriefForm({
         .map((q) => q.trim())
         .filter((q) => q.length > 0)
 
-      const result = await setEpisodeBriefAction(
-        episodeId,
-        isCreating ? null : brief!.briefVersion,
-        topic || undefined,
-        angle || undefined,
-        audience || undefined,
-        coreQuestion || undefined,
-        hook || undefined,
-        thesis || undefined,
-        editorialNotes || undefined,
-        questions.length > 0 ? questions : undefined
-      )
-
-      if (!result.success) {
-        if (result.reason === "conflict") {
-          setError("Brief was modified elsewhere. Please reload and try again.")
-        } else {
-          setError(result.message || "Failed to save brief")
-        }
-        return
-      }
-
-      if (result.value) {
-        onSuccess(result.value)
+      // On CREATE: normalize empty optional fields to undefined
+      // On UPDATE: preserve empty strings to signal field clearing
+      if (isCreating) {
+        const result = await setEpisodeBriefAction(
+          episodeId,
+          null,
+          topic.trim() ? topic : undefined,
+          angle.trim() ? angle : undefined,
+          audience.trim() ? audience : undefined,
+          coreQuestion.trim() ? coreQuestion : undefined,
+          hook.trim() ? hook : undefined,
+          thesis.trim() ? thesis : undefined,
+          editorialNotes.trim() ? editorialNotes : undefined,
+          questions.length > 0 ? questions : undefined
+        )
+        handleSubmitResult(result)
+      } else {
+        const result = await setEpisodeBriefAction(
+          episodeId,
+          brief!.briefVersion,
+          topic.trim() ? topic : undefined,
+          angle,  // Send empty string to signal clearing
+          audience,
+          coreQuestion,
+          hook,
+          thesis,
+          editorialNotes,
+          questions  // Send [] to signal clearing all questions
+        )
+        handleSubmitResult(result)
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.")
       console.error(err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleSubmitResult = (result: CommandResult<CanonicalEpisodeBrief>) => {
+    if (!result.success) {
+      if (result.reason === "conflict") {
+        setError("Brief was modified elsewhere. Please reload and try again.")
+      } else {
+        setError(result.message || "Failed to save brief")
+      }
+      return
+    }
+
+    if (result.value) {
+      onSuccess(result.value)
     }
   }
 

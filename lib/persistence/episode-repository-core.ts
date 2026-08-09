@@ -187,15 +187,20 @@ export function createMockRepository(): EpisodeRepository {
           }
         }
 
+        // Normalize empty strings to undefined for optional fields on CREATE
+        const normalizeOptional = (value: string | undefined): string | undefined => {
+          return value === "" ? undefined : value
+        }
+
         const newBrief: CanonicalEpisodeBrief = {
           episodeId: input.episodeId,
           topic: input.topic,
-          angle: input.angle,
-          audience: input.audience,
-          coreQuestion: input.coreQuestion,
-          hook: input.hook,
-          thesis: input.thesis,
-          editorialNotes: input.editorialNotes,
+          angle: normalizeOptional(input.angle),
+          audience: normalizeOptional(input.audience),
+          coreQuestion: normalizeOptional(input.coreQuestion),
+          hook: normalizeOptional(input.hook),
+          thesis: normalizeOptional(input.thesis),
+          editorialNotes: normalizeOptional(input.editorialNotes),
           researchQuestions: input.researchQuestions || [],
           schemaVersion: 1,
           briefVersion: 1,
@@ -225,16 +230,20 @@ export function createMockRepository(): EpisodeRepository {
         }
       }
 
-      // Perform update
+      // Perform update (normalize empty strings to undefined for optional fields)
+      const normalizeOptional = (value: string | undefined): string | undefined => {
+        return value === "" ? undefined : value
+      }
+
       const updatedBrief: CanonicalEpisodeBrief = {
         episodeId: input.episodeId,
         topic: input.topic ?? existingBrief.topic,
-        angle: input.angle !== undefined ? input.angle : existingBrief.angle,
-        audience: input.audience !== undefined ? input.audience : existingBrief.audience,
-        coreQuestion: input.coreQuestion !== undefined ? input.coreQuestion : existingBrief.coreQuestion,
-        hook: input.hook !== undefined ? input.hook : existingBrief.hook,
-        thesis: input.thesis !== undefined ? input.thesis : existingBrief.thesis,
-        editorialNotes: input.editorialNotes !== undefined ? input.editorialNotes : existingBrief.editorialNotes,
+        angle: input.angle !== undefined ? normalizeOptional(input.angle) : existingBrief.angle,
+        audience: input.audience !== undefined ? normalizeOptional(input.audience) : existingBrief.audience,
+        coreQuestion: input.coreQuestion !== undefined ? normalizeOptional(input.coreQuestion) : existingBrief.coreQuestion,
+        hook: input.hook !== undefined ? normalizeOptional(input.hook) : existingBrief.hook,
+        thesis: input.thesis !== undefined ? normalizeOptional(input.thesis) : existingBrief.thesis,
+        editorialNotes: input.editorialNotes !== undefined ? normalizeOptional(input.editorialNotes) : existingBrief.editorialNotes,
         researchQuestions: input.researchQuestions ?? existingBrief.researchQuestions,
         schemaVersion: existingBrief.schemaVersion,
         briefVersion: existingBrief.briefVersion + 1,
