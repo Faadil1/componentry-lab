@@ -113,7 +113,7 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
       )}
 
       {cardProps.variant !== "unavailable" && "workflowState" in cardProps && (
-        <EpisodeResearchSection research={research} />
+        <EpisodeResearchSection episodeId={episodeId} research={research} />
       )}
 
       <EpisodeHistoryTimeline history={history} />
