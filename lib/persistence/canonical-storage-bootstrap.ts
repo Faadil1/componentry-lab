@@ -1,5 +1,3 @@
-import "server-only"
-
 export type CanonicalStorageSql = {
   (strings: TemplateStringsArray, ...values: unknown[]): unknown
 }
