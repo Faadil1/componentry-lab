@@ -23,10 +23,10 @@ export function EpisodeBriefSection({
     setIsEditing(true)
   }
 
-  const handleSuccess = () => {
+  const handleSuccess = (updatedBrief: CanonicalEpisodeBrief) => {
+    setBrief(updatedBrief)
     setIsEditing(false)
     onBriefUpdated?.()
-    // Note: In a real app, you'd refetch the brief here
   }
 
   const handleCancel = () => {

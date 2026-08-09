@@ -31,9 +31,10 @@ export interface SetEpisodeBriefPayload {
  * UPDATE (expectedBriefVersion = N):
  * - Updates existing brief at version N
  * - All fields are optional; omitted fields retain existing values
- * - Increments briefVersion to N + 1
+ * - Increments briefVersion to N + 1 only if fields actually changed
  * - Returns not_found if brief doesn't exist
  * - Returns conflict if briefVersion doesn't match
+ * - No-op updates (same values) return success without mutation/versioning
  *
  * Infrastructure failures throw.
  * Business errors return CommandResult with detailed reason.
@@ -151,6 +152,15 @@ export async function setEpisodeBrief(
     }
   }
 
+  // Validate topic is non-empty if provided
+  if (payload.topic !== undefined && payload.topic.trim() === "") {
+    return {
+      success: false,
+      reason: "invalid_input",
+      message: "Topic cannot be empty",
+    }
+  }
+
   // Validate research questions if provided
   if (payload.researchQuestions !== undefined && !Array.isArray(payload.researchQuestions)) {
     return {
@@ -172,7 +182,39 @@ export async function setEpisodeBrief(
     }
   }
 
-  // Attempt to update brief
+  // Fetch current brief to detect no-op updates
+  const currentBrief = await repository.getEpisodeBrief(payload.episodeId)
+
+  if (!currentBrief) {
+    return {
+      success: false,
+      reason: "not_found",
+      message: "Brief not found for this episode",
+    }
+  }
+
+  if (currentBrief.briefVersion !== expectedVersion) {
+    return {
+      success: false,
+      reason: "conflict",
+      message: "Brief was modified elsewhere. Please reload and try again.",
+      currentStateVersion: currentBrief.briefVersion,
+    }
+  }
+
+  // Detect semantic changes
+  const changedFields = detectSemanticChanges(payload, currentBrief)
+
+  // No-op: return current brief without mutation
+  if (changedFields.length === 0) {
+    return {
+      success: true,
+      value: currentBrief,
+      stateVersion: currentBrief.briefVersion,
+    }
+  }
+
+  // Actual changes detected: perform update
   const result = await repository.setEpisodeBrief({
     episodeId: payload.episodeId,
     expectedBriefVersion: expectedVersion,
@@ -210,20 +252,17 @@ export async function setEpisodeBrief(
   }
 
   // Create audit event
-  const changedFields = getChangedFields(payload)
-  if (changedFields.length > 0) {
-    await repository.createEpisodeEvent({
-      episodeId: payload.episodeId,
-      eventType: "episode_brief_set",
-      actor: payload.actor,
-      payload: {
-        operation: "updated",
-        briefVersionBefore: expectedVersion,
-        briefVersionAfter: expectedVersion + 1,
-        changedFields,
-      },
-    })
-  }
+  await repository.createEpisodeEvent({
+    episodeId: payload.episodeId,
+    eventType: "episode_brief_set",
+    actor: payload.actor,
+    payload: {
+      operation: "updated",
+      briefVersionBefore: expectedVersion,
+      briefVersionAfter: expectedVersion + 1,
+      changedFields,
+    },
+  })
 
   return {
     success: true,
@@ -233,7 +272,7 @@ export async function setEpisodeBrief(
 }
 
 /**
- * Determine which fields were actually changed in this operation.
+ * Determine which fields were actually changed in this operation for CREATE.
  * Excludes actor and expectedBriefVersion.
  */
 function getChangedFields(payload: SetEpisodeBriefPayload): string[] {
@@ -249,4 +288,108 @@ function getChangedFields(payload: SetEpisodeBriefPayload): string[] {
   if (payload.researchQuestions !== undefined) fields.push("researchQuestions")
 
   return fields
+}
+
+/**
+ * Detect semantic changes between payload and current brief.
+ * Normalizes optional string fields (trim, empty→undefined) for comparison.
+ * Handles researchQuestions as ordered array equality.
+ */
+function detectSemanticChanges(
+  payload: SetEpisodeBriefPayload,
+  currentBrief: CanonicalEpisodeBrief
+): string[] {
+  const changed: string[] = []
+
+  // Normalize string field: trim and convert empty to undefined
+  const normalize = (value: string | undefined): string | undefined => {
+    if (value === undefined) return undefined
+    const trimmed = value.trim()
+    return trimmed === "" ? undefined : trimmed
+  }
+
+  // Topic: only if provided in payload
+  if (payload.topic !== undefined) {
+    const normalizedPayload = normalize(payload.topic)
+    const currentValue = currentBrief.topic
+    if (normalizedPayload !== currentValue) {
+      changed.push("topic")
+    }
+  }
+
+  // Angle: compare normalized values
+  if (payload.angle !== undefined) {
+    const normalizedPayload = normalize(payload.angle)
+    const normalizedCurrent = normalize(currentBrief.angle)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("angle")
+    }
+  }
+
+  // Audience: compare normalized values
+  if (payload.audience !== undefined) {
+    const normalizedPayload = normalize(payload.audience)
+    const normalizedCurrent = normalize(currentBrief.audience)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("audience")
+    }
+  }
+
+  // Core question: compare normalized values
+  if (payload.coreQuestion !== undefined) {
+    const normalizedPayload = normalize(payload.coreQuestion)
+    const normalizedCurrent = normalize(currentBrief.coreQuestion)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("coreQuestion")
+    }
+  }
+
+  // Hook: compare normalized values
+  if (payload.hook !== undefined) {
+    const normalizedPayload = normalize(payload.hook)
+    const normalizedCurrent = normalize(currentBrief.hook)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("hook")
+    }
+  }
+
+  // Thesis: compare normalized values
+  if (payload.thesis !== undefined) {
+    const normalizedPayload = normalize(payload.thesis)
+    const normalizedCurrent = normalize(currentBrief.thesis)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("thesis")
+    }
+  }
+
+  // Editorial notes: compare normalized values
+  if (payload.editorialNotes !== undefined) {
+    const normalizedPayload = normalize(payload.editorialNotes)
+    const normalizedCurrent = normalize(currentBrief.editorialNotes)
+    if (normalizedPayload !== normalizedCurrent) {
+      changed.push("editorialNotes")
+    }
+  }
+
+  // Research questions: ordered array comparison
+  if (payload.researchQuestions !== undefined) {
+    const payloadQuestions = payload.researchQuestions || []
+    const currentQuestions = currentBrief.researchQuestions || []
+    if (!arraysEqual(payloadQuestions, currentQuestions)) {
+      changed.push("researchQuestions")
+    }
+  }
+
+  return changed
+}
+
+/**
+ * Compare two arrays for equality (order matters).
+ */
+function arraysEqual(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false
+  }
+  return true
 }

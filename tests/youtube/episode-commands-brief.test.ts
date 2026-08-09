@@ -339,4 +339,143 @@ describe("Episode Brief Commands", () => {
     assert.strictEqual(result.success, false)
     assert.strictEqual(result.reason, "invalid_input")
   })
+
+  // ─────────────────────────────────────────────────────────────
+  // No-op updates and semantic comparison
+  // ─────────────────────────────────────────────────────────────
+
+  test("17. setEpisodeBrief: identical update (no-op) → no mutation, no version increment", async () => {
+    // Create initial brief
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Original Topic",
+      angle: "Original Angle",
+      hook: "Original Hook",
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+    const briefVersion = createResult.value!.briefVersion
+    assert.strictEqual(briefVersion, 1)
+
+    // Update with identical values
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      topic: "Original Topic",
+      angle: "Original Angle",
+      hook: "Original Hook",
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 1, "briefVersion should not increment on no-op")
+    assert.strictEqual(updateResult.stateVersion, 1)
+
+    // Verify no audit event was created for the no-op update
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    assert.strictEqual(updateEvents.length, 0, "no audit event should be created on no-op update")
+  })
+
+  test("18. setEpisodeBrief: topic empty on update → invalid_input", async () => {
+    // Create initial brief
+    await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Original Topic",
+      actor: "H:web",
+    })
+
+    // Attempt to update with empty topic
+    const result = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      topic: "",
+      actor: "H:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+    assert.match(result.message || "", /Topic cannot be empty/)
+  })
+
+  test("19. setEpisodeBrief: topic whitespace-only on update → invalid_input", async () => {
+    // Create initial brief
+    await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Original Topic",
+      actor: "H:web",
+    })
+
+    // Attempt to update with whitespace-only topic
+    const result = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      topic: "   ",
+      actor: "H:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("20. setEpisodeBrief: semantic equality for optional fields (empty strings normalize)", async () => {
+    // Create initial brief with empty strings treated as undefined
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      angle: "Angle",
+      audience: "",  // Empty string
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+
+    // Update with same values but audience as undefined (should not create a field change)
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      angle: "Angle",
+      // audience omitted - should be treated as no change from ""
+      actor: "H:web",
+    })
+
+    // Since only angle was resubmitted with same value, and audience was omitted,
+    // the only potential change is angle (same value = no change)
+    // Result should be no-op
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 1)
+  })
+
+  test("21. setEpisodeBrief: research questions no-op (same array) → no mutation", async () => {
+    const questions = ["What is X?", "How does Y work?"]
+
+    // Create brief with research questions
+    const createResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: null,
+      topic: "Topic",
+      researchQuestions: questions,
+      actor: "H:web",
+    })
+    assert.strictEqual(createResult.success, true)
+
+    // Update with identical research questions
+    const updateResult = await setEpisodeBrief(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedBriefVersion: 1,
+      researchQuestions: questions,
+      actor: "H:web",
+    })
+
+    assert.strictEqual(updateResult.success, true)
+    assert.strictEqual(updateResult.value?.briefVersion, 1, "briefVersion should not increment when research questions unchanged")
+
+    // Verify no audit event
+    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID)
+    const updateEvents = events.filter((e) => e.eventType === "episode_brief_set" && (e.payload as any).operation === "updated")
+    assert.strictEqual(updateEvents.length, 0, "no audit event should be created on research questions no-op")
+  })
 })

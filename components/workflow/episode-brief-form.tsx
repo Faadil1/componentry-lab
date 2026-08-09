@@ -7,7 +7,7 @@ import { setEpisodeBriefAction } from "@/app/youtube/actions"
 interface EpisodeBriefFormProps {
   episodeId: string
   brief?: CanonicalEpisodeBrief
-  onSuccess: () => void
+  onSuccess: (updatedBrief: CanonicalEpisodeBrief) => void
   onCancel: () => void
 }
 
@@ -66,7 +66,9 @@ export function EpisodeBriefForm({
         return
       }
 
-      onSuccess()
+      if (result.value) {
+        onSuccess(result.value)
+      }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.")
       console.error(err)
