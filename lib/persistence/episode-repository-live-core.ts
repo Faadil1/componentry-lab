@@ -15,6 +15,7 @@ import type {
   CanonicalEpisodeEvent,
   CreateEpisodeEventInput,
   CreateEpisodeInput,
+  CreateEpisodeRepositoryResult,
   UpdateEpisodeStateInput,
   OptimisticLockResult,
 } from "./canonical-types.ts"
@@ -55,7 +56,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       return rows.map((row) => mapRowToEpisode(row as unknown as EpisodeRow))
     },
 
-    async createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode> {
+    async createEpisode(input: CreateEpisodeInput): Promise<CreateEpisodeRepositoryResult> {
       const now = new Date().toISOString()
       const rows = await sql`
         INSERT INTO episodes (
@@ -82,9 +83,13 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
           ${now},
           ${now}
         )
+        ON CONFLICT (episode_id) DO NOTHING
         RETURNING *
       `
-      return mapRowToEpisode(rows[0] as unknown as EpisodeRow)
+      if (rows.length === 0) {
+        return { success: false, reason: "conflict" }
+      }
+      return { success: true, episode: mapRowToEpisode(rows[0] as unknown as EpisodeRow) }
     },
 
     async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {

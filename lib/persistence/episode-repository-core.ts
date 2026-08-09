@@ -10,6 +10,7 @@ import type {
   CanonicalEpisodeEvent,
   OptimisticLockResult,
   CreateEpisodeInput,
+  CreateEpisodeRepositoryResult,
   UpdateEpisodeStateInput,
   CreateEpisodeEventInput,
 } from "./canonical-types"
@@ -21,7 +22,7 @@ import type {
 export interface EpisodeRepository {
   getEpisodeById(episodeId: string): Promise<CanonicalEpisode | null>
   listEpisodes(): Promise<CanonicalEpisode[]>
-  createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode>
+  createEpisode(input: CreateEpisodeInput): Promise<CreateEpisodeRepositoryResult>
   updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult>
   createEpisodeEvent(input: CreateEpisodeEventInput): Promise<CanonicalEpisodeEvent>
   getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]>
@@ -49,12 +50,11 @@ export function createMockRepository(): EpisodeRepository {
       return Array.from(episodes.values())
     },
 
-    async createEpisode(input: CreateEpisodeInput): Promise<CanonicalEpisode> {
-      // Simulate PostgreSQL unique constraint: reject duplicate episodeId
+    async createEpisode(input: CreateEpisodeInput): Promise<CreateEpisodeRepositoryResult> {
+      // Simulate PostgreSQL ON CONFLICT DO NOTHING semantics
+      // Return conflict result if duplicate, not throwing
       if (episodes.has(input.episodeId)) {
-        const err = new Error("UNIQUE constraint violation: episode_id")
-        Object.assign(err, { code: "23505" })
-        throw err
+        return { success: false, reason: "conflict" }
       }
 
       const now = new Date().toISOString()
@@ -67,7 +67,7 @@ export function createMockRepository(): EpisodeRepository {
         updatedAt: now,
       }
       episodes.set(input.episodeId, episode)
-      return episode
+      return { success: true, episode }
     },
 
     async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {

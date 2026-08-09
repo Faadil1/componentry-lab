@@ -101,6 +101,14 @@ export interface CreateEpisodeInput {
 }
 
 /**
+ * Repository result for episode creation.
+ * Distinguishes duplicate conflict from successful creation without throwing.
+ */
+export type CreateEpisodeRepositoryResult =
+  | { success: true; episode: CanonicalEpisode }
+  | { success: false; reason: "conflict" }
+
+/**
  * Update episode state input.
  * Represents a versioned state change.
  */

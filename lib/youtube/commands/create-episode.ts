@@ -5,6 +5,7 @@
 import type { EpisodeRepository } from "../../persistence/episode-repository-core.ts"
 import type { CanonicalEpisode } from "../../persistence/canonical-types.ts"
 import type { CommandResult } from "./command-result.ts"
+import type { CreateEpisodeRepositoryResult } from "../../persistence/canonical-types.ts"
 
 export interface CreateEpisodePayload {
   episodeId: string
@@ -65,34 +66,27 @@ export async function createEpisode(
   // - schemaVersion = 1 (current schema)
   // - blockers = [] (empty, set by repository)
   // - publication fields absent (no youtubeVideoId/publishedAt)
-  try {
-    const episode = await repository.createEpisode({
-      episodeId: payload.episodeId,
-      episodeNumber: payload.episodeNumber,
-      channelName: payload.channelName,
-      title: payload.title,
-      workflowState: "TOPIC",
-      reviewStatus: "not-required",
-    })
+  // Repository returns conflict result without throwing (ON CONFLICT semantics)
+  const result: CreateEpisodeRepositoryResult = await repository.createEpisode({
+    episodeId: payload.episodeId,
+    episodeNumber: payload.episodeNumber,
+    channelName: payload.channelName,
+    title: payload.title,
+    workflowState: "TOPIC",
+    reviewStatus: "not-required",
+  })
 
+  if (!result.success) {
     return {
-      success: true,
-      value: episode,
-      stateVersion: 1,
+      success: false,
+      reason: result.reason,
+      message: "An episode with this ID already exists",
     }
-  } catch (error) {
-    // Classify only PostgreSQL unique constraint violation (23505) as conflict
-    // All other errors throw (infrastructure_error)
-    const err = error as { code?: string; message?: string }
-    if (err.code === "23505") {
-      return {
-        success: false,
-        reason: "conflict",
-        message: "An episode with this ID already exists",
-      }
-    }
+  }
 
-    // Infrastructure error: let it throw
-    throw error
+  return {
+    success: true,
+    value: result.episode,
+    stateVersion: 1,
   }
 }
