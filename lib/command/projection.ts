@@ -6,6 +6,7 @@ import { validateProjectBrain } from "../projects/validation"
 import type { ProjectBrain } from "../projects"
 import { adaptDirectorResult, adaptProjectBrainToDirectorInput, mapProjectKindToCreativeMode } from "../director"
 import { getFilmProjectById, getFilmProductionIntent, getFilmProductionTruth } from "../film-kit"
+import { getProductionState } from "../creative-os/production/repository"
 
 export interface CommandProjection {
   activeProject: ProjectBrain | null
@@ -63,6 +64,7 @@ export function buildCommandProjection(projectId: string | null | undefined): Co
   const filmProject = getFilmProjectById(activeProject.id)
   const filmIntent = filmProject ? getFilmProductionIntent(filmProject) : null
   const filmTruth = filmProject ? getFilmProductionTruth(filmProject.id) : null
+  const productionState = getProductionState(activeProject.id)
 
   return {
     activeProject,
@@ -83,15 +85,13 @@ export function buildCommandProjection(projectId: string | null | undefined): Co
     productionIntentSummary: filmIntent
       ? { availability: "DEFINED", intentDefined: true }
       : null,
-    canonicalProductionAvailability: filmTruth
-      ? {
-          availability: filmTruth.availability,
-          routes: filmTruth.routes.length,
-          artifacts: filmTruth.artifacts.length,
-          manifest: filmTruth.manifest ? "present" : "none",
-          nextAssemblyStep: filmTruth.manifest?.nextAssemblyStep ?? null,
-        }
-      : null,
+    canonicalProductionAvailability: {
+      availability: productionState.routes.length > 0 ? "AVAILABLE" : "NO_CANONICAL_PRODUCTION_SPINE",
+      routes: productionState.routes.length,
+      artifacts: filmTruth?.artifacts.length ?? 0,
+      manifest: filmTruth?.manifest ? "present" : "none",
+      nextAssemblyStep: filmTruth?.manifest?.nextAssemblyStep ?? null,
+    },
     librarySummary: { components, creativeResources },
   }
 }
