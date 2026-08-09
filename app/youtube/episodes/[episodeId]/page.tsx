@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { EpisodeStateCard } from "@/components/workflow/episode-state-card"
 import { EpisodeHistoryTimeline } from "@/components/workflow/episode-history-timeline"
+import { EpisodeControls } from "@/components/workflow/episode-controls"
 import {
   episodeStateSnapshotToCardProps,
 } from "@/lib/adapters/episode-state-card-adapter"
@@ -58,6 +59,10 @@ export default async function EpisodeDetailPage({ params }: PageProps) {
           <EpisodeStateCard {...cardProps} className="shadow-sm" />
         </div>
       </section>
+
+      {cardProps.variant !== "unavailable" && "workflowState" in cardProps && (
+        <EpisodeControls episode={snapshot} />
+      )}
 
       {cardProps.variant !== "unavailable" && "workflowState" in cardProps && (
         <section className="rounded-lg border border-neutral-200 bg-neutral-50 p-6">
