@@ -28,7 +28,7 @@ import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief } from "./e
 
 // Re-export from sql-types for tests that import directly from this module
 export type { PostgresSql } from "./sql-types.ts"
-import type { PostgresSql } from "./sql-types.ts"
+import type { PostgresSql, SqlParameter } from "./sql-types.ts"
 
 /**
  * Create a live repository backed by PostgreSQL (Neon or self-hosted).
@@ -93,7 +93,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
     async updateEpisodeState(input: UpdateEpisodeStateInput): Promise<OptimisticLockResult> {
       const now = new Date().toISOString()
       const updates: string[] = []
-      const values: unknown[] = []
+      const values: SqlParameter[] = []
       let paramIndex = 1
 
       if (input.workflowState !== undefined) {
@@ -110,13 +110,13 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
 
       if (input.blockers !== undefined) {
         updates.push(`blockers = $${paramIndex}`)
-        values.push(input.blockers)
+        values.push(JSON.stringify(input.blockers))
         paramIndex++
       }
 
       if (input.latestDecision !== undefined) {
         updates.push(`latest_decision = $${paramIndex}`)
-        values.push(input.latestDecision)
+        values.push(input.latestDecision ? JSON.stringify(input.latestDecision) : null)
         paramIndex++
       }
 
@@ -203,7 +203,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
           ${input.actor},
           ${input.fromState ?? null},
           ${input.toState ?? null},
-          ${input.payload ?? null},
+          ${input.payload ? JSON.stringify(input.payload) : null},
           ${input.idempotencyKey ?? null},
           ${now}
         )
@@ -335,7 +335,7 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       // UPDATE mode: expectedBriefVersion = N
       // Build dynamic update query with only provided fields
       const updates: string[] = []
-      const values: unknown[] = []
+      const values: SqlParameter[] = []
       let paramIndex = 1
 
       if (input.topic !== undefined) {

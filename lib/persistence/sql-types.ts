@@ -22,5 +22,14 @@ export type PostgresSql = postgres.Sql
  */
 export type TransactionSql = postgres.TransactionSql
 
+/**
+ * Valid SQL parameter value type for use with sql.unsafe().
+ * Re-exported directly from postgres npm package for type safety.
+ *
+ * Supports: scalars, null, Date, objects, arrays, and postgres Helper/Parameter types.
+ * This is the exact type expected by Sql.unsafe(query, parameters).
+ */
+export type SqlParameter<T = never> = postgres.ParameterOrJSON<T>
+
 // Re-export error type for convenience
 export { PostgresError } from "postgres"
