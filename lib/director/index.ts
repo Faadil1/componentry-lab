@@ -9,4 +9,5 @@ export * from "./adapters"
 export * from "./validation"
 export * from "./fixtures"
 export * from "./ui-selectors"
+export * from "./mapping"
 

@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useProjectBrain } from "./project-provider"
+import { ProjectDirectorProjection } from "./project-director-projection"
 
 export function ProjectOverview() {
   const { state, actions } = useProjectBrain()
@@ -21,6 +22,8 @@ export function ProjectOverview() {
 
   return (
     <div className="space-y-6 text-left">
+      <ProjectDirectorProjection />
+      
       <div className="space-y-2">
         <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-neutral-950">
           Executive Summary
