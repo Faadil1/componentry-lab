@@ -222,6 +222,35 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
     }
   }
 
+  // Validate sources array (validate first since findings/contradictions reference it)
+  const sourceIds = new Set<string>()
+  if (payload.sources !== undefined) {
+    if (!Array.isArray(payload.sources)) {
+      return {
+        success: false,
+        reason: "invalid_input",
+        message: "Sources must be an array",
+      }
+    }
+
+    // Check for duplicate source IDs
+    const sourceIdsSeen = new Set<string>()
+    for (const source of payload.sources) {
+      const fieldError = validateSource(source)
+      if (fieldError) return fieldError
+
+      if (sourceIdsSeen.has(source.id)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Duplicate source ID: ${source.id}`,
+        }
+      }
+      sourceIdsSeen.add(source.id)
+      sourceIds.add(source.id)
+    }
+  }
+
   // Validate keyFindings array
   if (payload.keyFindings !== undefined) {
     if (!Array.isArray(payload.keyFindings)) {
@@ -232,25 +261,31 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
       }
     }
 
+    // Check for duplicate finding IDs
+    const findingIdsSeen = new Set<string>()
     for (const finding of payload.keyFindings) {
       const fieldError = validateFinding(finding)
       if (fieldError) return fieldError
-    }
-  }
 
-  // Validate sources array
-  if (payload.sources !== undefined) {
-    if (!Array.isArray(payload.sources)) {
-      return {
-        success: false,
-        reason: "invalid_input",
-        message: "Sources must be an array",
+      if (findingIdsSeen.has(finding.id)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Duplicate finding ID: ${finding.id}`,
+        }
       }
-    }
+      findingIdsSeen.add(finding.id)
 
-    for (const source of payload.sources) {
-      const fieldError = validateSource(source)
-      if (fieldError) return fieldError
+      // Validate referential integrity: finding.sourceIds must reference existing sources
+      for (const refSourceId of finding.sourceIds) {
+        if (!sourceIds.has(refSourceId)) {
+          return {
+            success: false,
+            reason: "invalid_input",
+            message: `Finding references non-existent source ID: ${refSourceId}`,
+          }
+        }
+      }
     }
   }
 
@@ -292,9 +327,31 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
       }
     }
 
+    // Check for duplicate contradiction IDs
+    const contradictionIdsSeen = new Set<string>()
     for (const contradiction of payload.contradictions) {
       const fieldError = validateContradiction(contradiction)
       if (fieldError) return fieldError
+
+      if (contradictionIdsSeen.has(contradiction.id)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Duplicate contradiction ID: ${contradiction.id}`,
+        }
+      }
+      contradictionIdsSeen.add(contradiction.id)
+
+      // Validate referential integrity: contradiction.sourceIds must reference existing sources
+      for (const refSourceId of contradiction.sourceIds) {
+        if (!sourceIds.has(refSourceId)) {
+          return {
+            success: false,
+            reason: "invalid_input",
+            message: `Contradiction references non-existent source ID: ${refSourceId}`,
+          }
+        }
+      }
     }
   }
 

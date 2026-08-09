@@ -412,10 +412,8 @@ describe("Episode Research Commands", () => {
       actor: "human:web",
     })
 
-    // Note: This test expects the repository to accept duplicates but the command layer
-    // would need additional validation. For now, we accept it as the basic validation passes.
-    // In real implementation, add duplicate check.
-    assert.strictEqual(result.success, true) // Should fail in production with duplicate check
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
   })
 
   test("16. setEpisodeResearch: empty finding statement rejected", async () => {
@@ -558,49 +556,46 @@ describe("Episode Research Commands", () => {
     assert.strictEqual(result.reason, "not_found")
   })
 
-  test("24. setEpisodeResearch: finding sourceIds reference validation", async () => {
+  test("24. setEpisodeResearch: finding sourceIds reference validation (accepted)", async () => {
+    const source: ResearchSource = { id: "s1", title: "Source" }
     const finding: ResearchFinding = {
       id: "f1",
       statement: "Finding",
-      sourceIds: ["source-999"], // Non-existent source
+      sourceIds: ["s1"], // References existing source
     }
 
-    // Note: Basic validation passes; deeper validation would check if source exists.
-    // This test documents that the repository layer accepts it.
     const result = await setEpisodeResearch(repository, {
       episodeId: TEST_EPISODE_ID,
       expectedResearchVersion: null,
       keyFindings: [finding],
-      sources: [], // No sources
+      sources: [source],
       actor: "human:web",
     })
 
-    // Repository allows this; validation at command layer optional for v1
     assert.strictEqual(result.success, true)
-    if (result.success) {
-      assert.strictEqual(result.value?.keyFindings.length, 1)
-    }
+    assert.strictEqual(result.value?.keyFindings.length, 1)
+    assert.strictEqual(result.value?.keyFindings[0].sourceIds[0], "s1")
   })
 
-  test("25. setEpisodeResearch: contradiction sourceIds reference validation", async () => {
+  test("25. setEpisodeResearch: contradiction sourceIds reference validation (accepted)", async () => {
+    const source: ResearchSource = { id: "s1", title: "Source" }
     const contradiction: ResearchContradiction = {
       id: "c1",
       description: "Contradiction",
-      sourceIds: ["source-999"], // Non-existent source
+      sourceIds: ["s1"], // References existing source
     }
 
     const result = await setEpisodeResearch(repository, {
       episodeId: TEST_EPISODE_ID,
       expectedResearchVersion: null,
       contradictions: [contradiction],
-      sources: [], // No sources
+      sources: [source],
       actor: "human:web",
     })
 
     assert.strictEqual(result.success, true)
-    if (result.success) {
-      assert.strictEqual(result.value?.contradictions.length, 1)
-    }
+    assert.strictEqual(result.value?.contradictions.length, 1)
+    assert.strictEqual(result.value?.contradictions[0].sourceIds[0], "s1")
   })
 
   test("26. setEpisodeResearch: multiple updates increment version", async () => {
@@ -696,5 +691,121 @@ describe("Episode Research Commands", () => {
 
     assert.strictEqual(result.success, true)
     assert.deepStrictEqual(result.value?.openQuestions, questions)
+  })
+
+  test("31. setEpisodeResearch: duplicate source ID rejected", async () => {
+    const source1: ResearchSource = { id: "s1", title: "Source 1" }
+    const source2: ResearchSource = { id: "s1", title: "Source 2" } // Same ID
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source1, source2],
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("32. setEpisodeResearch: duplicate contradiction ID rejected", async () => {
+    const contradiction1: ResearchContradiction = {
+      id: "c1",
+      description: "Contradiction 1",
+      sourceIds: [],
+    }
+    const contradiction2: ResearchContradiction = {
+      id: "c1",
+      description: "Contradiction 2",
+      sourceIds: [],
+    } // Same ID
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      contradictions: [contradiction1, contradiction2],
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("33. setEpisodeResearch: finding references non-existent source rejected", async () => {
+    const finding: ResearchFinding = {
+      id: "f1",
+      statement: "Finding",
+      sourceIds: ["source-999"], // Does not exist
+    }
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      keyFindings: [finding],
+      sources: [], // No sources
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("34. setEpisodeResearch: contradiction references non-existent source rejected", async () => {
+    const contradiction: ResearchContradiction = {
+      id: "c1",
+      description: "Contradiction",
+      sourceIds: ["source-999"], // Does not exist
+    }
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      contradictions: [contradiction],
+      sources: [], // No sources
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, false)
+    assert.strictEqual(result.reason, "invalid_input")
+  })
+
+  test("35. setEpisodeResearch: finding references valid source accepted", async () => {
+    const source: ResearchSource = { id: "s1", title: "Source" }
+    const finding: ResearchFinding = {
+      id: "f1",
+      statement: "Finding",
+      sourceIds: ["s1"], // References existing source
+    }
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      keyFindings: [finding],
+      sources: [source],
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, true)
+    assert.strictEqual(result.value?.keyFindings[0].sourceIds[0], "s1")
+  })
+
+  test("36. setEpisodeResearch: contradiction references valid source accepted", async () => {
+    const source: ResearchSource = { id: "s1", title: "Source" }
+    const contradiction: ResearchContradiction = {
+      id: "c1",
+      description: "Contradiction",
+      sourceIds: ["s1"], // References existing source
+    }
+
+    const result = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      sources: [source],
+      contradictions: [contradiction],
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, true)
+    assert.strictEqual(result.value?.contradictions[0].sourceIds[0], "s1")
   })
 })
