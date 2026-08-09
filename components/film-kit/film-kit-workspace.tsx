@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { buildAi33Packet, buildFilmKitPackets, buildFilmProductionManifest } from "@/lib/film-kit"
+import { buildAi33Packet, buildFilmKitPackets, getFilmProductionTruth, getFilmProductionIntent } from "@/lib/film-kit"
 import { useFilmKit } from "./film-kit-provider"
 
 const workflowGroups = [
@@ -85,7 +85,8 @@ export function FilmKitWorkspace() {
   const activeStage = stageForSection(section)
   const packets = buildFilmKitPackets(film)
   const ai33Packet = buildAi33Packet(film.id as never)
-  const manifest = buildFilmProductionManifest(film)
+  const productionTruth = getFilmProductionTruth(film.id)
+  const productionIntent = getFilmProductionIntent(film)
 
   const heroStats = [
     ["Memory hook", film.brief.memoryHook],
@@ -325,41 +326,61 @@ export function FilmKitWorkspace() {
     ),
     production: (
       <div className="space-y-5">
-        <SectionHeader eyebrow="Production" title="Production spine routes" helper="Read-only view of deterministic production routes, artifacts, missing items, and QA states." />
+        <SectionHeader eyebrow="Production" title="Production spine routes" helper="Read-only view of deterministic production routes and execution states, separated from Film Kit intent." />
         
         <div className="space-y-4">
-          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Missing Artifacts</h3>
-          {manifest.missingArtifacts.length === 0 ? (
-            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">No missing artifacts.</div>
+          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Canonical Production State</h3>
+          {productionTruth.availability === "NO_CANONICAL_PRODUCTION_SPINE" ? (
+            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
+              No canonical production route exists yet.
+            </div>
           ) : (
-            <div className="grid gap-2 lg:grid-cols-2">
-              {manifest.missingArtifacts.map(missing => (
-                <div key={missing} className="rounded-xl border border-stone-200 bg-white p-4">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Missing</span>
-                  <p className="mt-1 font-bold text-neutral-950">{missing}</p>
-                </div>
+            <div className="grid gap-4 lg:grid-cols-2">
+              {productionTruth.routes.map(route => (
+                <article key={route.routeId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{route.routeType}</p>
+                      <h4 className="mt-1 font-bold text-neutral-950">{route.requestedArtifactType}</h4>
+                    </div>
+                    <StatusPill label={route.status} tone={route.status === "PLANNED" ? "neutral" : "green"} />
+                  </div>
+                </article>
               ))}
             </div>
           )}
         </div>
 
         <div className="space-y-4">
-          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Production Routes</h3>
+          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Production Intent</h3>
           <div className="grid gap-4 lg:grid-cols-2">
-            {manifest.routes.map(route => (
-              <article key={route.routeId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+            {productionIntent.assetIntent.map(asset => (
+              <article key={asset.id} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{route.routeType}</p>
-                    <h4 className="mt-1 font-bold text-neutral-950">{route.requestedArtifactType}</h4>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Asset Intent</p>
+                    <h4 className="mt-1 font-bold text-neutral-950">{asset.kind}</h4>
                   </div>
-                  <StatusPill label={route.status} tone={route.status === "PLANNED" ? "neutral" : "green"} />
+                  <StatusPill label={asset.status} />
                 </div>
-                <div className="mt-4 grid gap-2 text-xs text-stone-600 sm:grid-cols-2">
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">License</span><p className="mt-1">{route.licenseState}</p></div>
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Privacy</span><p className="mt-1">{route.privacyClass}</p></div>
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Hero Demo</span><p className="mt-1">{route.heroDemoContribution}</p></div>
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Execution</span><p className="mt-1">{route.executionMode}</p></div>
+                <div className="mt-4 text-xs text-stone-600">
+                  <span className="font-mono uppercase tracking-[0.16em] text-stone-400">Prompt</span>
+                  <p className="mt-1 truncate" title={asset.prompt}>{asset.prompt}</p>
+                </div>
+              </article>
+            ))}
+            {productionIntent.captureIntent.map(capture => (
+              <article key={capture.id} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Capture Intent</p>
+                    <h4 className="mt-1 font-bold text-neutral-950">{capture.shotId}</h4>
+                  </div>
+                  <StatusPill label={capture.status} />
+                </div>
+                <div className="mt-4 text-xs text-stone-600">
+                  <span className="font-mono uppercase tracking-[0.16em] text-stone-400">Requirements</span>
+                  <p className="mt-1 truncate" title={capture.requirements}>{capture.requirements}</p>
                 </div>
               </article>
             ))}
@@ -370,37 +391,40 @@ export function FilmKitWorkspace() {
     manifest: (
       <div className="space-y-5">
         <SectionHeader eyebrow="Manifest" title="Artifact assembly manifest" helper="The canonical read-only inventory for assembly." />
-        <DefinitionGrid
-          items={[
-            ["Next assembly step", manifest.nextAssemblyStep ?? "Unknown"],
-            ["Total artifacts", manifest.artifacts.length.toString()],
-            ["Missing count", manifest.missingArtifacts.length.toString()],
-          ]}
-        />
-        <div className="space-y-4">
-          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Artifacts</h3>
-          <div className="grid gap-4">
-            {manifest.artifacts.map(art => (
-              <div key={art.artifactId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between border-b border-stone-100 pb-3">
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{art.artifactId}</p>
-                    <p className="mt-1 font-bold text-neutral-950">{art.artifactType}</p>
+        {productionTruth.manifest ? (
+          <>
+            <DefinitionGrid
+              items={[
+                ["Next assembly step", productionTruth.manifest.nextAssemblyStep ?? "Unknown"],
+                ["Total artifacts", productionTruth.manifest.artifacts.length.toString()],
+                ["Missing count", productionTruth.manifest.missingArtifacts.length.toString()],
+              ]}
+            />
+            <div className="space-y-4">
+              <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Artifacts</h3>
+              <div className="grid gap-4">
+                {productionTruth.manifest.artifacts.map(art => (
+                  <div key={art.artifactId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between border-b border-stone-100 pb-3">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{art.artifactId}</p>
+                        <p className="mt-1 font-bold text-neutral-950">{art.artifactType}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <StatusPill label={art.status} tone={art.status === "APPROVED" || art.status === "PRODUCED" ? "green" : art.status === "QA_REQUIRED" ? "amber" : art.status === "REJECTED" ? "rose" : "neutral"} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <StatusPill label={art.status} tone={art.status === "APPROVED" || art.status === "PRODUCED" ? "green" : art.status === "QA_REQUIRED" ? "amber" : art.status === "REJECTED" ? "rose" : "neutral"} />
-                  </div>
-                </div>
-                <div className="mt-3 grid gap-2 text-xs text-stone-600 sm:grid-cols-3">
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Fingerprint</span><p className="mt-1 truncate" title={art.contentFingerprint}>{art.contentFingerprint}</p></div>
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Source</span><p className="mt-1 truncate" title={art.provenance}>{art.provenance}</p></div>
-                  <div><span className="font-mono uppercase tracking-[0.16em] text-stone-400">Execution Receipt</span><p className="mt-1 truncate" title={art.executionReceiptFingerprint ?? "None"}>{art.executionReceiptFingerprint ?? "None"}</p></div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <RawDisclosure label="manifest" value={productionTruth.manifest} />
+          </>
+        ) : (
+          <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
+            No canonical artifact manifest exists for this project yet.
           </div>
-        </div>
-        <RawDisclosure label="manifest" value={manifest} />
+        )}
       </div>
     ),
     export: (

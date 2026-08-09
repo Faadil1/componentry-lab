@@ -1,173 +1,249 @@
 import test, { describe } from "node:test"
 import assert from "node:assert"
-import { buildFilmProductionManifest } from "../lib/film-kit/production-adapter"
+import { getFilmProductionTruth, getFilmProductionIntent } from "../lib/film-kit/production-adapter"
 import { getFilmProjectById } from "../lib/film-kit/selectors"
+import { createArtifactManifest, createProductionArtifact } from "../lib/creative-os/production/artifacts"
+import { resolveProductionRoute } from "../lib/creative-os/production/router"
+import type { ExternalCapabilityPlan } from "../lib/creative-os/film-kit/types"
 import type { FilmProject } from "../lib/film-kit/types"
 
-describe("IA-04 Film Kit Production Projection", () => {
+describe("IA-04B Film Kit Production Projection Correction", () => {
   const film = getFilmProjectById("stated") as FilmProject
 
-  test("1. Film Kit production projection uses selected Film Kit/project ID", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.strictEqual(manifest.projectId, film.id)
+  const canonicalPlan: ExternalCapabilityPlan = {
+    resourceId: "res_cineprompt",
+    capabilityId: "PROMPT_SHARE_LINK_CREATION",
+    decomposedCapabilities: [],
+    requestedArtifact: "product-demo-film",
+    compatibilityStatus: "VERIFIED",
+    compatibilityEvidence: "fixture",
+    lifecycleState: "TEST_CANDIDATE",
+    currentAuthority: "READ_ONLY",
+    requiredAuthority: "EXPLICIT_EXTERNAL",
+    requiredHumanApproval: true,
+    humanApprovalState: "GRANTED",
+    costStatus: "FREE",
+    estimatedCost: "0.00",
+    privacyStatus: "LOCAL_ONLY",
+    licenseStatus: "UNKNOWN",
+    requiredInputs: ["brief"],
+    expectedOutputs: ["product-demo-film"],
+    executionMode: "NOT_EXECUTED",
+    executionStatus: "NOT_EXECUTED",
+    blockers: [],
+    missingEvidence: [],
+    planFingerprint: "fixture-plan"
+  }
+
+  const canonicalRoute = resolveProductionRoute(canonicalPlan, film.id, false)
+  const canonicalArtifact = createProductionArtifact(
+    film.id,
+    "product-demo-film",
+    canonicalRoute,
+    "fixture-agent",
+    ["brief"],
+    { title: film.brief.title },
+    "receipt_fixture",
+    "PLANNED"
+  )
+  const canonicalManifest = createArtifactManifest(
+    film.id,
+    "DAY_CHALLENGE",
+    ["product-demo-film"],
+    [canonicalArtifact],
+    [canonicalRoute]
+  )
+  const unknownLicensePlan: ExternalCapabilityPlan = {
+    ...canonicalPlan,
+    resourceId: null,
+    capabilityId: "",
+    requestedArtifact: null,
+    licenseStatus: "UNKNOWN",
+    planFingerprint: "fixture-plan-unknown"
+  }
+  const unknownLicenseRoute = resolveProductionRoute(unknownLicensePlan, film.id, false)
+  const unknownLicenseArtifact = createProductionArtifact(
+    film.id,
+    "unknown-output",
+    unknownLicenseRoute,
+    "fixture-agent",
+    [],
+    { title: film.brief.title }
+  )
+
+  test("1. FilmProject alone cannot create ProductionRoute", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.routes.length, 0)
   })
 
-  test("2. No independent production project selector is introduced", () => {
-    // Proven by adapter taking FilmProject directly without its own store
-    assert.ok(true)
+  test("2. FilmProject alone cannot create ProductionArtifact", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.artifacts.length, 0)
   })
 
-  test("3. ProductionRoute identity preserved", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.ok(manifest.routes.every(r => r.routeId.startsWith("route_")))
+  test("3. FilmProject alone cannot create ProductionArtifactManifest", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.manifest, null)
   })
 
-  test("4. ProductionArtifact identity preserved", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.ok(manifest.artifacts.every(a => a.artifactId.startsWith("art_")))
+  test("4. Presentation projection with no canonical production truth fails closed", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.availability, "NO_CANONICAL_PRODUCTION_SPINE")
   })
 
-  test("5. Manifest identity preserved", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.ok(manifest.manifestId.startsWith("manifest_stated_"))
+  test("5. No-data projection has routes=[]", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.deepStrictEqual(truth.routes, [])
   })
 
-  test("6. Projection deterministic", () => {
-    const manifest1 = buildFilmProductionManifest(film)
-    // Small delay to ensure timestamp differences don't break determinism if implemented correctly
-    const manifest2 = buildFilmProductionManifest(film)
-    assert.strictEqual(manifest1.artifacts.length, manifest2.artifacts.length)
-    assert.deepStrictEqual(manifest1.missingArtifacts, manifest2.missingArtifacts)
+  test("6. No-data projection has artifacts=[]", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.deepStrictEqual(truth.artifacts, [])
   })
 
-  test("7. Canonical route/artifact/manifest inputs are not mutated", () => {
-    const filmCopy = structuredClone(film)
-    buildFilmProductionManifest(film)
-    assert.deepStrictEqual(film, filmCopy)
+  test("7. No-data projection has manifest=null", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.manifest, null)
   })
 
-  test("8. ResourceLifecycle remains distinct from ProductionState", () => {
-    const manifest = buildFilmProductionManifest(film)
-    // Production state is PLANNED, PRODUCED, etc. Not TEST_CANDIDATE
-    assert.ok(manifest.artifacts.every(a => ["PLANNED", "PRODUCED", "QA_REQUIRED", "APPROVED", "REJECTED", "BLOCKED"].includes(a.status)))
+  test("8. Film production intent remains available separately", () => {
+    const intent = getFilmProductionIntent(film)
+    assert.ok(intent.captureIntent.length > 0)
+    assert.ok(intent.assetIntent.length > 0)
   })
 
-  test("9. Artifact approval remains distinct from resource approval", () => {
-    // Proven by mapping `approvalState` to `status` rather than leaking resource approvals
-    assert.ok(true)
+  test("9. Intent is not labeled ProductionArtifact", () => {
+    const intent = getFilmProductionIntent(film)
+    const asset = intent.assetIntent[0]
+    assert.ok(!("artifactId" in asset))
   })
 
-  test("10. PLANNED artifact with no path/reference is not classified as produced", () => {
-    const manifest = buildFilmProductionManifest(film)
-    const planned = manifest.artifacts.find(a => a.status === "PLANNED")
-    if (planned) {
-      assert.strictEqual(planned.localPath, null)
-      assert.strictEqual(planned.contentFingerprint, "PENDING_RENDER")
-    } else {
-        assert.ok(true) // If no planned artifacts, condition is vacuously true
-    }
+  test("10. Intent is not labeled ProductionRoute", () => {
+    const intent = getFilmProductionIntent(film)
+    const asset = intent.assetIntent[0]
+    assert.ok(!("routeId" in asset))
   })
 
-  test("11. Missing artifact remains missing", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.ok(manifest.missingArtifacts.includes("screen-capture") || manifest.missingArtifacts.includes("product-demo-film"))
+  test("11. Intent is not classified as canonical missingArtifacts", () => {
+    const intent = getFilmProductionIntent(film)
+    assert.ok(!("missingArtifacts" in intent))
   })
 
-  test("12. Existing artifact is not missing", () => {
-    const manifest = buildFilmProductionManifest(film)
-    const existing = manifest.artifacts.find(a => a.status === "PRODUCED")
-    if (existing) {
-        assert.ok(!manifest.missingArtifacts.includes(existing.artifactType))
-    }
+  test("12. Intent readiness is not ProductionState", () => {
+    const intent = getFilmProductionIntent(film)
+    const capture = intent.captureIntent[0]
+    assert.ok(["pending", "ready", "captured", "blocked"].includes(capture.status))
+    assert.ok(!["PLANNED", "READY", "BLOCKED", "IN_PRODUCTION", "PRODUCED", "QA_REQUIRED", "APPROVED", "REJECTED", "SUPERSEDED"].includes(capture.status))
   })
 
-  test("13. QA_REQUIRED artifact remains QA_REQUIRED", () => {
-    // Assert logic supports mapping QA_REQUIRED
-    assert.ok(true)
+  test("13. Canonical ProductionRoute input preserves routeId", () => {
+    assert.ok(canonicalRoute.routeId.startsWith("route_"))
+    assert.strictEqual(canonicalRoute.projectId, film.id)
   })
 
-  test("14. REJECTED artifact is excluded from assembly candidates if canonical contract says so", () => {
-    // manifest.artifacts includes it, but getAssemblyCandidates (from artifacts.ts) excludes it
-    assert.ok(true)
+  test("14. Canonical ProductionArtifact input preserves artifactId", () => {
+    assert.ok(canonicalArtifact.artifactId.startsWith("art_"))
+    assert.strictEqual(canonicalArtifact.sourceRouteId, canonicalRoute.routeId)
   })
 
-  test("15. APPROVED artifact remains eligible according to canonical contract", () => {
-    assert.ok(true)
+  test("15. Canonical manifest input preserves manifestId", () => {
+    assert.ok(canonicalManifest.manifestId.startsWith(`manifest_${film.id}_`))
+    assert.strictEqual(canonicalManifest.projectId, film.id)
   })
 
-  test("16. NO_MATCH route remains blocked", () => {
-    assert.ok(true)
+  test("16. Projection deterministic", () => {
+    const t1 = getFilmProductionTruth(film.id)
+    const t2 = getFilmProductionTruth(film.id)
+    assert.deepStrictEqual(t1, t2)
   })
 
-  test("17. UNKNOWN license remains UNKNOWN", () => {
-    assert.ok(true)
+  test("17. Canonical inputs immutable", () => {
+    const routeBefore = structuredClone(canonicalRoute)
+    const artifactBefore = structuredClone(canonicalArtifact)
+    const manifestBefore = structuredClone(canonicalManifest)
+
+    createProductionArtifact(film.id, "product-demo-film", canonicalRoute, "fixture-agent", ["brief"], { title: film.brief.title }, "receipt_fixture", "PLANNED")
+    createArtifactManifest(film.id, "DAY_CHALLENGE", ["product-demo-film"], [canonicalArtifact], [canonicalRoute])
+
+    assert.deepStrictEqual(canonicalRoute, routeBefore)
+    assert.deepStrictEqual(canonicalArtifact, artifactBefore)
+    assert.deepStrictEqual(canonicalManifest, manifestBefore)
   })
 
-  test("18. No fake execution receipt is created for native/local routes", () => {
-    const manifest = buildFilmProductionManifest(film)
-    const nativeArt = manifest.artifacts.find(a => a.provenance === "FilmKit_CaptureQueue")
-    if (nativeArt) {
-        assert.strictEqual(nativeArt.executionReceiptFingerprint, null)
-    }
+  test("18. PLANNED canonical artifact remains PLANNED", () => {
+    assert.strictEqual(canonicalArtifact.status, "PLANNED")
   })
 
-  test("19. External unexecuted route remains NOT_EXECUTED", () => {
-    assert.ok(true)
+  test("19. QA_REQUIRED only appears from canonical artifact truth", () => {
+    assert.ok(canonicalArtifact.status !== "QA_REQUIRED")
+    assert.ok(canonicalManifest.artifacts.every((artifact) => artifact.status !== "QA_REQUIRED" || artifact.artifactId === canonicalArtifact.artifactId))
   })
 
-  test("20. Existing receipt fingerprint is preserved if present", () => {
-    assert.ok(true)
+  test("20. UNKNOWN license remains UNKNOWN", () => {
+    assert.strictEqual(unknownLicenseRoute.licenseState, "UNKNOWN")
+    assert.strictEqual(unknownLicenseArtifact.licenseState, "UNKNOWN")
   })
 
-  test("21. Hero Demo contribution preserved", () => {
-    const manifest = buildFilmProductionManifest(film)
-    const route = manifest.routes.find(r => r.requestedArtifactType === "product-demo-film")
-    if (route) {
-        assert.strictEqual(route.heroDemoContribution, "SUPPORTING")
-    }
+  test("21. Execution receipt preserved only when input provides one", () => {
+    assert.strictEqual(canonicalArtifact.executionReceiptFingerprint, "receipt_fixture")
   })
 
-  test("22. nextAssemblyStep preserved", () => {
-    const manifest = buildFilmProductionManifest(film)
-    assert.ok(["PRODUCE_MISSING", "PERFORM_QA", "ASSEMBLY_READY"].includes(manifest.nextAssemblyStep!))
+  test("22. No fake execution receipt", () => {
+    const noReceiptArtifact = createProductionArtifact(film.id, "product-demo-film", canonicalRoute, "fixture-agent", ["brief"], { title: film.brief.title })
+    assert.strictEqual(noReceiptArtifact.executionReceiptFingerprint, null)
   })
 
-  test("23. nextAssemblyStep is not labeled as Director next action", () => {
-    assert.ok(true)
+  test("23. No provider execution callback", () => {
+    assert.strictEqual(canonicalRoute.executionMode, "NOT_EXECUTED")
+    assert.strictEqual(canonicalRoute.providerAdapterId, null)
   })
 
-  test("24. No provider execution callback exists", () => {
-    assert.ok(true)
+  test("24. No render callback", () => {
+    assert.strictEqual(canonicalRoute.routeType, "EXTERNAL_PROVIDER")
+    assert.ok(canonicalArtifact.contentFingerprint.length > 0)
   })
 
-  test("25. No render callback exists", () => {
-    assert.ok(true)
+  test("25. No lifecycle promotion", () => {
+    assert.strictEqual(canonicalArtifact.status, "PLANNED")
+    assert.strictEqual(canonicalManifest.missingArtifacts.includes("product-demo-film"), true)
   })
 
-  test("26. No lifecycle promotion exists", () => {
-    assert.ok(true)
+  test("26. nextAssemblyStep comes only from canonical manifest", () => {
+    assert.ok(canonicalManifest.nextAssemblyStep !== null)
+    assert.strictEqual(canonicalManifest.nextAssemblyStep, "PRODUCE_MISSING")
   })
 
-  test("27. Project Brain remains unmodified", () => {
-    assert.ok(true)
+  test("27. No manifest means no canonical nextAssemblyStep", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.manifest, null)
   })
 
-  test("28. Switching projects changes production projection context", () => {
-    const manifestStated = buildFilmProductionManifest(getFilmProjectById("stated")!)
-    const manifestBarOne = buildFilmProductionManifest(getFilmProjectById("before-bar-one")!)
-    assert.notStrictEqual(manifestStated.manifestId, manifestBarOne.manifestId)
-    assert.notStrictEqual(manifestStated.projectId, manifestBarOne.projectId)
+  test("28. Project context preserved", () => {
+    const intent = getFilmProductionIntent(film)
+    assert.strictEqual(intent.projectId, film.id)
   })
 
-  test("29. No production data fails closed rather than fabricating artifacts", () => {
-    const emptyFilm = { ...film, assets: [], captureQueue: [] }
-    const manifest = buildFilmProductionManifest(emptyFilm as unknown as FilmProject)
-    // Only includes product-demo-film (since brief.format exists)
-    assert.strictEqual(manifest.artifacts.length, 1)
+  test("29. Switching project changes production-truth lookup context", () => {
+    const intent1 = getFilmProductionIntent(getFilmProjectById("stated") as FilmProject)
+    const intent2 = getFilmProductionIntent(getFilmProjectById("glow-atelier") as FilmProject)
+    assert.notStrictEqual(intent1.projectId, intent2.projectId)
   })
 
-  test("30. Video Shotcraft planned state, if using canonical fixture/test data, does not become produced", () => {
-    // Assert video shotcraft is not fake-rendered
-    assert.ok(true)
+  test("30. Video Shotcraft is not fabricated into runtime", () => {
+    const truth = getFilmProductionTruth(film.id)
+    assert.strictEqual(truth.availability, "NO_CANONICAL_PRODUCTION_SPINE")
+    assert.strictEqual(truth.routes.length, 0)
+    assert.strictEqual(truth.artifacts.length, 0)
+  })
+
+  test("31. ResourceLifecycle remains separate from ProductionState", () => {
+    assert.notStrictEqual(canonicalArtifact.status, "TEST_CANDIDATE" as never)
+  })
+
+  test("32. Project Brain remains immutable", () => {
+    const clone = structuredClone(film)
+    getFilmProductionIntent(film)
+    getFilmProductionTruth(film.id)
+    assert.deepStrictEqual(film, clone)
   })
 })
