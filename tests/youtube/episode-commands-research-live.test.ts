@@ -29,9 +29,11 @@ type CountRow = { count: string | number }
 type JsonTypeRow = { json_type: string | null }
 type EventPayload = {
   operation?: "created" | "updated"
+  researchVersionBefore?: number | null
+  researchVersionAfter?: number
   changedFields: string[]
 }
-type EventRow = { payload: EventPayload }
+type EventRow = { event_type: string; payload: EventPayload }
 
 let sql: ReturnType<typeof postgres>
 let repository: EpisodeRepository
@@ -303,6 +305,46 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
     assert.strictEqual(row.summary, "V1")
   })
 
+  test("C3. Update creates audit event with correct metadata", async () => {
+    await sql`DELETE FROM episode_research WHERE episode_id = ${TEST_EPISODE_ID}`
+    await sql`DELETE FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}`
+
+    // Create
+    await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: null,
+      summary: "Initial",
+      actor: "human:web",
+    })
+
+    // Update
+    const updated = await setEpisodeResearch(repository, {
+      episodeId: TEST_EPISODE_ID,
+      expectedResearchVersion: 1,
+      summary: "Updated",
+      actor: "human:web",
+    })
+
+    assert.strictEqual(updated.success, true)
+
+    // Verify audit event
+    const events = await sql`
+      SELECT event_type, payload FROM episode_events
+      WHERE episode_id = ${TEST_EPISODE_ID}
+      ORDER BY created_at DESC
+      LIMIT 1
+    `
+    assert.strictEqual(events.length, 1)
+    const event = events[0] as EventRow
+    assert.strictEqual(event.event_type, "episode_research_set")
+
+    const payload = event.payload as EventPayload
+    assert.strictEqual(payload.operation, "updated")
+    assert.strictEqual(payload.researchVersionBefore, 1)
+    assert.strictEqual(payload.researchVersionAfter, 2)
+    assert.deepStrictEqual(payload.changedFields, ["summary"])
+  })
+
   // ─────────────────────────────────────────────────────────────
   // D. TRANSACTIONAL INTEGRITY
   // ─────────────────────────────────────────────────────────────
@@ -423,6 +465,11 @@ describe("Episode Research Commands Live (Neon Integration)", () => {
     const now = new Date().toISOString()
 
     try {
+      // Pre-cleanup: delete any residual data from previous run (in FK order)
+      await sql`DELETE FROM episode_events WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episode_research WHERE episode_id = ${testEpisodeId}`
+      await sql`DELETE FROM episodes WHERE episode_id = ${testEpisodeId}`
+
       // Create episode
       await sql`
         INSERT INTO episodes (

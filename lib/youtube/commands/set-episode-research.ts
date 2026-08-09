@@ -56,14 +56,34 @@ export async function setEpisodeResearch(
     }
   }
 
-  // Validate arrays and their contents
-  const validationError = validateResearchPayload(payload)
-  if (validationError) {
-    return validationError
+  // Validate patch structure (basic field/content validation)
+  const structureError = validateResearchPatchStructure(payload)
+  if (structureError) {
+    return structureError
   }
 
   // CREATE mode: expectedResearchVersion = null
   if (payload.expectedResearchVersion === null) {
+    // Build complete packet for CREATE (all fields supplied or defaulted)
+    const completePacket: CanonicalEpisodeResearch = {
+      episodeId: payload.episodeId,
+      summary: payload.summary,
+      keyFindings: payload.keyFindings || [],
+      sources: payload.sources || [],
+      openQuestions: payload.openQuestions || [],
+      contradictions: payload.contradictions || [],
+      schemaVersion: 1,
+      researchVersion: 0, // Not yet persisted
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+
+    // Validate complete packet referential integrity
+    const contentError = validateCanonicalResearchContent(completePacket)
+    if (contentError) {
+      return contentError
+    }
+
     // Attempt to create research
     const result = await repository.setEpisodeResearch({
       episodeId: payload.episodeId,
@@ -142,38 +162,30 @@ export async function setEpisodeResearch(
     }
   }
 
-  // For UPDATE, validate effective packet (merged payload + current research)
+  // For UPDATE, build and validate effective packet (merged payload + current research)
   const effectiveSources = payload.sources !== undefined ? payload.sources : currentResearch.sources
   const effectiveFindings = payload.keyFindings !== undefined ? payload.keyFindings : currentResearch.keyFindings
+  const effectiveOpenQuestions = payload.openQuestions !== undefined ? payload.openQuestions : currentResearch.openQuestions
   const effectiveContradictions = payload.contradictions !== undefined ? payload.contradictions : currentResearch.contradictions
+  const effectiveSummary = payload.summary !== undefined ? payload.summary : currentResearch.summary
 
-  // Build source ID set from effective sources
-  const effectiveSourceIds = new Set<string>(effectiveSources.map(s => s.id))
-
-  // Validate findings reference valid sources
-  for (const finding of effectiveFindings) {
-    for (const refSourceId of finding.sourceIds) {
-      if (!effectiveSourceIds.has(refSourceId)) {
-        return {
-          success: false,
-          reason: "invalid_input",
-          message: `Finding references non-existent source ID: ${refSourceId}`,
-        }
-      }
-    }
+  const effectivePacket: CanonicalEpisodeResearch = {
+    episodeId: payload.episodeId,
+    summary: effectiveSummary,
+    keyFindings: effectiveFindings,
+    sources: effectiveSources,
+    openQuestions: effectiveOpenQuestions,
+    contradictions: effectiveContradictions,
+    schemaVersion: currentResearch.schemaVersion,
+    researchVersion: currentResearch.researchVersion,
+    createdAt: currentResearch.createdAt,
+    updatedAt: currentResearch.updatedAt,
   }
 
-  // Validate contradictions reference valid sources
-  for (const contradiction of effectiveContradictions) {
-    for (const refSourceId of contradiction.sourceIds) {
-      if (!effectiveSourceIds.has(refSourceId)) {
-        return {
-          success: false,
-          reason: "invalid_input",
-          message: `Contradiction references non-existent source ID: ${refSourceId}`,
-        }
-      }
-    }
+  // Validate effective packet referential integrity
+  const contentError = validateCanonicalResearchContent(effectivePacket)
+  if (contentError) {
+    return contentError
   }
 
   // Detect semantic changes
@@ -243,10 +255,11 @@ export async function setEpisodeResearch(
 }
 
 /**
- * Validate research payload fields.
+ * Validate research patch structure: field types and content.
+ * Does NOT validate cross-field referential integrity.
  * Returns a CommandResult error if validation fails, null if valid.
  */
-function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandResult<never> | null {
+function validateResearchPatchStructure(payload: SetEpisodeResearchPayload): CommandResult<never> | null {
   // Validate summary if provided
   if (payload.summary !== undefined && typeof payload.summary !== "string") {
     return {
@@ -256,8 +269,7 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
     }
   }
 
-  // Validate sources array (validate first since findings/contradictions reference it)
-  const sourceIds = new Set<string>()
+  // Validate sources array structure
   if (payload.sources !== undefined) {
     if (!Array.isArray(payload.sources)) {
       return {
@@ -267,7 +279,7 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
       }
     }
 
-    // Check for duplicate source IDs
+    // Check for duplicate source IDs and validate each source field
     const sourceIdsSeen = new Set<string>()
     for (const source of payload.sources) {
       const fieldError = validateSource(source)
@@ -281,11 +293,10 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
         }
       }
       sourceIdsSeen.add(source.id)
-      sourceIds.add(source.id)
     }
   }
 
-  // Validate keyFindings array
+  // Validate keyFindings array structure
   if (payload.keyFindings !== undefined) {
     if (!Array.isArray(payload.keyFindings)) {
       return {
@@ -295,7 +306,7 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
       }
     }
 
-    // Check for duplicate finding IDs
+    // Check for duplicate finding IDs and validate each finding field
     const findingIdsSeen = new Set<string>()
     for (const finding of payload.keyFindings) {
       const fieldError = validateFinding(finding)
@@ -309,21 +320,10 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
         }
       }
       findingIdsSeen.add(finding.id)
-
-      // Validate referential integrity: finding.sourceIds must reference existing sources
-      for (const refSourceId of finding.sourceIds) {
-        if (!sourceIds.has(refSourceId)) {
-          return {
-            success: false,
-            reason: "invalid_input",
-            message: `Finding references non-existent source ID: ${refSourceId}`,
-          }
-        }
-      }
     }
   }
 
-  // Validate openQuestions array
+  // Validate openQuestions array structure
   if (payload.openQuestions !== undefined) {
     if (!Array.isArray(payload.openQuestions)) {
       return {
@@ -351,7 +351,7 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
     }
   }
 
-  // Validate contradictions array
+  // Validate contradictions array structure
   if (payload.contradictions !== undefined) {
     if (!Array.isArray(payload.contradictions)) {
       return {
@@ -361,7 +361,7 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
       }
     }
 
-    // Check for duplicate contradiction IDs
+    // Check for duplicate contradiction IDs and validate each contradiction field
     const contradictionIdsSeen = new Set<string>()
     for (const contradiction of payload.contradictions) {
       const fieldError = validateContradiction(contradiction)
@@ -375,15 +375,76 @@ function validateResearchPayload(payload: SetEpisodeResearchPayload): CommandRes
         }
       }
       contradictionIdsSeen.add(contradiction.id)
+    }
+  }
 
-      // Validate referential integrity: contradiction.sourceIds must reference existing sources
-      for (const refSourceId of contradiction.sourceIds) {
-        if (!sourceIds.has(refSourceId)) {
-          return {
-            success: false,
-            reason: "invalid_input",
-            message: `Contradiction references non-existent source ID: ${refSourceId}`,
-          }
+  return null
+}
+
+/**
+ * Validate a complete canonical research packet including referential integrity.
+ * Assumes all fields are defined (not partial patch).
+ * Returns a CommandResult error if validation fails, null if valid.
+ */
+function validateCanonicalResearchContent(research: CanonicalEpisodeResearch): CommandResult<never> | null {
+  // Check for duplicate source IDs across entire sources array
+  const sourceIdsSeen = new Set<string>()
+  const sourceIds = new Set<string>()
+  for (const source of research.sources) {
+    if (sourceIdsSeen.has(source.id)) {
+      return {
+        success: false,
+        reason: "invalid_input",
+        message: `Duplicate source ID: ${source.id}`,
+      }
+    }
+    sourceIdsSeen.add(source.id)
+    sourceIds.add(source.id)
+  }
+
+  // Validate findings referential integrity
+  const findingIdsSeen = new Set<string>()
+  for (const finding of research.keyFindings) {
+    if (findingIdsSeen.has(finding.id)) {
+      return {
+        success: false,
+        reason: "invalid_input",
+        message: `Duplicate finding ID: ${finding.id}`,
+      }
+    }
+    findingIdsSeen.add(finding.id)
+
+    // Each finding must reference valid sources
+    for (const refSourceId of finding.sourceIds) {
+      if (!sourceIds.has(refSourceId)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Finding references non-existent source ID: ${refSourceId}`,
+        }
+      }
+    }
+  }
+
+  // Validate contradictions referential integrity
+  const contradictionIdsSeen = new Set<string>()
+  for (const contradiction of research.contradictions) {
+    if (contradictionIdsSeen.has(contradiction.id)) {
+      return {
+        success: false,
+        reason: "invalid_input",
+        message: `Duplicate contradiction ID: ${contradiction.id}`,
+      }
+    }
+    contradictionIdsSeen.add(contradiction.id)
+
+    // Each contradiction must reference valid sources
+    for (const refSourceId of contradiction.sourceIds) {
+      if (!sourceIds.has(refSourceId)) {
+        return {
+          success: false,
+          reason: "invalid_input",
+          message: `Contradiction references non-existent source ID: ${refSourceId}`,
         }
       }
     }
