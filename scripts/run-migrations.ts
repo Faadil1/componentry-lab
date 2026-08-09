@@ -5,7 +5,7 @@
 // Loads DATABASE_URL from environment (.env.local not auto-loaded by Node).
 // ─────────────────────────────────────────────────────────────
 
-import { readFileSync } from "fs"
+import { readFileSync, readdirSync } from "fs"
 import { resolve } from "path"
 import postgres from "postgres"
 
@@ -43,30 +43,53 @@ async function runMigrations() {
     process.exit(1)
   }
 
-  // Read migration file
-  let migrationSql: string
+  // Read and execute all migration files in lexical order
+  const migrationsDir = resolve(process.cwd(), "db/migrations")
+  let migrationFiles: string[]
   try {
-    const migrationPath = resolve(process.cwd(), "db/migrations/001_canonical_episode_state.sql")
-    migrationSql = readFileSync(migrationPath, "utf-8")
+    const allFiles = readdirSync(migrationsDir)
+    migrationFiles = allFiles
+      .filter((f) => f.endsWith(".sql"))
+      .sort() // lexical order: 001_, 002_, etc.
   } catch (err) {
-    console.error("Error: Failed to read migration file: db/migrations/001_canonical_episode_state.sql")
+    console.error("Error: Failed to read migrations directory: db/migrations")
     console.error((err as Error).message)
     await sql.end()
     process.exit(1)
   }
 
-  // Execute migration
-  try {
-    // Execute the entire migration file as a single statement to PostgreSQL
-    // This allows the server to parse multi-statement SQL properly
-    await sql.unsafe(migrationSql)
+  if (migrationFiles.length === 0) {
+    console.log("ℹ No migration files found in db/migrations/")
+  }
 
-    console.log("✓ Migration executed successfully")
-  } catch (err) {
-    console.error("Error: Migration failed")
-    console.error((err as Error).message)
-    await sql.end()
-    process.exit(1)
+  // Execute each migration file
+  for (const migrationFile of migrationFiles) {
+    const migrationPath = resolve(migrationsDir, migrationFile)
+    let migrationSql: string
+    try {
+      migrationSql = readFileSync(migrationPath, "utf-8")
+    } catch (err) {
+      console.error(`Error: Failed to read migration file: ${migrationFile}`)
+      console.error((err as Error).message)
+      await sql.end()
+      process.exit(1)
+    }
+
+    try {
+      // Execute the entire migration file as a single statement to PostgreSQL
+      // This allows the server to parse multi-statement SQL properly
+      await sql.unsafe(migrationSql)
+      console.log(`✓ ${migrationFile} executed successfully`)
+    } catch (err) {
+      console.error(`Error: Migration ${migrationFile} failed`)
+      console.error((err as Error).message)
+      await sql.end()
+      process.exit(1)
+    }
+  }
+
+  if (migrationFiles.length > 0) {
+    console.log(`✓ All ${migrationFiles.length} migration(s) executed successfully`)
   }
 
   // Clean up connection

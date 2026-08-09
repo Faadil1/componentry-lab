@@ -7,6 +7,7 @@ config({ path: resolve(process.cwd(), ".env.local") })
 import postgres from "postgres"
 import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
 import { setEpisodeBrief } from "../../lib/youtube/commands/set-episode-brief.ts"
+import { transitionEpisodeState } from "../../lib/youtube/commands/transition-episode-state.ts"
 import type { EpisodeRepository } from "../../lib/persistence/episode-repository-core.ts"
 import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
 import { runCommandInTransaction } from "../../lib/youtube/commands/transactional-command-runner-core.ts"
@@ -273,39 +274,76 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
   // ─────────────────────────────────────────────────────────────
 
   test("E1. Event creation failure rolls back brief mutation", async () => {
-    // Get current brief version
-    const briefRows = await sql`
-      SELECT brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
-    `
-    const versionBefore = (briefRows[0] as any).brief_version
+    // Create temp episode for this test
+    const tempId = "c5-live-e1-" + Date.now()
+    const now = new Date().toISOString()
 
-    // Simulate event creation failure by mocking the repository
-    // (In a real scenario, this would be tested via transaction rollback)
-    // For now, we verify transactional semantics work by checking that
-    // successful updates increment both brief and event
-    const result = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+    await sql`
+      INSERT INTO episodes (
+        episode_id, channel_name, title, workflow_state, review_status,
+        schema_version, state_version, created_at, updated_at
+      ) VALUES (
+        ${tempId}, 'Test', 'Test', 'TOPIC', 'not-required', 1, 1, ${now}, ${now}
+      )
+    `
+
+    // Create initial brief
+    const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
       setEpisodeBrief(repo, {
-        episodeId: TEST_EPISODE_ID,
-        expectedBriefVersion: versionBefore,
-        editorialNotes: "Test rollback scenario",
+        episodeId: tempId,
+        expectedBriefVersion: null,
+        topic: "Rollback test",
         actor: "test:live",
       })
     )
+    assert.strictEqual(createResult.success, true)
 
-    assert.strictEqual(result.success, true)
+    // Get current version
+    const briefRows = await sql`
+      SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    const versionBefore = (briefRows[0] as any).brief_version
 
-    // Verify both brief and event were created
+    // Force a transaction failure by throwing inside the command
+    // The brief mutation should be rolled back
+    let threwError = false
+    try {
+      await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) => {
+        // Start the update
+        const updateResult = await setEpisodeBrief(repo, {
+          episodeId: tempId,
+          expectedBriefVersion: versionBefore,
+          editorialNotes: "Should rollback",
+          actor: "test:live",
+        })
+        assert.strictEqual(updateResult.success, true)
+        // Force failure after mutation
+        throw new Error("Simulated transaction failure")
+      })
+    } catch (err) {
+      threwError = true
+      assert.strictEqual((err as Error).message, "Simulated transaction failure")
+    }
+
+    assert.ok(threwError, "transaction should have thrown")
+
+    // Verify brief version is unchanged (rollback occurred)
     const briefRowsAfter = await sql`
-      SELECT brief_version FROM episode_briefs WHERE episode_id = ${TEST_EPISODE_ID}
+      SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
     `
-    assert.strictEqual((briefRowsAfter[0] as any).brief_version, versionBefore + 1)
+    assert.strictEqual((briefRowsAfter[0] as any).brief_version, versionBefore, "version should be unchanged after rollback")
 
+    // Verify no new event was created
     const events = await sql`
-      SELECT * FROM episode_events WHERE episode_id = ${TEST_EPISODE_ID}
+      SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
       AND event_type = 'episode_brief_set'
-      ORDER BY created_at DESC LIMIT 1
     `
-    assert.ok(events.length > 0, "event should be created")
+    assert.strictEqual((events[0] as any).count, 1, "only initial create event should exist")
+
+    // Cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
   })
 
   // ─────────────────────────────────────────────────────────────
@@ -361,5 +399,303 @@ describe("Episode Brief Commands Live (Neon Integration)", () => {
     // Verify brief cascaded delete
     const afterDelete = await sql`SELECT * FROM episode_briefs WHERE episode_id = ${tempId}`
     assert.strictEqual(afterDelete.length, 0, "brief should be deleted via cascade")
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // H. SEMANTIC NO-OP
+  // ─────────────────────────────────────────────────────────────
+
+  test("H1. Semantic no-op does not increment version", async () => {
+    const tempId = "c5-live-h1-" + Date.now()
+    const now = new Date().toISOString()
+
+    // Create episode
+    await sql`
+      INSERT INTO episodes (
+        episode_id, channel_name, title, workflow_state, review_status,
+        schema_version, state_version, created_at, updated_at
+      ) VALUES (
+        ${tempId}, 'Test', 'Test', 'TOPIC', 'not-required', 1, 1, ${now}, ${now}
+      )
+    `
+
+    // Create brief with angle and hook
+    const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: null,
+        topic: "Test Topic",
+        angle: "Test Angle",
+        hook: "Test Hook",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(createResult.success, true)
+
+    // Get version and updated_at
+    const briefBefore = await sql`
+      SELECT brief_version, updated_at FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    const versionBefore = (briefBefore[0] as any).brief_version
+    const updatedAtBefore = (briefBefore[0] as any).updated_at
+
+    // Wait a moment to ensure time difference would be detectable
+    await new Promise((resolve) => setTimeout(resolve, 100))
+
+    // Submit identical values
+    const noOpResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: versionBefore,
+        topic: "Test Topic",
+        angle: "Test Angle",
+        hook: "Test Hook",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(noOpResult.success, true)
+
+    // Verify version unchanged
+    const briefAfter = await sql`
+      SELECT brief_version, updated_at FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    const versionAfter = (briefAfter[0] as any).brief_version
+    const updatedAtAfter = (briefAfter[0] as any).updated_at
+
+    assert.strictEqual(versionAfter, versionBefore, "version should not increment on no-op")
+    assert.strictEqual(updatedAtAfter, updatedAtBefore, "updated_at should not change on no-op")
+
+    // Verify no event created
+    const events = await sql`
+      SELECT COUNT(*) as count FROM episode_events WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((events[0] as any).count, 1, "only create event should exist (no update event)")
+
+    // Cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // I. CLEAR OPTIONAL TEXT
+  // ─────────────────────────────────────────────────────────────
+
+  test("I1. Clear optional text field with empty string", async () => {
+    const tempId = "c5-live-i1-" + Date.now()
+    const now = new Date().toISOString()
+
+    // Create episode
+    await sql`
+      INSERT INTO episodes (
+        episode_id, channel_name, title, workflow_state, review_status,
+        schema_version, state_version, created_at, updated_at
+      ) VALUES (
+        ${tempId}, 'Test', 'Test', 'TOPIC', 'not-required', 1, 1, ${now}, ${now}
+      )
+    `
+
+    // Create brief with angle
+    const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: null,
+        topic: "Test",
+        angle: "Original Angle",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(createResult.success, true)
+
+    // Verify angle is set
+    const briefBefore = await sql`
+      SELECT angle, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((briefBefore[0] as any).angle, "Original Angle")
+    const versionBefore = (briefBefore[0] as any).brief_version
+
+    // Clear angle by sending empty string
+    const clearResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: versionBefore,
+        angle: "",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(clearResult.success, true)
+
+    // Verify angle is cleared in DB
+    const briefAfter = await sql`
+      SELECT angle, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((briefAfter[0] as any).angle, null, "angle should be NULL after clearing")
+    assert.strictEqual((briefAfter[0] as any).brief_version, versionBefore + 1, "version should increment")
+
+    // Verify event shows only angle changed
+    const events = await sql`
+      SELECT payload FROM episode_events WHERE episode_id = ${tempId}
+      AND event_type = 'episode_brief_set'
+      ORDER BY created_at DESC LIMIT 1
+    `
+    const payload = JSON.parse((events[0] as any).payload)
+    assert.ok(payload.changedFields.includes("angle"), "changedFields should include angle")
+
+    // Cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // J. CLEAR RESEARCH QUESTIONS
+  // ─────────────────────────────────────────────────────────────
+
+  test("J1. Clear research questions with empty array", async () => {
+    const tempId = "c5-live-j1-" + Date.now()
+    const now = new Date().toISOString()
+
+    // Create episode
+    await sql`
+      INSERT INTO episodes (
+        episode_id, channel_name, title, workflow_state, review_status,
+        schema_version, state_version, created_at, updated_at
+      ) VALUES (
+        ${tempId}, 'Test', 'Test', 'TOPIC', 'not-required', 1, 1, ${now}, ${now}
+      )
+    `
+
+    // Create brief with research questions
+    const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: null,
+        topic: "Test",
+        researchQuestions: ["Q1", "Q2"],
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(createResult.success, true)
+
+    // Verify questions are set
+    const briefBefore = await sql`
+      SELECT research_questions, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.deepStrictEqual((briefBefore[0] as any).research_questions, ["Q1", "Q2"])
+    const versionBefore = (briefBefore[0] as any).brief_version
+
+    // Clear questions by sending empty array
+    const clearResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: versionBefore,
+        researchQuestions: [],
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(clearResult.success, true)
+
+    // Verify questions are cleared in DB
+    const briefAfter = await sql`
+      SELECT research_questions, brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.deepStrictEqual((briefAfter[0] as any).research_questions, [], "questions should be empty array")
+    assert.strictEqual((briefAfter[0] as any).brief_version, versionBefore + 1)
+
+    // Cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
+  })
+
+  // ─────────────────────────────────────────────────────────────
+  // K. STATE VERSION INDEPENDENCE
+  // ─────────────────────────────────────────────────────────────
+
+  test("K1. Brief update does not affect episode state_version", async () => {
+    const tempId = "c5-live-k1-" + Date.now()
+    const now = new Date().toISOString()
+
+    // Create episode
+    await sql`
+      INSERT INTO episodes (
+        episode_id, channel_name, title, workflow_state, review_status,
+        schema_version, state_version, created_at, updated_at
+      ) VALUES (
+        ${tempId}, 'Test', 'Test', 'TOPIC', 'not-required', 1, 1, ${now}, ${now}
+      )
+    `
+
+    // Record initial state_version
+    const episodeBefore = await sql`
+      SELECT state_version FROM episodes WHERE episode_id = ${tempId}
+    `
+    const stateVersionBefore = (episodeBefore[0] as any).state_version
+
+    // Create brief
+    const createResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: null,
+        topic: "Test",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(createResult.success, true)
+
+    // Verify state_version unchanged
+    const episodeAfterBriefCreate = await sql`
+      SELECT state_version FROM episodes WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((episodeAfterBriefCreate[0] as any).state_version, stateVersionBefore)
+
+    // Update brief
+    const briefBefore = await sql`
+      SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    const briefVersion = (briefBefore[0] as any).brief_version
+
+    const updateResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      setEpisodeBrief(repo, {
+        episodeId: tempId,
+        expectedBriefVersion: briefVersion,
+        hook: "New Hook",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(updateResult.success, true)
+
+    // Verify state_version still unchanged
+    const episodeAfterBriefUpdate = await sql`
+      SELECT state_version FROM episodes WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((episodeAfterBriefUpdate[0] as any).state_version, stateVersionBefore)
+
+    // Now update episode workflow state
+    const workflowUpdateResult = await runCommandInTransaction(sql as unknown as PostgresSql, async (repo) =>
+      transitionEpisodeState(repo, {
+        episodeId: tempId,
+        expectedStateVersion: stateVersionBefore,
+        toState: "RESEARCH",
+        actor: "test:live",
+      })
+    )
+    assert.strictEqual(workflowUpdateResult.success, true)
+
+    // Verify episode state_version changed but brief_version unchanged
+    const episodeAfterWorkflow = await sql`
+      SELECT state_version FROM episodes WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((episodeAfterWorkflow[0] as any).state_version, stateVersionBefore + 1)
+
+    const briefAfterWorkflow = await sql`
+      SELECT brief_version FROM episode_briefs WHERE episode_id = ${tempId}
+    `
+    assert.strictEqual((briefAfterWorkflow[0] as any).brief_version, briefVersion + 1)
+
+    // Cleanup
+    await sql`DELETE FROM episode_events WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episode_briefs WHERE episode_id = ${tempId}`
+    await sql`DELETE FROM episodes WHERE episode_id = ${tempId}`
   })
 })
