@@ -155,51 +155,15 @@ export function getRecommendedRegistryEntries(project: ProjectBrain): ProjectRec
 }
 
 export function getRecommendedNextPhase(project: ProjectBrain): ProjectRecommendation[] {
-  const recommendations: ProjectRecommendation[] = []
-
-  const phaseOrder: Record<string, string> = {
-    intake: "qualify",
-    qualify: "research",
-    research: "position",
-    position: "differentiate",
-    differentiate: "concept",
-    concept: "design",
-    design: "prototype",
-    prototype: "build",
-    build: "verify",
-    verify: "audit",
-    audit: "capture",
-    capture: "present",
-    present: "submit",
-    submit: "publish",
-    publish: "retrospective",
-    retrospective: "intake"
-  }
-
-  const nextPhase = phaseOrder[project.status] || "qualify"
-
-  recommendations.push({
-    id: "rec_phase_next",
-    targetType: "phase",
-    targetId: nextPhase,
-    confidence: "strong-match",
-    reasons: [
-      `The project is currently in the '${project.status}' status.`,
-      `The standard workflow prescribes moving to '${nextPhase}' next.`
-    ],
-    matchedCriteria: [`status=${project.status}`],
-    missingInformation: [],
-    limitations: []
-  })
-
-  return recommendations
+  // Phase recommendations are now exclusively governed by the Creative Director.
+  // We return an empty array to ensure Smart Recommendations acts purely as SUPPORTING guidance.
+  return []
 }
 
 export function getAllRecommendations(project: ProjectBrain): ProjectRecommendation[] {
   return [
     ...getRecommendedRecipes(project),
     ...getRecommendedPlaybooks(project),
-    ...getRecommendedRegistryEntries(project),
-    ...getRecommendedNextPhase(project)
+    ...getRecommendedRegistryEntries(project)
   ]
 }

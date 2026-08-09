@@ -312,14 +312,14 @@ export function adaptDirectorResult(input: DirectorInput): DirectorResult {
   const selectedSkills = selectSkillsForMode(
     input.availableSkills,
     input.mode,
-    resolveDirectorPhase(input.mode),
+    resolveDirectorPhase(input.mode, input.phaseContext),
     input.authorityContext.authorityLevel
   )
 
   const nextAction = mapActionCandidate(
     input.project,
     input.mode,
-    resolveDirectorPhase(input.mode),
+    resolveDirectorPhase(input.mode, input.phaseContext),
     blockers,
     input.authorityContext.authorityLevel,
     gateEvaluations.find((gate) => gate.gateId === "hero-demo-moment")?.gateId ?? "director:gates"
@@ -327,7 +327,7 @@ export function adaptDirectorResult(input: DirectorInput): DirectorResult {
 
   return {
     mode: input.mode,
-    resolvedPhase: resolveDirectorPhase(input.mode),
+    resolvedPhase: resolveDirectorPhase(input.mode, input.phaseContext),
     objective,
     evaluatorPath: modeState.evaluator,
     heroDemoMoment,

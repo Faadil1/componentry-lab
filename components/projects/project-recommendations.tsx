@@ -35,7 +35,7 @@ export function ProjectRecommendations() {
     <div className="space-y-4 text-left">
       <div className="space-y-1">
         <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-neutral-950">
-          Smart Recommendations
+          Supporting Recommendations
         </h2>
         <p className="font-mono text-[10px] text-stone-400 uppercase">
           Deterministically resolved from the current active project context details.

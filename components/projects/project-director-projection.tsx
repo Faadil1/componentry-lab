@@ -65,7 +65,7 @@ export function ProjectDirectorProjection() {
             {modeTheme.label}
           </span>
           <span className="inline-flex items-center rounded-full bg-stone-100 border border-stone-200 px-2 py-0.5 text-[9px] font-mono font-medium text-stone-600">
-            Phase: {result.resolvedPhase}
+            Director Stage: {result.resolvedPhase}
           </span>
         </div>
         <div className="text-[10px] font-mono text-stone-500 uppercase">
