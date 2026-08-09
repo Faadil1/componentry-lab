@@ -7,7 +7,7 @@ import { getFilmProjectById } from "@/lib/film-kit"
 import type { FilmApprovalGate, FilmKitContextValue } from "@/lib/film-kit"
 
 const FilmKitContext = React.createContext<FilmKitContextValue | null>(null)
-const validSections = new Set(["overview", "brief", "narrative", "scenes", "shots", "capture", "broll", "voice", "music", "assets", "timeline", "subtitles", "providers", "budget", "qa", "export"])
+const validSections = new Set(["overview", "brief", "narrative", "scenes", "shots", "capture", "production", "broll", "voice", "music", "assets", "manifest", "timeline", "subtitles", "providers", "budget", "qa", "export"])
 
 function normalizeBool(value: string | null, fallback = false) {
   if (value === "1" || value === "true") return true

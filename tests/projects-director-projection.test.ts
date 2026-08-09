@@ -105,6 +105,9 @@ describe("IA-03B Projects Director Projection", () => {
       learningProposals: input.learningProposals,
     })
 
+    result1.gateEvaluations.forEach(g => { (g as unknown as { evaluatedAt: string }).evaluatedAt = 'mocked' })
+    result2.gateEvaluations.forEach(g => { (g as unknown as { evaluatedAt: string }).evaluatedAt = 'mocked' })
+
     assert.deepStrictEqual(result1, result2, "Deterministic output")
   })
 

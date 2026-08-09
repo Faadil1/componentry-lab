@@ -1,4 +1,4 @@
-import { projectPresets, type ProjectBrain } from "@/lib/projects"
+import { projectPresets, type ProjectBrain } from "../projects"
 import { buildNarrative } from "./narrative"
 import { secondsToFrames, buildRemotionReadyConfig } from "./timeline"
 import { FILM_PROJECT_IDS } from "./schema"
