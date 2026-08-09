@@ -6,7 +6,6 @@ config({ path: resolve(process.cwd(), ".env.local") })
 
 import postgres from "postgres"
 import { createEpisodeRepository } from "../../lib/persistence/episode-repository-live-core.ts"
-import { runInTransaction } from "../../lib/persistence/transaction-runner.ts"
 import { runCommandInTransaction } from "../../lib/youtube/commands/transactional-command-runner-core.ts"
 import { createEpisode } from "../../lib/youtube/commands/create-episode.ts"
 import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
@@ -57,32 +56,18 @@ describe("Create Episode Integration Tests (Neon)", () => {
   test("A. successful create with episode_created event", async () => {
     const repository = createEpisodeRepository(sql as unknown as PostgresSql)
 
-    // Production orchestration: create + event in same transaction
-    await runCommandInTransaction(sql, async (repo) => {
-      const result = await createEpisode(repo, {
+    // Command handles event creation (no duplication)
+    const result = await runCommandInTransaction(sql, async (repo) =>
+      createEpisode(repo, {
         episodeId: TEST_EPISODE_ID_A,
         episodeNumber: 1,
         channelName: "Test Channel A",
         title: "Integration Test A",
         actor: "human:web",
       })
+    )
 
-      if (result.success) {
-        await repo.createEpisodeEvent({
-          episodeId: result.value!.episodeId,
-          eventType: "episode_created",
-          actor: "human:web",
-          payload: {
-            episodeId: TEST_EPISODE_ID_A,
-            episodeNumber: 1,
-            channelName: "Test Channel A",
-            title: "Integration Test A",
-          },
-        })
-      }
-
-      return result
-    })
+    assert.strictEqual(result.success, true)
 
     // Verify episode exists
     const episode = await repository.getEpisodeById(TEST_EPISODE_ID_A)
@@ -91,7 +76,7 @@ describe("Create Episode Integration Tests (Neon)", () => {
     assert.strictEqual(episode!.workflowState, "TOPIC")
     assert.strictEqual(episode!.reviewStatus, "not-required")
 
-    // Verify event exists
+    // Verify event was created by command
     const events = await repository.getEpisodeEvents(TEST_EPISODE_ID_A)
     assert.strictEqual(events.length, 1)
     assert.strictEqual(events[0]!.eventType, "episode_created")
@@ -103,61 +88,50 @@ describe("Create Episode Integration Tests (Neon)", () => {
     assert.strictEqual(events[0]!.payload.title, "Integration Test A")
   })
 
-  test("B. duplicate episodeId returns conflict with healthy transaction", async () => {
+  test("B. duplicate episodeId returns conflict, only one event total", async () => {
     const repository = createEpisodeRepository(sql as unknown as PostgresSql)
 
-    // First create succeeds
-    const firstResult = await runCommandInTransaction(sql, async (repo) => {
-      const result = await createEpisode(repo, {
+    // First create
+    const firstResult = await runCommandInTransaction(sql, async (repo) =>
+      createEpisode(repo, {
         episodeId: TEST_EPISODE_ID_B,
         episodeNumber: 2,
         channelName: "Test Channel B",
         title: "First Episode",
         actor: "human:web",
       })
-
-      if (result.success) {
-        await repo.createEpisodeEvent({
-          episodeId: result.value!.episodeId,
-          eventType: "episode_created",
-          actor: "human:web",
-          payload: {
-            episodeId: TEST_EPISODE_ID_B,
-            episodeNumber: 2,
-            channelName: "Test Channel B",
-            title: "First Episode",
-          },
-        })
-      }
-
-      return result
-    })
+    )
 
     assert.strictEqual(firstResult.success, true)
 
-    // Second create returns conflict (transaction remains healthy)
-    const duplicateResult = await runCommandInTransaction(sql, async (repo) => {
-      return await createEpisode(repo, {
+    // Verify one episode and one event
+    let episode = await repository.getEpisodeById(TEST_EPISODE_ID_B)
+    assert.ok(episode)
+    let events = await repository.getEpisodeEvents(TEST_EPISODE_ID_B)
+    assert.strictEqual(events.length, 1)
+
+    // Second create (duplicate)
+    const duplicateResult = await runCommandInTransaction(sql, async (repo) =>
+      createEpisode(repo, {
         episodeId: TEST_EPISODE_ID_B,
         episodeNumber: 3,
         channelName: "Test Channel B",
         title: "Duplicate Episode",
         actor: "human:web",
       })
-    })
+    )
 
     assert.strictEqual(duplicateResult.success, false)
     if (!duplicateResult.success) {
       assert.strictEqual(duplicateResult.reason, "conflict")
     }
 
-    // Verify only one episode exists
-    const episode = await repository.getEpisodeById(TEST_EPISODE_ID_B)
+    // Verify still one episode and one event (no duplicates)
+    episode = await repository.getEpisodeById(TEST_EPISODE_ID_B)
     assert.ok(episode)
     assert.strictEqual(episode!.title, "First Episode")
 
-    // Verify exactly one event total
-    const events = await repository.getEpisodeEvents(TEST_EPISODE_ID_B)
+    events = await repository.getEpisodeEvents(TEST_EPISODE_ID_B)
     assert.strictEqual(events.length, 1)
     assert.strictEqual(events[0]!.eventType, "episode_created")
   })
@@ -166,38 +140,26 @@ describe("Create Episode Integration Tests (Neon)", () => {
     const repository = createEpisodeRepository(sql as unknown as PostgresSql)
 
     try {
-      await runInTransaction(sql, async (txnSql) => {
-        const txnRepository = createEpisodeRepository(txnSql as unknown as PostgresSql)
+      await runCommandInTransaction(sql, async (repo) => {
+        // Temporarily replace createEpisodeEvent to force failure
+        const originalCreateEvent = repo.createEpisodeEvent.bind(repo)
+        repo.createEpisodeEvent = async () => {
+          // Restore first to avoid breaking subsequent tests
+          repo.createEpisodeEvent = originalCreateEvent
+          throw new Error("Forced event creation failure")
+        }
 
-        // Create episode
-        const createResult = await createEpisode(txnRepository, {
+        return await createEpisode(repo, {
           episodeId: TEST_EPISODE_ID_C,
           episodeNumber: 4,
           channelName: "Test Channel C",
           title: "Rollback Test",
           actor: "human:web",
         })
-
-        assert.strictEqual(createResult.success, true)
-
-        // Force event creation failure with invalid timestamp
-        await txnSql`
-          INSERT INTO episode_events (
-            episode_id,
-            event_type,
-            actor,
-            created_at
-          )
-          VALUES (
-            ${TEST_EPISODE_ID_C},
-            'episode_created',
-            'human:web',
-            'this-is-not-a-valid-timestamp'
-          )
-        `
       })
-    } catch {
-      // Expected: transaction failed
+    } catch (err) {
+      // Expected: transaction failed due to event creation error
+      assert.ok((err as Error).message.includes("Forced event creation failure"))
     }
 
     // Verify episode was rolled back
@@ -211,9 +173,6 @@ describe("Create Episode Integration Tests (Neon)", () => {
 
   test("D. infrastructure error propagates to caller", async () => {
     // Pass invalid input that will cause a database error
-    // For example, episodeNumber as non-integer or other DB constraint
-    // The repository should throw (not return conflict), which propagates as infrastructure_error
-
     let infrastructureErrorThrown = false
 
     try {

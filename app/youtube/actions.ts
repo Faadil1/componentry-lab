@@ -198,32 +198,15 @@ export async function createEpisodeAction(
 ): Promise<CommandResult<CanonicalEpisode>> {
   try {
     const sql = getDatabase()
-    const result = await runCommandInTransaction(sql, async (repository) => {
-      const commandResult = await createEpisode(repository, {
+    const result = await runCommandInTransaction(sql, async (repository) =>
+      createEpisode(repository, {
         episodeId,
         episodeNumber,
         channelName,
         title,
         actor: "human:web",
       })
-
-      if (commandResult.success) {
-        // Create episode_created event in same transaction
-        await repository.createEpisodeEvent({
-          episodeId: commandResult.value!.episodeId,
-          eventType: "episode_created",
-          actor: "human:web",
-          payload: {
-            episodeId,
-            episodeNumber,
-            channelName,
-            title,
-          },
-        })
-      }
-
-      return commandResult
-    })
+    )
 
     if (result.success) {
       revalidatePath("/youtube")

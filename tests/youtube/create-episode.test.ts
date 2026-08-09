@@ -59,6 +59,31 @@ describe("createEpisode command", () => {
     assert.strictEqual(result.stateVersion, 1)
   })
 
+  test("episode_created event is created by command", async () => {
+    const repository = createMockRepository()
+
+    const result = await createEpisode(repository, {
+      episodeId: "test-event-001",
+      episodeNumber: 100,
+      channelName: "Test Channel",
+      title: "Event Test",
+      actor: "human:web",
+    })
+
+    assert.strictEqual(result.success, true)
+
+    // Verify event was created by the command
+    const events = await repository.getEpisodeEvents("test-event-001")
+    assert.strictEqual(events.length, 1)
+    assert.strictEqual(events[0]!.eventType, "episode_created")
+    assert.strictEqual(events[0]!.actor, "human:web")
+    assert.ok(events[0]!.payload)
+    assert.strictEqual(events[0]!.payload.episodeId, "test-event-001")
+    assert.strictEqual(events[0]!.payload.episodeNumber, 100)
+    assert.strictEqual(events[0]!.payload.channelName, "Test Channel")
+    assert.strictEqual(events[0]!.payload.title, "Event Test")
+  })
+
   test("empty episodeId returns invalid_input", async () => {
     const repository = createMockRepository()
 
@@ -134,7 +159,7 @@ describe("createEpisode command", () => {
     assert.strictEqual(result.reason, "invalid_input")
   })
 
-  test("duplicate episodeId returns conflict", async () => {
+  test("duplicate episodeId returns conflict, only one event created", async () => {
     const repository = createMockRepository()
 
     // Create first episode
@@ -146,6 +171,10 @@ describe("createEpisode command", () => {
       actor: "human:web",
     })
     assert.strictEqual(firstResult.success, true)
+
+    // Verify first create produced one event
+    let events = await repository.getEpisodeEvents("duplicate-test")
+    assert.strictEqual(events.length, 1)
 
     // Attempt to create duplicate
     const secondResult = await createEpisode(repository, {
@@ -160,6 +189,10 @@ describe("createEpisode command", () => {
     if (!secondResult.success) {
       assert.strictEqual(secondResult.reason, "conflict")
     }
+
+    // Verify still only one event (no duplicate event created)
+    events = await repository.getEpisodeEvents("duplicate-test")
+    assert.strictEqual(events.length, 1)
   })
 
   test("reviewStatus always not-required", async () => {

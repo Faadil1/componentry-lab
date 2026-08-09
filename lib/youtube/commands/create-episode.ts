@@ -84,6 +84,20 @@ export async function createEpisode(
     }
   }
 
+  // Create audit event in same transaction
+  // If event creation throws, transaction rolls back episode (atomic)
+  await repository.createEpisodeEvent({
+    episodeId: result.episode.episodeId,
+    eventType: "episode_created",
+    actor: payload.actor,
+    payload: {
+      episodeId: payload.episodeId,
+      episodeNumber: payload.episodeNumber,
+      channelName: payload.channelName,
+      title: payload.title,
+    },
+  })
+
   return {
     success: true,
     value: result.episode,
