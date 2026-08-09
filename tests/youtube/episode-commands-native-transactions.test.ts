@@ -9,6 +9,7 @@ import { createEpisodeRepository } from "../../lib/persistence/episode-repositor
 import { runInTransaction } from "../../lib/persistence/transaction-runner.ts"
 import { runCommandInTransaction } from "../../lib/youtube/commands/transactional-command-runner-core.ts"
 import { transitionEpisodeState } from "../../lib/youtube/commands/transition-episode-state.ts"
+import { getNextWorkflowStage } from "../../lib/youtube/commands/workflow-policy.ts"
 import type { PostgresSql } from "../../lib/persistence/episode-repository-live-core.ts"
 
 const TEST_EPISODE_ID = "native-txn-test-001"
@@ -204,11 +205,14 @@ describe("Native Postgres.js Transaction Tests", () => {
 
     const before = await repository.getEpisodeById(TEST_EPISODE_ID)
 
+    const nextStage = getNextWorkflowStage(before!.workflowState)
+    assert.strictEqual(nextStage, "SCRIPT")
+
     const result = await runCommandInTransaction(sql, async (repo) =>
       transitionEpisodeState(repo, {
         episodeId: TEST_EPISODE_ID,
         expectedStateVersion: before!.stateVersion,
-        toState: "NARRATION",
+        toState: nextStage!,
         actor: "test",
       })
     )
@@ -217,7 +221,7 @@ describe("Native Postgres.js Transaction Tests", () => {
 
     // Verify state updated
     const after = await repository.getEpisodeById(TEST_EPISODE_ID)
-    assert.strictEqual(after!.workflowState, "NARRATION")
+    assert.strictEqual(after!.workflowState, "SCRIPT")
     assert.strictEqual(after!.stateVersion, before!.stateVersion + 1)
   })
 
