@@ -242,3 +242,95 @@ export interface EpisodeBriefRow {
   created_at: string
   updated_at: string
 }
+
+/**
+ * Canonical research finding.
+ * A single researched fact or claim with evidence references.
+ */
+export interface ResearchFinding {
+  id: string
+  statement: string
+  sourceIds: string[]
+  notes?: string
+}
+
+/**
+ * Canonical research source.
+ * A reference document, article, interview, or other research material.
+ */
+export interface ResearchSource {
+  id: string
+  title: string
+  url?: string
+  publisher?: string
+  author?: string
+  publishedAt?: string
+  accessedAt?: string
+  notes?: string
+}
+
+/**
+ * Canonical research contradiction.
+ * Conflicting claims found during research that need resolution.
+ */
+export interface ResearchContradiction {
+  id: string
+  description: string
+  sourceIds: string[]
+}
+
+/**
+ * Canonical episode research packet.
+ * Structured research workspace for progressive investigation.
+ * 1:1 relationship with episodes.
+ */
+export interface CanonicalEpisodeResearch {
+  episodeId: string
+  summary?: string
+  keyFindings: ResearchFinding[]
+  sources: ResearchSource[]
+  openQuestions: string[]
+  contradictions: ResearchContradiction[]
+  schemaVersion: number
+  researchVersion: number
+  createdAt: string
+  updatedAt: string
+}
+
+/**
+ * Set episode research input.
+ * Handles both create (expectedResearchVersion: null) and update (expectedResearchVersion: N) cases.
+ */
+export interface SetEpisodeResearchInput {
+  episodeId: string
+  expectedResearchVersion: number | null
+  summary?: string
+  keyFindings?: ResearchFinding[]
+  sources?: ResearchSource[]
+  openQuestions?: string[]
+  contradictions?: ResearchContradiction[]
+}
+
+/**
+ * Repository result for research set operation.
+ * Distinguishes conflict/not_found from successful mutations without throwing.
+ */
+export type SetEpisodeResearchRepositoryResult =
+  | { success: true; research: CanonicalEpisodeResearch }
+  | { success: false; reason: "conflict" | "not_found" | "episode_not_found"; currentResearchVersion?: number }
+
+/**
+ * Database row type for episode_research (snake_case from database).
+ */
+export interface EpisodeResearchRow {
+  episode_id: string
+  summary: string | null
+  key_findings: ResearchFinding[]
+  sources: ResearchSource[]
+  open_questions: string[]
+  contradictions: ResearchContradiction[]
+  schema_version: number
+  research_version: number
+  created_at: string
+  updated_at: string
+}

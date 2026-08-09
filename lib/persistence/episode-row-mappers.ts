@@ -9,8 +9,12 @@ import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
   CanonicalEpisodeBrief,
+  CanonicalEpisodeResearch,
   CanonicalBlocker,
   CanonicalDecision,
+  ResearchFinding,
+  ResearchSource,
+  ResearchContradiction,
 } from "./canonical-types"
 
 /**
@@ -66,6 +70,23 @@ export interface EpisodeBriefRow {
   research_questions: string[] | null
   schema_version: number
   brief_version: number
+  created_at: string | Date
+  updated_at: string | Date
+}
+
+/**
+ * Database row representation for episode research.
+ * Reflects actual PostgreSQL column types and names.
+ */
+export interface EpisodeResearchRow {
+  episode_id: string
+  summary: string | null
+  key_findings: ResearchFinding[] | null
+  sources: ResearchSource[] | null
+  open_questions: string[] | null
+  contradictions: ResearchContradiction[] | null
+  schema_version: number
+  research_version: number
   created_at: string | Date
   updated_at: string | Date
 }
@@ -196,6 +217,28 @@ export function mapRowToEpisodeBrief(row: EpisodeBriefRow): CanonicalEpisodeBrie
     researchQuestions: questions,
     schemaVersion: row.schema_version,
     briefVersion: row.brief_version,
+    createdAt: normalizeTimestamp(row.created_at, "created_at", true) || "",
+    updatedAt: normalizeTimestamp(row.updated_at, "updated_at", true) || "",
+  }
+}
+
+/**
+ * Convert database row to canonical episode research domain object.
+ *
+ * @param row - database row
+ * @returns canonical episode research with normalized types
+ * @throws if required fields are missing or malformed
+ */
+export function mapRowToEpisodeResearch(row: EpisodeResearchRow): CanonicalEpisodeResearch {
+  return {
+    episodeId: row.episode_id,
+    summary: row.summary ?? undefined,
+    keyFindings: row.key_findings ?? [],
+    sources: row.sources ?? [],
+    openQuestions: row.open_questions ?? [],
+    contradictions: row.contradictions ?? [],
+    schemaVersion: row.schema_version,
+    researchVersion: row.research_version,
     createdAt: normalizeTimestamp(row.created_at, "created_at", true) || "",
     updatedAt: normalizeTimestamp(row.updated_at, "updated_at", true) || "",
   }

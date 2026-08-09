@@ -14,6 +14,7 @@ import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
   CanonicalEpisodeBrief,
+  CanonicalEpisodeResearch,
   CanonicalBlocker,
   CanonicalDecision,
   CreateEpisodeEventInput,
@@ -23,10 +24,15 @@ import type {
   OptimisticLockResult,
   SetEpisodeBriefInput,
   SetEpisodeBriefRepositoryResult,
+  SetEpisodeResearchInput,
+  SetEpisodeResearchRepositoryResult,
+  ResearchFinding,
+  ResearchSource,
+  ResearchContradiction,
 } from "./canonical-types.ts"
 import type { EpisodeRepository } from "./episode-repository-core.ts"
-import type { EpisodeRow, EpisodeEventRow, EpisodeBriefRow } from "./episode-row-mappers.ts"
-import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief } from "./episode-row-mappers.ts"
+import type { EpisodeRow, EpisodeEventRow, EpisodeBriefRow, EpisodeResearchRow } from "./episode-row-mappers.ts"
+import { mapRowToEpisode, mapRowToEpisodeEvent, mapRowToEpisodeBrief, mapRowToEpisodeResearch } from "./episode-row-mappers.ts"
 
 // Re-export from sql-types for tests that import directly from this module
 export type { PostgresSql } from "./sql-types.ts"
@@ -447,6 +453,174 @@ export function createEpisodeRepository(sql: PostgresSql): EpisodeRepository {
       return {
         success: true,
         brief: mapRowToEpisodeBrief(result[0] as unknown as EpisodeBriefRow),
+      }
+    },
+
+    async getEpisodeResearch(episodeId: string): Promise<CanonicalEpisodeResearch | null> {
+      const rows = await sql`
+        SELECT * FROM episode_research WHERE episode_id = ${episodeId}
+      `
+      if (rows.length === 0) return null
+      return mapRowToEpisodeResearch(rows[0] as unknown as EpisodeResearchRow)
+    },
+
+    async setEpisodeResearch(input: SetEpisodeResearchInput): Promise<SetEpisodeResearchRepositoryResult> {
+      // Verify episode exists
+      const episodeCheck = await sql`
+        SELECT episode_id FROM episodes WHERE episode_id = ${input.episodeId}
+      `
+      if (episodeCheck.length === 0) {
+        return {
+          success: false,
+          reason: "episode_not_found",
+        }
+      }
+
+      const now = new Date().toISOString()
+
+      // CREATE mode: expectedResearchVersion = null
+      if (input.expectedResearchVersion === null) {
+        const normalizedSummary = input.summary && input.summary.trim() ? input.summary : null
+
+        const rows = await sql`
+          INSERT INTO episode_research (
+            episode_id,
+            summary,
+            key_findings,
+            sources,
+            open_questions,
+            contradictions,
+            schema_version,
+            research_version,
+            created_at,
+            updated_at
+          )
+          VALUES (
+            ${input.episodeId},
+            ${normalizedSummary},
+            ${input.keyFindings || []},
+            ${input.sources || []},
+            ${input.openQuestions || []},
+            ${input.contradictions || []},
+            1,
+            1,
+            ${now},
+            ${now}
+          )
+          ON CONFLICT (episode_id) DO NOTHING
+          RETURNING *
+        `
+
+        if (rows.length === 0) {
+          // Research already exists, fetch current version for conflict response
+          const existing = await sql`
+            SELECT research_version FROM episode_research WHERE episode_id = ${input.episodeId}
+          `
+          if (existing.length > 0) {
+            const currentVersion = (existing[0] as unknown as { research_version: number }).research_version
+            return {
+              success: false,
+              reason: "conflict",
+              currentResearchVersion: currentVersion,
+            }
+          }
+          // Shouldn't reach here, but handle gracefully
+          return {
+            success: false,
+            reason: "conflict",
+          }
+        }
+
+        return {
+          success: true,
+          research: mapRowToEpisodeResearch(rows[0] as unknown as EpisodeResearchRow),
+        }
+      }
+
+      // UPDATE mode: expectedResearchVersion = N
+      // Build dynamic update query with only provided fields
+      const updates: string[] = []
+      const values: (string | number | null | ResearchFinding[] | ResearchSource[] | string[] | ResearchContradiction[])[] = []
+      let paramIndex = 1
+
+      if (input.summary !== undefined) {
+        updates.push(`summary = $${paramIndex}`)
+        const normalized = input.summary && input.summary.trim() ? input.summary : null
+        values.push(normalized)
+        paramIndex++
+      }
+
+      if (input.keyFindings !== undefined) {
+        updates.push(`key_findings = $${paramIndex}`)
+        values.push(input.keyFindings)
+        paramIndex++
+      }
+
+      if (input.sources !== undefined) {
+        updates.push(`sources = $${paramIndex}`)
+        values.push(input.sources)
+        paramIndex++
+      }
+
+      if (input.openQuestions !== undefined) {
+        updates.push(`open_questions = $${paramIndex}`)
+        values.push(input.openQuestions)
+        paramIndex++
+      }
+
+      if (input.contradictions !== undefined) {
+        updates.push(`contradictions = $${paramIndex}`)
+        values.push(input.contradictions)
+        paramIndex++
+      }
+
+      updates.push(`updated_at = $${paramIndex}`)
+      values.push(now)
+      paramIndex++
+
+      const updateSQL = `
+        UPDATE episode_research
+        SET
+          research_version = research_version + 1,
+          ${updates.join(",\n          ")}
+        WHERE
+          episode_id = $${paramIndex}
+          AND research_version = $${paramIndex + 1}
+        RETURNING *
+      `
+
+      values.push(input.episodeId)
+      values.push(input.expectedResearchVersion)
+
+      // Cast needed: all values are JSON-serializable (string, number, array, null)
+      // postgres.js accepts these, but TypeScript's structural typing is strict.
+      // This is a type-system limitation, not a correctness issue.
+      const result = await sql.unsafe(updateSQL, values as postgres.ParameterOrJSON<never>[])
+
+      if (result.length === 0) {
+        // Check if research exists
+        const checkRows = await sql`
+          SELECT research_version FROM episode_research WHERE episode_id = ${input.episodeId}
+        `
+
+        if (checkRows.length === 0) {
+          return {
+            success: false,
+            reason: "not_found",
+          }
+        }
+
+        const actualVersion = (checkRows[0] as unknown as { research_version: number }).research_version
+        return {
+          success: false,
+          reason: "conflict",
+          currentResearchVersion: actualVersion,
+        }
+      }
+
+      return {
+        success: true,
+        research: mapRowToEpisodeResearch(result[0] as unknown as EpisodeResearchRow),
       }
     },
   }

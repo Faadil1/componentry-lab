@@ -9,6 +9,7 @@ import type {
   CanonicalEpisode,
   CanonicalEpisodeEvent,
   CanonicalEpisodeBrief,
+  CanonicalEpisodeResearch,
   OptimisticLockResult,
   CreateEpisodeInput,
   CreateEpisodeRepositoryResult,
@@ -16,6 +17,8 @@ import type {
   CreateEpisodeEventInput,
   SetEpisodeBriefInput,
   SetEpisodeBriefRepositoryResult,
+  SetEpisodeResearchInput,
+  SetEpisodeResearchRepositoryResult,
 } from "./canonical-types"
 
 /**
@@ -31,6 +34,8 @@ export interface EpisodeRepository {
   getEpisodeEvents(episodeId: string): Promise<CanonicalEpisodeEvent[]>
   getEpisodeBrief(episodeId: string): Promise<CanonicalEpisodeBrief | null>
   setEpisodeBrief(input: SetEpisodeBriefInput): Promise<SetEpisodeBriefRepositoryResult>
+  getEpisodeResearch(episodeId: string): Promise<CanonicalEpisodeResearch | null>
+  setEpisodeResearch(input: SetEpisodeResearchInput): Promise<SetEpisodeResearchRepositoryResult>
 }
 
 /**
@@ -45,6 +50,7 @@ export interface EpisodeRepository {
 export function createMockRepository(): EpisodeRepository {
   const episodes = new Map<string, CanonicalEpisode>()
   const briefs = new Map<string, CanonicalEpisodeBrief>()
+  const research = new Map<string, CanonicalEpisodeResearch>()
   const events: CanonicalEpisodeEvent[] = []
 
   return {
@@ -254,6 +260,115 @@ export function createMockRepository(): EpisodeRepository {
       return {
         success: true,
         brief: updatedBrief,
+      }
+    },
+
+    async getEpisodeResearch(episodeId: string): Promise<CanonicalEpisodeResearch | null> {
+      return research.get(episodeId) || null
+    },
+
+    async setEpisodeResearch(input: SetEpisodeResearchInput): Promise<SetEpisodeResearchRepositoryResult> {
+      // Verify episode exists
+      if (!episodes.has(input.episodeId)) {
+        return {
+          success: false,
+          reason: "episode_not_found",
+        }
+      }
+
+      const now = new Date().toISOString()
+      const existingResearch = research.get(input.episodeId)
+
+      // CREATE mode: expectedResearchVersion = null
+      if (input.expectedResearchVersion === null) {
+        if (existingResearch) {
+          return {
+            success: false,
+            reason: "conflict",
+            currentResearchVersion: existingResearch.researchVersion,
+          }
+        }
+
+        const newResearch: CanonicalEpisodeResearch = {
+          episodeId: input.episodeId,
+          summary: input.summary && input.summary.trim() ? input.summary : undefined,
+          keyFindings: input.keyFindings || [],
+          sources: input.sources || [],
+          openQuestions: input.openQuestions || [],
+          contradictions: input.contradictions || [],
+          schemaVersion: 1,
+          researchVersion: 1,
+          createdAt: now,
+          updatedAt: now,
+        }
+        research.set(input.episodeId, newResearch)
+        return {
+          success: true,
+          research: newResearch,
+        }
+      }
+
+      // UPDATE mode: expectedResearchVersion = N
+      if (!existingResearch) {
+        return {
+          success: false,
+          reason: "not_found",
+        }
+      }
+
+      if (existingResearch.researchVersion !== input.expectedResearchVersion) {
+        return {
+          success: false,
+          reason: "conflict",
+          currentResearchVersion: existingResearch.researchVersion,
+        }
+      }
+
+      // Determine which fields changed
+      const changedFields: string[] = []
+      if (input.summary !== undefined) {
+        const newSummary = input.summary && input.summary.trim() ? input.summary : undefined
+        if (newSummary !== existingResearch.summary) {
+          changedFields.push("summary")
+        }
+      }
+      if (input.keyFindings !== undefined && JSON.stringify(input.keyFindings) !== JSON.stringify(existingResearch.keyFindings)) {
+        changedFields.push("keyFindings")
+      }
+      if (input.sources !== undefined && JSON.stringify(input.sources) !== JSON.stringify(existingResearch.sources)) {
+        changedFields.push("sources")
+      }
+      if (input.openQuestions !== undefined && JSON.stringify(input.openQuestions) !== JSON.stringify(existingResearch.openQuestions)) {
+        changedFields.push("openQuestions")
+      }
+      if (input.contradictions !== undefined && JSON.stringify(input.contradictions) !== JSON.stringify(existingResearch.contradictions)) {
+        changedFields.push("contradictions")
+      }
+
+      // If no changes, return current state (semantic no-op)
+      if (changedFields.length === 0) {
+        return {
+          success: true,
+          research: existingResearch,
+        }
+      }
+
+      const updatedResearch: CanonicalEpisodeResearch = {
+        episodeId: input.episodeId,
+        summary: input.summary !== undefined ? (input.summary && input.summary.trim() ? input.summary : undefined) : existingResearch.summary,
+        keyFindings: input.keyFindings ?? existingResearch.keyFindings,
+        sources: input.sources ?? existingResearch.sources,
+        openQuestions: input.openQuestions ?? existingResearch.openQuestions,
+        contradictions: input.contradictions ?? existingResearch.contradictions,
+        schemaVersion: existingResearch.schemaVersion,
+        researchVersion: existingResearch.researchVersion + 1,
+        createdAt: existingResearch.createdAt,
+        updatedAt: now,
+      }
+      research.set(input.episodeId, updatedResearch)
+      return {
+        success: true,
+        research: updatedResearch,
       }
     },
   }
