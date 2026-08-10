@@ -1,6 +1,7 @@
-﻿import type { Metadata } from "next"
+import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
 import { authOptions, authRuntimeSummary } from "@/auth"
+import { AuthControls } from "@/components/auth/auth-controls"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { buildCommandProjection } from "@/lib/command/projection"
 
@@ -55,9 +56,7 @@ export default async function CommandPage({
             <div className="grid gap-3 text-sm text-stone-700 lg:text-right">
               <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 lg:min-w-72">
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Auth foundation</p>
-                <p className="mt-1 font-medium text-neutral-950">
-                  {session?.user ? "GitHub owner session present" : "No authenticated GitHub owner session"}
-                </p>
+                <AuthControls authenticated={!!session?.user} />
                 <p className="mt-1 text-xs text-stone-600">
                   Provider: {authRuntimeSummary.provider} · OAuth configured: {authRuntimeSummary.oauthConfigured ? "yes" : "no"}
                 </p>
