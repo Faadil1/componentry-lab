@@ -5,6 +5,13 @@ import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { createProject } from "@/lib/projects/repository"
 import { PROJECT_KINDS } from "@/lib/projects/schema"
 import type { AuthorityContext } from "@/lib/director/types"
+import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
+
+type ProjectCreateResult = {
+  status: string
+  error?: string
+  project?: unknown
+}
 
 export const metadata: Metadata = {
   title: "Create Project",
@@ -25,8 +32,13 @@ const LOCAL_CREATE_AUTHORITY: AuthorityContext = {
   status: "granted",
 }
 
-async function createProjectAction(formData: FormData) {
+async function createProjectAction(formData: FormData): Promise<ProjectCreateResult> {
   "use server"
+
+  const access = await requireCanonicalWriteAccess()
+  if (!access.ok) {
+    return { status: "UNAUTHORIZED", error: "Canonical write access is required." }
+  }
 
   const title = String(formData.get("title") ?? "")
   const kind = String(formData.get("kind") ?? "")
@@ -35,7 +47,7 @@ async function createProjectAction(formData: FormData) {
   const successDefinition = String(formData.get("successDefinition") ?? "")
   const brief = String(formData.get("brief") ?? "")
 
-  return await createProject(
+  return createProject(
     {
       title,
       kind: kind as (typeof PROJECT_KINDS)[number]["id"],

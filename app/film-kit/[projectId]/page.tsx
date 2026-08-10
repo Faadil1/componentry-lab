@@ -16,6 +16,7 @@ import { listPlansForProject, savePlan, getPlanningRepositoryPath } from "@/lib/
 import { getProjectById } from "@/lib/projects/repository"
 import type { ResourceEvaluation } from "@/lib/creative-os/types"
 import { RESOURCE_REGISTRY } from "@/lib/creative-os/registry"
+import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
 
 function getSelectedResource(projectId: string): ResourceEvaluation | null {
   const resource = projectId === "stated" ? RESOURCE_REGISTRY.find((candidate) => candidate.id === "res_video_shotcraft") ?? null : projectId === "glow-atelier" ? RESOURCE_REGISTRY.find((candidate) => candidate.id === "res_cineprompt") ?? null : null
@@ -49,8 +50,13 @@ export async function generateMetadata({ params }: FilmKitProjectPageProps): Pro
   return { title: film.brief.title, description: film.brief.primaryProof }
 }
 
-export async function prepareProductionPlanAction(formData: FormData) {
+export async function prepareProductionPlanAction(formData: FormData): Promise<void> {
   "use server"
+  const access = await requireCanonicalWriteAccess()
+  if (!access.ok) {
+    return
+  }
+
   const projectId = String(formData.get("projectId") ?? "")
   const projectBrain = getProjectById(projectId)
   if (!projectBrain) notFound()
