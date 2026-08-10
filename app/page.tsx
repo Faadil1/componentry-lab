@@ -1,4 +1,6 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
+import { getServerSession } from "next-auth/next"
+import { authOptions, authRuntimeSummary } from "@/auth"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { buildCommandProjection } from "@/lib/command/projection"
 
@@ -14,6 +16,7 @@ export default async function CommandPage({
 }) {
   const params = searchParams ? await searchParams : {}
   const projectId = typeof params.project === "string" ? params.project : undefined
+  const session = await getServerSession(authOptions)
   const projection = await buildCommandProjection(projectId)
   const activeProject = projection.activeProject
 
@@ -49,13 +52,33 @@ export default async function CommandPage({
                 <p className="max-w-3xl text-sm leading-relaxed text-stone-700">The canonical project context could not be resolved.</p>
               )}
             </div>
-            {activeProject ? (
-              <div className="grid gap-2 text-sm text-stone-700 lg:text-right">
-                <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Type</span><p className="mt-1 font-medium text-neutral-950">{activeProject.kind.replace(/-/g, " ")}</p></div>
-                <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Phase</span><p className="mt-1 font-medium text-neutral-950">{projection.projectPhase}</p></div>
-                <div><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Readiness</span><p className="mt-1 font-medium text-neutral-950">{projection.readiness}%</p></div>
+            <div className="grid gap-3 text-sm text-stone-700 lg:text-right">
+              <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 lg:min-w-72">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Auth foundation</p>
+                <p className="mt-1 font-medium text-neutral-950">
+                  {session?.user ? "GitHub owner session present" : "No authenticated GitHub owner session"}
+                </p>
+                <p className="mt-1 text-xs text-stone-600">
+                  Provider: {authRuntimeSummary.provider} · OAuth configured: {authRuntimeSummary.oauthConfigured ? "yes" : "no"}
+                </p>
               </div>
-            ) : null}
+              {activeProject ? (
+                <>
+                  <div>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Type</span>
+                    <p className="mt-1 font-medium text-neutral-950">{activeProject.kind.replace(/-/g, " ")}</p>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Phase</span>
+                    <p className="mt-1 font-medium text-neutral-950">{projection.projectPhase}</p>
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Readiness</span>
+                    <p className="mt-1 font-medium text-neutral-950">{projection.readiness}%</p>
+                  </div>
+                </>
+              ) : null}
+            </div>
           </div>
         </section>
 

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next"
+import type { Metadata } from "next"
 import { Suspense } from "react"
 import { notFound, redirect } from "next/navigation"
 
@@ -87,9 +87,6 @@ export default async function FilmKitProjectPage({ params }: FilmKitProjectPageP
   if (!projectBrain) notFound()
   const projectBrainResolved = projectBrain as NonNullable<typeof projectBrain>
 
-  const getProjectMode = (kind: typeof projectBrainResolved.kind): ExternalCapabilityPlanRequest["projectMode"] => {
-    return kind === "creative-experiment" ? "MARA" : kind === "data-story" ? "DATA_STORY" : kind === "hackathon" || kind === "broadcast-interface" || kind === "demo-film" ? "HACKATHON" : "DAY_CHALLENGE"
-  }
 
   const proposal = buildProductionEntryProposal(projectBrainResolved, filmProject)
   const savedPlans = listPlansForProject(projectId)
