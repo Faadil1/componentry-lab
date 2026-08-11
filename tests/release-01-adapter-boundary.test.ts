@@ -7,14 +7,19 @@ import type { ExternalCapabilityPlan } from "../lib/creative-os/film-kit/types"
 
 function makeSqlMock() {
   const calls: Array<{ text: string; values: unknown[] }> = []
-  const mock = (strings: TemplateStringsArray, ...values: unknown[]) => {
+  const mock = Object.assign((strings: TemplateStringsArray, ...values: unknown[]) => {
     const text = Array.from(strings).join("${}")
     calls.push({ text, values })
     if (text.includes("WHERE plan_fingerprint =")) {
       return Promise.resolve([])
     }
     return Promise.resolve([])
-  }
+  }, {
+    unsafe: async (query: string, values: unknown[] = []) => {
+      calls.push({ text: query, values })
+      return [] as Array<Record<string, unknown>>
+    },
+  })
   return { mock, calls }
 }
 
