@@ -1,7 +1,7 @@
 import { registryComponents } from "../registry/components"
 import { RESOURCE_REGISTRY } from "../creative-os/registry"
 import { CANONICAL_DEFAULT_PROJECT_ID } from "../projects/selectors"
-import { getProjectById } from "../projects/selectors"
+import { getProjectById } from "../projects/repository"
 import { validateProjectBrain } from "../projects/validation"
 import type { ProjectBrain } from "../projects/types"
 import { adaptDirectorResult, adaptProjectBrainToDirectorInput, mapProjectKindToCreativeMode } from "../director"
@@ -23,9 +23,9 @@ export interface CommandProjection {
   librarySummary: { components: number; creativeResources: number }
 }
 
-export function buildCommandProjection(projectId: string | null | undefined): CommandProjection {
+export async function buildCommandProjection(projectId: string | null | undefined): Promise<CommandProjection> {
   const activeProjectId = projectId ?? CANONICAL_DEFAULT_PROJECT_ID
-  const activeProject = getProjectById(activeProjectId) ?? null
+  const activeProject = (await getProjectById(activeProjectId)) ?? null
   const components = registryComponents.length
   const creativeResources = RESOURCE_REGISTRY.length
 

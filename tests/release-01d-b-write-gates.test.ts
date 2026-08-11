@@ -216,7 +216,7 @@ test("RELEASE-01D-B plan writes require owner auth before canonical persistence"
 
     assert.equal("status" in result ? result.status : undefined, "SAVED")
     assert.ok(plan.projectId)
-    assert.equal(listPlansForProject(plan.projectId).length, 1)
+    assert.equal((await listPlansForProject(plan.projectId)).length, 1)
   })
 })
 

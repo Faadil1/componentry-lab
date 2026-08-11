@@ -58,13 +58,13 @@ export async function prepareProductionPlanAction(formData: FormData): Promise<v
   }
 
   const projectId = String(formData.get("projectId") ?? "")
-  const projectBrain = getProjectById(projectId)
+  const projectBrain = await getProjectById(projectId)
   if (!projectBrain) notFound()
   const film = getFilmProjectById(projectId)
   if (!film) notFound()
   const projectBrainResolved = projectBrain as NonNullable<typeof projectBrain>
   const projectMode = projectBrainResolved.kind === "creative-experiment" ? "MARA" : projectBrainResolved.kind === "data-story" ? "DATA_STORY" : projectBrainResolved.kind === "hackathon" || projectBrainResolved.kind === "broadcast-interface" || projectBrainResolved.kind === "demo-film" ? "HACKATHON" : "DAY_CHALLENGE"
-  const proposal = buildProductionEntryProposal(projectBrainResolved, film)
+  const proposal = await buildProductionEntryProposal(projectBrainResolved, film)
   const selectedResource = getSelectedResource(projectId)
   const productionIntent = getFilmProductionIntent(film)
   const preparedPlanRequest: ExternalCapabilityPlanRequest = {
@@ -89,13 +89,13 @@ export default async function FilmKitProjectPage({ params }: FilmKitProjectPageP
   const filmProject = film
   const packets = buildFilmKitPackets(filmProject)
   const ai33Packet = buildAi33Packet(projectId)
-  const projectBrain = getProjectById(projectId)
+  const projectBrain = await getProjectById(projectId)
   if (!projectBrain) notFound()
   const projectBrainResolved = projectBrain as NonNullable<typeof projectBrain>
 
 
-  const proposal = buildProductionEntryProposal(projectBrainResolved, filmProject)
-  const savedPlans = listPlansForProject(projectId)
+  const proposal = await buildProductionEntryProposal(projectBrainResolved, filmProject)
+  const savedPlans = await listPlansForProject(projectId)
   const savedPlan = savedPlans[0] ?? null
   const selectedResource = getSelectedResource(projectId)
   const productionIntent = getFilmProductionIntent(filmProject)

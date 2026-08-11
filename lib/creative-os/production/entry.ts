@@ -33,8 +33,8 @@ export interface ProductionEntryProposal {
   } | null
 }
 
-export function buildProductionEntryProposal(project: ProjectBrain, film: FilmProject | null): ProductionEntryProposal {
-  const plans = listPlansForProject(project.id)
+export async function buildProductionEntryProposal(project: ProjectBrain, film: FilmProject | null): Promise<ProductionEntryProposal> {
+  const plans = await listPlansForProject(project.id)
   const plan = plans[0] ?? null
   const legitimacy: ProductionEntryLegitimacy = plan
     ? "LEGITIMATE_FILM_KIT_PRODUCTION_NEED_WITH_CANONICAL_MAPPING"

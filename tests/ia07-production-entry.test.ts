@@ -73,31 +73,31 @@ function makePlan(projectId: string, request: PlanningRequest, selectedResource:
 }
 
 describe("IA-07A canonical planning truth persistence", () => {
-  test("intent alone does not create canonical planning truth", () => {
+  test("intent alone does not create canonical planning truth", async () => {
     const film = getFilmProjectById("stated")
     assert.ok(film)
 
     const intent = getFilmProductionIntent(film)
 
     assert.ok(intent.requestedOutputs.length > 0)
-    assert.equal(listPlansForProject("stated").length, 0)
+    assert.equal((await listPlansForProject("stated")).length, 0)
     assert.equal(getPlanningRepositoryHealth(), "ABSENT")
   })
 
-  test("page load creates no plan and keeps production intent separate from plan truth", () => {
+  test("page load creates no plan and keeps production intent separate from plan truth", async () => {
     const film = getFilmProjectById("glow-atelier")
     assert.ok(film)
 
-    const proposal = buildProductionEntryProposal(film as never, film)
+    const proposal = await buildProductionEntryProposal(film as never, film)
 
-    assert.equal(listPlansForProject("glow-atelier").length, 0)
+    assert.equal((await listPlansForProject("glow-atelier")).length, 0)
     assert.equal(proposal.plan, null)
     assert.equal(proposal.routeTruth, null)
     assert.equal(proposal.routePreview, null)
   })
 
-  test("page-level projection reads persisted plan truth rather than reconstructing it", () => {
-    const project = createProject({
+  test("page-level projection reads persisted plan truth rather than reconstructing it", async () => {
+    const project = await createProject({
       title: "IA07 Stated Plan",
       kind: "client-product",
       problem: "Prove canonical planning truth persists separately from Film Kit intent.",
@@ -116,11 +116,11 @@ describe("IA-07A canonical planning truth persistence", () => {
     }
 
     const plan = { ...makePlan(project.project!.id, request, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
-    const planResult = savePlan(plan)
+    const planResult = await savePlan(plan)
     assert.equal(planResult.status, "SAVED")
-    assert.equal(listPlansForProject(project.project!.id).length, 1)
+    assert.equal((await listPlansForProject(project.project!.id)).length, 1)
 
-    const proposal = buildProductionEntryProposal(project.project!, getFilmProjectById("stated") ?? null)
+    const proposal = await buildProductionEntryProposal(project.project!, getFilmProjectById("stated") ?? null)
 
     assert.equal(proposal.plan?.planFingerprint, planResult.plan?.planFingerprint)
     assert.equal(proposal.legitimacy, "LEGITIMATE_FILM_KIT_PRODUCTION_NEED_WITH_CANONICAL_MAPPING")
@@ -129,8 +129,8 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(proposal.routePreview?.routeType, "NO_MATCH")
   })
 
-  test("explicit planning action produces an ExternalCapabilityPlan and remains idempotent for the exact same request", () => {
-    const project = createProject({
+  test("explicit planning action produces an ExternalCapabilityPlan and remains idempotent for the exact same request", async () => {
+    const project = await createProject({
       title: "IA07 Idempotent Plan",
       kind: "client-product",
       problem: "Prove the canonical planner is deterministic and persisted once per exact request.",
@@ -149,19 +149,19 @@ describe("IA-07A canonical planning truth persistence", () => {
     }
 
     const firstPlan = { ...makePlan(project.project!.id, request, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
-    const first = savePlan(firstPlan)
-    const second = savePlan(firstPlan)
+    const first = await savePlan(firstPlan)
+    const second = await savePlan(firstPlan)
 
     assert.equal(first.status, "SAVED")
     assert.ok(first.plan)
     assert.equal(first.plan?.executionMode, "NOT_EXECUTED")
     assert.equal(second.status, "ALREADY_EXISTS")
     assert.equal(second.existingPlan?.planFingerprint, first.plan?.planFingerprint)
-    assert.equal(listPlansForProject(project.project!.id).length, 1)
+    assert.equal((await listPlansForProject(project.project!.id)).length, 1)
   })
 
-  test("materially changed request identity yields a different canonical plan fingerprint", () => {
-    const project = createProject({
+  test("materially changed request identity yields a different canonical plan fingerprint", async () => {
+    const project = await createProject({
       title: "IA07 Changed Request",
       kind: "creative-experiment",
       problem: "Show that changed requests do not collapse to the same plan.",
@@ -188,17 +188,17 @@ describe("IA-07A canonical planning truth persistence", () => {
       metadata: { projectId: project.project!.id },
     }, null), projectId: project.project!.id, projectBrainFingerprint: project.project!.id }
 
-    const first = savePlan(firstPlan)
-    const second = savePlan(secondPlan)
+    const first = await savePlan(firstPlan)
+    const second = await savePlan(secondPlan)
 
     assert.equal(first.status, "SAVED")
     assert.equal(second.status, "SAVED")
     assert.notEqual(first.plan?.planFingerprint, second.plan?.planFingerprint)
-    assert.equal(listPlansForProject(project.project!.id).length, 2)
+    assert.equal((await listPlansForProject(project.project!.id)).length, 2)
   })
 
-  test("discovery-feed resources are rejected without producing route truth or execution side effects", () => {
-    const project = createProject({
+  test("discovery-feed resources are rejected without producing route truth or execution side effects", async () => {
+    const project = await createProject({
       title: "IA07 Discovery Feed",
       kind: "creative-experiment",
       problem: "Make discovery feeds fail closed in the planning layer.",
@@ -207,7 +207,7 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(project.status, "CREATED")
 
     const discovery = RESOURCE_REGISTRY.find((resource) => resource.id === "res_awesome_claude_code_skills") as unknown as ResourceEvaluation
-    const result = savePlan({ ...makePlan(project.project!.id, {
+    const result = await savePlan({ ...makePlan(project.project!.id, {
       capabilityGap: "skill-discovery",
       artifactType: "skill-feed",
       projectMode: "HACKATHON",
@@ -224,8 +224,8 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(result.plan?.estimatedCost, null)
   })
 
-  test("review projection reads persisted canonical plan truth and does not persist the request payload", () => {
-    const project = createProject({
+  test("review projection reads persisted canonical plan truth and does not persist the request payload", async () => {
+    const project = await createProject({
       title: "IA07 Review Source",
       kind: "client-product",
       problem: "Show that the review source is the persisted canonical plan, not the request payload.",
@@ -233,7 +233,7 @@ describe("IA-07A canonical planning truth persistence", () => {
     }, LOCAL_CREATE_AUTHORITY)
     assert.equal(project.status, "CREATED")
 
-    const result = savePlan({ ...makePlan(project.project!.id, {
+    const result = await savePlan({ ...makePlan(project.project!.id, {
       capabilityGap: "PROMPT_SHARE_LINK_CREATION",
       artifactType: "product-demo-film",
       projectMode: "DAY_CHALLENGE",
@@ -251,15 +251,15 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(typeof disk.plans[0]?.planFingerprint, "string")
   })
 
-  test("corrupt planning repository blocks writes and preserves prior truth on disk", () => {
-    const project = createProject({
+  test("corrupt planning repository blocks writes and preserves prior truth on disk", async () => {
+    const project = await createProject({
       title: "IA07 Corrupt Plan",
       kind: "client-product",
       problem: "Guard the canonical planning repository from corruption.",
       primaryGoal: "Fail closed before inventing a new plan truth.",
     }, LOCAL_CREATE_AUTHORITY)
 
-    const saved = savePlan({ ...makePlan(project.project!.id, {
+    const saved = await savePlan({ ...makePlan(project.project!.id, {
       capabilityGap: "PROMPT_SHARE_LINK_CREATION",
       artifactType: "product-demo-film",
       projectMode: "DAY_CHALLENGE",
@@ -272,7 +272,7 @@ describe("IA-07A canonical planning truth persistence", () => {
 
     writeFileSync(getPlanningRepositoryPath(), "{not-json", "utf8")
 
-    const failed = savePlan({ ...makePlan(project.project!.id, {
+    const failed = await savePlan({ ...makePlan(project.project!.id, {
       capabilityGap: "PROMPT_SHARE_LINK_CREATION",
       artifactType: "product-demo-film",
       projectMode: "DAY_CHALLENGE",
@@ -286,9 +286,9 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(getPlanningRepositoryHealth(), "CORRUPT")
   })
 
-  test("stated and glow-atelier resolve the same project identity through command, film kit, and planning truth", () => {
-    const statedProjection = buildCommandProjection("stated")
-    const glowProjection = buildCommandProjection("glow-atelier")
+  test("stated and glow-atelier resolve the same project identity through command, film kit, and planning truth", async () => {
+    const statedProjection = await buildCommandProjection("stated")
+    const glowProjection = await buildCommandProjection("glow-atelier")
 
     assert.ok(statedProjection.activeProject)
     assert.ok(glowProjection.activeProject)
@@ -300,10 +300,10 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(glowProjection.heroDemo?.title.length ?? 0, glowProjection.heroDemo?.title.length ?? 0)
   })
 
-  test("project and plan repositories stay isolated from route creation", () => {
+  test("project and plan repositories stay isolated from route creation", async () => {
     assert.equal(getProjectRepositoryPath().includes("project-repository"), true)
     assert.equal(getPlanningRepositoryPath().includes("planning-repository"), true)
-    assert.equal(listPlansForProject("stated").length, 0)
-    assert.equal(listPlansForProject("glow-atelier").length, 0)
+    assert.equal((await listPlansForProject("stated")).length, 0)
+    assert.equal((await listPlansForProject("glow-atelier")).length, 0)
   })
 })
