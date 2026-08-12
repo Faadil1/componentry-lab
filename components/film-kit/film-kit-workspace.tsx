@@ -86,7 +86,7 @@ export function FilmKitWorkspace() {
   const nextGate = film.approvalGates.find((gate) => gate.status !== "approved") ?? film.approvalGates[0]
   const activeStage = stageForSection(section)
   const packets = buildFilmKitPackets(film)
-  const ai33Packet = buildAi33Packet(film.id as never)
+  const ai33Packet = buildAi33Packet(film)
   const productionTruth = getFilmProductionTruth(film.id)
   const productionIntent = getFilmProductionIntent(film)
 

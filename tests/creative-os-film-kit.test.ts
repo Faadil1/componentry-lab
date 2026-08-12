@@ -2,6 +2,8 @@ import test from "node:test"
 import assert from "node:assert"
 import { runIntegration } from "../lib/creative-os/integration/integration"
 import { directorFixtures } from "../lib/director/fixtures"
+import { buildAi33Packet } from "../lib/film-kit/ai33-packet"
+import { buildFilmProject } from "../lib/film-kit/presets"
 import { resetProviderExecuteCount, providerExecuteCallCount } from "./support/mock-provider"
 import { decomposeFilmKitCapabilities } from "../lib/creative-os/film-kit/capabilities"
 import { planExternalCapability } from "../lib/creative-os/film-kit/planner"
@@ -261,4 +263,15 @@ test("FilmKit Governance: Director returns exactly one authorized next action", 
   assert.ok(result.authorizedNextAction)
   assert.strictEqual(typeof result.authorizedNextAction.title, "string")
   assert.ok(result.authorizedNextAction.title.length > 0)
+})
+
+test("FilmKit Packet: stated project builds AI33 packet without undefined brief access", () => {
+  const film = buildFilmProject("stated")
+  const packet = buildAi33Packet(film)
+
+  assert.ok(packet.title.includes(film.brief.title))
+  assert.ok(packet.title.includes("AI33 Packet"))
+  assert.strictEqual(packet.project.id, film.id)
+  assert.strictEqual(packet.project.title, film.title)
+  assert.strictEqual(packet.project.primaryClaim, film.brief.primaryProof)
 })
