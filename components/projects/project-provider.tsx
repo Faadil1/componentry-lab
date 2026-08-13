@@ -2,10 +2,8 @@
 
 import { createContext, useContext, useState, useMemo, useCallback, useEffect, useRef } from "react"
 import type { ReactNode } from "react"
-import type { ProjectContext, ProjectId, ProjectPhase, ProjectSnapshot } from "@/lib/projects/types"
+import type { ProjectBrain, ProjectId, ProjectPhase, ProjectSnapshot } from "@/lib/projects/types"
 import {
-  getAllProjects,
-  getProjectById,
   validateProjectBrain,
   getAllRecommendations,
   parseProjectUrl,
@@ -19,6 +17,7 @@ import {
   formatSubmissionPacketMarkdown,
   getPhaseFromProjectStatus,
 } from "@/lib/projects"
+import type { ProjectContext } from "@/lib/projects/types"
 
 const ProjectCtx = createContext<ProjectContext | null>(null)
 
@@ -29,6 +28,7 @@ function isValidSection(section: string | undefined): section is string {
 export function ProjectProvider({
   children,
   initialProjectId,
+  initialProjects,
   initialSection = "overview",
   showInspector = false,
   showRecommendations = false,
@@ -36,13 +36,17 @@ export function ProjectProvider({
 }: {
   children: ReactNode
   initialProjectId: ProjectId
+  initialProjects: ProjectBrain[]
   initialSection?: string
   showInspector?: boolean
   showRecommendations?: boolean
   showAudit?: boolean
 }) {
-  const allProjects = useMemo(() => getAllProjects(), [])
-  const initialProject = useMemo(() => getProjectById(initialProjectId), [initialProjectId])
+  const allProjects = useMemo(() => initialProjects, [initialProjects])
+  const initialProject = useMemo(
+    () => allProjects.find((project) => project.id === initialProjectId),
+    [allProjects, initialProjectId]
+  )
   const didRestoreUrl = useRef(false)
 
   const [activeProjectId, setActiveProjectId] = useState<ProjectId>(initialProjectId)
@@ -56,7 +60,7 @@ export function ProjectProvider({
   const [exportFeedback, setExportFeedback] = useState<string | null>(null)
 
   const activeProject = useMemo(() => {
-    return getProjectById(activeProjectId) || allProjects[0]
+    return allProjects.find((project) => project.id === activeProjectId) ?? allProjects[0] ?? null
   }, [activeProjectId, allProjects])
 
   const syncUrl = useCallback(
@@ -95,9 +99,9 @@ export function ProjectProvider({
     if (typeof window === "undefined") return
 
     const snapshot = parseProjectUrl(window.location.search)
-    const parsedProject = snapshot.activeProjectId ? getProjectById(snapshot.activeProjectId) : undefined
+    const parsedProject = snapshot.activeProjectId ? allProjects.find((project) => project.id === snapshot.activeProjectId) : undefined
     const nextProjectId = parsedProject?.id ?? initialProjectId
-    const nextProject = parsedProject ?? initialProject ?? getProjectById(nextProjectId)
+    const nextProject = parsedProject ?? initialProject ?? allProjects.find((project) => project.id === nextProjectId)
 
     if (nextProjectId !== activeProjectId) setActiveProjectId(nextProjectId)
     if (isValidSection(snapshot.activeSection) && snapshot.activeSection !== activeSection) {
@@ -118,14 +122,14 @@ export function ProjectProvider({
     if (snapshot.selectedRecommendationId !== undefined && snapshot.selectedRecommendationId !== selectedRecommendationId) {
       setSelectedRecommendationId(snapshot.selectedRecommendationId)
     }
-  }, [activePhase, activeProjectId, activeSection, activeItemId, auditVisible, initialProject, initialProjectId, inspectorVisible, recommendationsVisible, selectedRecommendationId])
+  }, [activePhase, activeProjectId, activeSection, activeItemId, auditVisible, initialProject, initialProjectId, inspectorVisible, recommendationsVisible, selectedRecommendationId, allProjects])
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const setProject = useCallback(
     (id: ProjectId) => {
       setActiveProjectId(id)
       setActiveItemId(null)
-      const proj = getProjectById(id)
+      const proj = allProjects.find((project) => project.id === id)
       if (proj) {
         const ph = getPhaseFromProjectStatus(proj.status, proj.currentPhase)
         setActivePhase(ph)
@@ -134,7 +138,7 @@ export function ProjectProvider({
         syncUrl({ activeProjectId: id, activeItemId: null })
       }
     },
-    [syncUrl]
+    [syncUrl, allProjects]
   )
 
   const setSection = useCallback(
@@ -306,53 +310,13 @@ export function ProjectProvider({
   }
 
   return (
-    <ProjectCtx.Provider
-      value={{
-        state: {
-          activeProjectId,
-          activeProject,
-          activeSection,
-          activePhase,
-          activeItemId,
-          inspectorVisible,
-          recommendationsVisible,
-          auditVisible,
-          selectedRecommendationId,
-          snapshot,
-          validationReport,
-          recommendations,
-          readiness: validationReport?.readinessScore ?? 0,
-          allProjects,
-        },
-        actions: {
-          setProject,
-          setSection,
-          setPhase,
-          selectItem,
-          toggleInspector,
-          toggleRecommendations,
-          toggleAudit,
-          selectRecommendation,
-          clearSelection,
-          resetProject,
-          copySnapshot,
-          copyProjectBrain,
-          copyAgentPacket,
-          copyDesignPacket,
-          copyBuildPacket,
-          copyCapturePacket,
-          copyVideoPacket,
-          copySubmissionPacket,
-        },
-      }}
-    >
+    <ProjectCtx.Provider value={{
+      state: { activeProjectId, activeProject, activeSection, activePhase, activeItemId, inspectorVisible, recommendationsVisible, auditVisible, selectedRecommendationId, snapshot, validationReport, recommendations, readiness: validationReport?.readinessScore ?? 0, allProjects },
+      actions: { setProject, setSection, setPhase, selectItem, toggleInspector, toggleRecommendations, toggleAudit, selectRecommendation, clearSelection, resetProject, copySnapshot, copyProjectBrain, copyAgentPacket, copyDesignPacket, copyBuildPacket, copyCapturePacket, copyVideoPacket, copySubmissionPacket },
+    }}>
       {children}
       {exportFeedback && (
-        <div
-          role="status"
-          aria-live="assertive"
-          className="fixed bottom-5 right-5 z-50 rounded border border-emerald-800/40 bg-emerald-950 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-emerald-300 shadow-md"
-        >
+        <div role="status" aria-live="assertive" className="fixed bottom-5 right-5 z-50 rounded border border-emerald-800/40 bg-emerald-950 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-emerald-300 shadow-md">
           {exportFeedback}
         </div>
       )}

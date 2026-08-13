@@ -1,4 +1,4 @@
-import { getProjectById } from "@/lib/projects"
+﻿import { getProjectById } from "../projects/selectors-static"
 import { FILM_PROJECT_IDS } from "./schema"
 import { buildFilmProject } from "./presets"
 import type { FilmProject } from "./types"
