@@ -1,8 +1,16 @@
-export type CanonicalStorageSql = {
+export type CanonicalStorageTransactionSql = {
   (strings: TemplateStringsArray, ...values: unknown[]): unknown
 }
 
-export async function ensureCanonicalStorageSchema(sql: CanonicalStorageSql): Promise<void> {
+export type CanonicalStorageSql = CanonicalStorageTransactionSql & {
+  begin?<T>(callback: (txn: CanonicalStorageTransactionSql) => Promise<T>): Promise<T>
+  [Symbol.toStringTag]?: string
+}
+
+const CANONICAL_STORAGE_BOOTSTRAP_LOCK_KEY = 0x63616e6f
+const CANONICAL_STORAGE_BOOTSTRAP_LOCK_CLASS = 0x6c61796f
+
+async function writeCanonicalSchema(sql: CanonicalStorageTransactionSql): Promise<void> {
   await sql`
     CREATE TABLE IF NOT EXISTS componentry_projects (
       project_id TEXT PRIMARY KEY,
@@ -36,4 +44,17 @@ export async function ensureCanonicalStorageSchema(sql: CanonicalStorageSql): Pr
       updated_at TIMESTAMPTZ NOT NULL
     )
   `
+}
+
+export async function ensureCanonicalStorageSchema(sql: CanonicalStorageSql): Promise<void> {
+  if (typeof sql.begin !== "function") {
+    throw new Error("Canonical storage bootstrap requires sql.begin().")
+  }
+
+  await sql.begin(async (transactionSql) => {
+    await transactionSql`
+      SELECT pg_advisory_xact_lock(${CANONICAL_STORAGE_BOOTSTRAP_LOCK_KEY}, ${CANONICAL_STORAGE_BOOTSTRAP_LOCK_CLASS})
+    `
+    await writeCanonicalSchema(transactionSql)
+  })
 }

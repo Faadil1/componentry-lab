@@ -15,6 +15,9 @@ function makeSqlMock() {
     }
     return Promise.resolve([])
   }, {
+    begin: async <T>(callback: (txnSql: typeof mock) => Promise<T>): Promise<T> => {
+      return callback(mock)
+    },
     unsafe: async (query: string, values: unknown[] = []) => {
       calls.push({ text: query, values })
       return [] as Array<Record<string, unknown>>

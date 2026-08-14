@@ -67,6 +67,9 @@ function makeProjectSql() {
     }
     return []
   }, {
+    begin: async <T>(callback: (txnSql: typeof sql) => Promise<T>): Promise<T> => {
+      return callback(sql)
+    },
     unsafe: async (query: string, values: unknown[] = []) => {
       writes.push({ text: query, values })
       return []
@@ -92,6 +95,9 @@ function makePlanSql() {
     }
     return []
   }, {
+    begin: async <T>(callback: (txnSql: typeof sql) => Promise<T>): Promise<T> => {
+      return callback(sql)
+    },
     unsafe: async (query: string, values: unknown[] = []) => {
       writes.push({ text: query, values })
       return []
