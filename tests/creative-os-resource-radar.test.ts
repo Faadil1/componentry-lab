@@ -2,6 +2,7 @@ import test from "node:test"
 import assert from "node:assert"
 
 import { RESOURCE_REGISTRY, runResourceRadar } from "../lib/creative-os"
+import { routeCapabilities } from "../lib/creative-os/router"
 
 test("RR-01: no signal yields no matches and no discovery", () => {
   const before = RESOURCE_REGISTRY.length
@@ -141,6 +142,100 @@ test("RR-01: identical inputs are deterministic and distinct signals fingerprint
 
   assert.deepStrictEqual(resultA, resultB)
   assert.notStrictEqual(resultA.inputFingerprint, resultC.inputFingerprint)
+})
+
+
+test("RR-01.1: whitespace-only signal behaves like no signal", () => {
+  const result = runResourceRadar({
+    projectMode: "DAY_CHALLENGE",
+    phase: "verify",
+    capabilityGap: "   ",
+    artifactType: "   ",
+    action: "   ",
+    currentAuthority: "SUGGEST"
+  })
+
+  assert.strictEqual(result.decision, "NO_SIGNAL")
+  assert.deepStrictEqual(result.signal, {})
+  assert.deepStrictEqual(result.existingMatches, [])
+  assert.deepStrictEqual(result.blockedMatches, [])
+  assert.strictEqual(result.topMatch, null)
+  assert.strictEqual(result.discoveryRequirement, null)
+})
+
+test("RR-01.1: padded signal is normalized consistently", () => {
+  const result = runResourceRadar({
+    projectMode: "DAY_CHALLENGE",
+    phase: "verify",
+    capabilityGap: "  rules-governance  ",
+    currentAuthority: "SUGGEST"
+  })
+
+  assert.strictEqual(result.decision, "USE_EXISTING")
+  assert.strictEqual(result.signal.capabilityGap, "rules-governance")
+  assert.strictEqual(result.topMatch?.resourceId, "res_sacred_rules_breaker")
+})
+
+test("RR-01.1: remocn unknown matching framework is compatibility blocked", () => {
+  const result = runResourceRadar({
+    projectMode: "HACKATHON",
+    phase: "submit",
+    capabilityGap: "remocn-render",
+    currentAuthority: "SUGGEST",
+    frameworkOrSurface: "React/NextJS"
+  })
+
+  assert.strictEqual(result.decision, "EXISTING_MATCH_COMPATIBILITY_BLOCKED")
+  assert.ok(result.blockedMatches.some((match) => match.resourceId === "res_remocn"))
+  const remocn = result.blockedMatches.find((match) => match.resourceId === "res_remocn")
+  assert.ok(remocn)
+  assert.strictEqual(remocn?.compatibilityUsable, false)
+  assert.strictEqual(remocn?.sourceVerification, "EXTERNAL_UNVERIFIED")
+})
+
+test("RR-01.1: originkit verified matching framework remains usable", () => {
+  const result = runResourceRadar({
+    projectMode: "HACKATHON",
+    phase: "submit",
+    capabilityGap: "web-component-animation",
+    currentAuthority: "SUGGEST",
+    frameworkOrSurface: "React/NextJS"
+  })
+
+  const originkit = result.existingMatches.find((match) => match.resourceId === "res_originkit")
+  assert.ok(originkit)
+  assert.strictEqual(originkit?.compatibilityUsable, true)
+  assert.strictEqual(originkit?.sourceVerification, "EXTERNAL_UNVERIFIED")
+})
+
+test("RR-01.1: canonical router top match parity across canonical matrix", () => {
+  const cases = [
+    {
+      radar: { projectMode: "DAY_CHALLENGE" as const, phase: "verify" as const, capabilityGap: "rules-governance", currentAuthority: "SUGGEST" as const },
+      router: { projectMode: "DAY_CHALLENGE" as const, phase: "verify" as const, capabilityGap: "rules-governance", currentAuthority: "SUGGEST" as const }
+    },
+    {
+      radar: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "cinematic-product-demo", artifactType: "product-demo-film", currentAuthority: "SUGGEST" as const },
+      router: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "cinematic-product-demo", artifactType: "product-demo-film", currentAuthority: "SUGGEST" as const }
+    },
+    {
+      radar: { projectMode: "MARA" as const, phase: "verify" as const, capabilityGap: "ai-camera-movements", currentAuthority: "SUGGEST" as const },
+      router: { projectMode: "MARA" as const, phase: "verify" as const, capabilityGap: "ai-camera-movements", currentAuthority: "SUGGEST" as const }
+    },
+    {
+      radar: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const, frameworkOrSurface: "React/NextJS" },
+      router: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const, frameworkOrSurface: "React/NextJS" }
+    }
+  ]
+
+  for (const pair of cases) {
+    const route = routeCapabilities(pair.router)
+    const radar = runResourceRadar(pair.radar)
+    if (route.topSuggestion) {
+      assert.ok(radar.topMatch)
+      assert.strictEqual(radar.topMatch?.resourceId, route.topSuggestion.resourceId)
+    }
+  }
 })
 
 test("RR-01: registry V2 is not consulted by radar", () => {

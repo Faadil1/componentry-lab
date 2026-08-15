@@ -31,6 +31,9 @@ function normalizedSignal(input: ResourceRadarInput): ResourceRadarSignal {
   if (input.action?.trim()) signal.action = input.action.trim()
   return signal
 }
+function hasNormalizedSignal(signal: ResourceRadarSignal): boolean {
+  return Boolean(signal.capabilityGap || signal.artifactType || signal.action)
+}
 
 function sourceVerification(resource: ResourceMetadata): ResourceSourceVerification {
   return resource.provenance.startsWith("internal:") ? "INTERNAL" : "EXTERNAL_UNVERIFIED"
@@ -42,10 +45,11 @@ function authorityUsable(resource: ResourceMetadata, currentAuthority: Authority
 
 function compatibilityUsable(resource: ResourceMetadata, frameworkOrSurface?: string): boolean {
   if (!frameworkOrSurface) return true
-  if (!resource.supportedFrameworks) return true
+  if (resource.compatibilityEvidenceStatus === "UNKNOWN") return false
+  if (resource.compatibilityEvidenceStatus === "INCOMPATIBLE") return false
+  if (!resource.supportedFrameworks) return false
   return resource.supportedFrameworks.includes(frameworkOrSurface)
 }
-
 function createDiscoveryRequirement(input: ResourceRadarInput): ResourceRadarDiscoveryRequirement {
   return {
     capabilityGap: input.capabilityGap,
@@ -69,9 +73,6 @@ function toRadarMatch(resource: ResourceMetadata, evaluation: ResourceEvaluation
   }
 }
 
-function hasSignal(input: ResourceRadarInput): boolean {
-  return Boolean(input.capabilityGap || input.artifactType || input.action)
-}
 
 function isRelevant(resource: ResourceMetadata, input: ResourceRadarInput): boolean {
   if (isRejectedLifecycle(resource.lifecycleState)) return false
@@ -81,8 +82,44 @@ function isRelevant(resource: ResourceMetadata, input: ResourceRadarInput): bool
   return capMatch.matches
 }
 
+
+function compareRadarMatches(a: ResourceRadarMatch, b: ResourceRadarMatch): number {
+  if (b.suitabilityScore !== a.suitabilityScore) {
+    return b.suitabilityScore - a.suitabilityScore
+  }
+
+  const lifecycleOrder: Record<string, number> = {
+    APPROVED: 4,
+    VALIDATED: 3,
+    AUDITED: 2,
+    TEST_CANDIDATE: 1,
+    TESTING: 1,
+    CAPTURED: 0
+  }
+
+  const aLife = lifecycleOrder[a.lifecycleState] || 0
+  const bLife = lifecycleOrder[b.lifecycleState] || 0
+  if (bLife !== aLife) {
+    return bLife - aLife
+  }
+
+  const aType = a.type === "CORE_METHOD" ? 1 : 0
+  const bType = b.type === "CORE_METHOD" ? 1 : 0
+  if (bType !== aType) {
+    return bType - aType
+  }
+
+  return a.resourceId.localeCompare(b.resourceId)
+}
+
 export function runResourceRadar(input: ResourceRadarInput): ResourceRadarResult {
   const signal = normalizedSignal(input)
+  const normalizedInput: ResourceRadarInput = {
+    ...input,
+    capabilityGap: signal.capabilityGap,
+    artifactType: signal.artifactType,
+    action: signal.action
+  }
   const snapshot = {
     canonicalResourceCount: RESOURCE_REGISTRY.length,
     evaluatedResourceCount: RESOURCE_REGISTRY.length,
@@ -92,7 +129,7 @@ export function runResourceRadar(input: ResourceRadarInput): ResourceRadarResult
     externalUnverifiedResourceCount: RESOURCE_REGISTRY.filter((resource) => !resource.provenance.startsWith("internal:")).length
   }
 
-  if (!hasSignal(input)) {
+  if (!hasNormalizedSignal(signal)) {
     return {
       decision: "NO_SIGNAL",
       inputFingerprint: fingerprint({ signal, projectMode: input.projectMode, phase: input.phase, currentAuthority: input.currentAuthority, frameworkOrSurface: input.frameworkOrSurface }),
@@ -113,18 +150,18 @@ export function runResourceRadar(input: ResourceRadarInput): ResourceRadarResult
   const blockedMatches: ResourceRadarMatch[] = []
 
   for (const resource of RESOURCE_REGISTRY) {
-    const evaluation = evaluateResource(resource, input.projectMode, input.phase, {
-      action: input.action,
-      artifactType: input.artifactType,
-      capabilityGap: input.capabilityGap,
-      evaluator: input.evaluator,
-      activationTags: input.activationTags,
-      currentAuthority: input.currentAuthority,
-      frameworkOrSurface: input.frameworkOrSurface,
+    const evaluation = evaluateResource(resource, normalizedInput.projectMode, normalizedInput.phase, {
+      action: normalizedInput.action,
+      artifactType: normalizedInput.artifactType,
+      capabilityGap: normalizedInput.capabilityGap,
+      evaluator: normalizedInput.evaluator,
+      activationTags: normalizedInput.activationTags,
+      currentAuthority: normalizedInput.currentAuthority,
+      frameworkOrSurface: normalizedInput.frameworkOrSurface,
       allowExperimental: true
     })
 
-    if (!isRelevant(resource, input)) {
+    if (!isRelevant(resource, normalizedInput)) {
       continue
     }
 
@@ -139,8 +176,8 @@ export function runResourceRadar(input: ResourceRadarInput): ResourceRadarResult
     }
   }
 
-  existingMatches.sort((a, b) => b.suitabilityScore - a.suitabilityScore || a.resourceId.localeCompare(b.resourceId))
-  blockedMatches.sort((a, b) => b.suitabilityScore - a.suitabilityScore || a.resourceId.localeCompare(b.resourceId))
+  existingMatches.sort(compareRadarMatches)
+  blockedMatches.sort(compareRadarMatches)
 
   const topMatch = existingMatches[0] ?? null
   let decision: ResourceRadarResult["decision"] = "DISCOVERY_REQUIRED"
@@ -162,7 +199,7 @@ export function runResourceRadar(input: ResourceRadarInput): ResourceRadarResult
 
   return {
     decision,
-    inputFingerprint: fingerprint({ signal, projectMode: input.projectMode, phase: input.phase, currentAuthority: input.currentAuthority, frameworkOrSurface: input.frameworkOrSurface, evaluator: input.evaluator, activationTags: input.activationTags }),
+    inputFingerprint: fingerprint({ signal, projectMode: normalizedInput.projectMode, phase: normalizedInput.phase, currentAuthority: normalizedInput.currentAuthority, frameworkOrSurface: normalizedInput.frameworkOrSurface, evaluator: normalizedInput.evaluator, activationTags: normalizedInput.activationTags }),
     signal,
     existingMatches,
     topMatch,
