@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
+import { revalidatePath } from "next/cache"
 import { Suspense } from "react"
 import { notFound, redirect } from "next/navigation"
 
@@ -17,6 +18,8 @@ import { getProjectById } from "@/lib/projects/repository"
 import type { ResourceEvaluation } from "@/lib/creative-os/types"
 import { RESOURCE_REGISTRY } from "@/lib/creative-os/registry"
 import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
+
+export const dynamic = "force-dynamic"
 
 function getSelectedResource(projectId: string): ResourceEvaluation | null {
   const resource = projectId === "stated" ? RESOURCE_REGISTRY.find((candidate) => candidate.id === "res_video_shotcraft") ?? null : projectId === "glow-atelier" ? RESOURCE_REGISTRY.find((candidate) => candidate.id === "res_cineprompt") ?? null : null
@@ -78,7 +81,10 @@ export async function prepareProductionPlanAction(formData: FormData): Promise<v
   }
   const preparedPlan = { ...dispatchExternalCapabilityPlan(preparedPlanRequest, selectedResource), projectId: projectBrainResolved.id, projectBrainFingerprint: projectBrainResolved.id }
   const result = await savePlan(preparedPlan)
-  if (result.status === "SAVED" || result.status === "ALREADY_EXISTS") redirect(`/film-kit/${projectBrainResolved.id}?prepared=1`)
+  if (result.status === "SAVED" || result.status === "ALREADY_EXISTS") {
+    revalidatePath(`/film-kit/${projectBrainResolved.id}`)
+    redirect(`/film-kit/${projectBrainResolved.id}?prepared=1`)
+  }
 }
 
 export default async function FilmKitProjectPage({ params }: FilmKitProjectPageProps) {

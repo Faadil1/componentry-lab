@@ -1,4 +1,4 @@
-import assert from "node:assert/strict"
+﻿import assert from "node:assert/strict"
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import os from "node:os"
@@ -298,6 +298,16 @@ describe("IA-07A canonical planning truth persistence", () => {
     assert.equal(glowProjection.directorAvailability, "AVAILABLE")
     assert.equal(statedProjection.heroDemo?.title.length ?? 0, statedProjection.heroDemo?.title.length ?? 0)
     assert.equal(glowProjection.heroDemo?.title.length ?? 0, glowProjection.heroDemo?.title.length ?? 0)
+  })
+
+
+  test("Film Kit project route is explicitly dynamic and invalidates freshness after successful save handling", () => {
+    const source = readFileSync(new URL("../app/film-kit/[projectId]/page.tsx", import.meta.url), "utf8")
+
+    assert.ok(source.includes('export const dynamic = "force-dynamic"'))
+    assert.ok(source.includes('revalidatePath(`/film-kit/${projectBrainResolved.id}`)'))
+    assert.ok(source.includes('if (result.status === "SAVED" || result.status === "ALREADY_EXISTS") {'))
+    assert.ok(source.includes('redirect(`/film-kit/${projectBrainResolved.id}?prepared=1`)'))
   })
 
   test("project and plan repositories stay isolated from route creation", async () => {
