@@ -274,7 +274,7 @@ test("HACKATHON artifact: product-demo-film, gap: cinematic-product-demo -> Vide
   assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
 })
 
-test("HACKATHON gap: web-component-animation -> OriginKit or Remocn", () => {
+test("HACKATHON gap: web-component-animation -> Remocn while OriginKit remains capability-unclaimed", () => {
   const result = routeCapabilities({
     projectMode: "HACKATHON",
     phase: "submit",
@@ -282,7 +282,8 @@ test("HACKATHON gap: web-component-animation -> OriginKit or Remocn", () => {
   })
   assert.ok(result.topSuggestion)
   // OriginKit and Remocn both support web-component-animation. OriginKit (res_originkit) is sorted ahead of Remocn (res_remocn) alphabetically!
-  assert.strictEqual(result.topSuggestion.resourceId, "res_originkit")
+  assert.strictEqual(result.topSuggestion.resourceId, "res_remocn")
+  assert.strictEqual(result.recommendations.some((recommendation) => recommendation.resourceId === "res_originkit"), false)
   assert.strictEqual(result.topSuggestion.recommendationLabel, "EXPERIMENTAL_CANDIDATE")
 })
 

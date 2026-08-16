@@ -77,7 +77,7 @@ test("RR-01: sourceUrl presence does not imply verified provenance", () => {
     currentAuthority: "SUGGEST"
   })
 
-  const match = result.existingMatches.find((candidate) => candidate.resourceId === "res_originkit")
+  const match = result.existingMatches.find((candidate) => candidate.resourceId === "res_remocn")
   assert.ok(match)
   assert.strictEqual(match?.sourceVerification, "EXTERNAL_UNVERIFIED")
 })
@@ -105,7 +105,8 @@ test("RR-01: compatibility unknown remains compatibility blocked", () => {
   })
 
   assert.strictEqual(result.decision, "EXISTING_MATCH_COMPATIBILITY_BLOCKED")
-  assert.ok(result.blockedMatches.some((match) => match.resourceId === "res_originkit" || match.resourceId === "res_remocn"))
+  assert.ok(result.blockedMatches.some((match) => match.resourceId === "res_remocn"))
+  assert.strictEqual(result.blockedMatches.some((match) => match.resourceId === "res_originkit"), false)
   assert.strictEqual(result.discoveryRequirement, null)
 })
 
@@ -193,7 +194,7 @@ test("RR-01.1: remocn unknown matching framework is compatibility blocked", () =
   assert.strictEqual(remocn?.sourceVerification, "EXTERNAL_UNVERIFIED")
 })
 
-test("RR-01.1: originkit verified matching framework remains usable", () => {
+test("RR-01.1: OriginKit unclaimed capabilities are not routed", () => {
   const result = runResourceRadar({
     projectMode: "HACKATHON",
     phase: "submit",
@@ -202,10 +203,9 @@ test("RR-01.1: originkit verified matching framework remains usable", () => {
     frameworkOrSurface: "React/NextJS"
   })
 
-  const originkit = result.existingMatches.find((match) => match.resourceId === "res_originkit")
-  assert.ok(originkit)
-  assert.strictEqual(originkit?.compatibilityUsable, true)
-  assert.strictEqual(originkit?.sourceVerification, "EXTERNAL_UNVERIFIED")
+  assert.strictEqual(result.existingMatches.some((match) => match.resourceId === "res_originkit"), false)
+  assert.strictEqual(result.existingMatches.some((match) => match.resourceId === "res_remocn"), false)
+  assert.strictEqual(result.blockedMatches.some((match) => match.resourceId === "res_remocn"), true)
 })
 
 test("RR-01.1: canonical router top match parity across canonical matrix", () => {
@@ -223,8 +223,8 @@ test("RR-01.1: canonical router top match parity across canonical matrix", () =>
       router: { projectMode: "MARA" as const, phase: "verify" as const, capabilityGap: "ai-camera-movements", currentAuthority: "SUGGEST" as const }
     },
     {
-      radar: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const, frameworkOrSurface: "React/NextJS" },
-      router: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const, frameworkOrSurface: "React/NextJS" }
+      radar: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const },
+      router: { projectMode: "HACKATHON" as const, phase: "submit" as const, capabilityGap: "web-component-animation", currentAuthority: "SUGGEST" as const }
     }
   ]
 

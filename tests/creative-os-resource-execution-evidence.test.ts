@@ -162,8 +162,10 @@ test("PLANNING_ONLY_INTEGRATION_GATE", async () => {
   assert.strictEqual(result.methodExecution, null)
   assert.strictEqual(result.status, "METHOD_PARTIAL")
   assert.ok(result.externalCapabilityPlan)
-  assert.notStrictEqual(result.externalCapabilityPlan?.executionStatus, "EXECUTED")
-  assert.strictEqual(result.externalCapabilityPlan?.executionResult, undefined)
+  assert.strictEqual(result.externalCapabilityPlan?.executionStatus, "DISCOVERY_REQUIRED")
+  assert.strictEqual(result.externalCapabilityPlan?.resourceId, "res_remocn")
+  assert.strictEqual(result.externalCapabilityPlan?.capabilityId, "remocn-render")
+  assert.strictEqual(result.methodExecution, null)
 })
 
 
@@ -181,19 +183,19 @@ test("PLANNER_PRECEDENCE_REGRESSION_GATE", async () => {
   assert.strictEqual(result.externalCapabilityPlan, null)
 })
 
-test("PLANNING_ONLY_SANDBOX_GUARD_GATE", async () => {
+test("UNCLAIMED_ORIGINKIT_CAPABILITY_FAILS_CLOSED_GATE", async () => {
   const result = await runIntegration({
     projectBrainSnapshot: getProjectFixture("cleanverse-build-round-2"),
     currentAuthority: "SUGGEST",
     optionalRequestedCapabilityGap: "bootstrap-kit"
   })
 
-  assert.strictEqual(result.selectedResource?.resourceId, "res_originkit")
-  assert.ok(result.externalCapabilityPlan)
-  assert.strictEqual(result.externalCapabilityPlan?.executionStatus, "EXTERNAL_EXPERIMENTAL_CANDIDATE")
-  assert.strictEqual(result.status, "METHOD_BLOCKED")
+  assert.strictEqual(result.selectedResource, null)
+  assert.strictEqual(result.externalCapabilityPlan, null)
+  assert.strictEqual(result.routingDecision, "NO_MATCH")
+  assert.strictEqual(result.status, "NO_MATCH")
   assert.strictEqual(result.methodExecution, null)
-  assert.strictEqual(result.externalCapabilityPlan?.executionResult, undefined)
+  assert.strictEqual(result.methodExecution, null)
   assert.strictEqual(isResourcePlanningOnly("res_originkit"), true)
   assert.strictEqual(isResourceStructurallyExecutable("res_originkit"), false)
 })

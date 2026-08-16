@@ -114,7 +114,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
     if (isSvelteAnim) {
       selectedRoute = "NO_MATCH"
       selectedResource = "none"
-      rationale = "OriginKit is incompatible with Svelte framework."
+      rationale = "No governed registry candidate has verified Svelte compatibility for web-component-animation; compatibility remains UNKNOWN, so the route fails closed."
     } else if (isReactScroll) {
       selectedRoute = "DISCOVERY_REQUIRED"
       selectedResource = "none"
@@ -140,7 +140,7 @@ function produce(input: CreativeMethodInput): CreativeMethodResult {
       if (isSvelteAnim) {
         selectedRoute = "NO_MATCH"
         selectedResource = "none"
-        rationale = "OriginKit is incompatible with Svelte framework."
+        rationale = "No governed registry candidate has verified Svelte compatibility for web-component-animation; compatibility remains UNKNOWN, so the route fails closed."
       } else if (isReactScroll) {
         selectedRoute = "DISCOVERY_REQUIRED"
         selectedResource = "none"

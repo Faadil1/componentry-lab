@@ -661,7 +661,7 @@ test("Library-First Composition Router: native-first prefers native route for si
   assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
 })
 
-test("Library-First Composition Router: Svelte + web-component-animation rejects OriginKit", () => {
+test("Library-First Composition Router: Svelte + web-component-animation remains fail-closed without an eligible verified registry candidate", () => {
   const result = runLibraryFirstCompositionRouter({
     ...lfcrInput,
     supplementaryFields: {
@@ -687,7 +687,7 @@ test("Library-First Composition Router: React/NextJS + complex scroll choreograp
   assert.strictEqual(result.result.rawOutputs.selectedResource, "none")
 })
 
-test("Library-First Composition Router: React/NextJS + web-component-animation recommends experimental OriginKit", () => {
+test("Library-First Composition Router: React/NextJS + web-component-animation recommends experimental Remocn", () => {
   const result = runLibraryFirstCompositionRouter({
     ...lfcrInput,
     supplementaryFields: {
@@ -697,7 +697,7 @@ test("Library-First Composition Router: React/NextJS + web-component-animation r
     }
   })
   assert.strictEqual(result.result.rawOutputs.selectedRoute, "CONSIDER_EXPERIMENTAL_RESOURCE")
-  assert.strictEqual(result.result.rawOutputs.selectedResource, "res_originkit")
+  assert.strictEqual(result.result.rawOutputs.selectedResource, "res_remocn")
 })
 
 test("Library-First Composition Router reports UNKNOWN for missing metrics evidence", () => {
@@ -970,6 +970,4 @@ test("PSS: label-free transformation grounding evaluation", () => {
   const groundedGate = physicalSituationStoryboarderGates.find(g => g.gateId === "pss.transformation-input-grounded")!.evaluate(strippedResult)
   assert.strictEqual(groundedGate.passed, true)
 })
-
-
 

@@ -157,13 +157,31 @@ test("REAL_DISCOVERY_MAPPING_GATE", () => {
   }
 })
 
+
 test("REGISTRY_IMMUTABILITY_GATE", () => {
   const before = RESOURCE_REGISTRY.length
   const snapshot = getOriginkitPinnedCatalogSnapshot()
   const after = RESOURCE_REGISTRY.length
   const originkitCount = RESOURCE_REGISTRY.filter((resource) => resource.id === "res_originkit").length
+  const originkit = RESOURCE_REGISTRY.find((resource) => resource.id === "res_originkit")
+
   assert.strictEqual(before, after)
   assert.strictEqual(originkitCount, 1)
+  assert.ok(originkit)
+  assert.strictEqual(originkit?.id, "res_originkit")
+  assert.strictEqual(originkit?.type, "COMPONENT_SOURCE")
+  assert.strictEqual(originkit?.lifecycleState, "TEST_CANDIDATE")
+  assert.strictEqual(originkit?.maxExecutionAuthority, "READ_ONLY")
+  assert.strictEqual(originkit?.license, "UNCLAIMED")
+  assert.strictEqual(originkit?.provenance, "connector:vellum-ai/originkit@9aa260c2561ad9e765832dc342e9bbb5138858a4")
+  assert.strictEqual(originkit?.sourceUrl, undefined)
+  assert.deepStrictEqual(originkit?.capabilities.actions, [])
+  assert.deepStrictEqual(originkit?.capabilities.artifactTypes, [])
+  assert.deepStrictEqual(originkit?.capabilities.capabilityGaps, [])
+  assert.strictEqual(originkit?.capabilities.requiredAuthority, "SUGGEST")
+  assert.strictEqual(originkit?.supportedFrameworks, undefined)
+  assert.strictEqual(originkit?.supportedCapabilities, undefined)
+  assert.strictEqual(originkit?.compatibilityEvidenceStatus, "UNKNOWN")
   assert.strictEqual(snapshot.catalogEntries.length, 50)
 })
 

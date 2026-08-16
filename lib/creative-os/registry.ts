@@ -166,20 +166,17 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     type: "COMPONENT_SOURCE",
     lifecycleState: "TEST_CANDIDATE",
     maxExecutionAuthority: "READ_ONLY",
-    license: "Apache-2.0",
-    provenance: "external:github:originkit",
-    sourceUrl: "https://github.com/example/originkit",
+    license: "UNCLAIMED",
+    provenance: "connector:vellum-ai/originkit@9aa260c2561ad9e765832dc342e9bbb5138858a4",
     modes: ["HACKATHON"],
     capabilities: {
-      actions: ["bootstrap-originkit-asset"],
-      artifactTypes: ["originkit-asset", "web-component-animation"],
-      capabilityGaps: ["bootstrap-kit", "web-component-animation"],
+      actions: [],
+      artifactTypes: [],
+      capabilityGaps: [],
       requiredAuthority: "SUGGEST"
     },
     activationRules: [],
-    supportedFrameworks: ["React/NextJS"],
-    supportedCapabilities: ["web-component-animation"],
-    compatibilityEvidenceStatus: "VERIFIED"
+    compatibilityEvidenceStatus: "UNKNOWN"
   },
   {
     id: "res_cineprompt",

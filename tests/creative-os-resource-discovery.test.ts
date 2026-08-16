@@ -139,7 +139,7 @@ test("VERIFICATION_DOES_NOT_AUTHORIZE_EXECUTION_GATE", () => {
   assert.strictEqual(candidate.canonicalResourceMatchId, null)
 })
 
-test("CANONICAL_SOURCE_COLLISION_GATE", () => {
+test("STALE_ORIGINKIT_PLACEHOLDER_NO_COLLISION_GATE", () => {
   const before = RESOURCE_REGISTRY.length
   const result = runResourceDiscovery(requirement, [
     {
@@ -148,9 +148,9 @@ test("CANONICAL_SOURCE_COLLISION_GATE", () => {
     }
   ])
 
-  assert.strictEqual(result.canonicalCollisionCount, 1)
-  assert.strictEqual(result.relevantCandidates[0].canonicalCollision.matched, true)
-  assert.strictEqual(result.relevantCandidates[0].canonicalResourceMatchId, "res_originkit")
+  assert.strictEqual(result.canonicalCollisionCount, 0)
+  assert.strictEqual(result.relevantCandidates[0].canonicalCollision.matched, false)
+  assert.strictEqual(result.relevantCandidates[0].canonicalResourceMatchId, null)
   assert.strictEqual(RESOURCE_REGISTRY.length, before)
 })
 
@@ -299,7 +299,7 @@ test("EXTERNAL_RESOURCE_SOURCE_URL_NOT_VERIFIED_GATE", () => {
   }])
 
   assert.strictEqual(result.relevantCandidates[0].verificationStatus, "UNVERIFIED")
-  assert.strictEqual(result.relevantCandidates[0].canonicalCollision.matched, true)
+  assert.strictEqual(result.relevantCandidates[0].canonicalCollision.matched, false)
 })
 test("FINGERPRINT_DIFFERENTIATION_GATE", () => {
   const baseline = runResourceDiscovery(requirement, [canonicalCandidate])
