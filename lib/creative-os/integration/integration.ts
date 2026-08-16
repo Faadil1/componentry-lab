@@ -2,6 +2,7 @@ import type { ProjectBrain } from "../../projects"
 import type { CreativeOSIntegrationRequest, CreativeOSIntegrationResult, CreativeOSContinuationState, IntegrationStatus, ContinuationCompatibility } from "./types"
 import { adaptDirectorResult, adaptDirectorResultWithAdvisoryEvidence, adaptProjectBrainToDirectorInput } from "../../director/adapters"
 import { routeCapabilities } from "../router"
+import { getResourceExecutionEvidence } from "../execution-evidence"
 import type { DirectorEvidenceReference } from "../../director/types"
 import type { CreativeProjectMode, CreativeProjectPhase } from "../../director/types"
 import type { ResourceEvaluation } from "../types"
@@ -264,6 +265,9 @@ export async function runIntegration(request: CreativeOSIntegrationRequest): Pro
       } else if (plan.executionStatus === "DISCOVERY_REQUIRED") {
         status = "METHOD_PARTIAL"
       } else if (plan.executionStatus === "HUMAN_APPROVAL_REQUIRED" || plan.executionStatus === "EXTERNAL_PLAN_READY" || plan.executionStatus === "EXTERNAL_EXPERIMENTAL_CANDIDATE") {
+        if (getResourceExecutionEvidence(selectedResource.resourceId)?.executionBoundary === "PLANNING_ONLY" || getResourceExecutionEvidence(selectedResource.resourceId)?.executionReadiness !== "EXECUTION_STRUCTURALLY_AVAILABLE") {
+          status = "METHOD_BLOCKED"
+        } else {
         
         // Let the sandbox handle all execution, approvals, freshness, and authority limits.
         const sandboxResult = await executeSandboxedPlan(plan, projectId, projectBrainFingerprint, parsedApproval, request.currentAuthority, {})
@@ -293,6 +297,7 @@ export async function runIntegration(request: CreativeOSIntegrationRequest): Pro
            status = "METHOD_BLOCKED"
         } else {
            status = "METHOD_BLOCKED"
+        }
         }
       } else {
         status = "METHOD_BLOCKED"

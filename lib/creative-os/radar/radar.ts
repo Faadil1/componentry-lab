@@ -3,11 +3,10 @@ import { RESOURCE_REGISTRY } from "../registry"
 import { evaluateResource, satisfiesAuthority, isRejectedLifecycle } from "../evaluation"
 import { isActivated } from "../activation"
 import { matchesCapability } from "../capabilities"
+import { isResourcePlanningOnly } from "../execution-evidence"
 import type { ResourceEvaluation, ResourceMetadata, AuthorityCeiling } from "../types"
 import type { ResourceRadarDiscoveryRequirement, ResourceRadarInput, ResourceRadarMatch, ResourceRadarResult, ResourceRadarSignal, ResourceSourceVerification } from "./types"
 
-const PLANNING_ONLY_RESOURCE_IDS = new Set(["res_video_shotcraft", "res_remocn", "res_originkit"])
-const EXECUTION_CAPABLE_RESOURCE_IDS = new Set(["res_sacred_rules_breaker", "res_somatic_response_design", "res_relationship_preserving_abstraction", "res_cognitive_metaphor_illustrator", "res_physical_situation_storyboarder", "res_library_first_composition_router", "res_cineprompt"])
 
 function stableStringify(value: unknown): string {
   if (value === null || value === undefined) return "null"
@@ -69,7 +68,7 @@ function toRadarMatch(resource: ResourceMetadata, evaluation: ResourceEvaluation
     authorityUsable: authorityUsable(resource, input.currentAuthority),
     compatibilityUsable: compatibilityUsable(resource, input.frameworkOrSurface),
     sourceVerification: sourceVerification(resource),
-    planningOnly: PLANNING_ONLY_RESOURCE_IDS.has(resource.id) && !EXECUTION_CAPABLE_RESOURCE_IDS.has(resource.id)
+    planningOnly: isResourcePlanningOnly(resource.id)
   }
 }
 
