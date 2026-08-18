@@ -176,8 +176,8 @@ export function validateLibraryCrosswalks(
   legacyEntries: readonly RegistryEntry[] = registryComponents
 ): readonly string[] {
   const errors: string[] = []
-  const governedIds = new Set(governedEntities.map((entity) => entity.id))
-  const legacyIds = new Set(legacyEntries.map((entry) => entry.id))
+  const governedIds = new Set<string>(governedEntities.map((entity) => entity.id))
+  const legacyIds = new Set<string>(legacyEntries.map((entry) => entry.id))
   const pairs = new Set<string>()
 
   for (const record of crosswalks) {
