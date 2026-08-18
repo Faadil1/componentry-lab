@@ -6,21 +6,78 @@ Date: 2026-08-18
 
 ```text
 PROJECT = Componentry Lab / Creative OS
-PHASE = EXTERNAL FINDINGS RECONCILIATION
+PHASE = EXTERNAL FINDINGS RECONCILIATION — CLOSED
 TRACK = PUBLIC INTEGRATION / REGISTRY V2
-SOURCE_OF_TRUTH = GitHub branch release/public-integration-01
-FUNCTIONAL_SOURCE_HEAD = b4f81c491d16c7eeb298886df0437f160f99e660
-FUNCTIONAL_PARENT = 0995491567a167b8492748ab5334c9acaa06a037
-FUNCTIONAL_COMMIT = feat(creative-os): reconcile historical external findings
-STATUS = IMPLEMENTED_AND_PREVIEW_QA_PASS
-PRODUCTION_PROMOTION = NOT_EXECUTED
+STATUS = PRODUCTION_PROMOTION_COMPLETE
+SOURCE_OF_TRUTH = GitHub master
+PRODUCTION_FUNCTIONAL_SOURCE_HEAD = 00676106dd1ff0f21309d76987b6b908d0b0332a
+RELEASE_SOURCE_HEAD = 359cbae1b5e395d66fdf2840df5c3ae5547440ea
+RECONCILIATION_FUNCTIONAL_HEAD = b4f81c491d16c7eeb298886df0437f160f99e660
+FUNCTIONAL_BASELINE = 0995491567a167b8492748ab5334c9acaa06a037
+PRODUCTION_PROMOTION = EXECUTED
+PRODUCTION_SMOKE_QA = PASS
 ```
 
-The branch may contain a later docs-only checkpoint commit. `FUNCTIONAL_SOURCE_HEAD` is the exact source commit whose Registry V2 behavior was independently previewed and verified.
+`PRODUCTION_FUNCTIONAL_SOURCE_HEAD` is the merge commit that promoted the QAed release branch to `master`. A later documentation-only commit containing this handover may become the repository HEAD without changing the verified Registry V2 behavior.
 
-## Product decision
+## Production promotion record
 
-The live Registry V2 is cumulative:
+```text
+PR = #1
+PR_TITLE = release: promote Creative OS external findings reconciliation to production
+PR_BASE = master
+PR_HEAD = release/public-integration-01
+PR_RESULT = MERGED
+MERGE_COMMIT = 00676106dd1ff0f21309d76987b6b908d0b0332a
+VERCEL_DEPLOYMENT = dpl_9cTbBpT87Jamritc53uniWhLomSw
+PRODUCTION_URL = https://componentry-lab.vercel.app
+PRODUCTION_TARGET = production
+VERCEL_STATE = READY
+ALIAS_ERROR = none
+GITHUB_VERCEL_STATUS = success
+RUNTIME_ERRORS = 0 observed after promotion
+```
+
+Pre-merge comparison established that `release/public-integration-01` was 16 commits ahead of `master`, 0 commits behind, with `master` as the exact merge base. No source divergence blocker was present.
+
+## Production build evidence
+
+```text
+Next.js = 16.2.11
+Turbopack compile = PASS (18.7s)
+TypeScript = PASS
+Static generation = 93/93 PASS
+/creative-os/registry = prerendered successfully
+Deployment = READY
+```
+
+## Production smoke QA
+
+Direct fetch of `https://componentry-lab.vercel.app/creative-os/registry` returned HTTP 200 after promotion.
+
+The production HTML/view model confirms:
+
+```text
+VALID = true
+ERRORS = 0
+WARNINGS = 0
+TOTAL = 34
+SOURCE = 7
+RESOURCE = 6
+REFERENCE = 12
+METHOD = 6
+PROVIDER = 3
+```
+
+The References section renders `Canonical 12 / Visible 12`; the Sources section renders `Canonical 7 / Visible 7`.
+
+Representative reconciled entries remain visible in Production, including 21st.dev, AI Camera Control, Photo Abstract Editorial, Ian Xiaohei Illustrations, Ian Xiaohei Scenes, Ian Handdrawn PPT, Obsidian AI Second Brain, Claude Code Handbook, StillsLab, FilmGrab, Remocn, OriginKit, AI Camera Movements, TaiT CRT Interface Skill, Video Shotcraft, GBRO Collage B-roll, OpenMontage, CinePrompt, AI World Builder, and Open Kimi PPT.
+
+Unresolved historical candidates remain conservative and visible without invented source URLs: `shuohao-skills`, `photo-relic-editorial`, `photo-distill`, and `poetic-line-zine-poster`.
+
+## Product decision — locked
+
+The Live Registry V2 is cumulative:
 
 ```text
 existing governed entities
@@ -28,29 +85,17 @@ existing governed entities
 qualified external findings
 ```
 
-An external finding does not need to be executable to be visible. It may be represented as `SOURCE`, `RESOURCE`, `PROVIDER`, `REFERENCE`, or a conservative discovery candidate.
+External findings do not need to be executable to be visible. They may be represented as `SOURCE`, `RESOURCE`, `PROVIDER`, `REFERENCE`, or conservative discovery candidates.
 
-## Architecture locked by this checkpoint
+## Architecture — locked by this checkpoint
 
-- `buildLibraryV2ReadModel()` remains the legacy 20-entity projection engine contract.
-- `buildLiveLibraryV2ReadModel()` is the cumulative product/live read model.
-- Existing V1 snapshots are not rewritten to absorb the historical radar.
+- `buildLibraryV2ReadModel()` remains the legacy 20-entity projection contract.
+- `buildLiveLibraryV2ReadModel()` remains the cumulative 34-entity live product model.
+- Existing V1 snapshots are not rewritten merely to improve V2 display.
 - Known external source truth is reconciled in the V2 live layer.
 - Missing qualified findings are V2-native entities.
 - Unknown identities remain visible but non-routable; no URL is guessed.
-- No provider execution, package installation, generation spend, publishing, submission, production deployment, Project Brain mutation, Director runtime change, or Film Kit runtime change is authorized by this checkpoint.
-
-## Verified live inventory
-
-```text
-TOTAL = 34
-SOURCE = 7
-RESOURCE = 6
-REFERENCE = 12
-METHOD = 6
-PROVIDER = 3
-WARNINGS = 0
-```
+- Production promotion did not grant new provider execution or automation authority.
 
 Legacy engine remains:
 
@@ -59,7 +104,7 @@ TOTAL = 20
 REFERENCE = 0
 ```
 
-V2-native additions introduced by the reconciliation:
+V2-native additions remain:
 
 ```text
 COUNT = 14
@@ -67,136 +112,48 @@ SOURCE additions = 2
 REFERENCE additions = 12
 ```
 
-### V2-native additions
+## Governance / authority boundary — preserved in Production
 
-- `src_21st_dev`
-- `ref_ai_camera_control`
-- `ref_photo_abstract_editorial`
-- `ref_ian_xiaohei_illustrations`
-- `ref_ian_xiaohei_scenes`
-- `ref_ian_handdrawn_ppt`
-- `ref_obsidian_ai_second_brain`
-- `ref_claude_code_handbook`
-- `ref_stillslab`
-- `ref_filmgrab`
-- `src_shuohao_skills_candidate`
-- `ref_photo_relic_editorial`
-- `ref_photo_distill`
-- `ref_poetic_line_zine_poster`
+- V2-native references remain `NOT MODELED` for authority.
+- Conservative source automation operations remain `UNKNOWN` unless separately qualified.
+- Human review requirements remain intact.
+- No external provider was installed or executed as part of registry reconciliation or Production promotion.
+- No generation spend, publishing, submission, Project Brain mutation, Director authority expansion, or Film Kit authority expansion was authorized by this promotion.
+- AI World Builder remains `PROHIBITED` in the modeled maximum authority shown by the registry.
+- Unresolved source identities remain fail-closed.
 
-## Existing entities reconciled in the live layer
+## Verified source/license reconciliation retained
 
-Known public/canonical locators were attached conservatively to the live projections for:
+Observed source/license evidence promoted during the reconciliation remains:
 
-- OriginKit
-- Remocn
-- CinePrompt
-- AI World Builder
-- AI Camera Movements
-- Open Kimi PPT
-- TaiT CRT Interface Skill
-- Video Shotcraft
-- GBRO Collage B-roll
-- OpenMontage
-- Awesome Claude Code Skills
-- helloianneo ecosystem
-- Yummy Design Sprint
-
-Observed license evidence was promoted only where verified during this pass:
-
-- Remocn → MIT
-- Video Shotcraft → Apache-2.0
-- GBRO Collage B-roll → MIT
-- OpenMontage → AGPL-3.0
-
-TaiT CRT remains `UNCLAIMED/UNKNOWN` for license evidence in the live model.
+- Remocn → canonical GitHub locator; MIT observed.
+- Video Shotcraft → canonical GitHub locator; Apache-2.0 observed.
+- GBRO Collage B-roll → canonical GitHub locator; MIT observed.
+- OpenMontage → canonical GitHub locator; AGPL-3.0 observed.
+- TaiT CRT Interface Skill → canonical repository; license remains `UNKNOWN/UNCLAIMED`.
+- OriginKit → public catalog locator while connector provenance is preserved.
 
 ## Preserved method lineage
-
-The live layer preserves external-origin lineage without demoting or duplicating the internal methods:
 
 - Relationship-Preserving Abstraction → `ref_photo_abstract_editorial`
 - Cognitive Metaphor Illustrator → `ref_ian_xiaohei_illustrations`
 - Physical Situation Storyboarder → `ref_ian_xiaohei_scenes`
 - Library-First Composition Router → `res_yummy_design_sprint`
 
-Sacred Rules Breaker and Somatic Response Design remain governed internal methods with historical external origin noted but exact original source locator unresolved.
+Sacred Rules Breaker and Somatic Response Design remain governed internal methods; their exact original external source locators remain unresolved and must not be invented.
 
-## Unresolved findings — intentionally visible but non-routable
+## Handover instructions
 
-Do not invent source URLs for:
+Resume from this checkpoint. Do not redo the historical external-finding inventory unless genuinely new findings or source evidence appear.
 
-- `shuohao-skills`
-- `photo-relic-editorial`
-- `photo-distill`
-- `poetic-line-zine-poster`
-- original external source of Sacred Rules Breaker
-- original external source of Somatic Response Design
+Do not collapse the cumulative live model into the legacy V1 projection. Do not bulk-install external tools. Do not upgrade unresolved candidates by inference. Preserve the current authority boundaries.
 
-These should stay conservative until a source can be recovered and verified.
-
-## Preview QA evidence
-
-Preview deployment for `FUNCTIONAL_SOURCE_HEAD`:
-
-```text
-VERCEL_DEPLOYMENT = dpl_5R1UvgevCUN5okCwod1JRpsNQ8nm
-PREVIEW_URL = https://componentry-8dqc5hiza-faadil1s-projects.vercel.app
-REGISTRY_PATH = /creative-os/registry
-STATE = READY
-TARGET = preview / non-production
-HTTP = 200
-GITHUB_VERCEL_STATUS = success
-RUNTIME_ERROR_FATAL_LOGS = 0 observed
-```
-
-Build evidence:
-
-```text
-Next.js = 16.2.11
-Turbopack compile = PASS
-TypeScript = PASS
-Static generation = 93/93 PASS
-/creative-os/registry = prerendered successfully
-```
-
-Rendered registry evidence verified from the preview HTML:
-
-- `Total 34`
-- `SOURCE 7`
-- `RESOURCE 6`
-- `REFERENCE 12`
-- `METHOD 6`
-- `PROVIDER 3`
-- 21st.dev visible as a governed Source
-- AI Camera Control visible as a Reference with `NOT MODELED` authority
-- StillsLab and FilmGrab visible as cinematography References
-- unresolved historical candidates visible with conservative unknown/declared evidence
-- reconciled external URLs render in the live Registry
-
-## Files changed by the functional reconciliation commit
-
-Exactly six paths relative to `0995491567a167b8492748ab5334c9acaa06a037`:
-
-- `app/creative-os/registry/page.tsx`
-- `docs/evidence/creative-os-external-findings-reconciliation-v1/README.md`
-- `lib/creative-os/library-v2/external-findings.ts`
-- `lib/creative-os/library-v2/index.ts`
-- `lib/creative-os/library-v2/read-model.ts`
-- `tests/creative-os-external-findings-reconciliation.test.ts`
-
-## Handover instructions for the next conversation
-
-Resume from this checkpoint. Do not restart the inventory from zero unless genuinely new historical findings are supplied.
-
-Do not collapse the cumulative live model back into the V1 registry. Do not bulk-install external tools. Do not upgrade unresolved discovery candidates by inference. Keep Production separate from preview.
-
-The reconciliation objective is complete enough to enter the next gate.
+The external-findings reconciliation milestone and its Production promotion are complete.
 
 ## Exactly one next action
 
 ```text
-PRODUCTION PROMOTION DECISION — SEPARATE EXPLICIT GATE
+NEXT PRODUCT PHASE DECISION
 ```
 
-Before promoting, verify the latest branch head is only the QAed functional source plus documentation-only checkpoint(s), then explicitly decide whether to promote the validated preview. No Production promotion has been performed by this handover.
+A future conversation should treat the current Production Registry V2 as the verified baseline and choose the next product milestone rather than reopening this reconciliation by default.
