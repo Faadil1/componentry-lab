@@ -9,7 +9,7 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED ACTION / WRITE PLANE
 PHASE_CODE = CREATIVE_OS_GOVERNED_ACTION_WRITE_PLANE_V1
 TRACK = CONTROLLED CROSS-SYSTEM WRITES
-STATUS = PRODUCTION_PROMOTED / OWNER_AUTH_VERIFIED / START_AND_COMPLETION_SMOKES_PASS
+STATUS = V1_BASELINE_FROZEN / PRODUCTION_PROVEN / START_AND_COMPLETION_SMOKES_PASS
 SOURCE_OF_TRUTH = GitHub master
 
 FEATURE_PROMOTION_PR = #3
@@ -59,6 +59,16 @@ Collaborator proposal
 ```
 
 No collaborator receives generic mutation authority.
+
+## V1 baseline freeze
+
+Governed Action / Write Plane V1 is now frozen as the stable Production baseline.
+
+The freeze means:
+- the three typed mutation contracts below are the complete V1 writable surface;
+- no additional mutation authority is implied by collaboration, Director output, Registry visibility, evidence availability, or owner authentication alone;
+- future capabilities must be isolated on a new branch/phase and earn their own contract, fail-closed tests, Preview QA, Production promotion decision, and real smoke proof;
+- V1 may receive security/correctness hotfixes, but its authority model must not be widened silently.
 
 ## Production-promoted typed operations
 
@@ -199,42 +209,26 @@ EXTERNAL_SIDE_EFFECT = NONE
 - authority widening through collaboration routing;
 - automatic action completion from Director/Method output alone.
 
+## Post-completion routing finding
+
+After the real `doing -> done` smoke, the live Director still returns `act1` as its one canonical next action. Root cause is read/orchestration logic: `mapActionCandidate()` currently selects a phase-matching action without excluding terminal `done` actions.
+
+This is a routing defect, not a need for new write authority.
+
+Therefore the next phase must fix post-completion selection before considering any additional mutation contract.
+
 ## HANDOVER
 
-Resume from `master` with the Governed Action / Write Plane promoted and both real owner-approved lifecycle transitions proven end-to-end in Production:
+Resume from the frozen V1 Production baseline. Do not widen V1 mutation authority.
 
-```text
-todo -> doing -> done
-```
-
-The system has now demonstrated:
-
-```text
-Director proposal
--> exact owner approval
--> GitHub owner identity gate
--> Server Action boundary
--> proposal regeneration/fingerprint check
--> exact typed scope
--> canonical evidence prerequisite for completion
--> target-owned Project Brain writer
--> Postgres persistence
--> persisted after-state
--> idempotent Director re-projection
--> execution receipt
--> read-only Audit/Evidence trace projection
-```
-
-Do not weaken Production storage fail-closed behavior, owner authentication, fingerprints, scopes, evidence requirements or typed mutation semantics.
+The next work belongs on a separate branch and remains read-only with respect to new authority.
 
 ## Exactly one next action
 
 ```text
-OPEN GOVERNED WRITE PLANE PHASE-CLOSE / NEXT-CAPABILITY DECISION GATE
-
-Decision required before adding any new writable authority:
-- either close V1 as production-proven and freeze it,
-- or select exactly one additional typed mutation capability with a concrete job, reversible scope and evidence path.
-
-No new mutation authority is pre-authorized by this handover.
+OPEN POST-COMPLETION ROUTING PHASE
+GOAL = terminal done actions must not be selected as the Director's next canonical action
+AUTHORITY_CHANGE = NONE
+EXPECTED = choose an existing non-terminal canonical action if one exists; otherwise return a bounded deterministic fallback/proposal that does not mutate Project Brain
+REQUIRED_PROOF = fail-closed tests + Preview QA before any Production promotion decision
 ```
