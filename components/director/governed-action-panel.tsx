@@ -5,18 +5,24 @@ import { useActionState } from "react"
 import { AuthControls } from "@/components/auth/auth-controls"
 import {
   approveDirectorNextAction,
+  approveDirectorStartNextAction,
   INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,
 } from "@/app/director/live/actions"
 
 export type GovernedActionPanelStatus =
   | "PROPOSAL_READY"
   | "ALREADY_CANONICAL"
+  | "ACTION_NOT_CANONICAL"
+  | "ALREADY_STARTED"
+  | "ALREADY_COMPLETED"
+  | "ACTION_BLOCKED"
   | "IDENTITY_CONFLICT"
   | "INVALID_PROPOSAL"
 
 export interface GovernedActionPanelProps {
   projectId: string
   callbackUrl: string
+  approvalKind: "append" | "start"
   status: GovernedActionPanelStatus
   operation: string
   scope: string
@@ -37,13 +43,22 @@ function fingerprintPreview(value: string | null): string {
 }
 
 export function GovernedActionPanel(props: GovernedActionPanelProps) {
-  const [state, formAction, pending] = useActionState(
+  const [appendState, appendFormAction, appendPending] = useActionState(
     approveDirectorNextAction,
     INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,
   )
+  const [startState, startFormAction, startPending] = useActionState(
+    approveDirectorStartNextAction,
+    INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,
+  )
 
+  const state = props.approvalKind === "start" ? startState : appendState
+  const formAction = props.approvalKind === "start" ? startFormAction : appendFormAction
+  const pending = props.approvalKind === "start" ? startPending : appendPending
   const authReady = props.oauthConfigured && props.ownerAccountConfigured
   const canApprove = props.status === "PROPOSAL_READY" && authReady && props.ownerAuthorized && Boolean(props.proposalFingerprint)
+  const completedState = props.status === "ALREADY_CANONICAL" || props.status === "ALREADY_STARTED" || props.status === "ALREADY_COMPLETED"
+  const blockedState = props.status === "IDENTITY_CONFLICT" || props.status === "INVALID_PROPOSAL" || props.status === "ACTION_BLOCKED" || props.status === "ACTION_NOT_CANONICAL"
 
   return (
     <section className="rounded-2xl border border-stone-300 bg-white p-5 shadow-sm">
@@ -82,14 +97,19 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
         </div>
       </div>
 
-      {props.status === "ALREADY_CANONICAL" ? (
+      {completedState ? (
         <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-          <p className="font-semibold">No write required.</p>
-          <p className="mt-1">This Director next action already exists in canonical Project Brain{props.existingActionStatus ? ` with status “${props.existingActionStatus}”` : ""}. The action plane will not create a duplicate.</p>
+          <p className="font-semibold">No additional write required.</p>
+          <p className="mt-1">
+            {props.status === "ALREADY_CANONICAL" ? "This Director next action already exists in canonical Project Brain and will not be duplicated." : null}
+            {props.status === "ALREADY_STARTED" ? "This canonical next action is already in progress." : null}
+            {props.status === "ALREADY_COMPLETED" ? "This canonical next action is already completed." : null}
+            {props.existingActionStatus ? ` Current status: “${props.existingActionStatus}”.` : ""}
+          </p>
         </div>
       ) : null}
 
-      {props.status === "IDENTITY_CONFLICT" || props.status === "INVALID_PROPOSAL" ? (
+      {blockedState ? (
         <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
           <p className="font-semibold">Write blocked fail-closed.</p>
           {props.errors.map((error) => <p key={error} className="mt-1">{error}</p>)}
@@ -123,7 +143,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
                 disabled={!canApprove || pending}
                 className="rounded-full bg-neutral-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {pending ? "Revalidating…" : "Approve governed write"}
+                {pending ? "Revalidating…" : props.approvalKind === "start" ? "Approve start action" : "Approve governed write"}
               </button>
             </form>
           )}
@@ -131,7 +151,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
       ) : null}
 
       {state.status !== "IDLE" ? (
-        <div className={`mt-4 rounded-xl border p-3 text-sm ${state.status === "APPLIED" || state.status === "NO_CHANGE" || state.status === "ALREADY_CANONICAL" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
+        <div className={`mt-4 rounded-xl border p-3 text-sm ${state.status === "APPLIED" || state.status === "NO_CHANGE" || state.status === "ALREADY_CANONICAL" || state.status === "ALREADY_STARTED" || state.status === "ALREADY_COMPLETED" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
           <p className="font-semibold">Execution result: {state.status.replaceAll("_", " ")}</p>
           {state.receiptId ? <p className="mt-1 font-mono text-[10px]">Receipt: {state.receiptId}</p> : null}
           {state.error ? <p className="mt-1 text-xs">{state.error}</p> : null}
