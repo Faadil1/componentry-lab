@@ -6,6 +6,7 @@ export const GOVERNED_ACTION_SCHEMA_VERSION = "1.0.0" as const
 export type GovernedActionOperation =
   | "PROJECT_BRAIN_APPEND_NEXT_ACTION"
   | "PROJECT_BRAIN_START_NEXT_ACTION"
+  | "PROJECT_BRAIN_COMPLETE_NEXT_ACTION"
 export type GovernedActionProposalStatus = "PROPOSED"
 export type GovernedActionApprovalDecision = "APPROVED"
 export type GovernedActionApprovalStatus = "GRANTED"
