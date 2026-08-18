@@ -9,115 +9,201 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED SYSTEM COLLABORATION — SELECTED
 PHASE_CODE = CREATIVE_OS_GOVERNED_SYSTEM_COLLABORATION_V1
 TRACK = CROSS-SYSTEM COLLABORATION MESH
-STATUS = PHASE_DECISION_REFINED_AND_LOCKED
+STATUS = PHASE_DECISION_REFINED_WITH_LEGACY_LIBRARY_PRESERVATION
 SOURCE_OF_TRUTH = GitHub master
-BASELINE_MASTER_HEAD = 4ac948dffbf128a41de933f852c79cbe1f3ab44b
-PRODUCTION_REGISTRY_BASELINE = 34 entities / 0 warnings
+PREVIOUS_MASTER_HEAD = 30793d5590b2da81a956a5b63a2d495c7b6d133f
+PRODUCTION_CREATIVE_OS_REGISTRY_BASELINE = 34 entities / 0 warnings
+LEGACY_COMPONENT_LIBRARY = PRESERVE_AND_CROSSWALK
 FUNCTIONAL_INTEGRATION = NOT_STARTED
 PRODUCTION_PROMOTION_FOR_THIS_PHASE = NOT_APPLICABLE_YET
 ```
 
-This checkpoint refines the previous Governed Runtime Convergence decision. The target is not a one-way Registry V2 → Project Brain → Creative Director pipeline. The target is a governed collaboration mesh in which the relevant Componentry Lab / Creative OS systems exchange context, capability requests, results, evidence, recommendations, and explicit mutation requests while preserving their separate authority boundaries.
+This checkpoint preserves the user requirement that all relevant systems collaborate and additionally locks the older Component Library as a first-class source of composition/build intelligence. The older Library must not be discarded merely because the newer Creative OS Registry V2 exists.
 
-## Product decision — refined and locked
+## Product decision — locked
 
-The next product phase is:
+The target is a governed collaboration mesh:
 
 ```text
-GOVERNED SYSTEM COLLABORATION
-
-Project Brain ↔ Creative Director ↔ Registry V2 ↔ Creative Method Runtime
-        ↕                  ↕                 ↕
-   Decisions/Audit      Playbooks        References/Sources
-        ↕                                    ↕
-      Film Kit / specialized production surfaces when applicable
+                         Creative OS Registry V2
+                    governance / authority / evidence
+                                ↕
+Project Brain ↔ Creative Director ↔ Collaboration Layer ↔ Creative Method Runtime
+     ↕               ↕                 ↕                    ↕
+ Decisions        Playbooks      Legacy Component       method results /
+ Audit            References     Library / Recipes       quality evidence
+ Learnings        Sources        Systems / Primitives
+     ↕                                  ↕
+     └────────────── Film Kit / capture / production ──────────────┘
 ```
 
-The arrows describe governed information/capability collaboration, not unrestricted write authority.
+The arrows describe governed information and capability collaboration, not unrestricted write authority.
 
-The objective is to make the existing product systems work as one operating system instead of a collection of adjacent surfaces.
+## Two Library layers — do not collapse them
 
-## Core collaboration principle
+### 1. Creative OS Registry V2 — governance plane
 
-Every participating system must be able to collaborate through explicit contracts, but no system may silently become the owner of another system's state.
+Canonical implementation area: `lib/creative-os/library-v2` and `/creative-os/registry`.
 
-Collaboration means:
+Role:
+- canonical identity for SOURCE / RESOURCE / REFERENCE / METHOD / PROVIDER;
+- lifecycle and qualification state;
+- evidence and provenance;
+- authority ceilings;
+- automation/execution policy;
+- fail-closed handling of unknown/unqualified entities.
 
-- canonical project context can be requested and consumed;
-- governed capabilities can be discovered and selected;
-- a system can request work from another system;
-- results can be returned with provenance and evidence;
-- recommendations can flow back to the project context;
-- decisions, risks, outputs, and evidence can be surfaced across systems;
-- specialized systems such as Film Kit can participate when the project requires them;
-- any persistent mutation must pass through the authority boundary of the system that owns that state.
+Current verified Production baseline:
 
-Collaboration does NOT mean:
+```text
+TOTAL = 34
+SOURCE = 7
+RESOURCE = 6
+REFERENCE = 12
+METHOD = 6
+PROVIDER = 3
+WARNINGS = 0
+```
 
-- shared mutable global state without ownership;
-- every module calling every other module directly;
-- hidden circular writes;
-- authority escalation through routing;
-- references becoming executors;
-- external providers becoming executable merely because they are visible in Registry V2.
+This layer remains the source of truth for governance. Nothing from the older Library may widen authority by inference.
 
-## System roles — preserve ownership
+### 2. Legacy Component Library — composition/build intelligence plane
 
-### Project Brain — canonical project state and shared context hub
+Canonical implementation area: `lib/registry`, `components/library`, and `/library`.
 
-Project Brain owns the canonical project context and remains the place where project-specific state is represented: phase, positioning, design, proof, build mappings, capture, presentation, decisions, risks, outputs, audit, learnings, and supporting recommendations.
+This layer remains valuable and must be preserved. It contains concrete reusable product/build knowledge that is not represented by the Creative OS Registry V2 governance model.
 
-It can supply context to other systems and receive governed proposals/results, but another system may not silently mutate Project Brain.
+Observed useful legacy concepts include:
 
-### Creative Director — orchestration and canonical next-action reasoning
+- entry kinds: `interaction`, `foundation`, `layout`, `system`, `recipe`, `workflow`;
+- categories for interaction, typography, visual foundations, layout, playback, decisions, capture, product composition, operational composition, editorial composition, broadcast composition, and workflow;
+- concrete primitives/systems such as Spotlight, Split Flap, Scrub Input, Kinetic Text, Scroll Choreography, WebGL Liquid, Image Ripple, Typography, Visual Foundations, Layouts, Interaction Player, Decision Systems, Capture Bridge;
+- recipes such as product launch, operational workspace, data story, and broadcast package;
+- workflow components such as Episode State Card;
+- sub-primitives including layout shell/stage/split, signal band, evidence ledger, decision gate/trace, capture workbench, and recipe workbench;
+- maturity: `experimental`, `reusable`, `production-candidate`;
+- capabilities such as deterministic, capture-ready, responsive, keyboard-accessible, reduced-motion, URL-restorable, stateful, timeline-controlled, evidence-driven, decision-traceable, clean-view, exportable, composition-ready, editorial, broadcast, operational, product, WebGL, SVG, CSS-driven, mobile-compatible, arbitrary-content;
+- runtime compatibility (`react`, `css`, `svg`, `webgl`, browser API, server-compatible);
+- viewport compatibility including desktop/laptop/tablet/mobile/broadcast/portrait-video;
+- accessibility profiles;
+- source paths and exported components/hooks;
+- dependencies;
+- usage examples;
+- limitations;
+- `recommendedFor` / `avoidFor` guidance;
+- memory hooks and signature interactions/frames;
+- relation graph semantics;
+- search, facets, recommendations, system map, detail panel, export snapshots, and related playbooks.
 
-Creative Director owns the computation of exactly one canonical next action for the current project context.
+The old Library is therefore not merely an old UI. It is a reusable composition knowledge base.
 
-It consumes Project Brain context and governed capabilities. It may coordinate or recommend use of another subsystem, but does not inherit that subsystem's write authority.
+## Legacy relation graph — preserve conceptually
 
-### Registry V2 — governed capability/evidence discovery plane
+The old Library already models useful graph relations:
 
-Registry V2 owns canonical identities and governance metadata for sources, resources, references, methods, and providers.
+```text
+uses
+composes
+extends
+depends-on
+demonstrated-by
+alternative-to
+supports
+captured-by
+controlled-by
+```
 
-It tells other systems what exists, what is qualified, what authority ceiling applies, what evidence/provenance exists, and what remains unknown. It is not itself the executor of every listed entity.
+These relations are valuable to the collaboration mesh because they explain how concrete build primitives compose systems and recipes. They should be projected into the new collaboration model rather than deleted.
 
-### Creative Method Runtime — deterministic advisory method execution
+## Legacy Library Workbench capabilities worth retaining
 
-The Creative Method Runtime owns deterministic execution of internal Creative Methods. It remains local, read-only, and side-effect free unless a future separately governed authority expansion is approved.
+The existing `/library` workbench provides product behaviors that should inform the future unified experience:
 
-It receives a structured request and returns structured advisory output, quality-gate results, and evidence.
+- full-text weighted search across label, summary, description, tags, and exports;
+- filters by kind, category, maturity, capability, viewport, and runtime;
+- grid/list views;
+- result counts/facets;
+- detail inspection;
+- “best matches” recommendations based on category/kind/common capabilities;
+- composition system map for relations/dependencies;
+- related Playbooks;
+- TypeScript/JSON/usage/search-result export;
+- filter snapshot export;
+- deterministic/capture-ready/SSR-safe visibility;
+- explicit limitations and source paths.
 
-### Film Kit — specialized production collaborator
+These behaviors are candidates for a future unified Library/Registry workbench, but UI unification is not the first step of this phase.
 
-Film Kit remains a specialized production system. When the Director or project context establishes that film/video production is relevant, Film Kit may receive governed production context and return plans/results/evidence through explicit contracts.
+## Crosswalk rule — preserve both identities
 
-This phase does not grant new Film Kit execution authority and does not make Film Kit the global orchestrator.
+Do not rename or silently merge old Component Library IDs into Creative OS Registry V2 IDs.
 
-### Playbooks / references / sources — knowledge collaborators
+Introduce an explicit crosswalk when a meaningful semantic relationship exists.
 
-Playbooks, references, and sources can inform planning, routing, evaluation, and art direction according to their modeled usage and authority status.
+Conceptual form:
 
-They remain evidence/knowledge surfaces unless separately qualified as executable capabilities.
+```text
+LegacyCompositionRef {
+  legacyEntryId
+  legacyKind
+  categoryId
+  capabilities
+  maturity
+  runtime/viewports
+  relations
+  sourcePaths
+  limitations
+}
 
-### Decisions / audit / learnings / evidence — feedback plane
+GovernedCapabilityRef {
+  creativeOsEntityId
+  entityKind
+  lifecycle
+  authority
+  provenance
+  evidence
+}
 
-Cross-system work must return traceable evidence so Project Brain and other authorized surfaces can explain:
+LibraryCrosswalk {
+  legacyEntryId
+  creativeOsEntityId | null
+  relationship
+  confidence/evidence
+  limitations
+}
+```
 
-- what system acted or reasoned;
-- which capability or method was used;
-- what inputs were supplied;
-- what output was produced;
-- what quality gates passed or failed;
-- what authority applied;
-- what remains unresolved.
+A missing crosswalk is valid. Never invent a correspondence merely to make the graphs look complete.
 
-## Collaboration architecture
+## Core ownership model
 
-The preferred pattern is hub-and-contract collaboration, not uncontrolled point-to-point coupling.
+### Project Brain
+Owns canonical project state/context: phase, positioning, design, proof, build mappings, capture, presentation, decisions, risks, outputs, audit, learnings, recommendations.
 
-### Shared collaboration envelope
+### Creative Director
+Owns computation of exactly one canonical next action. It may select collaborators/capabilities but does not inherit their write authority.
 
-Introduce a canonical cross-system request/result contract carrying at minimum:
+### Creative OS Registry V2
+Owns governed identity, lifecycle, evidence, provenance, authority and execution policy.
+
+### Legacy Component Library
+Owns reusable composition/build metadata and concrete component/system/recipe knowledge. It does **not** define global authority.
+
+### Creative Method Runtime
+Owns deterministic, local, read-only execution of internal Creative Methods and quality-gate evidence.
+
+### Film Kit
+Remains a specialized film/video production collaborator with its existing authority limits.
+
+### Playbooks / References / Sources
+Remain knowledge/evidence collaborators unless separately qualified for execution.
+
+### Decisions / Audit / Learnings / Evidence
+Form the cross-system feedback plane.
+
+## Collaboration envelope
+
+Every cross-system interaction should use explicit request/result contracts. Minimum request fields:
 
 ```text
 projectId
@@ -128,210 +214,170 @@ intent
 projectPhase
 projectMode
 capabilityRefs
+compositionRefs
 authorityContext
-inputRefs / structuredInputs
+structuredInputs / inputRefs
 evidenceRefs
 requestedEffectClass
 status
 ```
 
-A collaboration result should carry at minimum:
+Minimum result fields:
 
 ```text
 correlationId
 sourceSystem
 targetSystem
 capabilityUsed
+compositionArtifactsUsed
 resultStatus
 structuredOutput
 quality/evaluation results
 evidence/provenance
 limitations
 recommendedNextStep
-sideEffectRequest or null
+sideEffectRequest | null
 ```
 
-The envelope is a coordination contract. It does not itself authorize mutations.
+The envelope coordinates collaboration; it never grants authority by itself.
 
 ## Collaboration invariants
 
-1. `projectId` is shared across systems; canonical project ownership remains with Project Brain.
-2. Canonical capability identity comes from Registry V2 when Registry-governed entities are involved.
-3. Creative Director retains ownership of the single canonical next action.
-4. Supporting recommendations remain advisory and cannot independently advance project phase.
-5. Every cross-system request is deterministic where the underlying collaborator is deterministic.
-6. Every result is traceable to source system, capability, provenance, and authority context.
-7. Unknown lifecycle, authority, compatibility, or source identity fails closed.
-8. `REFERENCE` entities never become executors by routing accident.
-9. External `SOURCE`, `RESOURCE`, or `PROVIDER` entities do not gain execution authority through this collaboration phase.
-10. Persistent writes require an explicit owner-system write path and applicable approval.
-11. No collaborator may silently mutate another collaborator's canonical state.
-12. Cross-system loops must avoid recursive/circular execution without an explicit bounded orchestration contract.
-13. Human approval requirements remain intact.
-14. Registry V1 remains unchanged.
-15. Production promotion remains a separate explicit gate after preview QA.
-
-## Why this phase now
-
-The major systems already exist, but their collaboration is incomplete:
-
-- Project Brain is already a substantial live project workspace.
-- Creative Director already owns canonical next-action reasoning.
-- Registry V2 is Production-verified with 34 governed entities and six governed internal methods.
-- Creative Method Runtime already provides deterministic local read-only execution.
-- Film Kit and other specialized surfaces already exist.
-- Project Brain → Director still initializes `availableSkills` as an empty array.
-- Director fixtures still inject synthetic skills.
-- Some supporting recommendations still use static/noncanonical registry identifiers.
-- There is no single explicit collaboration contract that all participating systems can use to exchange requests, results, evidence, and authority context.
-
-Therefore the next product milestone is not to strengthen only one link. It is to establish the collaboration substrate and then connect the existing systems through it.
+1. Project Brain remains canonical owner of project state.
+2. Creative Director retains ownership of exactly one canonical next action.
+3. Creative OS Registry V2 remains the governance source of truth.
+4. Legacy Component Library metadata may enrich selection/composition but may not widen authority.
+5. Legacy IDs remain distinct from Creative OS Registry IDs unless an explicit crosswalk maps them.
+6. Unknown crosswalks remain unknown; no fabricated identity mapping.
+7. `REFERENCE` entities never become executors by routing accident.
+8. External SOURCE / RESOURCE / PROVIDER entities gain no new execution rights through this phase.
+9. Old Library `production-candidate` or `capture-ready` status does not equal permission to execute externally.
+10. Persistent writes require the owner system's explicit write path and applicable approval.
+11. No hidden cross-system writes or shared mutable global state.
+12. Collaboration cycles must be bounded and traceable.
+13. Every result preserves provenance, limitations and authority context.
+14. Existing legacy Library and Creative OS Registry V2 data must both remain readable while the crosswalk is developed.
+15. Do not rewrite the legacy Library merely to make the new architecture cleaner.
+16. Production promotion remains a separate explicit gate after preview QA.
 
 ## Phase slices
 
 ### Slice A — Cross-system collaboration contract foundation
 
-Create the pure canonical request/result envelopes, system identity types, effect classification, authority pass-through, correlation semantics, and fail-closed validation.
+Create canonical request/result envelopes, system identities, effect classification, authority pass-through, correlation semantics, composition references, capability references and fail-closed validation.
 
-Requirements:
+Slice A must already be capable of referring separately to:
+- Creative OS governed capability IDs;
+- Legacy Component Library composition IDs;
+- Project Brain project IDs;
+- specialized collaborator IDs.
 
-- no runtime side effects;
-- no system-specific UI work;
-- no external execution;
-- deterministic serialization/validation;
-- explicit system ownership;
-- explicit authority context;
-- bounded recursion/no hidden cycles;
-- tests proving invalid/unknown collaboration requests fail closed.
+No side effects or UI rewiring.
 
-### Slice B — Registry V2 ↔ collaboration capability projection
+### Slice B — Dual-Library projection and crosswalk foundation
 
-Project eligible Registry V2 entities into collaboration-safe capability descriptors.
+Build two read-only projections:
 
-Initially, executable collaboration is limited to governed internal `METHOD` entities. References and unqualified external entities remain advisory/discovery-only.
+1. Creative OS Registry V2 → collaboration-safe governed capability descriptors.
+2. Legacy Component Library → collaboration-safe composition descriptors.
 
-### Slice C — Project Brain ↔ collaboration hub adapter
+Then add an explicit, conservative crosswalk layer between them.
 
-Expose canonical Project Brain project context through the collaboration envelope and define how collaboration results/proposals are returned without direct mutation.
+No bulk migration and no inferred authority.
 
-Project Brain remains immutable through the read/projection path.
+### Slice C — Project Brain collaboration adapter
 
-### Slice D — Creative Director ↔ collaboration orchestration
+Expose canonical Project Brain context and allow it to receive proposals/evidence without direct mutation.
 
-Replace the empty/synthetic capability supply with Registry-derived governed capability descriptors and allow Director to select an eligible collaborator/capability while still producing exactly one canonical next action.
+### Slice D — Creative Director orchestration
 
-### Slice E — Creative Method Runtime ↔ collaboration execution/result return
+Director should be able to reason with both:
+- governed methods/resources from Creative OS Registry V2;
+- relevant concrete composition primitives/recipes from the Legacy Component Library.
 
-Allow a Director-selected internal Creative Method to receive structured collaboration input and return structured advisory output + quality evidence through the shared result contract.
+This allows recommendations such as “use this governed method, then compose with these concrete Library primitives” while preserving separate identity and authority.
 
-No external calls or side effects are introduced.
+### Slice E — Creative Method Runtime result collaboration
 
-### Slice F — Supporting system participation
+Execute eligible internal Creative Methods through the collaboration contract and return structured advisory outputs + quality evidence.
 
-Connect relevant specialized collaborators through adapters, not authority merging. This includes Film Kit and knowledge/evidence surfaces where the project/mode/phase requires them.
+### Slice F — Composition/build planning collaboration
 
-This slice must preserve each subsystem's existing authority limits.
+Use Legacy Component Library metadata to support build planning: component selection, alternatives, dependencies, limitations, runtime/viewport constraints, capture readiness, accessibility, related recipes and playbooks.
 
-### Slice G — Feedback / audit / decision trace
+This is planning/composition intelligence first; execution authority remains separate.
 
-Make cross-system collaboration visible as traceable project evidence: request, selected capability, result, gates, limitations, and any proposed follow-up.
+### Slice G — Supporting systems
 
-No automatic project mutation is required to prove the collaboration path.
+Connect Film Kit, capture surfaces, playbooks, references and other specialized systems through adapters without authority merging.
 
-### Slice H — Integrated preview QA
+### Slice H — Feedback / audit / decision trace
 
-Prove representative multi-system workflows end-to-end without regression before any Production promotion decision.
+Surface cross-system requests/results, chosen capabilities, chosen composition elements, quality results, evidence and limitations.
 
-## Representative target collaboration flows
+### Slice I — Integrated preview QA
 
-The phase should prove more than one linear route.
+Prove representative multi-system workflows before any Production promotion decision.
 
-### Creative planning flow
-
-```text
-Project Brain context
-→ Director
-→ Registry V2 capability lookup
-→ Creative Method Runtime
-→ method result + quality evidence
-→ Director interpretation
-→ Project Brain-visible proposal/evidence
-```
-
-### Film/production flow
+## Representative target flow
 
 ```text
 Project Brain context
-→ Director determines production need
-→ Registry/knowledge lookup as applicable
-→ Film Kit receives governed production request
-→ Film Kit returns plan/result/evidence
-→ Director incorporates result into canonical next action
-→ Project Brain-visible evidence/proposal
+→ Creative Director
+→ Creative OS Registry V2: which governed methods/capabilities are eligible?
+→ Legacy Component Library: which concrete primitives/systems/recipes fit the build?
+→ Creative Method Runtime and/or specialist collaborator
+→ result + composition plan + evidence + limitations
+→ Creative Director interpretation
+→ Project Brain-visible canonical next action + supporting evidence
 ```
 
-### Knowledge/reference flow
-
-```text
-Project Brain / Director need
-→ Registry V2
-→ eligible Reference/Source/Playbook
-→ read/advisory evidence only
-→ Director or specialist consumes evidence
-→ traceable recommendation
-```
-
-No reference is executed in this flow.
+Film/video path may additionally route through Film Kit and capture-aware Legacy Library metadata.
 
 ## Exit criteria
 
-The phase is complete only when all of the following are demonstrated:
+The phase is not complete until:
 
-1. A canonical collaboration request/result contract exists and is tested.
-2. Every participating system has an explicit identity and ownership boundary.
-3. Project Brain can supply canonical context to collaborators without losing ownership or immutability.
-4. Registry V2 can supply canonical capability/evidence metadata to collaborators.
-5. Director uses Registry-derived governed capabilities rather than only empty/fixture capability supply.
-6. At least one internal Creative Method executes through the collaboration contract and returns quality/evidence data.
-7. At least one specialized-system collaboration path is demonstrated where applicable, without authority escalation.
-8. Collaboration results can be surfaced back to the project as traceable proposals/evidence.
-9. Director still produces exactly one canonical next action.
-10. Supporting recommendations cannot mutate project phase.
-11. No Registry recommendation points at fabricated Registry identities.
-12. No `REFERENCE` is treated as executable.
-13. Unknown/unqualified entities remain fail-closed.
-14. Cross-system recursion/cycles are bounded and tested.
-15. Every cross-system result preserves provenance and authority context.
-16. No external provider call, package installation, generation spend, publication, or submission is introduced without a separate authority decision.
-17. Film Kit authority is not expanded by this phase.
-18. Registry V2 remains valid at the Production baseline of 34 entities / 0 warnings unless a separately governed registry change is approved.
-19. Tests and preview QA pass before any functional Production promotion decision.
+1. Shared collaboration contracts exist and are tested.
+2. Creative OS Registry V2 and Legacy Component Library are both first-class read-only collaborators.
+3. A conservative crosswalk exists without fabricated mappings.
+4. Director can consume governed capability descriptors plus concrete composition descriptors.
+5. At least one real Project Brain project exercises the combined path.
+6. At least one internal Creative Method executes through the contract and returns quality evidence.
+7. Legacy Library relations, limitations, runtime/viewport and capture metadata materially influence a recommendation/build plan.
+8. No legacy metadata widens authority.
+9. No fabricated Registry IDs remain in governed recommendations.
+10. No REFERENCE is executed.
+11. Project Brain remains immutable through projection paths.
+12. Director still emits exactly one canonical next action.
+13. Cross-system results remain traceable and fail closed on unknowns.
+14. No external provider execution, installation, spend, publication or submission occurs without separate authorization.
+15. Production Creative OS Registry baseline remains 34 / 0 unless separately governed.
+16. Tests and preview QA pass before Production promotion.
 
 ## Explicitly out of scope
 
-- turning every system into a global orchestrator;
+- deleting the older Component Library;
+- force-migrating every legacy entry into Creative OS Registry V2;
+- treating legacy maturity/capture readiness as authority;
+- global mutable state;
 - unrestricted point-to-point writes;
-- shared mutable state without ownership;
 - external provider execution by default;
 - Film Kit authority expansion;
-- auto-installation of tools/repositories;
+- automatic Project Brain mutation;
 - making references executable;
-- generation spend;
-- publishing/submitting externally;
-- automatic Project Brain state mutation;
-- Registry V1 rewrite;
-- reopening the historical external-findings inventory without new evidence.
+- rewriting legacy Registry/Library data merely for naming consistency;
+- reopening historical external findings without new evidence.
 
 ## Handover instructions
 
-Resume from this checkpoint. The product target is now the collaboration of the existing systems as a governed whole, not merely a one-way Registry → Project Brain → Director connection.
+Resume from this checkpoint. Preserve both Library layers. The Creative OS Registry V2 is the governance plane; the older Component Library is the composition/build intelligence plane. Build collaboration contracts first, then dual projections/crosswalks, then connect Project Brain, Director, Creative Methods and specialized collaborators.
 
-Do not begin by wiring UIs together directly. First build the shared collaboration contracts and ownership/authority semantics, then attach Registry, Project Brain, Director, Creative Method Runtime, and specialized collaborators through adapters.
-
-The verified Production Registry V2 remains the baseline while this phase is developed through a non-production functional branch/preview path.
+Do not begin by replacing `/library` or `/creative-os/registry` UI. Do not merge IDs by guesswork.
 
 ## Exactly one next action
 
 ```text
 SLICE A — CROSS-SYSTEM COLLABORATION CONTRACT FOUNDATION + TESTS
+WITH DISTINCT capabilityRefs + compositionRefs
 ```
