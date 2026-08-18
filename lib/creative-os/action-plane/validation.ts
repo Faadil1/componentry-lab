@@ -3,6 +3,7 @@ import type { ProjectAction } from "../../projects/types"
 import { fingerprintCanonicalJson } from "../../projects/fingerprint"
 import { PROJECT_NEXT_ACTION_APPEND_SCOPE } from "../../projects/next-action-writer"
 import { PROJECT_NEXT_ACTION_START_SCOPE } from "../../projects/next-action-status-writer"
+import { PROJECT_NEXT_ACTION_COMPLETE_SCOPE } from "../../projects/next-action-complete-writer"
 import { COLLABORATION_SYSTEM_IDS } from "../collaboration/validation"
 import type { CollaborationSystemId } from "../collaboration/types"
 import {
@@ -18,6 +19,7 @@ const ACTION_STATUSES = new Set(["todo", "doing", "done", "blocked"])
 const SUPPORTED_OPERATIONS = new Set<GovernedActionOperation>([
   "PROJECT_BRAIN_APPEND_NEXT_ACTION",
   "PROJECT_BRAIN_START_NEXT_ACTION",
+  "PROJECT_BRAIN_COMPLETE_NEXT_ACTION",
 ])
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -43,6 +45,7 @@ function isIsoTimestamp(value: unknown): boolean {
 function expectedScopeForOperation(operation: unknown): string | null {
   if (operation === "PROJECT_BRAIN_APPEND_NEXT_ACTION") return PROJECT_NEXT_ACTION_APPEND_SCOPE
   if (operation === "PROJECT_BRAIN_START_NEXT_ACTION") return PROJECT_NEXT_ACTION_START_SCOPE
+  if (operation === "PROJECT_BRAIN_COMPLETE_NEXT_ACTION") return PROJECT_NEXT_ACTION_COMPLETE_SCOPE
   return null
 }
 
@@ -95,6 +98,19 @@ function validateStartActionPayload(payload: Record<string, unknown>, errors: st
   }
 }
 
+function validateCompleteActionPayload(payload: Record<string, unknown>, errors: string[]): void {
+  if (!isNonEmptyString(payload.actionId)) errors.push("payload.actionId is required")
+  if (!isNonEmptyString(payload.evidenceId)) errors.push("payload.evidenceId is required")
+  if (payload.fromStatus !== "doing") errors.push("PROJECT_BRAIN_COMPLETE_NEXT_ACTION requires fromStatus=doing")
+  if (payload.toStatus !== "done") errors.push("PROJECT_BRAIN_COMPLETE_NEXT_ACTION requires toStatus=done")
+
+  const allowedKeys = new Set(["actionId", "evidenceId", "fromStatus", "toStatus"])
+  const unexpectedKeys = Object.keys(payload).filter((key) => !allowedKeys.has(key))
+  if (unexpectedKeys.length > 0) {
+    errors.push(`PROJECT_BRAIN_COMPLETE_NEXT_ACTION payload contains unsupported keys: ${unexpectedKeys.sort().join(", ")}`)
+  }
+}
+
 export function fingerprintGovernedActionProposal(proposal: GovernedActionProposal): string {
   return fingerprintCanonicalJson(proposal)
 }
@@ -138,6 +154,8 @@ export function validateGovernedActionProposal(value: unknown): GovernedActionVa
       errors.push(...payloadErrors)
     } else if (value.operation === "PROJECT_BRAIN_START_NEXT_ACTION") {
       validateStartActionPayload(value.payload, errors)
+    } else if (value.operation === "PROJECT_BRAIN_COMPLETE_NEXT_ACTION") {
+      validateCompleteActionPayload(value.payload, errors)
     }
 
     try {
@@ -148,6 +166,9 @@ export function validateGovernedActionProposal(value: unknown): GovernedActionVa
   }
 
   if (!isStringArray(value.evidenceRefs)) errors.push("evidenceRefs must be a string array")
+  if (value.operation === "PROJECT_BRAIN_COMPLETE_NEXT_ACTION" && (!isStringArray(value.evidenceRefs) || value.evidenceRefs.length === 0)) {
+    errors.push("PROJECT_BRAIN_COMPLETE_NEXT_ACTION requires at least one canonical evidenceRef")
+  }
   if (!isStringArray(value.provenanceRefs)) errors.push("provenanceRefs must be a string array")
   if (!isIsoTimestamp(value.proposedAt)) errors.push("proposedAt must be an ISO timestamp")
   if (value.status !== "PROPOSED") errors.push("proposal status must be PROPOSED")
@@ -189,4 +210,15 @@ export function getStartActionIdFromGovernedProposal(proposal: GovernedActionPro
   if (proposal.operation !== "PROJECT_BRAIN_START_NEXT_ACTION") return null
   const actionId = proposal.payload.actionId
   return typeof actionId === "string" && actionId.trim() ? actionId.trim() : null
+}
+
+export function getCompletionPayloadFromGovernedProposal(
+  proposal: GovernedActionProposal,
+): { actionId: string; evidenceId: string } | null {
+  if (proposal.operation !== "PROJECT_BRAIN_COMPLETE_NEXT_ACTION") return null
+  const actionId = proposal.payload.actionId
+  const evidenceId = proposal.payload.evidenceId
+  if (typeof actionId !== "string" || !actionId.trim()) return null
+  if (typeof evidenceId !== "string" || !evidenceId.trim()) return null
+  return { actionId: actionId.trim(), evidenceId: evidenceId.trim() }
 }
