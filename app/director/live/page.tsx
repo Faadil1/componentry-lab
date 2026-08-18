@@ -3,10 +3,9 @@ import Link from "next/link"
 import { authRuntimeSummary } from "@/auth"
 import { GovernedActionPanel } from "@/components/director/governed-action-panel"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
+import { buildDualLibraryProjection } from "@/lib/creative-os/collaboration"
 import {
-  buildDualLibraryProjection,
-} from "@/lib/creative-os/collaboration"
-import {
+  projectDirectorNextActionToGovernedStartIntent,
   projectDirectorNextActionToGovernedWriteIntent,
 } from "@/lib/creative-os/action-plane"
 import {
@@ -15,6 +14,7 @@ import {
 } from "@/lib/director/live-projection"
 import { fingerprintProjectBrain } from "@/lib/projects/fingerprint"
 import { PROJECT_NEXT_ACTION_APPEND_SCOPE } from "@/lib/projects/next-action-writer"
+import { PROJECT_NEXT_ACTION_START_SCOPE } from "@/lib/projects/next-action-status-writer"
 import { listProjects } from "@/lib/projects/repository"
 import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
 
@@ -41,6 +41,10 @@ export default async function LiveDirectorPage({
   const writeIntent = project && projection
     ? projectDirectorNextActionToGovernedWriteIntent(project, projection.result, projection.evaluationTimestamp)
     : null
+  const startIntent = project && projection
+    ? projectDirectorNextActionToGovernedStartIntent(project, projection.result, projection.evaluationTimestamp)
+    : null
+  const projectFingerprint = project ? fingerprintProjectBrain(project) : ""
 
   return (
     <main className="min-h-screen bg-stone-50 text-neutral-950">
@@ -55,24 +59,15 @@ export default async function LiveDirectorPage({
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-3xl space-y-2">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-neutral-950 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white">
-                  Live Project Brain
-                </span>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-800">
-                  Governed projection + bounded writes
-                </span>
+                <span className="rounded-full bg-neutral-950 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white">Live Project Brain</span>
+                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-800">Governed projection + bounded writes</span>
               </div>
               <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Creative Director — Live Collaboration</h1>
               <p className="text-sm leading-relaxed text-stone-600">
                 Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. Proposals remain read-only until an exact typed mutation passes owner authentication, explicit approval, scope validation, and stale-state checks.
               </p>
             </div>
-            <Link
-              href="/director"
-              className="rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100"
-            >
-              Open fixture lab
-            </Link>
+            <Link href="/director" className="rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100">Open fixture lab</Link>
           </div>
         </section>
 
@@ -102,9 +97,7 @@ export default async function LiveDirectorPage({
                   className={`rounded-xl border p-3 transition ${active ? "border-neutral-950 bg-neutral-950 text-white" : "border-stone-200 bg-white hover:border-stone-400"}`}
                 >
                   <p className="truncate text-sm font-semibold">{summary.title}</p>
-                  <p className={`mt-1 font-mono text-[10px] uppercase ${active ? "text-stone-300" : "text-stone-500"}`}>
-                    {summary.mode} · {summary.currentPhase}
-                  </p>
+                  <p className={`mt-1 font-mono text-[10px] uppercase ${active ? "text-stone-300" : "text-stone-500"}`}>{summary.mode} · {summary.currentPhase}</p>
                 </Link>
               )
             })}
@@ -154,24 +147,47 @@ export default async function LiveDirectorPage({
               </article>
             </section>
 
-            {writeIntent ? (
-              <GovernedActionPanel
-                projectId={project.id}
-                callbackUrl={`/director/live?project=${encodeURIComponent(project.id)}`}
-                status={writeIntent.status}
-                operation="PROJECT_BRAIN_APPEND_NEXT_ACTION"
-                scope={PROJECT_NEXT_ACTION_APPEND_SCOPE}
-                beforeFingerprint={fingerprintProjectBrain(project)}
-                proposalFingerprint={writeIntent.proposalFingerprint}
-                actionLabel={writeIntent.candidateAction.label}
-                actionDescription={writeIntent.candidateAction.description}
-                existingActionStatus={writeIntent.existingAction?.status ?? null}
-                oauthConfigured={authRuntimeSummary.oauthConfigured}
-                ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
-                ownerAuthorized={ownerAuthorized}
-                errors={writeIntent.errors}
-              />
-            ) : null}
+            <div className="grid gap-4 xl:grid-cols-2">
+              {writeIntent ? (
+                <GovernedActionPanel
+                  projectId={project.id}
+                  callbackUrl={`/director/live?project=${encodeURIComponent(project.id)}`}
+                  approvalKind="append"
+                  status={writeIntent.status}
+                  operation="PROJECT_BRAIN_APPEND_NEXT_ACTION"
+                  scope={PROJECT_NEXT_ACTION_APPEND_SCOPE}
+                  beforeFingerprint={projectFingerprint}
+                  proposalFingerprint={writeIntent.proposalFingerprint}
+                  actionLabel={`Canonicalize: ${writeIntent.candidateAction.label}`}
+                  actionDescription={writeIntent.candidateAction.description}
+                  existingActionStatus={writeIntent.existingAction?.status ?? null}
+                  oauthConfigured={authRuntimeSummary.oauthConfigured}
+                  ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
+                  ownerAuthorized={ownerAuthorized}
+                  errors={writeIntent.errors}
+                />
+              ) : null}
+
+              {startIntent ? (
+                <GovernedActionPanel
+                  projectId={project.id}
+                  callbackUrl={`/director/live?project=${encodeURIComponent(project.id)}`}
+                  approvalKind="start"
+                  status={startIntent.status}
+                  operation="PROJECT_BRAIN_START_NEXT_ACTION"
+                  scope={PROJECT_NEXT_ACTION_START_SCOPE}
+                  beforeFingerprint={projectFingerprint}
+                  proposalFingerprint={startIntent.proposalFingerprint}
+                  actionLabel={`Start: ${startIntent.candidateAction.label}`}
+                  actionDescription="Move only this canonical Project Brain next action from todo to doing. This does not change project phase, execute external work, or authorize any provider."
+                  existingActionStatus={startIntent.existingAction?.status ?? null}
+                  oauthConfigured={authRuntimeSummary.oauthConfigured}
+                  ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
+                  ownerAuthorized={ownerAuthorized}
+                  errors={startIntent.errors}
+                />
+              ) : null}
+            </div>
 
             <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
