@@ -9,12 +9,13 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = DIRECTOR POST-COMPLETION ROUTING
 PHASE_CODE = CREATIVE_OS_DIRECTOR_POST_COMPLETION_ROUTING_V1
 TRACK = READ / ORCHESTRATION CORRECTNESS
-STATUS = FEATURE_COMPLETE / BUILD_QA_PASS / PRODUCTION_PROMOTION_NOT_AUTHORIZED
+STATUS = FEATURE_COMPLETE / BUILD_QA_PASS / PRODUCTION_PROMOTION_RECOMMENDED
 SOURCE_OF_TRUTH = GitHub branch feature/director-post-completion-routing-01
 V1_WRITE_PLANE_BASELINE = FROZEN
 BASELINE_COMMIT = 60747d41bfa4d0393d27b2bd9503fd6ddef1bea8
 FUNCTIONAL_HEAD = 23274b2c2c6f5b8756e31963dd723e3d01850020
-PREVIEW_DEPLOYMENT = dpl_47LxCL6kwzZbwTcnHsKkL6YxNVY3
+GATE_HANDOVER_HEAD = 2817e9f8da0ea852196b865c1e16ec10932cc913
+PREVIEW_DEPLOYMENT = dpl_HnSjef6YVubCgaWyzkgfY1VF64hD
 PREVIEW_STATE = READY
 TESTS = 108 / 108 PASS
 COMPILE = PASS
@@ -23,6 +24,8 @@ STATIC_GENERATION = 93 / 93 PASS
 AUTHORITY_CHANGE = NONE
 WRITER_CHANGE = NONE
 PROJECT_BRAIN_MUTATION = NONE
+PRODUCTION_PROMOTION_DECISION = PROMOTE_RECOMMENDED
+PRODUCTION_PROMOTION_EXECUTED = NO
 ```
 
 ## Problem proven after V1 completion smoke
@@ -77,7 +80,7 @@ Full gate:
 Next.js compile PASS
 TypeScript PASS
 93 / 93 static generation PASS
-Preview deployment READY
+Latest branch Preview deployment READY
 ```
 
 The test proves:
@@ -90,7 +93,7 @@ The test proves:
 
 ## Authority/diff audit
 
-Diff from frozen V1 baseline contains exactly two files:
+Functional diff from frozen V1 baseline contains exactly two runtime/test files plus this handover:
 
 ```text
 lib/director/adapters.ts
@@ -98,6 +101,9 @@ lib/director/adapters.ts
 
 tests/creative-os-live-director-projection.test.ts
   +44 / -0
+
+docs/evidence/creative-os-director-post-completion-routing-v1/CANONICAL-HANDOVER.md
+  documentation only
 ```
 
 No files under Project Brain writers, Server Actions, auth, Registry, Film Kit, persistence authority contracts, or collaboration envelopes changed.
@@ -117,7 +123,7 @@ EXTERNAL_SIDE_EFFECT = NONE
 
 ## Preview runtime note
 
-Direct Preview runtime GET returned 500 because this new branch does not have the branch-scoped Preview storage configuration:
+Direct Preview runtime GET returned 500 because this branch does not have the branch-scoped Preview storage configuration:
 
 ```text
 COMPONENTRY_LAB_STORAGE_MODE must be set to 'postgres' in production.
@@ -128,16 +134,49 @@ This is the existing intentional storage fail-closed boundary. It is not a routi
 
 Do not weaken storage fail-closed behavior merely to make this branch Preview runtime load.
 
+## Production Promotion Decision Gate — PASS
+
+Gate re-run against current `master` and branch head confirms:
+
+```text
+BRANCH = ahead of master by 3 commits
+BEHIND_MASTER = 0
+LATEST_PREVIEW = dpl_HnSjef6YVubCgaWyzkgfY1VF64hD
+LATEST_PREVIEW_STATE = READY
+FUNCTIONAL_TESTS = 108 / 108 PASS
+COMPILE = PASS
+TYPESCRIPT = PASS
+STATIC_GENERATION = 93 / 93 PASS
+RUNTIME_AUTHORITY_EXPANSION = NONE
+WRITER_CHANGE = NONE
+```
+
+Decision:
+
+```text
+PRODUCTION_PROMOTION_DECISION = PROMOTE_RECOMMENDED
+```
+
+Rationale:
+- fixes a proven post-completion orchestration defect;
+- leaves frozen Governed Write Plane V1 unchanged;
+- adds no mutation scope, writer, auth bypass, provider effect, or external side effect;
+- preserves deterministic read-only fallback behavior;
+- branch is cleanly ahead of master with no divergence;
+- latest Preview deployment is READY and the full build gate is green.
+
+Promotion itself remains protected and is not executed by this checkpoint without explicit user authorization.
+
 ## HANDOVER
 
-Resume from `feature/director-post-completion-routing-01` with the routing defect fixed and fully gated.
+Resume from `feature/director-post-completion-routing-01` with the routing defect fixed, fully gated, and formally recommended for Production promotion.
 
 The frozen Governed Write Plane V1 remains unchanged and Production-proven.
 
 ## Exactly one next action
 
 ```text
-PRODUCTION PROMOTION DECISION GATE
+AWAIT EXPLICIT PRODUCTION PROMOTION AUTHORIZATION
 
 Candidate = merge feature/director-post-completion-routing-01 into master
 Expected Production behavior for stated after merge =
