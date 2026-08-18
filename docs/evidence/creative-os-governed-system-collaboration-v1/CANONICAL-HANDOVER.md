@@ -8,17 +8,17 @@ Date: 2026-08-18
 PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED SYSTEM COLLABORATION
 TRACK = CROSS-SYSTEM COLLABORATION MESH
-STATUS = PRODUCTION_MERGED / STORAGE_RUNTIME_QA_PASS / ROOT_AUTH_CONFIG_BLOCKED
+STATUS = PRODUCTION_PROMOTION_COMPLETE / RUNTIME_QA_PASS
 SOURCE_OF_TRUTH = GitHub master
 
 PRE_MERGE_MASTER = a7244b318133cfac82993f442e943d47ee9bf4c0
 FEATURE_HEAD = b9e87ea38218b99a51ad302661c6d60a32e26033
 PROMOTION_PR = #2
 MERGE_COMMIT = bb2325d83f1ff57ba6a232076e5071428d469855
-PREVIOUS_CANONICAL_HEAD = 56fc65ef791da7c1ce10aa3159739ca053655e87
+PRE_RUNTIME-QA_CANONICAL_HEAD = 61cd2f11cea24d62e94de219ff1e227eb3d6e723
 
-CURRENT_PRODUCTION_REDEPLOY = dpl_3D8pzQCom9dAASUcooZBQsRRSwCE
-CURRENT_PRODUCTION_STATE = READY
+VALIDATED_PRODUCTION_DEPLOYMENT = dpl_7BBkgd3re2hz7xADAvgHXzypxYJH
+VALIDATED_PRODUCTION_STATE = READY
 PRODUCTION_ALIAS = componentry-lab.vercel.app
 
 COLLABORATION_TESTS_ON_MASTER = 57 / 57 PASS
@@ -29,37 +29,42 @@ STATIC_GENERATION = 93 / 93 PASS
 POSTGRES_STORAGE_CONFIGURATION = RESTORED
 COMPONENTRY_LAB_STORAGE_MODE = postgres
 DATABASE_URL = FUNCTIONAL IN PRODUCTION RUNTIME
+NEXTAUTH_SECRET = FUNCTIONAL IN PRODUCTION RUNTIME
 
+/ = 200 OK
 /projects = 200 OK
 /director/live = 200 OK
 /api/director/live = 200 OK
 
-/ = 500
-ROOT_BLOCKER = NEXTAUTH_SECRET missing in Production
-NEXT_REQUIRED_OUTPUT = RESTORE PRODUCTION AUTH CONFIG + ROOT SMOKE
+LATEST_PRODUCTION_ERROR_FATAL_LOGS = NONE OBSERVED ON VALIDATED DEPLOYMENT
+ROOT_500_BLOCKER = CLOSED
+STORAGE_500_BLOCKER = CLOSED
+
+GITHUB_OAUTH_UI_STATUS = NOT_CONFIGURED / NON_BLOCKING_FOR_READ_ONLY_RUNTIME_QA
+NEXT_REQUIRED_OUTPUT = NEXT PRODUCT PHASE DECISION
 ```
 
-## Promotion result
+## Production promotion — COMPLETE
 
 The governed collaboration feature was explicitly authorized and merged through PR #2 into `master`.
 
-Production source contains the full governed collaboration mesh:
+Production source contains the complete governed collaboration mesh established in Slices A–H:
 
-- Project Brain = canonical project state/context owner.
-- Creative Director = exactly one canonical next action owner.
-- Creative OS Registry V2 = governance/evidence/authority/canonical identity plane.
-- Legacy Component Library = separate composition/build-intelligence plane.
-- Creative Method Runtime = closed six-method deterministic advisory dispatcher.
-- Film Kit = bounded planning/intent collaborator.
-- Playbooks = read-only knowledge collaborator.
-- References / Sources / Resources / Providers = discovery/evidence only unless separately qualified.
-- Audit / Evidence = immutable projection plane; no Project Brain mutation in this phase.
+- **Project Brain** = canonical project state/context owner.
+- **Creative Director** = exactly one canonical next action owner.
+- **Creative OS Registry V2** = governance/evidence/authority/canonical identity plane.
+- **Legacy Component Library** = preserved composition/build-intelligence plane.
+- **Creative Method Runtime** = closed six-method deterministic advisory dispatcher.
+- **Film Kit** = bounded planning/intent collaborator.
+- **Playbooks** = read-only knowledge collaborator.
+- **References / Sources / Resources / Providers** = discovery/evidence entities; never executors by implication.
+- **Audit / Evidence** = immutable projection plane; no Project Brain mutation in this phase.
 
-Authority boundaries remain locked. No merge or runtime restoration widened authority.
+The two Library planes remain intentionally separate. Registry V2 governs identity/authority/provenance; the older Component Library preserves concrete composition/build intelligence. Crosswalks remain explicit, evidence-backed and fail-closed.
 
-## Production build verification
+## Build verification — PASS
 
-The promoted build passed:
+The promoted source passed:
 
 ```text
 57 / 57 collaboration tests PASS
@@ -69,64 +74,100 @@ TypeScript PASS
 /director/live emitted
 /api/director/live emitted
 Production deployment READY
-aliasError = null
 ```
 
-## Durable storage restoration — COMPLETE
+## Production durable storage restoration — COMPLETE
 
-The initial Production runtime blocker was:
+The initial Production runtime failure was caused by missing Production-scoped durable storage configuration.
+
+The environment was corrected with:
 
 ```text
-COMPONENTRY_LAB_STORAGE_MODE must be set to 'postgres' in production.
-Falling back to local-file is not allowed.
+COMPONENTRY_LAB_STORAGE_MODE = postgres
+DATABASE_URL = valid Production Neon/Postgres connection
 ```
 
-The Production Vercel environment was corrected with a Production-scoped Postgres storage mode and Production database connection, then Production was redeployed.
+The fail-closed rule was preserved. No local-file fallback was introduced.
 
-Real live smoke now proves the storage path is operational:
+Live proof on the validated Production deployment:
 
 ```text
-https://componentry-lab.vercel.app/projects
+/projects
 → HTTP 200
 → canonical Project Brain data rendered
 
-https://componentry-lab.vercel.app/director/live
+/director/live
 → HTTP 200
 → live governed Project Brain → Director projection rendered
 → Registry V2 governed entities = 34
 → Component Library composition descriptors = 27
 → Director governed method pool = 6
 
-https://componentry-lab.vercel.app/api/director/live
+/api/director/live
 → HTTP 200
 → JSON projection returned with errors = []
 ```
 
-Therefore the previous storage blocker is CLOSED. Do not re-open it unless new runtime evidence contradicts this checkpoint.
+The previous storage blocker is CLOSED.
 
-Production local-file fallback remains prohibited and was not weakened.
+## Production root authentication runtime restoration — COMPLETE
 
-## Remaining Production blocker — ROOT AUTH CONFIGURATION
-
-The site root still returns HTTP 500:
-
-```text
-https://componentry-lab.vercel.app/
-→ HTTP 500
-```
-
-Current Vercel runtime evidence identifies the active root cause on the latest redeploy:
+After storage recovery, `/` still returned HTTP 500 because NextAuth had no Production secret:
 
 ```text
 [next-auth][error][NO_SECRET]
 Please define a `secret` in production.
 ```
 
-This is a separate authentication configuration blocker, not a storage failure and not a collaboration-mesh regression.
+A Production-scoped `NEXTAUTH_SECRET` was created and Production was redeployed.
 
-The next remediation is to make the existing NextAuth secret available to the Production environment without overwriting branch-specific Preview secrets. After that, redeploy Production and re-smoke `/`.
+Live proof:
 
-`NEXTAUTH_URL` and other auth variables should be evaluated only if runtime evidence identifies them after `NEXTAUTH_SECRET` is restored; do not guess additional blockers prematurely.
+```text
+/
+→ HTTP 200
+→ Command workspace rendered
+→ NextAuth NO_SECRET runtime failure no longer present
+```
+
+The previous root 500 blocker is CLOSED.
+
+## Final runtime smoke — PASS
+
+Validated against Production deployment:
+
+```text
+dpl_7BBkgd3re2hz7xADAvgHXzypxYJH
+```
+
+Results:
+
+```text
+/                  = 200 OK
+/projects           = 200 OK
+/director/live      = 200 OK
+/api/director/live  = 200 OK
+```
+
+Vercel runtime logs scoped to the validated deployment and filtered to `error` + `fatal` returned:
+
+```text
+No logs found for the specified criteria.
+```
+
+Therefore the governed-system-collaboration Production promotion is runtime-verified for the required read-only product surfaces.
+
+## Remaining auth capability note — NOT A RUNTIME BLOCKER
+
+The root UI currently reports:
+
+```text
+OAuth configured: no
+```
+
+This means successful GitHub sign-in has **not** been established by this runtime QA. The page itself is healthy and the missing OAuth provider configuration does not block the governed read-only collaboration surfaces validated above.
+
+Do not silently mark GitHub OAuth as operational without a separate provider configuration + sign-in validation. If owner authentication becomes a requirement of the next product phase, configure and validate the Production GitHub OAuth variables as a separate bounded task.
 
 ## Authority boundaries — LOCKED
 
@@ -147,37 +188,25 @@ The next remediation is to make the existing NextAuth secret available to the Pr
 
 Resume from `master` after this checkpoint.
 
-Do not rebuild Slices A–H, reopen the dual-library architecture, revert the merge, or modify storage-mode fail-closed behavior. Production durable storage is now verified operational.
+Do not rebuild Slices A–H, reopen the dual-library architecture, reintroduce fixture-only Director as the product default, weaken storage fail-closed behavior, or infer that GitHub OAuth is operational merely because the root page now loads.
 
-Current runtime truth:
-
-```text
-/projects = PASS
-/director/live = PASS
-/api/director/live = PASS
-/ = BLOCKED BY NEXTAUTH_SECRET
-```
-
-After restoring the Production NextAuth secret, redeploy and test:
+Canonical runtime truth:
 
 ```text
-/
-/projects
-/director/live
-/api/director/live
+PRODUCTION PROMOTION = COMPLETE
+DURABLE STORAGE = PASS
+ROOT NEXTAUTH SECRET = PASS
+PROJECT BRAIN = PASS
+LIVE DIRECTOR = PASS
+LIVE DIRECTOR API = PASS
+ERROR/FATAL LOG CHECK = PASS
+GITHUB OAUTH SIGN-IN = NOT YET VALIDATED
 ```
 
-Then inspect Production runtime error/fatal logs. If clean, promote state to:
-
-```text
-PRODUCTION_PROMOTION_COMPLETE / RUNTIME_QA_PASS
-```
+The governed collaboration phase is closed. The next work should begin only through a fresh product-phase decision, preserving all current governance and collaboration boundaries.
 
 ## Exactly one next action
 
 ```text
-RESTORE NEXTAUTH_SECRET FOR PRODUCTION
-→ redeploy Production
-→ smoke /
-→ confirm no new auth/runtime blocker
+NEXT PRODUCT PHASE DECISION
 ```
