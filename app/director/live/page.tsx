@@ -213,7 +213,7 @@ export default async function LiveDirectorPage({
                 <div className="mt-3 space-y-2">
                   {projection.result.gateEvaluations.map((gate) => (
                     <div key={gate.gateId} className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 p-3 text-sm">
-                      <span className="font-medium">{gate.label}</span>
+                      <span className="font-medium">{gate.name}</span>
                       <span className="font-mono text-[10px] font-bold uppercase text-stone-600">{gate.status}</span>
                     </div>
                   ))}
