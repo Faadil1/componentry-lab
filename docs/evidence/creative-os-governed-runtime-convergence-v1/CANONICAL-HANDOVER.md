@@ -6,171 +6,313 @@ Date: 2026-08-18
 
 ```text
 PROJECT = Componentry Lab / Creative OS
-PHASE = GOVERNED RUNTIME CONVERGENCE — SELECTED
-PHASE_CODE = CREATIVE_OS_GOVERNED_RUNTIME_CONVERGENCE_V1
-TRACK = REGISTRY V2 → PROJECT BRAIN → CREATIVE DIRECTOR
-STATUS = PHASE_DECISION_LOCKED
+PHASE = GOVERNED SYSTEM COLLABORATION — SELECTED
+PHASE_CODE = CREATIVE_OS_GOVERNED_SYSTEM_COLLABORATION_V1
+TRACK = CROSS-SYSTEM COLLABORATION MESH
+STATUS = PHASE_DECISION_REFINED_AND_LOCKED
 SOURCE_OF_TRUTH = GitHub master
-BASELINE_MASTER_HEAD = 834daf1098e0d686903eddae2b77b78128fae666
+BASELINE_MASTER_HEAD = 4ac948dffbf128a41de933f852c79cbe1f3ab44b
 PRODUCTION_REGISTRY_BASELINE = 34 entities / 0 warnings
 FUNCTIONAL_INTEGRATION = NOT_STARTED
 PRODUCTION_PROMOTION_FOR_THIS_PHASE = NOT_APPLICABLE_YET
 ```
 
-This checkpoint selects the next product phase. It does not start the functional integration and does not expand runtime authority.
+This checkpoint refines the previous Governed Runtime Convergence decision. The target is not a one-way Registry V2 → Project Brain → Creative Director pipeline. The target is a governed collaboration mesh in which the relevant Componentry Lab / Creative OS systems exchange context, capability requests, results, evidence, recommendations, and explicit mutation requests while preserving their separate authority boundaries.
 
-## Decision
+## Product decision — refined and locked
 
 The next product phase is:
 
 ```text
-GOVERNED RUNTIME CONVERGENCE
-Registry V2 → Project Brain → Creative Director
+GOVERNED SYSTEM COLLABORATION
+
+Project Brain ↔ Creative Director ↔ Registry V2 ↔ Creative Method Runtime
+        ↕                  ↕                 ↕
+   Decisions/Audit      Playbooks        References/Sources
+        ↕                                    ↕
+      Film Kit / specialized production surfaces when applicable
 ```
 
-The purpose is to connect three already-mature product surfaces into one governed operating loop rather than creating another parallel subsystem.
+The arrows describe governed information/capability collaboration, not unrestricted write authority.
+
+The objective is to make the existing product systems work as one operating system instead of a collection of adjacent surfaces.
+
+## Core collaboration principle
+
+Every participating system must be able to collaborate through explicit contracts, but no system may silently become the owner of another system's state.
+
+Collaboration means:
+
+- canonical project context can be requested and consumed;
+- governed capabilities can be discovered and selected;
+- a system can request work from another system;
+- results can be returned with provenance and evidence;
+- recommendations can flow back to the project context;
+- decisions, risks, outputs, and evidence can be surfaced across systems;
+- specialized systems such as Film Kit can participate when the project requires them;
+- any persistent mutation must pass through the authority boundary of the system that owns that state.
+
+Collaboration does NOT mean:
+
+- shared mutable global state without ownership;
+- every module calling every other module directly;
+- hidden circular writes;
+- authority escalation through routing;
+- references becoming executors;
+- external providers becoming executable merely because they are visible in Registry V2.
+
+## System roles — preserve ownership
+
+### Project Brain — canonical project state and shared context hub
+
+Project Brain owns the canonical project context and remains the place where project-specific state is represented: phase, positioning, design, proof, build mappings, capture, presentation, decisions, risks, outputs, audit, learnings, and supporting recommendations.
+
+It can supply context to other systems and receive governed proposals/results, but another system may not silently mutate Project Brain.
+
+### Creative Director — orchestration and canonical next-action reasoning
+
+Creative Director owns the computation of exactly one canonical next action for the current project context.
+
+It consumes Project Brain context and governed capabilities. It may coordinate or recommend use of another subsystem, but does not inherit that subsystem's write authority.
+
+### Registry V2 — governed capability/evidence discovery plane
+
+Registry V2 owns canonical identities and governance metadata for sources, resources, references, methods, and providers.
+
+It tells other systems what exists, what is qualified, what authority ceiling applies, what evidence/provenance exists, and what remains unknown. It is not itself the executor of every listed entity.
+
+### Creative Method Runtime — deterministic advisory method execution
+
+The Creative Method Runtime owns deterministic execution of internal Creative Methods. It remains local, read-only, and side-effect free unless a future separately governed authority expansion is approved.
+
+It receives a structured request and returns structured advisory output, quality-gate results, and evidence.
+
+### Film Kit — specialized production collaborator
+
+Film Kit remains a specialized production system. When the Director or project context establishes that film/video production is relevant, Film Kit may receive governed production context and return plans/results/evidence through explicit contracts.
+
+This phase does not grant new Film Kit execution authority and does not make Film Kit the global orchestrator.
+
+### Playbooks / references / sources — knowledge collaborators
+
+Playbooks, references, and sources can inform planning, routing, evaluation, and art direction according to their modeled usage and authority status.
+
+They remain evidence/knowledge surfaces unless separately qualified as executable capabilities.
+
+### Decisions / audit / learnings / evidence — feedback plane
+
+Cross-system work must return traceable evidence so Project Brain and other authorized surfaces can explain:
+
+- what system acted or reasoned;
+- which capability or method was used;
+- what inputs were supplied;
+- what output was produced;
+- what quality gates passed or failed;
+- what authority applied;
+- what remains unresolved.
+
+## Collaboration architecture
+
+The preferred pattern is hub-and-contract collaboration, not uncontrolled point-to-point coupling.
+
+### Shared collaboration envelope
+
+Introduce a canonical cross-system request/result contract carrying at minimum:
+
+```text
+projectId
+correlationId
+sourceSystem
+targetSystem
+intent
+projectPhase
+projectMode
+capabilityRefs
+authorityContext
+inputRefs / structuredInputs
+evidenceRefs
+requestedEffectClass
+status
+```
+
+A collaboration result should carry at minimum:
+
+```text
+correlationId
+sourceSystem
+targetSystem
+capabilityUsed
+resultStatus
+structuredOutput
+quality/evaluation results
+evidence/provenance
+limitations
+recommendedNextStep
+sideEffectRequest or null
+```
+
+The envelope is a coordination contract. It does not itself authorize mutations.
+
+## Collaboration invariants
+
+1. `projectId` is shared across systems; canonical project ownership remains with Project Brain.
+2. Canonical capability identity comes from Registry V2 when Registry-governed entities are involved.
+3. Creative Director retains ownership of the single canonical next action.
+4. Supporting recommendations remain advisory and cannot independently advance project phase.
+5. Every cross-system request is deterministic where the underlying collaborator is deterministic.
+6. Every result is traceable to source system, capability, provenance, and authority context.
+7. Unknown lifecycle, authority, compatibility, or source identity fails closed.
+8. `REFERENCE` entities never become executors by routing accident.
+9. External `SOURCE`, `RESOURCE`, or `PROVIDER` entities do not gain execution authority through this collaboration phase.
+10. Persistent writes require an explicit owner-system write path and applicable approval.
+11. No collaborator may silently mutate another collaborator's canonical state.
+12. Cross-system loops must avoid recursive/circular execution without an explicit bounded orchestration contract.
+13. Human approval requirements remain intact.
+14. Registry V1 remains unchanged.
+15. Production promotion remains a separate explicit gate after preview QA.
 
 ## Why this phase now
 
-### Project Brain already exists
+The major systems already exist, but their collaboration is incomplete:
 
-Project Brain is already a substantial live workspace with project context, phase rail, positioning, design, proof, build mappings, capture, video, presentation, decisions, risks, outputs, audit, learnings, recommendations, and inspector surfaces. Rebuilding Project Brain would therefore be a false next phase.
+- Project Brain is already a substantial live project workspace.
+- Creative Director already owns canonical next-action reasoning.
+- Registry V2 is Production-verified with 34 governed entities and six governed internal methods.
+- Creative Method Runtime already provides deterministic local read-only execution.
+- Film Kit and other specialized surfaces already exist.
+- Project Brain → Director still initializes `availableSkills` as an empty array.
+- Director fixtures still inject synthetic skills.
+- Some supporting recommendations still use static/noncanonical registry identifiers.
+- There is no single explicit collaboration contract that all participating systems can use to exchange requests, results, evidence, and authority context.
 
-### Creative Director already owns canonical next-action authority
-
-Project Brain supporting recommendations intentionally do not control phase progression. The code explicitly leaves phase recommendations to the Creative Director. The Director already produces exactly one canonical next action and preserves a read-only/no-side-effect projection boundary.
-
-### Registry V2 is now Production-ready but not yet the Director capability substrate
-
-Registry V2 is now a cumulative, governed, Production-verified library with 34 entities and six governed internal methods. However, the live Project Brain → Director adapter still initializes `availableSkills` as an empty array, while the Director fixture path injects synthetic fixture skills. This leaves a real product gap between governed capability inventory and runtime selection.
-
-### Project Brain still contains noncanonical registry recommendation IDs
-
-Supporting registry recommendations still include static identifiers such as `capture-bridge` and `decision-systems`. These recommendations should resolve to canonical Registry V2 identities or explicitly report a missing capability; they must not fabricate registry identity.
-
-## Architectural objective
-
-Target operating loop:
-
-```text
-Project Brain
-  supplies canonical live project context
-      ↓
-Registry V2
-  supplies governed capability metadata, evidence, lineage and authority
-      ↓
-Creative Director
-  selects eligible internal methods and produces one canonical next move
-```
-
-The first convergence target is internal deterministic Creative Methods only. External references, sources and providers remain discovery/evidence surfaces and do not become executable Director skills merely because they are present in Registry V2.
-
-## Locked governance rules
-
-- Preserve Project Brain as the canonical project context.
-- Preserve Creative Director ownership of the single canonical next action.
-- Preserve supporting recommendations as non-phase-mutating guidance.
-- Preserve `sideEffectPayload = null` for the Director projection in this phase.
-- Preserve Project Brain immutability through Director projection.
-- Preserve fail-closed behavior for unknown authority, lifecycle, source identity, or compatibility.
-- Do not promote `REFERENCE` entities to executable capability.
-- Do not promote external `PROVIDER`, `SOURCE`, or `RESOURCE` entities to executable Director skills in this phase.
-- Do not install external packages or repositories.
-- Do not add generation spend or external provider execution.
-- Do not expand Film Kit execution authority.
-- Do not automatically mutate Project Brain persistent state.
-- Do not rewrite legacy Registry V1.
-- Do not reopen the historical external-findings inventory unless genuinely new evidence appears.
-- Production promotion for functional work remains a separate explicit gate after preview QA.
+Therefore the next product milestone is not to strengthen only one link. It is to establish the collaboration substrate and then connect the existing systems through it.
 
 ## Phase slices
 
-### Slice A — Registry V2 → Director capability projection
+### Slice A — Cross-system collaboration contract foundation
 
-Create a pure canonical adapter from eligible Registry V2 `METHOD` entities to Director `SkillMetadata`.
+Create the pure canonical request/result envelopes, system identity types, effect classification, authority pass-through, correlation semantics, and fail-closed validation.
 
 Requirements:
 
-- source from the cumulative live Registry V2 model;
-- initially project only governed `METHOD` entities;
-- project `MethodEntity.methodDefinition` into Director-compatible metadata;
-- preserve canonical method/resource IDs, provenance and evidence lineage;
-- normalize authority deliberately and conservatively rather than comparing raw enum strings;
-- `SUGGEST` may map to Director `suggest`;
-- `READ_ONLY` must never be widened beyond advisory behavior;
-- fail closed on unknown or unmappable authority/lifecycle state;
-- deterministic ordering;
-- no external entity becomes executable skill.
+- no runtime side effects;
+- no system-specific UI work;
+- no external execution;
+- deterministic serialization/validation;
+- explicit system ownership;
+- explicit authority context;
+- bounded recursion/no hidden cycles;
+- tests proving invalid/unknown collaboration requests fail closed.
 
-### Slice B — Live Project Brain → Director input
+### Slice B — Registry V2 ↔ collaboration capability projection
 
-Replace or augment the current empty live capability supply with Registry-derived eligible methods while preserving:
+Project eligible Registry V2 entities into collaboration-safe capability descriptors.
 
-- canonical Project Brain object identity;
-- Project Brain immutability;
-- deterministic Director output;
-- exactly one canonical next action;
-- no write callback/path;
-- `sideEffectPayload = null`.
+Initially, executable collaboration is limited to governed internal `METHOD` entities. References and unqualified external entities remain advisory/discovery-only.
 
-### Slice C — Project Brain recommendation identity convergence
+### Slice C — Project Brain ↔ collaboration hub adapter
 
-Replace fabricated/static registry recommendation identifiers with canonical Registry V2 entities, or emit an explicit missing-capability state.
+Expose canonical Project Brain project context through the collaboration envelope and define how collaboration results/proposals are returned without direct mutation.
 
-Each governed registry recommendation should expose at minimum:
+Project Brain remains immutable through the read/projection path.
 
-- canonical entity ID;
-- entity kind;
-- lifecycle state;
-- authority ceiling or `NOT_MODELED` status;
-- recommendation reason;
-- provenance;
-- limitations.
+### Slice D — Creative Director ↔ collaboration orchestration
 
-Supporting recommendations remain advisory and cannot mutate project phase.
+Replace the empty/synthetic capability supply with Registry-derived governed capability descriptors and allow Director to select an eligible collaborator/capability while still producing exactly one canonical next action.
 
-### Slice D — Live Director projection
+### Slice E — Creative Method Runtime ↔ collaboration execution/result return
 
-Move `/director` from fixture-only scenario projection toward a live Project Brain-aware projection.
+Allow a Director-selected internal Creative Method to receive structured collaboration input and return structured advisory output + quality evidence through the shared result contract.
 
-Fixtures may remain for tests/development until the live path is validated.
+No external calls or side effects are introduced.
 
-The live surface should show:
+### Slice F — Supporting system participation
 
-- selected Project Brain project context;
-- Registry-derived eligible internal methods;
-- evidence/provenance;
-- authority boundaries;
-- one canonical next action.
+Connect relevant specialized collaborators through adapters, not authority merging. This includes Film Kit and knowledge/evidence surfaces where the project/mode/phase requires them.
 
-It remains read-only in this phase.
+This slice must preserve each subsystem's existing authority limits.
 
-### Slice E — Integration QA
+### Slice G — Feedback / audit / decision trace
 
-The phase cannot close until the convergence path is proved without regression.
+Make cross-system collaboration visible as traceable project evidence: request, selected capability, result, gates, limitations, and any proposed follow-up.
+
+No automatic project mutation is required to prove the collaboration path.
+
+### Slice H — Integrated preview QA
+
+Prove representative multi-system workflows end-to-end without regression before any Production promotion decision.
+
+## Representative target collaboration flows
+
+The phase should prove more than one linear route.
+
+### Creative planning flow
+
+```text
+Project Brain context
+→ Director
+→ Registry V2 capability lookup
+→ Creative Method Runtime
+→ method result + quality evidence
+→ Director interpretation
+→ Project Brain-visible proposal/evidence
+```
+
+### Film/production flow
+
+```text
+Project Brain context
+→ Director determines production need
+→ Registry/knowledge lookup as applicable
+→ Film Kit receives governed production request
+→ Film Kit returns plan/result/evidence
+→ Director incorporates result into canonical next action
+→ Project Brain-visible evidence/proposal
+```
+
+### Knowledge/reference flow
+
+```text
+Project Brain / Director need
+→ Registry V2
+→ eligible Reference/Source/Playbook
+→ read/advisory evidence only
+→ Director or specialist consumes evidence
+→ traceable recommendation
+```
+
+No reference is executed in this flow.
 
 ## Exit criteria
 
 The phase is complete only when all of the following are demonstrated:
 
-1. Registry V2 is a real source of Director-compatible capability metadata.
-2. A real selected Project Brain project produces a Director result using Registry-derived eligible internal methods.
-3. Director selects only mode-, phase-, lifecycle- and authority-compatible methods.
-4. Project Brain registry recommendations cannot point at fabricated Registry IDs.
-5. Evidence, provenance and authority remain traceable through the projection.
-6. No `REFERENCE` or external provider is treated as an executable Director skill.
-7. Unknown/unqualified entities remain fail-closed.
-8. Director still produces exactly one canonical next action.
-9. Project Brain remains immutable through projection.
-10. Director retains no Project Brain write path and `sideEffectPayload` remains `null`.
-11. Same input produces deterministic output.
-12. No external provider call, package installation, generation spend, publication or submission is introduced.
-13. Registry V2 remains valid at the Production baseline of 34 entities / 0 warnings unless a separately governed registry change is approved.
-14. Tests and preview QA pass before any functional Production promotion decision.
+1. A canonical collaboration request/result contract exists and is tested.
+2. Every participating system has an explicit identity and ownership boundary.
+3. Project Brain can supply canonical context to collaborators without losing ownership or immutability.
+4. Registry V2 can supply canonical capability/evidence metadata to collaborators.
+5. Director uses Registry-derived governed capabilities rather than only empty/fixture capability supply.
+6. At least one internal Creative Method executes through the collaboration contract and returns quality/evidence data.
+7. At least one specialized-system collaboration path is demonstrated where applicable, without authority escalation.
+8. Collaboration results can be surfaced back to the project as traceable proposals/evidence.
+9. Director still produces exactly one canonical next action.
+10. Supporting recommendations cannot mutate project phase.
+11. No Registry recommendation points at fabricated Registry identities.
+12. No `REFERENCE` is treated as executable.
+13. Unknown/unqualified entities remain fail-closed.
+14. Cross-system recursion/cycles are bounded and tested.
+15. Every cross-system result preserves provenance and authority context.
+16. No external provider call, package installation, generation spend, publication, or submission is introduced without a separate authority decision.
+17. Film Kit authority is not expanded by this phase.
+18. Registry V2 remains valid at the Production baseline of 34 entities / 0 warnings unless a separately governed registry change is approved.
+19. Tests and preview QA pass before any functional Production promotion decision.
 
 ## Explicitly out of scope
 
-- external provider execution;
+- turning every system into a global orchestrator;
+- unrestricted point-to-point writes;
+- shared mutable state without ownership;
+- external provider execution by default;
 - Film Kit authority expansion;
 - auto-installation of tools/repositories;
 - making references executable;
@@ -178,34 +320,18 @@ The phase is complete only when all of the following are demonstrated:
 - publishing/submitting externally;
 - automatic Project Brain state mutation;
 - Registry V1 rewrite;
-- new external-findings inventory pass;
-- removal of Director fixtures before the live path is validated;
-- changing the Director from one canonical next action to competing actions.
-
-## Existing evidence supporting this decision
-
-- Project Brain already renders a full project workspace from canonical repository data.
-- Project Brain recommendation logic explicitly delegates phase recommendations to Creative Director.
-- Project Brain registry recommendations still contain static/noncanonical target IDs.
-- `adaptProjectBrainToDirectorInput(...)` currently initializes `availableSkills: []`.
-- Director skill selection already filters by status, mode, phase and authority.
-- Director UI is currently fixture-driven and fixtures inject a synthetic `director-core-readonly` skill.
-- Registry V2 `MethodEntity` already contains method definition, authority policy, operation definition, lifecycle and evidence metadata.
-- Creative Method definitions already contain supported modes, supported phases, capability gaps, inputs, quality gates and advisory authority.
-- Six governed method definitions already exist in the canonical Creative Method registry.
-- Creative Method runtime is deterministic, local, read-only, makes no external calls and returns `sideEffects: null`.
-- Existing Project→Director regression tests already protect canonical project identity, deterministic output, one canonical next action, no phase mutation from supporting recommendations, no Project Brain write path and `sideEffectPayload: null`.
+- reopening the historical external-findings inventory without new evidence.
 
 ## Handover instructions
 
-Resume from this checkpoint. The product-phase decision is complete; do not reopen the choice among Project Brain, Director, Film Kit, Registry inventory, or a new subsystem unless materially new evidence invalidates this decision.
+Resume from this checkpoint. The product target is now the collaboration of the existing systems as a governed whole, not merely a one-way Registry → Project Brain → Director connection.
 
-Do not start with Director UI. First establish the pure governed capability projection contract and tests. Preserve all existing read-only and fail-closed boundaries.
+Do not begin by wiring UIs together directly. First build the shared collaboration contracts and ownership/authority semantics, then attach Registry, Project Brain, Director, Creative Method Runtime, and specialized collaborators through adapters.
 
-The verified Production Registry V2 remains the baseline while this phase is developed on a non-production branch/preview path.
+The verified Production Registry V2 remains the baseline while this phase is developed through a non-production functional branch/preview path.
 
 ## Exactly one next action
 
 ```text
-SLICE A — REGISTRY V2 → DIRECTOR CAPABILITY PROJECTION CONTRACT + TESTS
+SLICE A — CROSS-SYSTEM COLLABORATION CONTRACT FOUNDATION + TESTS
 ```
