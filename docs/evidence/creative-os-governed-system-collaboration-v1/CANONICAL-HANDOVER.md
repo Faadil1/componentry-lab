@@ -8,103 +8,125 @@ Date: 2026-08-18
 PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED SYSTEM COLLABORATION
 TRACK = CROSS-SYSTEM COLLABORATION MESH
-STATUS = PRODUCTION_MERGED / RUNTIME_STORAGE_CONFIGURATION_BLOCKED
+STATUS = PRODUCTION_MERGED / STORAGE_RUNTIME_QA_PASS / ROOT_AUTH_CONFIG_BLOCKED
 SOURCE_OF_TRUTH = GitHub master
 
 PRE_MERGE_MASTER = a7244b318133cfac82993f442e943d47ee9bf4c0
 FEATURE_HEAD = b9e87ea38218b99a51ad302661c6d60a32e26033
 PROMOTION_PR = #2
 MERGE_COMMIT = bb2325d83f1ff57ba6a232076e5071428d469855
+PREVIOUS_CANONICAL_HEAD = 56fc65ef791da7c1ce10aa3159739ca053655e87
 
-PRODUCTION_DEPLOYMENT = dpl_Asqq6dmgqkHNNX32mMAhN83PznWC
-PRODUCTION_DEPLOYMENT_STATE = READY
+CURRENT_PRODUCTION_REDEPLOY = dpl_3D8pzQCom9dAASUcooZBQsRRSwCE
+CURRENT_PRODUCTION_STATE = READY
 PRODUCTION_ALIAS = componentry-lab.vercel.app
 
 COLLABORATION_TESTS_ON_MASTER = 57 / 57 PASS
 NEXT_BUILD = PASS
 TYPESCRIPT = PASS
 STATIC_GENERATION = 93 / 93 PASS
-/director/live = emitted
-/api/director/live = emitted
 
-PRODUCTION_RUNTIME_SMOKE = BLOCKED
-BLOCKER = COMPONENTRY_LAB_STORAGE_MODE is not configured in Production
-REQUIRED_MODE = postgres
-LOCAL_FILE_FALLBACK_IN_PRODUCTION = FORBIDDEN / PRESERVED
+POSTGRES_STORAGE_CONFIGURATION = RESTORED
+COMPONENTRY_LAB_STORAGE_MODE = postgres
+DATABASE_URL = FUNCTIONAL IN PRODUCTION RUNTIME
+
+/projects = 200 OK
+/director/live = 200 OK
+/api/director/live = 200 OK
+
+/ = 500
+ROOT_BLOCKER = NEXTAUTH_SECRET missing in Production
+NEXT_REQUIRED_OUTPUT = RESTORE PRODUCTION AUTH CONFIG + ROOT SMOKE
 ```
 
 ## Promotion result
 
-The completed governed collaboration feature was explicitly authorized for Production and merged through PR #2.
+The governed collaboration feature was explicitly authorized and merged through PR #2 into `master`.
 
-The merge preserved the full feature history and promoted the collaboration mesh from `feature/governed-system-collaboration-01` into `master`.
+Production source contains the full governed collaboration mesh:
 
-Production build verification on `bb2325d83f1ff57ba6a232076e5071428d469855` passed:
+- Project Brain = canonical project state/context owner.
+- Creative Director = exactly one canonical next action owner.
+- Creative OS Registry V2 = governance/evidence/authority/canonical identity plane.
+- Legacy Component Library = separate composition/build-intelligence plane.
+- Creative Method Runtime = closed six-method deterministic advisory dispatcher.
+- Film Kit = bounded planning/intent collaborator.
+- Playbooks = read-only knowledge collaborator.
+- References / Sources / Resources / Providers = discovery/evidence only unless separately qualified.
+- Audit / Evidence = immutable projection plane; no Project Brain mutation in this phase.
+
+Authority boundaries remain locked. No merge or runtime restoration widened authority.
+
+## Production build verification
+
+The promoted build passed:
 
 ```text
 57 / 57 collaboration tests PASS
 Next.js compile PASS
 TypeScript PASS
 93 / 93 static generation PASS
+/director/live emitted
+/api/director/live emitted
 Production deployment READY
 aliasError = null
 ```
 
-The build emits both new live Director surfaces:
+## Durable storage restoration — COMPLETE
 
-```text
-ƒ /director/live
-ƒ /api/director/live
-```
-
-## Architecture now in Production source
-
-The merged system remains a governed collaboration mesh, not a monolithic orchestrator.
-
-- Project Brain owns canonical project state/context.
-- Creative Director owns exactly one canonical next action.
-- Creative OS Registry V2 is the governance/evidence/authority/canonical-identity plane.
-- The older Component Library remains a separate composition/build-intelligence plane.
-- Creative Method Runtime dispatches only the six qualified internal deterministic advisory methods.
-- Film Kit participates through bounded planning/intent collaboration.
-- Playbooks participates as read-only knowledge metadata.
-- References / Sources / Resources / Providers remain discovery/evidence entities unless separately qualified; they are not executors by implication.
-- Audit / Evidence remains projection-only in this phase and does not mutate Project Brain.
-
-The authority boundaries remain unchanged by Production promotion.
-
-## Production runtime smoke — BLOCKED BY ENVIRONMENT CONFIGURATION
-
-After the successful Production deployment, direct smoke tests returned HTTP 500 on:
-
-```text
-/director/live
-/api/director/live
-/projects
-```
-
-Vercel Runtime Errors identified one common root cause:
+The initial Production runtime blocker was:
 
 ```text
 COMPONENTRY_LAB_STORAGE_MODE must be set to 'postgres' in production.
 Falling back to local-file is not allowed.
 ```
 
-This is not a compile/test regression from the collaboration merge. `/projects` uses the same existing Project Brain repository path and fails for the same configuration reason.
+The Production Vercel environment was corrected with a Production-scoped Postgres storage mode and Production database connection, then Production was redeployed.
 
-The repository intentionally enforces durable storage in Production:
+Real live smoke now proves the storage path is operational:
 
 ```text
-production + missing COMPONENTRY_LAB_STORAGE_MODE
-=> fail closed
+https://componentry-lab.vercel.app/projects
+→ HTTP 200
+→ canonical Project Brain data rendered
 
-production + local-file fallback
-=> forbidden
+https://componentry-lab.vercel.app/director/live
+→ HTTP 200
+→ live governed Project Brain → Director projection rendered
+→ Registry V2 governed entities = 34
+→ Component Library composition descriptors = 27
+→ Director governed method pool = 6
+
+https://componentry-lab.vercel.app/api/director/live
+→ HTTP 200
+→ JSON projection returned with errors = []
 ```
 
-Do NOT weaken `lib/persistence/storage-mode.ts` merely to make the route respond. The correct remediation is Production environment configuration.
+Therefore the previous storage blocker is CLOSED. Do not re-open it unless new runtime evidence contradicts this checkpoint.
 
-The Postgres repository path subsequently requires a valid database client; `DATABASE_URL` must therefore be verified as part of storage restoration. Its current Production presence was not observable through the available Vercel connector, so do not claim it is present or absent without verification.
+Production local-file fallback remains prohibited and was not weakened.
+
+## Remaining Production blocker — ROOT AUTH CONFIGURATION
+
+The site root still returns HTTP 500:
+
+```text
+https://componentry-lab.vercel.app/
+→ HTTP 500
+```
+
+Current Vercel runtime evidence identifies the active root cause on the latest redeploy:
+
+```text
+[next-auth][error][NO_SECRET]
+Please define a `secret` in production.
+```
+
+This is a separate authentication configuration blocker, not a storage failure and not a collaboration-mesh regression.
+
+The next remediation is to make the existing NextAuth secret available to the Production environment without overwriting branch-specific Preview secrets. After that, redeploy Production and re-smoke `/`.
+
+`NEXTAUTH_URL` and other auth variables should be evaluated only if runtime evidence identifies them after `NEXTAUTH_SECRET` is restored; do not guess additional blockers prematurely.
 
 ## Authority boundaries — LOCKED
 
@@ -125,26 +147,37 @@ The Postgres repository path subsequently requires a valid database client; `DAT
 
 Resume from `master` after this checkpoint.
 
-Do not re-run the feature-phase decision, rebuild Slices A–H, reopen the dual-library architecture, or revert the merge solely because the dynamic Project Brain routes are blocked by missing Production storage configuration.
+Do not rebuild Slices A–H, reopen the dual-library architecture, revert the merge, or modify storage-mode fail-closed behavior. Production durable storage is now verified operational.
 
-The code promotion itself is complete and build-verified. The remaining blocker is operational configuration, not feature implementation.
-
-Once Production durable storage configuration is restored, re-run smoke checks for:
+Current runtime truth:
 
 ```text
+/projects = PASS
+/director/live = PASS
+/api/director/live = PASS
+/ = BLOCKED BY NEXTAUTH_SECRET
+```
+
+After restoring the Production NextAuth secret, redeploy and test:
+
+```text
+/
 /projects
 /director/live
 /api/director/live
-/creative-os/registry
 ```
 
-Then confirm runtime error/fatal logs are clean and update this canonical handover to `PRODUCTION_PROMOTION_COMPLETE / RUNTIME_QA_PASS`.
+Then inspect Production runtime error/fatal logs. If clean, promote state to:
+
+```text
+PRODUCTION_PROMOTION_COMPLETE / RUNTIME_QA_PASS
+```
 
 ## Exactly one next action
 
 ```text
-RESTORE PRODUCTION DURABLE STORAGE CONFIGURATION
-→ set COMPONENTRY_LAB_STORAGE_MODE=postgres
-→ verify DATABASE_URL is configured
-→ redeploy/re-smoke dynamic Project Brain + Director routes
+RESTORE NEXTAUTH_SECRET FOR PRODUCTION
+→ redeploy Production
+→ smoke /
+→ confirm no new auth/runtime blocker
 ```
