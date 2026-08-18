@@ -17,15 +17,15 @@ export default async function ProjectsIndexPage() {
   const projects = await listProjects()
 
   return (
-    <div className="min-h-screen bg-white font-sans text-left">
-      <div className="border-b border-stone-200 bg-white">
-        <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 px-6 py-3">
-          <LabNavigation projectId={CANONICAL_DEFAULT_PROJECT_ID} />
+    <div className="min-h-screen bg-stone-50 font-sans text-left text-neutral-950">
+      <div className="border-b border-stone-300 bg-stone-50/95 backdrop-blur-md">
+        <div className="mx-auto flex max-w-screen-xl flex-col gap-3 px-4 py-3 sm:px-6 lg:flex-row lg:items-end lg:justify-between">
+          <LabNavigation projectId={CANONICAL_DEFAULT_PROJECT_ID} className="flex-1" />
           <Link
             href="/projects/new"
-            className="rounded-full border border-stone-300 bg-stone-100 px-3 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-stone-700 transition hover:border-neutral-950 hover:text-neutral-950"
+            className="inline-flex h-9 items-center justify-center border border-neutral-950 px-3 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-950 transition hover:bg-neutral-950 hover:text-white"
           >
-            New Project
+            New project +
           </Link>
         </div>
       </div>

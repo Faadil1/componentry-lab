@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useMemo } from "react"
+
 import { cn } from "@/lib/utils"
 import { SITE_NAVIGATION, getActiveNavigationItem, SiteNavigationItem, getSurfaceContext } from "@/lib/navigation"
-import { useMemo } from "react"
 
 export interface LabNavigationProps {
   className?: string
@@ -37,8 +38,8 @@ function NavLinkButton({
       href={href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "inline-flex items-center justify-center rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70",
-        compact ? "px-2.5 py-1 text-xs font-medium" : "px-3.5 py-2 text-sm font-medium leading-none",
+        "inline-flex items-center border-b-2 border-transparent font-mono uppercase tracking-[0.12em] transition-colors focus-visible:outline-none",
+        compact ? "px-1.5 py-1.5 text-[10px]" : "px-2 py-2 text-[11px]",
         linkClassName,
         isActive ? activeClassName : inactiveClassName,
       )}
@@ -51,8 +52,8 @@ function NavLinkButton({
 export function LabNavigation({
   className,
   linkClassName,
-  activeClassName = "bg-neutral-950 text-white shadow-xs",
-  inactiveClassName = "border border-stone-300 bg-stone-100/80 text-neutral-700 transition hover:border-neutral-500 hover:text-neutral-950",
+  activeClassName = "border-blue-600 text-neutral-950",
+  inactiveClassName = "border-transparent text-stone-500 hover:border-stone-400 hover:text-neutral-950",
   compact = false,
   projectId,
 }: LabNavigationProps) {
@@ -67,9 +68,9 @@ export function LabNavigation({
   const groupedLabs = useMemo(() => {
     const groups: Record<string, SiteNavigationItem[]> = {}
     labLinks.forEach((link) => {
-      const g = link.subGroup || "Other"
-      if (!groups[g]) groups[g] = []
-      groups[g].push(link)
+      const group = link.subGroup || "Other"
+      if (!groups[group]) groups[group] = []
+      groups[group].push(link)
     })
     return Object.entries(groups).map(([label, links]) => ({ label, links }))
   }, [labLinks])
@@ -87,85 +88,90 @@ export function LabNavigation({
   }
 
   return (
-    <div className={cn("flex flex-col min-w-0", compact ? "gap-1.5" : "gap-3", className)}>
-      <nav className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-4 text-xs" aria-label="Primary navigation">
-        <div className="flex flex-col sm:mr-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-500 opacity-90 font-bold">{surface.brand}</p>
-          <h1 className="text-sm sm:text-base font-bold tracking-tight opacity-95">{surface.title}</h1>
+    <div className={cn("min-w-0", compact ? "space-y-1.5" : "space-y-2.5", className)}>
+      <nav className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between" aria-label="Primary navigation">
+        <div className="flex min-w-0 items-end gap-4">
+          <div className="shrink-0 border-r border-stone-300 pr-4">
+            <p className="cl-kicker text-stone-500">{surface.brand}</p>
+            <h1 className="mt-1 font-sans text-sm font-semibold tracking-tight text-neutral-950 sm:text-base">{surface.title}</h1>
+          </div>
+
+          <div className="hidden min-w-0 items-center gap-1 lg:flex">
+            <span className="mr-1 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-stone-400">Core</span>
+            {coreLinks.map((link) => (
+              <NavLinkButton
+                key={link.href}
+                href={preserveProjectHref(link.href)}
+                label={link.label}
+                isActive={activeItem?.id === link.id}
+                linkClassName={linkClassName}
+                activeClassName={activeClassName}
+                inactiveClassName={inactiveClassName}
+                compact={compact}
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-stone-500 mr-1 hidden sm:inline-block">Core</span>
-            {coreLinks.map((link) => {
-              const isActive = activeItem?.id === link.id
-              return (
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <div className="flex flex-wrap items-center gap-1 lg:hidden">
+            {coreLinks.map((link) => (
+              <NavLinkButton
+                key={link.href}
+                href={preserveProjectHref(link.href)}
+                label={link.label}
+                isActive={activeItem?.id === link.id}
+                linkClassName={linkClassName}
+                activeClassName={activeClassName}
+                inactiveClassName={inactiveClassName}
+                compact={true}
+              />
+            ))}
+          </div>
+
+          {workspaceLinks.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-1 border-l border-stone-300 pl-2">
+              <span className="mr-1 hidden font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-stone-400 sm:inline">Workspace</span>
+              {workspaceLinks.map((link) => (
                 <NavLinkButton
                   key={link.href}
                   href={preserveProjectHref(link.href)}
                   label={link.label}
-                  isActive={isActive}
+                  isActive={activeItem?.id === link.id}
                   linkClassName={linkClassName}
                   activeClassName={activeClassName}
                   inactiveClassName={inactiveClassName}
                   compact={compact}
                 />
-              )
-            })}
-          </div>
-
-          {workspaceLinks.length > 0 && (
-            <>
-              <div className="w-px h-4 bg-stone-300 mx-1 hidden sm:block opacity-50" aria-hidden="true" />
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-stone-500 mr-1 hidden sm:inline-block">Workspace</span>
-                {workspaceLinks.map((link) => {
-                  const isActive = activeItem?.id === link.id
-                  return (
-                    <NavLinkButton
-                      key={link.href}
-                      href={preserveProjectHref(link.href)}
-                      label={link.label}
-                      isActive={isActive}
-                      linkClassName={cn(linkClassName, "font-mono tracking-tight text-stone-600 font-bold")}
-                      activeClassName={activeClassName}
-                      inactiveClassName={inactiveClassName}
-                      compact={compact}
-                    />
-                  )
-                })}
-              </div>
-            </>
-          )}
+              ))}
+            </div>
+          ) : null}
         </div>
       </nav>
 
-      <details className={cn("group border border-stone-300 bg-white/70 shadow-xs backdrop-blur-sm", compact ? "rounded-lg p-1.5 text-[11px]" : "rounded-xl p-2.5") }>
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-lg px-2 py-0.5 font-medium uppercase tracking-[0.18em] text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950/70">
-          <span className={compact ? "text-[10px]" : "text-[11px]"}>Labs menu</span>
-          <span className="text-[9px] tracking-[0.22em] text-stone-400 group-open:hidden">Open</span>
-          <span className="hidden text-[9px] tracking-[0.22em] text-stone-400 group-open:inline">Close</span>
+      <details className="group border-y border-stone-300 bg-transparent py-1.5">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-stone-500 focus-visible:outline-none">
+          <span>Labs / reference surfaces</span>
+          <span className="text-stone-400 group-open:hidden">Open +</span>
+          <span className="hidden text-stone-400 group-open:inline">Close −</span>
         </summary>
-        <div className={cn("grid gap-2.5 md:grid-cols-2 xl:grid-cols-4", compact ? "mt-1.5 text-xs" : "mt-2.5") }>
+        <div className={cn("grid gap-px border-t border-stone-200 bg-stone-200", compact ? "mt-1.5" : "mt-2.5", "md:grid-cols-2 xl:grid-cols-4")}>
           {groupedLabs.map((group) => (
-            <section key={group.label} className={cn("rounded-lg border border-stone-200 bg-stone-50 p-2.5", compact ? "space-y-1 p-2" : "space-y-1.5 p-2.5") }>
-              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-stone-500">{group.label}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {group.links.map((link) => {
-                  const isActive = activeItem?.id === link.id
-                  return (
-                    <NavLinkButton
-                      key={link.href}
-                      href={preserveProjectHref(link.href)}
-                      label={link.label}
-                      isActive={isActive}
-                      linkClassName={cn("text-[10px] px-2 py-0.5", linkClassName)}
-                      activeClassName={activeClassName}
-                      inactiveClassName={inactiveClassName}
-                      compact={true}
-                    />
-                  )
-                })}
+            <section key={group.label} className="bg-stone-50 p-3">
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-stone-400">{group.label}</p>
+              <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+                {group.links.map((link) => (
+                  <NavLinkButton
+                    key={link.href}
+                    href={preserveProjectHref(link.href)}
+                    label={link.label}
+                    isActive={activeItem?.id === link.id}
+                    linkClassName={cn("px-0.5 py-1", linkClassName)}
+                    activeClassName={activeClassName}
+                    inactiveClassName={inactiveClassName}
+                    compact={true}
+                  />
+                ))}
               </div>
             </section>
           ))}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
+
 import { authOptions, authRuntimeSummary } from "@/auth"
 import { AuthControls } from "@/components/auth/auth-controls"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
@@ -22,75 +23,84 @@ export default async function CommandPage({
   const activeProject = projection.activeProject
 
   return (
-    <main className="min-h-screen bg-[#f5f4f0] text-neutral-900 selection:bg-neutral-900 selection:text-stone-100">
-      <header className="sticky top-0 z-50 border-b border-stone-300/70 bg-[#f5f4f0]/90 px-4 py-3 backdrop-blur-md shadow-xs md:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-1">
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Componentry Lab</p>
-            <h1 className="text-sm font-semibold tracking-tight text-neutral-900">Command</h1>
-            <p className="text-xs text-neutral-500">Read-only orchestration of canonical system truth</p>
-          </div>
-          <LabNavigation
-            projectId={projectId}
-            className="contents"
-            activeClassName="bg-neutral-900 text-white"
-            inactiveClassName="border border-stone-300 bg-stone-100/80 text-neutral-700 transition-all hover:border-neutral-400 hover:text-neutral-950"
-          />
+    <main className="min-h-screen bg-stone-50 text-neutral-950 selection:bg-blue-600 selection:text-white">
+      <header className="sticky top-0 z-50 border-b border-stone-300 bg-stone-50/95 px-4 py-3 backdrop-blur-md md:px-8">
+        <div className="mx-auto max-w-screen-xl">
+          <LabNavigation projectId={projectId} />
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-8 space-y-8">
-        <section className="rounded-3xl border border-stone-300/80 bg-white p-5 shadow-sm md:p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div className="space-y-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Active Project</p>
-              <h2 className="text-3xl font-black tracking-tight text-neutral-950 md:text-5xl">
-                {activeProject ? activeProject.title : "Project unavailable"}
-              </h2>
-              {activeProject ? (
-                <p className="max-w-3xl text-sm leading-relaxed text-stone-700">{activeProject.description}</p>
-              ) : (
-                <p className="max-w-3xl text-sm leading-relaxed text-stone-700">The canonical project context could not be resolved.</p>
-              )}
-            </div>
-            <div className="grid gap-3 text-sm text-stone-700 lg:text-right">
-              <div className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 lg:min-w-72">
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Auth foundation</p>
-                <AuthControls authenticated={!!session?.user} />
-                <p className="mt-1 text-xs text-stone-600">
-                  Provider: {authRuntimeSummary.provider} · OAuth configured: {authRuntimeSummary.oauthConfigured ? "yes" : "no"}
-                </p>
-              </div>
-              {activeProject ? (
-                <>
-                  <div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Type</span>
-                    <p className="mt-1 font-medium text-neutral-950">{activeProject.kind.replace(/-/g, " ")}</p>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Phase</span>
-                    <p className="mt-1 font-medium text-neutral-950">{projection.projectPhase}</p>
-                  </div>
-                  <div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Readiness</span>
-                    <p className="mt-1 font-medium text-neutral-950">{projection.readiness}%</p>
-                  </div>
-                </>
-              ) : null}
-            </div>
+      <div className="mx-auto max-w-screen-xl space-y-10 px-4 pb-16 pt-8 md:px-8 lg:pt-12">
+        <section className="grid gap-8 border-b border-stone-300 pb-10 lg:grid-cols-[1fr_19rem] lg:items-end">
+          <div>
+            <p className="cl-kicker">System / Command</p>
+            <h1 className="cl-display mt-4 max-w-5xl text-5xl text-neutral-950 sm:text-6xl lg:text-7xl">
+              {activeProject ? activeProject.title : "Project unavailable"}
+            </h1>
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-stone-600">
+              {activeProject
+                ? activeProject.description
+                : "The canonical project context could not be resolved."}
+            </p>
           </div>
+
+          <dl className="divide-y divide-stone-300 border-y border-stone-300 font-mono text-[10px] uppercase tracking-[0.12em]">
+            <div className="flex items-center justify-between gap-4 py-2.5">
+              <dt className="text-stone-500">Auth</dt>
+              <dd className="text-right normal-case tracking-normal text-neutral-950">
+                <AuthControls authenticated={!!session?.user} />
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-4 py-2.5">
+              <dt className="text-stone-500">OAuth</dt>
+              <dd className="text-neutral-950">{authRuntimeSummary.oauthConfigured ? "configured" : "not configured"}</dd>
+            </div>
+            {activeProject ? (
+              <>
+                <div className="flex items-center justify-between gap-4 py-2.5">
+                  <dt className="text-stone-500">Type</dt>
+                  <dd className="text-neutral-950">{activeProject.kind.replace(/-/g, " ")}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-4 py-2.5">
+                  <dt className="text-stone-500">Phase</dt>
+                  <dd className="cl-status-info">{projection.projectPhase}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-4 py-2.5">
+                  <dt className="text-stone-500">Readiness</dt>
+                  <dd className="text-neutral-950">{projection.readiness}%</dd>
+                </div>
+              </>
+            ) : null}
+          </dl>
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <article className="rounded-3xl border border-neutral-950 bg-neutral-950 p-5 text-white shadow-sm md:p-6">
-            <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-400">Next move</p>
-                <h3 className="mt-2 text-2xl font-bold tracking-tight text-white">{projection.directorNextAction?.title ?? "Unavailable"}</h3>
+        <section className="grid gap-8 lg:grid-cols-[9rem_1fr]">
+          <div className="border-l border-blue-600 pl-3">
+            <p className="cl-kicker">Director recommendation</p>
+            <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.14em] text-stone-500">Exactly one next move</p>
+          </div>
+
+          <article className="border-y border-stone-300 py-7">
+            <h2 className="cl-display max-w-4xl text-4xl text-neutral-950 sm:text-5xl">
+              {projection.directorNextAction?.title ?? "Unavailable"}
+            </h2>
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-stone-600">
+              {projection.directorRationaleSummary ?? "No director result available."}
+            </p>
+            <div className="mt-7 grid gap-px border border-stone-300 bg-stone-300 sm:grid-cols-3">
+              <div className="bg-stone-50 p-3">
+                <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-stone-400">Project state</p>
+                <p className="mt-2 text-sm font-semibold">{activeProject?.status ?? "unavailable"}</p>
               </div>
-              <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-300">1</span>
+              <div className="bg-stone-50 p-3">
+                <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-stone-400">Recommended phase</p>
+                <p className="mt-2 text-sm font-semibold text-blue-700">{projection.projectPhase}</p>
+              </div>
+              <div className="bg-stone-50 p-3">
+                <p className="font-mono text-[9px] uppercase tracking-[0.14em] text-stone-400">Authority</p>
+                <p className="mt-2 text-sm font-semibold">read-only orchestration</p>
+              </div>
             </div>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-stone-300">{projection.directorRationaleSummary ?? "No director result available."}</p>
           </article>
         </section>
       </div>

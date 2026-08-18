@@ -1,5 +1,5 @@
 ﻿import type { Metadata } from "next"
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Geist, Geist_Mono, Inter, Newsreader } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 
@@ -12,6 +12,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+})
+
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
 })
 
@@ -32,9 +37,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "h-full antialiased font-sans",
+        geistSans.variable,
+        geistMono.variable,
+        inter.variable,
+        newsreader.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="componentry-system min-h-full flex flex-col">{children}</body>
     </html>
   )
 }

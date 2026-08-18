@@ -22,6 +22,28 @@ import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-acce
 
 export const dynamic = "force-dynamic"
 
+function Interlock({ label, value, tone = "info" }: { label: string; value: string; tone?: "ok" | "info" | "warn" | "danger" }) {
+  const toneClass = tone === "ok"
+    ? "cl-status-ok"
+    : tone === "warn"
+      ? "cl-status-warn"
+      : tone === "danger"
+        ? "cl-status-danger"
+        : "cl-status-info"
+
+  return (
+    <div className="flex min-w-0 items-center gap-3 border-r border-stone-300 px-3 py-3 last:border-r-0">
+      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-400 font-mono text-xs ${toneClass}`}>
+        {tone === "ok" ? "✓" : tone === "danger" ? "×" : tone === "warn" ? "!" : "·"}
+      </span>
+      <div className="min-w-0">
+        <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-neutral-950">{label}</p>
+        <p className={`mt-0.5 truncate font-mono text-[9px] uppercase tracking-[0.08em] ${toneClass}`}>{value}</p>
+      </div>
+    </div>
+  )
+}
+
 export default async function LiveDirectorPage({
   searchParams,
 }: {
@@ -51,108 +73,163 @@ export default async function LiveDirectorPage({
     : null
   const projectFingerprint = project ? fingerprintProjectBrain(project) : ""
 
+  const completedAction = project ? [...project.nextActions].reverse().find((action) => action.status === "done") ?? null : null
+  const proofGap = project?.unresolvedProofGaps[0] ?? null
+  const pertinentRisk = project?.risks.find((risk) => risk.status === "triggered" || risk.status === "open") ?? null
+
+  const approvalNeeded = [writeIntent, startIntent, completeIntent].some((intent) => intent?.status === "PROPOSAL_READY")
+  const evidenceBlocked = completeIntent?.status === "EVIDENCE_REQUIRED"
+
   return (
     <main className="min-h-screen bg-stone-50 text-neutral-950">
-      <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto max-w-screen-xl px-4 py-3 sm:px-6">
+      <header className="sticky top-0 z-30 border-b border-stone-300 bg-stone-50/95 backdrop-blur-md">
+        <div className="mx-auto max-w-screen-2xl px-4 py-3 sm:px-6">
           <LabNavigation compact projectId={project?.id ?? null} />
         </div>
       </header>
 
-      <div className="mx-auto max-w-screen-xl space-y-6 px-4 py-6 sm:px-6 lg:py-10">
-        <section className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:p-7">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div className="max-w-3xl space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-neutral-950 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white">Live Project Brain</span>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-800">Governed projection + bounded writes</span>
-              </div>
-              <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Creative Director — Live Collaboration</h1>
-              <p className="text-sm leading-relaxed text-stone-600">
-                Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. Proposals remain read-only until an exact typed mutation passes owner authentication, explicit approval, scope validation, stale-state checks, and — for completion — canonical evidence requirements.
-              </p>
-            </div>
-            <Link href="/director" className="rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100">Open fixture lab</Link>
+      <div className="mx-auto max-w-screen-2xl space-y-10 px-4 py-7 sm:px-6 lg:py-10">
+        <section className="flex flex-col gap-4 border-b border-stone-300 pb-5 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="cl-kicker">Creative Director / live governed projection</p>
+            <h1 className="mt-3 font-sans text-lg font-semibold tracking-tight text-neutral-950">Componentry Lab</h1>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[9px] uppercase tracking-[0.14em] text-stone-500">
+            <span>View <strong className="text-blue-700">live</strong></span>
+            <span>Mode <strong className="text-neutral-950">read / bounded write</strong></span>
+            <span>Owner <strong className="text-neutral-950">{ownerAuthorized ? "authenticated" : "not authenticated"}</strong></span>
+            <Link href="/director" className="border-b border-stone-400 pb-0.5 text-neutral-950 hover:border-blue-600">Fixture lab ↗</Link>
           </div>
         </section>
 
-        <section className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-          <div className="mb-3 flex items-center justify-between gap-3">
+        <section className="border-y border-stone-300 py-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Canonical projects</p>
-              <h2 className="text-base font-bold">Choose live Project Brain context</h2>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Canonical project context</p>
+              <p className="mt-1 text-sm font-semibold text-neutral-950">{project?.title ?? "No compatible project"}</p>
             </div>
-            <span className="text-xs text-stone-500">{compatibleProjects.length} Director-compatible / {projects.length} total</span>
-          </div>
-          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
-            {summaries.map((summary) => {
-              const active = project?.id === summary.id
-              if (!summary.compatible) {
+            <div className="flex flex-wrap gap-x-1 gap-y-1">
+              {summaries.map((summary) => {
+                const active = project?.id === summary.id
+                if (!summary.compatible) {
+                  return (
+                    <span key={summary.id} className="border-l border-stone-300 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-stone-400">
+                      {summary.title} / unmapped
+                    </span>
+                  )
+                }
                 return (
-                  <div key={summary.id} className="rounded-xl border border-stone-200 bg-stone-50 p-3 opacity-70">
-                    <p className="truncate text-sm font-semibold">{summary.title}</p>
-                    <p className="mt-1 font-mono text-[10px] uppercase text-stone-500">{summary.kind} · unmapped</p>
-                  </div>
+                  <Link
+                    key={summary.id}
+                    href={`/director/live?project=${encodeURIComponent(summary.id)}`}
+                    className={`border-b-2 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] ${active ? "border-blue-600 text-neutral-950" : "border-transparent text-stone-500 hover:border-stone-400"}`}
+                  >
+                    {summary.title}
+                  </Link>
                 )
-              }
-              return (
-                <Link
-                  key={summary.id}
-                  href={`/director/live?project=${encodeURIComponent(summary.id)}`}
-                  className={`rounded-xl border p-3 transition ${active ? "border-neutral-950 bg-neutral-950 text-white" : "border-stone-200 bg-white hover:border-stone-400"}`}
-                >
-                  <p className="truncate text-sm font-semibold">{summary.title}</p>
-                  <p className={`mt-1 font-mono text-[10px] uppercase ${active ? "text-stone-300" : "text-stone-500"}`}>{summary.mode} · {summary.currentPhase}</p>
-                </Link>
-              )
-            })}
+              })}
+            </div>
           </div>
         </section>
 
         {!project || !projection ? (
-          <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+          <section className="border-l-2 border-amber-500 pl-4 text-sm leading-6 text-stone-700">
             No Project Brain project currently has an explicit Director mode mapping. Unsupported kinds fail closed rather than being coerced into a mode.
           </section>
         ) : (
           <>
-            <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-              <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-stone-100 pb-4">
-                  <div>
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Canonical Project Brain</p>
-                    <h2 className="mt-1 text-xl font-black">{project.title}</h2>
-                    <p className="mt-1 text-sm text-stone-600">{project.description}</p>
-                  </div>
-                  <div className="text-right font-mono text-[10px] uppercase text-stone-500">
-                    <div>{projection.mode}</div>
-                    <div>{projection.result.resolvedPhase}</div>
-                    <div>{project.status}</div>
-                  </div>
-                </div>
-                <dl className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl bg-stone-50 p-3">
-                    <dt className="font-mono text-[9px] font-bold uppercase text-stone-500">Primary goal</dt>
-                    <dd className="mt-1 text-sm font-medium">{project.primaryGoal}</dd>
-                  </div>
-                  <div className="rounded-xl bg-stone-50 p-3">
-                    <dt className="font-mono text-[9px] font-bold uppercase text-stone-500">Success definition</dt>
-                    <dd className="mt-1 text-sm font-medium">{project.successDefinition}</dd>
-                  </div>
-                </dl>
-              </article>
+            <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+              <div>
+                <p className="cl-kicker">Director recommendation</p>
+                <h2 className="cl-display mt-4 max-w-5xl text-5xl text-neutral-950 sm:text-6xl lg:text-7xl">
+                  {projection.result.nextAction.title}
+                </h2>
+                <p className="mt-5 max-w-3xl text-base leading-7 text-stone-600">{projection.result.nextAction.description}</p>
 
-              <article className="rounded-2xl border border-neutral-900 bg-neutral-950 p-5 text-white shadow-lg">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">One canonical next action</p>
-                <h2 className="mt-2 text-xl font-black">{projection.result.nextAction.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-stone-300">{projection.result.nextAction.description}</p>
-                <div className="mt-4 flex flex-wrap gap-2 font-mono text-[10px] uppercase">
-                  <span className="rounded-full border border-stone-700 px-2.5 py-1">{projection.result.nextAction.authorityRequirement}</span>
-                  <span className="rounded-full border border-stone-700 px-2.5 py-1">proposal side effects: none</span>
+                <div className="mt-8 grid gap-px border-y border-stone-300 bg-stone-300 sm:grid-cols-5">
+                  <Interlock label="Valid" value="qualified" tone="ok" />
+                  <Interlock label="Owner" value={ownerAuthorized ? "confirmed" : authReady ? "sign in" : "not configured"} tone={ownerAuthorized ? "ok" : "warn"} />
+                  <Interlock label="Approval" value={approvalNeeded ? "required" : "no pending gate"} tone={approvalNeeded ? "warn" : "ok"} />
+                  <Interlock label="Fresh" value="checked on apply" tone="info" />
+                  <Interlock label="Evidence" value={evidenceBlocked ? "required" : completeIntent?.evidenceId ? "available" : "n/a"} tone={evidenceBlocked ? "danger" : completeIntent?.evidenceId ? "ok" : "info"} />
                 </div>
-              </article>
+              </div>
+
+              <aside className="divide-y divide-stone-300 border-y border-stone-300 text-sm">
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Deadline</p>
+                  <p className="mt-1 font-mono text-xs text-red-700">{project.deadlineLabel ?? "not set"}</p>
+                </div>
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Proof gap</p>
+                  <p className="mt-1 leading-5 text-neutral-950">{proofGap ?? "No unresolved proof gap"}</p>
+                </div>
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Risk</p>
+                  <p className={`mt-1 leading-5 ${pertinentRisk ? "text-red-700" : "text-neutral-950"}`}>{pertinentRisk?.label ?? "No pertinent open risk"}</p>
+                </div>
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Authority</p>
+                  <p className="mt-1 font-mono text-xs">{projection.result.nextAction.authorityRequirement}</p>
+                </div>
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Side effect payload</p>
+                  <p className="mt-1 font-mono text-xs">null</p>
+                </div>
+                <div className="py-3">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">Next recommended phase</p>
+                  <p className="mt-1 font-mono text-xs text-blue-700">{project.nextRecommendedPhase}</p>
+                </div>
+              </aside>
             </section>
 
-            <div className="grid gap-4 xl:grid-cols-3">
+            <section className="space-y-0">
+              <div className="grid gap-4 border-t border-stone-300 py-5 lg:grid-cols-[9rem_1fr]">
+                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-500">Canonical / proven</p>
+                <div>
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-blue-700">Canonical history / latest relevant action</p>
+                  {completedAction ? (
+                    <div className="mt-3 grid gap-2 border-t border-stone-200 pt-3 sm:grid-cols-[5rem_1fr_auto] sm:items-start">
+                      <span className="font-mono text-xs text-neutral-950">{completedAction.id}</span>
+                      <div>
+                        <p className="text-sm font-semibold text-neutral-950">{completedAction.label}</p>
+                        <p className="mt-1 text-xs leading-5 text-stone-500">{completedAction.description}</p>
+                      </div>
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-emerald-700">status / completed</span>
+                    </div>
+                  ) : (
+                    <p className="mt-3 text-sm text-stone-500">No completed canonical action is available.</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="cl-frontier">Canonical frontier</div>
+
+              <div className="grid gap-4 border-b border-stone-300 py-6 lg:grid-cols-[9rem_1fr]">
+                <div>
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-500">Proposed</p>
+                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.12em] text-stone-400">Not authorized</p>
+                </div>
+                <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-start">
+                  <div>
+                    <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-blue-700">Proposed next action</p>
+                    <h3 className="cl-display mt-2 text-3xl text-neutral-950 sm:text-4xl">{projection.result.nextAction.title}</h3>
+                    <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-600">{projection.result.nextAction.description}</p>
+                    <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[9px] uppercase tracking-[0.1em] text-stone-500">
+                      <span>authority: <strong className="text-neutral-950">{projection.result.nextAction.authorityRequirement}</strong></span>
+                      <span>sideEffectPayload: <strong className="text-neutral-950">null</strong></span>
+                      <span>phase: <strong className="text-blue-700">{projection.result.resolvedPhase}</strong></span>
+                    </div>
+                  </div>
+                  <div className="border-l border-stone-300 pl-4 font-mono text-[9px] uppercase tracking-[0.12em] text-stone-500">
+                    <p>Evaluation</p>
+                    <p className="mt-1 text-neutral-950">{projection.evaluationTimestamp}</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="grid gap-8 xl:grid-cols-3">
               {writeIntent ? (
                 <GovernedActionPanel
                   projectId={project.id}
@@ -215,43 +292,30 @@ export default async function LiveDirectorPage({
               ) : null}
             </div>
 
-            <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-stone-500">Registry V2 governance</p>
-                <p className="mt-2 text-3xl font-black">{libraries.counts.governedCapabilities}</p>
-                <p className="mt-1 text-xs text-stone-600">governed entities, with only qualified METHOD entries eligible for internal advisory execution.</p>
-              </article>
-              <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-stone-500">Component Library</p>
-                <p className="mt-2 text-3xl font-black">{libraries.counts.compositions}</p>
-                <p className="mt-1 text-xs text-stone-600">composition/build descriptors preserved separately from governance authority.</p>
-              </article>
-              <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-stone-500">Director skill pool</p>
-                <p className="mt-2 text-3xl font-black">{projection.input.availableSkills.length}</p>
-                <p className="mt-1 text-xs text-stone-600">Registry-derived governed internal methods available before mode/phase filtering.</p>
-              </article>
-              <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-stone-500">Selected methods</p>
-                <p className="mt-2 text-3xl font-black">{projection.result.selectedSkills.length}</p>
-                <p className="mt-1 text-xs text-stone-600">mode-, phase- and authority-compatible methods selected for this live project.</p>
-              </article>
+            <section className="grid gap-px border-y border-stone-300 bg-stone-300 md:grid-cols-2 xl:grid-cols-4">
+              {[
+                ["Registry V2 governance", libraries.counts.governedCapabilities, "governed entities"],
+                ["Component Library", libraries.counts.compositions, "composition descriptors"],
+                ["Director skill pool", projection.input.availableSkills.length, "governed methods available"],
+                ["Selected methods", projection.result.selectedSkills.length, "eligible for this context"],
+              ].map(([label, value, description]) => (
+                <article key={String(label)} className="bg-stone-50 p-4">
+                  <p className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-stone-400">{label}</p>
+                  <p className="mt-2 font-mono text-3xl font-semibold text-neutral-950">{value}</p>
+                  <p className="mt-1 text-xs leading-5 text-stone-500">{description}</p>
+                </article>
+              ))}
             </section>
 
-            <section className="grid gap-4 lg:grid-cols-2">
-              <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Governed method collaboration</p>
-                    <h2 className="text-base font-bold">Selected Registry methods</h2>
-                  </div>
-                  <span className="font-mono text-[10px] text-stone-500">METHOD only</span>
-                </div>
-                <div className="mt-4 space-y-2">
+            <section className="grid gap-8 lg:grid-cols-2">
+              <article className="border-t border-stone-300 pt-5">
+                <p className="cl-kicker">Governed method collaboration</p>
+                <h2 className="mt-2 text-lg font-semibold text-neutral-950">Selected Registry methods</h2>
+                <div className="mt-4 divide-y divide-stone-200 border-y border-stone-300">
                   {projection.result.selectedSkills.length === 0 ? (
-                    <p className="rounded-xl bg-stone-50 p-3 text-sm text-stone-600">No method is eligible for the current mode/phase/authority combination.</p>
+                    <p className="py-3 text-sm text-stone-600">No method is eligible for the current mode / phase / authority combination.</p>
                   ) : projection.result.selectedSkills.map((skill) => (
-                    <div key={skill.skillId} className="rounded-xl border border-stone-200 p-3">
+                    <div key={skill.skillId} className="py-3">
                       <p className="text-sm font-semibold">{skill.title}</p>
                       <p className="mt-1 break-all font-mono text-[9px] text-stone-500">{skill.skillId}</p>
                       <p className="mt-1 text-xs text-stone-600">{skill.capabilityGaps?.join(" · ") || "No capability gaps declared"}</p>
@@ -260,10 +324,10 @@ export default async function LiveDirectorPage({
                 </div>
               </article>
 
-              <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Collaboration mesh status</p>
-                <h2 className="text-base font-bold">Supporting systems remain bounded</h2>
-                <div className="mt-4 grid gap-2 text-sm">
+              <article className="border-t border-stone-300 pt-5">
+                <p className="cl-kicker">Collaboration mesh</p>
+                <h2 className="mt-2 text-lg font-semibold text-neutral-950">Supporting systems remain bounded</h2>
+                <div className="mt-4 divide-y divide-stone-200 border-y border-stone-300 text-sm">
                   {[
                     ["Project Brain", "canonical context owner; writes only through typed governed action gates"],
                     ["Creative Director", "one canonical next action + mutation proposal authority only"],
@@ -275,41 +339,51 @@ export default async function LiveDirectorPage({
                     ["References / Sources", "Registry discovery only; never executors"],
                     ["Audit / Evidence", "immutable trace projection; no canonical persistence"],
                   ].map(([label, description]) => (
-                    <div key={label} className="flex gap-3 rounded-xl bg-stone-50 p-3">
-                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
-                      <div><strong>{label}</strong><span className="text-stone-600"> — {description}</span></div>
+                    <div key={label} className="grid gap-1 py-2.5 sm:grid-cols-[10rem_1fr]">
+                      <strong>{label}</strong>
+                      <span className="text-stone-600">{description}</span>
                     </div>
                   ))}
                 </div>
               </article>
             </section>
 
-            <section className="grid gap-4 lg:grid-cols-2">
-              <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Quality gates</p>
-                <div className="mt-3 space-y-2">
+            <section className="grid gap-8 lg:grid-cols-2">
+              <article className="border-t border-stone-300 pt-5">
+                <p className="cl-kicker">Quality gates</p>
+                <div className="mt-3 divide-y divide-stone-200 border-y border-stone-300">
                   {projection.result.gateEvaluations.map((gate) => (
-                    <div key={gate.gateId} className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 p-3 text-sm">
+                    <div key={gate.gateId} className="flex items-center justify-between gap-3 py-3 text-sm">
                       <span className="font-medium">{gate.name}</span>
-                      <span className="font-mono text-[10px] font-bold uppercase text-stone-600">{gate.status}</span>
+                      <span className="font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-stone-600">{gate.status}</span>
                     </div>
                   ))}
                 </div>
               </article>
-              <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">Evidence & blockers</p>
+
+              <article className="border-t border-stone-300 pt-5">
+                <p className="cl-kicker">Evidence & blockers</p>
                 <p className="mt-2 text-sm text-stone-600">{projection.input.evidence.length} evidence refs · {projection.result.blockers.length} blockers</p>
-                <div className="mt-3 space-y-2">
+                <div className="mt-3 divide-y divide-stone-200 border-y border-stone-300">
                   {projection.result.blockers.length === 0 ? (
-                    <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800">No canonical blocker is currently open in this Director projection.</p>
+                    <p className="py-3 text-sm text-emerald-700">No canonical blocker is currently open in this Director projection.</p>
                   ) : projection.result.blockers.map((blocker) => (
-                    <div key={blocker.blockerId} className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
-                      <strong>{blocker.category}</strong><p className="mt-1">{blocker.description}</p>
+                    <div key={blocker.blockerId} className="border-l-2 border-amber-500 py-3 pl-4 text-sm">
+                      <strong>{blocker.category}</strong>
+                      <p className="mt-1 text-stone-600">{blocker.description}</p>
                     </div>
                   ))}
                 </div>
               </article>
             </section>
+
+            <footer className="grid gap-px border-y border-stone-300 bg-stone-300 font-mono text-[9px] uppercase tracking-[0.1em] sm:grid-cols-3 lg:grid-cols-5">
+              <div className="bg-stone-50 p-3"><span className="text-stone-400">Fingerprint</span><p className="mt-1 break-all normal-case text-neutral-950">{projectFingerprint}</p></div>
+              <div className="bg-stone-50 p-3"><span className="text-stone-400">Evaluation</span><p className="mt-1 normal-case text-neutral-950">{projection.evaluationTimestamp}</p></div>
+              <div className="bg-stone-50 p-3"><span className="text-stone-400">Project status</span><p className="mt-1 text-neutral-950">{project.status}</p></div>
+              <div className="bg-stone-50 p-3"><span className="text-stone-400">Phase</span><p className="mt-1 text-blue-700">{projection.result.resolvedPhase}</p></div>
+              <div className="bg-stone-50 p-3"><span className="text-stone-400">Proposal effects</span><p className="mt-1 text-neutral-950">none</p></div>
+            </footer>
           </>
         )}
       </div>
