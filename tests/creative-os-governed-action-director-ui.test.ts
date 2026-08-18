@@ -193,3 +193,19 @@ test("DIRECTOR_WRITE_UI_KEEPS_INITIAL_ACTION_STATE_CLIENT_LOCAL_FOR_SSR", () => 
     false,
   )
 })
+
+test("DIRECTOR_USE_SERVER_BOUNDARY_EXPORTS_ONLY_ASYNC_RUNTIME_FUNCTIONS", () => {
+  const source = readFileSync(new URL("../app/director/live/actions.ts", import.meta.url), "utf8")
+
+  assert.equal(source.startsWith('"use server"'), true)
+  assert.equal(/export\s+(const|let|var|class)\s/.test(source), false)
+  assert.equal(/export\s+function\s/.test(source), false)
+  assert.equal(source.includes("INITIAL_GOVERNED_DIRECTOR_ACTION_STATE"), false)
+
+  const runtimeExports = source.match(/export\s+async\s+function\s+[A-Za-z0-9_]+/g) ?? []
+  assert.deepEqual(runtimeExports.sort(), [
+    "export async function approveDirectorCompleteNextAction",
+    "export async function approveDirectorNextAction",
+    "export async function approveDirectorStartNextAction",
+  ].sort())
+})

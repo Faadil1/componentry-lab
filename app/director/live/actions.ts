@@ -2,6 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 
+import type { GovernedDirectorActionState } from "@/app/director/live/action-state"
+export type { GovernedDirectorActionState } from "@/app/director/live/action-state"
+
 import {
   executeProjectBrainCompleteNextActionProposal,
   executeProjectBrainNextActionProposal,
@@ -13,30 +16,6 @@ import {
 } from "@/lib/creative-os/action-plane"
 import { buildLiveDirectorProjection } from "@/lib/director/live-projection"
 import { getProjectById } from "@/lib/projects/repository"
-
-export type GovernedDirectorActionState = {
-  status:
-    | "IDLE"
-    | "APPLIED"
-    | "NO_CHANGE"
-    | "BLOCKED"
-    | "REJECTED"
-    | "STALE_PROPOSAL"
-    | "ALREADY_CANONICAL"
-    | "ALREADY_STARTED"
-    | "ALREADY_COMPLETED"
-    | "INVALID"
-  receiptId: string | null
-  auditTraceRef: string | null
-  error: string | null
-}
-
-export const INITIAL_GOVERNED_DIRECTOR_ACTION_STATE: GovernedDirectorActionState = {
-  status: "IDLE",
-  receiptId: null,
-  auditTraceRef: null,
-  error: null,
-}
 
 function actionState(
   status: GovernedDirectorActionState["status"],
