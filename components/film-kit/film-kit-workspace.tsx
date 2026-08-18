@@ -1,14 +1,16 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
-import { buildAi33Packet, buildFilmKitPackets } from "@/lib/film-kit"
+import { buildAi33Packet } from "@/lib/film-kit/ai33-packet"
+import { buildFilmKitPackets } from "@/lib/film-kit/packets"
+import { getFilmProductionTruth, getFilmProductionIntent } from "@/lib/film-kit/production-adapter"
 import { useFilmKit } from "./film-kit-provider"
 
 const workflowGroups = [
   { label: "Define", sections: ["overview", "brief", "narrative"] },
   { label: "Direct", sections: ["scenes", "shots", "capture"] },
-  { label: "Produce", sections: ["broll", "voice", "music", "assets"] },
-  { label: "Assemble", sections: ["timeline", "subtitles", "providers", "budget"] },
+  { label: "Produce", sections: ["production", "broll", "voice", "music", "assets"] },
+  { label: "Assemble", sections: ["manifest", "timeline", "subtitles", "providers", "budget"] },
   { label: "Deliver", sections: ["qa", "export"] },
 ] as const
 
@@ -84,7 +86,9 @@ export function FilmKitWorkspace() {
   const nextGate = film.approvalGates.find((gate) => gate.status !== "approved") ?? film.approvalGates[0]
   const activeStage = stageForSection(section)
   const packets = buildFilmKitPackets(film)
-  const ai33Packet = buildAi33Packet(film.id as never)
+  const ai33Packet = buildAi33Packet(film)
+  const productionTruth = getFilmProductionTruth(film.id)
+  const productionIntent = getFilmProductionIntent(film)
 
   const heroStats = [
     ["Memory hook", film.brief.memoryHook],
@@ -227,7 +231,7 @@ export function FilmKitWorkspace() {
                   <td className="px-4 py-4 text-stone-700">{shot.route}</td>
                   <td className="px-4 py-4">
                     <p className="text-stone-700">{shot.captureStateId ?? "Not started"}</p>
-                    <p className="mt-1 text-xs text-stone-500">{shot.viewport} · {shot.aspectRatio}</p>
+                    <p className="mt-1 text-xs text-stone-500">{shot.viewport} � {shot.aspectRatio}</p>
                   </td>
                   <td className="px-4 py-4 text-stone-700">{shot.expectedVisualResult}</td>
                 </tr>
@@ -322,6 +326,109 @@ export function FilmKitWorkspace() {
         <RawDisclosure label="qa" value={film.qaReport} />
       </div>
     ),
+    production: (
+      <div className="space-y-5">
+        <SectionHeader eyebrow="Production" title="Production spine routes" helper="Read-only view of deterministic production routes and execution states, separated from Film Kit intent." />
+
+        <div className="space-y-4">
+          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Canonical Production State</h3>
+          {productionTruth.availability === "NO_CANONICAL_PRODUCTION_SPINE" ? (
+            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
+              No canonical production route exists yet.
+            </div>
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {productionTruth.routes.map(route => (
+                <article key={route.routeId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{route.routeType}</p>
+                      <h4 className="mt-1 font-bold text-neutral-950">{route.requestedArtifactType}</h4>
+                    </div>
+                    <StatusPill label={route.status} tone={route.status === "PLANNED" ? "neutral" : "green"} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Production Intent</h3>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {productionIntent.assetIntent.map(asset => (
+              <article key={asset.id} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Asset Intent</p>
+                    <h4 className="mt-1 font-bold text-neutral-950">{asset.kind}</h4>
+                  </div>
+                  <StatusPill label={asset.status} />
+                </div>
+                <div className="mt-4 text-xs text-stone-600">
+                  <span className="font-mono uppercase tracking-[0.16em] text-stone-400">Prompt</span>
+                  <p className="mt-1 truncate" title={asset.prompt}>{asset.prompt}</p>
+                </div>
+              </article>
+            ))}
+            {productionIntent.captureIntent.map(capture => (
+              <article key={capture.id} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">Capture Intent</p>
+                    <h4 className="mt-1 font-bold text-neutral-950">{capture.shotId}</h4>
+                  </div>
+                  <StatusPill label={capture.status} />
+                </div>
+                <div className="mt-4 text-xs text-stone-600">
+                  <span className="font-mono uppercase tracking-[0.16em] text-stone-400">Requirements</span>
+                  <p className="mt-1 truncate" title={capture.requirements}>{capture.requirements}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    ),
+    manifest: (
+      <div className="space-y-5">
+        <SectionHeader eyebrow="Manifest" title="Artifact assembly manifest" helper="The canonical read-only inventory for assembly." />
+        {productionTruth.manifest ? (
+          <>
+            <DefinitionGrid
+              items={[
+                ["Next assembly step", productionTruth.manifest.nextAssemblyStep ?? "Unknown"],
+                ["Total artifacts", productionTruth.manifest.artifacts.length.toString()],
+                ["Missing count", productionTruth.manifest.missingArtifacts.length.toString()],
+              ]}
+            />
+            <div className="space-y-4">
+              <h3 className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Artifacts</h3>
+              <div className="grid gap-4">
+                {productionTruth.manifest.artifacts.map(art => (
+                  <div key={art.artifactId} className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between border-b border-stone-100 pb-3">
+                      <div>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">{art.artifactId}</p>
+                        <p className="mt-1 font-bold text-neutral-950">{art.artifactType}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <StatusPill label={art.status} tone={art.status === "APPROVED" || art.status === "PRODUCED" ? "green" : art.status === "QA_REQUIRED" ? "amber" : art.status === "REJECTED" ? "rose" : "neutral"} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <RawDisclosure label="manifest" value={productionTruth.manifest} />
+          </>
+        ) : (
+          <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
+            No canonical artifact manifest exists for this project yet.
+          </div>
+        )}
+      </div>
+    ),
     export: (
       <div className="space-y-5">
         <SectionHeader eyebrow="Export" title="Packet export and handoff" helper="Each packet row is collapsed by default and can be previewed one at a time." />
@@ -333,7 +440,7 @@ export function FilmKitWorkspace() {
                   <div className="space-y-1">
                     <p className="font-medium text-neutral-950">{packet.label}</p>
                     <p className="text-sm leading-relaxed text-stone-600">{packet.description}</p>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">JSON · {packet.content.split(/\r?\n/).length} lines</p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">JSON � {packet.content.split(/\r?\n/).length} lines</p>
                   </div>
                   <span className="rounded-full border border-stone-300 bg-white px-3 py-1 text-xs font-medium text-neutral-700">Preview</span>
                 </summary>
@@ -432,7 +539,7 @@ export function FilmKitWorkspace() {
               </div>
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">Blockers</p>
-                <p className="mt-1">{film.brief.limitations.join(" · ")}</p>
+                <p className="mt-1">{film.brief.limitations.join(" � ")}</p>
               </div>
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">AI33 prep</p>

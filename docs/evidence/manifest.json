@@ -1,0 +1,83 @@
+{
+  "activePackets": [
+    {
+      "packetId": "director-design-review-v4",
+      "path": "docs/evidence/director-design-review-v4",
+      "provenanceState": "CURRENT",
+      "description": "Verified Slice 2 director design review packet, replacing all prior draft versions.",
+      "version": "v4"
+    },
+    {
+      "packetId": "creative-os-slice-3b2-v3",
+      "path": "docs/evidence/creative-os-slice-3b2-v3",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3B.2 V3 Method Quality Refinement evidence packet.",
+      "version": "v3"
+    },
+    {
+      "packetId": "creative-os-slice-3b3",
+      "path": "docs/evidence/creative-os-slice-3b3",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3B.3 Integration Gate evidence packet.",
+      "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3c",
+      "path": "docs/evidence/creative-os-slice-3c",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3C External Capability & Film Kit Planning Layer evidence packet.",
+      "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3d1",
+      "path": "docs/evidence/creative-os-slice-3d1",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3D.1 Sandbox Execution Infrastructure security evidence packet. Human Security Approved 2026-08-07. Zero real providers. Zero external side effects.",
+      "version": "v1"
+    },
+    {
+      "packetId": "creative-os-slice-3d2",
+      "path": "docs/evidence/creative-os-slice-3d2",
+      "provenanceState": "CURRENT",
+      "description": "Creative OS Slice 3D.2 CinePrompt Provider Pilot evidence packet. FROZEN. Real-Provider Tested, Live Success (Attempt #5), Durability Tested. 247/247 tests pass.",
+      "version": "v1"
+    },
+    {
+      "provenanceState": "FROZEN",
+      "path": "docs/evidence/creative-os-slice-3e1",
+      "description": "Creative OS Slice 3E.1 Production Integration Contract & Artifact Spine evidence packet. FROZEN. HUMAN ARCHITECTURE APPROVED.",
+      "packetId": "creative-os-slice-3e1",
+      "version": "v1"
+    }
+  ],
+  "supersededPackets": [
+    {
+      "packetId": "director-design-review",
+      "path": "docs/evidence/director-design-review",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Obsolete Director Slice 2 review packet containing outdated Eight-Bar Hole, musicology MARA, and Power BI evaluator/content."
+    },
+    {
+      "packetId": "director-design-review-v2",
+      "path": "docs/evidence/director-design-review-v2",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Outdated v2 Director Slice 2 review packet."
+    },
+    {
+      "packetId": "director-design-review-v3",
+      "path": "docs/evidence/director-design-review-v3",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "director-design-review-v4",
+      "description": "Outdated v3 Director Slice 2 review packet."
+    },
+    {
+      "packetId": "creative-os-slice-3b2",
+      "path": "docs/evidence/creative-os-slice-3b2",
+      "provenanceState": "SUPERSEDED",
+      "supersededBy": "creative-os-slice-3b2-v3",
+      "description": "Outdated initial Slice 3B.2 evidence packet."
+    }
+  ]
+}

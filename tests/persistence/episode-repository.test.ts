@@ -8,6 +8,16 @@ import type { CanonicalBlocker } from "../../lib/persistence/canonical-types.ts"
 
 describe("Episode Repository", () => {
   let repo: EpisodeRepository
+  function assertCreateEpisodeSuccess(
+    result: Awaited<ReturnType<EpisodeRepository["createEpisode"]>>
+  ) {
+    assert.strictEqual(result.success, true, "createEpisode should succeed")
+    if (!result.success) {
+      assert.fail(`createEpisode failed: ${result.reason}`)
+    }
+    return result.episode
+  }
+
 
   // Use mock repository for tests (no live DB required)
   test.before(async () => {
@@ -16,7 +26,7 @@ describe("Episode Repository", () => {
 
   describe("createEpisode", () => {
     test("1. creates episode with initial state", async () => {
-      const episode = await repo.createEpisode({
+      const result = await repo.createEpisode({
         episodeId: "episode-001",
         episodeNumber: 1,
         channelName: "Test Channel",
@@ -24,6 +34,8 @@ describe("Episode Repository", () => {
         workflowState: "TOPIC",
         reviewStatus: "not-required",
       })
+
+      const episode = assertCreateEpisodeSuccess(result)
 
       assert.strictEqual(episode.episodeId, "episode-001")
       assert.strictEqual(episode.episodeNumber, 1)
@@ -38,13 +50,15 @@ describe("Episode Repository", () => {
     })
 
     test("2. episode fields are properly initialized", async () => {
-      const episode = await repo.createEpisode({
+      const result = await repo.createEpisode({
         episodeId: "episode-002",
         channelName: "Test",
         title: "Test",
         workflowState: "RESEARCH",
         reviewStatus: "not-required",
       })
+
+      const episode = assertCreateEpisodeSuccess(result)
 
       assert.ok(episode.createdAt, "should have createdAt")
       assert.ok(episode.updatedAt, "should have updatedAt")
@@ -116,13 +130,13 @@ describe("Episode Repository", () => {
   describe("updateEpisodeState", () => {
     test("1. updates state with correct version", async () => {
       const repo4 = createMockRepository()
-      const initial = await repo4.createEpisode({
+      const initial = assertCreateEpisodeSuccess(await repo4.createEpisode({
         episodeId: "update-1",
         channelName: "Ch",
         title: "T",
         workflowState: "TOPIC",
         reviewStatus: "not-required",
-      })
+      }))
 
       const result = await repo4.updateEpisodeState({
         episodeId: "update-1",
@@ -342,13 +356,13 @@ describe("Episode Repository", () => {
   describe("Optimistic Locking Semantics", () => {
     test("1. concurrent updates with version checks", async () => {
       const repo11 = createMockRepository()
-      const initial = await repo11.createEpisode({
+      const initial = assertCreateEpisodeSuccess(await repo11.createEpisode({
         episodeId: "concurrent-1",
         channelName: "Ch",
         title: "T",
         workflowState: "TOPIC",
         reviewStatus: "not-required",
-      })
+      }))
 
       assert.strictEqual(initial.stateVersion, 1)
 
