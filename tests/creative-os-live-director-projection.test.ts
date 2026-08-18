@@ -1,6 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 
+import { projectDirectorNextActionToGovernedCompleteIntent } from "../lib/creative-os/action-plane"
 import { getProjectById } from "../lib/projects/selectors"
 import {
   buildLiveDirectorProjection,
@@ -87,6 +88,7 @@ test("LIVE_DIRECTOR_SKIPS_DONE_ACTION_AND_ROUTES_TO_EXISTING_NON_TERMINAL_ACTION
   assert.equal(projection!.result.nextAction.actionId, "act2")
   assert.equal(projection!.result.nextAction.title, "Verify submission bundle")
   assert.notEqual(projection!.result.nextAction.actionId, "act1")
+  assert.deepEqual(projection!.result.nextAction.evidenceNeededAfterCompletion, ["ev1"])
   assert.equal(projection!.result.sideEffectPayload, null)
   assert.equal(JSON.stringify(project), before)
 })
@@ -106,6 +108,7 @@ test("LIVE_DIRECTOR_POST_DEADLINE_FALLBACK_ROUTES_TO_RECOMMENDED_PHASE_WITH_SEMA
   assert.equal(first!.result.nextAction.title, "Run post-deadline verify review")
   assert.equal(first!.result.nextAction.phase, "verify")
   assert.equal(first!.result.nextAction.actionType, "next-action")
+  assert.deepEqual(first!.result.nextAction.evidenceNeededAfterCompletion, [])
   assert.match(first!.result.nextAction.description, /Deadline 2026-08-15 passed before evaluation on 2026-08-18\./)
   assert.match(first!.result.nextAction.description, /Unresolved proof gap: Offline verification mode validation\./)
   assert.match(first!.result.nextAction.description, /Pertinent risk: Session Reset Loss \(open, medium\/high\)\./)
@@ -113,6 +116,43 @@ test("LIVE_DIRECTOR_POST_DEADLINE_FALLBACK_ROUTES_TO_RECOMMENDED_PHASE_WITH_SEMA
   assert.equal(first!.result.sideEffectPayload, null)
   assert.deepEqual(first, second)
   assert.equal(JSON.stringify(project), before)
+})
+
+test("LIVE_DIRECTOR_CANONICALIZED_SEMANTIC_FALLBACK_STAYS_EVIDENCE_BLOCKED_UNTIL_SPECIFIC_PROOF_EXISTS", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+
+  const initial = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+  assert.ok(initial)
+  const fallback = initial!.result.nextAction
+  assert.deepEqual(fallback.evidenceNeededAfterCompletion, [])
+
+  project.nextActions = [
+    ...project.nextActions,
+    {
+      id: fallback.actionId,
+      label: fallback.title,
+      description: fallback.description,
+      phase: project.nextRecommendedPhase,
+      status: "doing",
+    },
+  ]
+
+  const canonicalized = buildLiveDirectorProjection(project, "2026-08-18T17:00:00-04:00")
+  assert.ok(canonicalized)
+  assert.equal(canonicalized!.result.nextAction.actionId, fallback.actionId)
+  assert.deepEqual(canonicalized!.result.nextAction.evidenceNeededAfterCompletion, [])
+
+  const completionIntent = projectDirectorNextActionToGovernedCompleteIntent(
+    project,
+    canonicalized!.result,
+    canonicalized!.evaluationTimestamp,
+  )
+  assert.equal(completionIntent.status, "EVIDENCE_REQUIRED")
+  assert.equal(completionIntent.evidenceId, null)
+  assert.equal(completionIntent.proposal, null)
+  assert.match(completionIntent.errors.join(" "), /No Director-required canonical completion evidence/)
 })
 
 test("LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_UNRESOLVED_PROOF_GAP", () => {
@@ -130,6 +170,7 @@ test("LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_UNRESOLVED_PROOF_GAP", () => {
   )
   assert.equal(projection!.result.nextAction.title, "Review unresolved proof gap before verify")
   assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.deepEqual(projection!.result.nextAction.evidenceNeededAfterCompletion, [])
   assert.equal(projection!.result.sideEffectPayload, null)
 })
 
@@ -146,6 +187,7 @@ test("LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_PERTINENT_RISK_AFTER_PROOF_GAPS_
   assert.equal(projection!.result.nextAction.actionId, "stated-verify-risk-risk1")
   assert.equal(projection!.result.nextAction.title, "Review Session Reset Loss before verify")
   assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.deepEqual(projection!.result.nextAction.evidenceNeededAfterCompletion, [])
   assert.equal(projection!.result.sideEffectPayload, null)
 })
 
@@ -161,6 +203,7 @@ test("LIVE_DIRECTOR_INVALID_DEADLINE_FAILS_CLOSED_TO_METADATA_REVIEW", () => {
   assert.equal(projection!.result.nextAction.actionId, "stated-verify-deadline-metadata-review")
   assert.equal(projection!.result.nextAction.title, "Review project deadline metadata")
   assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.deepEqual(projection!.result.nextAction.evidenceNeededAfterCompletion, [])
   assert.equal(projection!.result.sideEffectPayload, null)
 })
 
@@ -178,6 +221,7 @@ test("LIVE_DIRECTOR_NEXT_RECOMMENDED_PHASE_QUALIFIES_FALLBACK_WHEN_NO_STRONGER_S
   assert.equal(projection!.result.nextAction.actionId, "stated-verify-phase-review")
   assert.equal(projection!.result.nextAction.title, "Prepare verify phase review")
   assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.deepEqual(projection!.result.nextAction.evidenceNeededAfterCompletion, [])
   assert.equal(projection!.result.sideEffectPayload, null)
 })
 
