@@ -286,6 +286,7 @@ test("REUSING_A_START_PROPOSAL_AFTER_MUTATION_FAILS_STALE_WITH_ZERO_SECOND_MUTAT
 test("START_WRITER_IS_IDEMPOTENT_FOR_DOING_AND_REJECTS_DONE_OR_BLOCKED", async () => {
   await withTempProjectRepository(async () => {
     const project = await statedProject()
+    const pristine = JSON.parse(JSON.stringify(project)) as ProjectBrain
     const first = await startProjectNextAction({
       projectId: project.id,
       actionId: "act1",
@@ -303,30 +304,29 @@ test("START_WRITER_IS_IDEMPOTENT_FOR_DOING_AND_REJECTS_DONE_OR_BLOCKED", async (
     }, startAuthority())
     assert.equal(noChange.status, "NO_CHANGE")
     assert.equal(noChange.beforeFingerprint, noChange.afterFingerprint)
-  })
 
-  const project = await statedProject()
-  const doneProject = JSON.parse(JSON.stringify(project)) as ProjectBrain
-  const done = doneProject.nextActions.find((action) => action.id === "act1")
-  assert.ok(done)
-  done.status = "done"
-  const doneProposal = createProjectBrainStartNextActionProposal(doneProject, {
-    actionId: "act1",
-    correlationId: "corr-start-done",
-    proposedAt: "2026-08-18T12:20:00.000Z",
-  })
-  assert.equal(doneProposal.valid, false)
+    const doneProject = JSON.parse(JSON.stringify(pristine)) as ProjectBrain
+    const done = doneProject.nextActions.find((action) => action.id === "act1")
+    assert.ok(done)
+    done.status = "done"
+    const doneProposal = createProjectBrainStartNextActionProposal(doneProject, {
+      actionId: "act1",
+      correlationId: "corr-start-done",
+      proposedAt: "2026-08-18T12:20:00.000Z",
+    })
+    assert.equal(doneProposal.valid, false)
 
-  const blockedProject = JSON.parse(JSON.stringify(project)) as ProjectBrain
-  const blocked = blockedProject.nextActions.find((action) => action.id === "act1")
-  assert.ok(blocked)
-  blocked.status = "blocked"
-  const blockedProposal = createProjectBrainStartNextActionProposal(blockedProject, {
-    actionId: "act1",
-    correlationId: "corr-start-blocked",
-    proposedAt: "2026-08-18T12:20:00.000Z",
+    const blockedProject = JSON.parse(JSON.stringify(pristine)) as ProjectBrain
+    const blocked = blockedProject.nextActions.find((action) => action.id === "act1")
+    assert.ok(blocked)
+    blocked.status = "blocked"
+    const blockedProposal = createProjectBrainStartNextActionProposal(blockedProject, {
+      actionId: "act1",
+      correlationId: "corr-start-blocked",
+      proposedAt: "2026-08-18T12:20:00.000Z",
+    })
+    assert.equal(blockedProposal.valid, false)
   })
-  assert.equal(blockedProposal.valid, false)
 })
 
 test("DIRECTOR_START_INTENT_REFLECTS_TODO_DOING_DONE_AND_BLOCKED_STATES", async () => {
