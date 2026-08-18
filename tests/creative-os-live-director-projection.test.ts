@@ -4,6 +4,7 @@ import assert from "node:assert/strict"
 import { getProjectById } from "../lib/projects/selectors"
 import {
   buildLiveDirectorProjection,
+  normalizeDirectorEvaluationTimestamp,
   resolveDirectorModeForProject,
   resolveDirectorModeForProjectKind,
 } from "../lib/director/live-projection"
@@ -25,15 +26,28 @@ test("LIVE_DIRECTOR_CAN_RESOLVE_MODE_FROM_NON_AMBIGUOUS_PROJECT_BRAIN_EVIDENCE",
   assert.deepEqual(resolved, { mode: "HACKATHON", resolution: "PROJECT_EVIDENCE" })
 })
 
+test("LIVE_DIRECTOR_EVALUATION_TIMESTAMP_IS_EXPLICIT_DAY_STABLE_AND_FAILS_CLOSED", () => {
+  assert.equal(
+    normalizeDirectorEvaluationTimestamp("2026-08-18T16:47:31-04:00"),
+    "2026-08-18T00:00:00.000Z",
+  )
+  assert.equal(
+    normalizeDirectorEvaluationTimestamp("2026-08-18T23:59:59.999Z"),
+    "2026-08-18T00:00:00.000Z",
+  )
+  assert.equal(normalizeDirectorEvaluationTimestamp("not-a-date"), null)
+})
+
 test("LIVE_DIRECTOR_PROJECTION_USES_CANONICAL_PROJECT_AND_GOVERNED_METHODS", () => {
   const project = getProjectById("stated")!
   const before = JSON.stringify(project)
-  const projection = buildLiveDirectorProjection(project)
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
 
   assert.ok(projection)
   assert.equal(projection!.projectId, project.id)
   assert.equal(projection!.mode, "HACKATHON")
   assert.equal(projection!.modeResolution, "PROJECT_EVIDENCE")
+  assert.equal(projection!.evaluationTimestamp, "2026-08-18T00:00:00.000Z")
   assert.equal(projection!.input.project, project)
   assert.equal(projection!.input.availableSkills.length, 6)
   assert.ok(projection!.input.availableSkills.every((skill) => skill.sourceEntityKind === "METHOD"))
@@ -42,10 +56,10 @@ test("LIVE_DIRECTOR_PROJECTION_USES_CANONICAL_PROJECT_AND_GOVERNED_METHODS", () 
   assert.equal(JSON.stringify(project), before)
 })
 
-test("LIVE_DIRECTOR_PROJECTION_IS_DETERMINISTIC_FOR_SAME_PROJECT_STATE", () => {
+test("LIVE_DIRECTOR_PROJECTION_IS_DETERMINISTIC_FOR_SAME_PROJECT_AND_EVALUATION_DAY", () => {
   const project = getProjectById("stated")!
-  const first = buildLiveDirectorProjection(project)
-  const second = buildLiveDirectorProjection(project)
+  const first = buildLiveDirectorProjection(project, "2026-08-18T01:00:00.000Z")
+  const second = buildLiveDirectorProjection(project, "2026-08-18T22:00:00.000Z")
 
   assert.ok(first)
   assert.ok(second)
@@ -67,7 +81,7 @@ test("LIVE_DIRECTOR_SKIPS_DONE_ACTION_AND_ROUTES_TO_EXISTING_NON_TERMINAL_ACTION
   ]
   const before = JSON.stringify(project)
 
-  const projection = buildLiveDirectorProjection(project)
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
 
   assert.ok(projection)
   assert.equal(projection!.result.nextAction.actionId, "act2")
@@ -77,23 +91,94 @@ test("LIVE_DIRECTOR_SKIPS_DONE_ACTION_AND_ROUTES_TO_EXISTING_NON_TERMINAL_ACTION
   assert.equal(JSON.stringify(project), before)
 })
 
-test("LIVE_DIRECTOR_USES_DETERMINISTIC_READ_ONLY_FALLBACK_WHEN_ALL_CANONICAL_ACTIONS_ARE_DONE", () => {
+test("LIVE_DIRECTOR_POST_DEADLINE_FALLBACK_ROUTES_TO_RECOMMENDED_PHASE_WITH_SEMANTIC_CONTEXT", () => {
   const source = getProjectById("stated")!
   const project = structuredClone(source)
   project.nextActions = [{ ...project.nextActions[0], status: "done" }]
   const before = JSON.stringify(project)
 
-  const first = buildLiveDirectorProjection(project)
-  const second = buildLiveDirectorProjection(project)
+  const first = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+  const second = buildLiveDirectorProjection(project, "2026-08-18T17:30:00-04:00")
 
   assert.ok(first)
   assert.ok(second)
-  assert.equal(first!.result.nextAction.actionId, "stated-hackathon-safe-action")
-  assert.equal(first!.result.nextAction.title, "Prepare hackathon demo review")
+  assert.equal(first!.result.nextAction.actionId, "stated-verify-post-deadline-review")
+  assert.equal(first!.result.nextAction.title, "Run post-deadline verify review")
+  assert.equal(first!.result.nextAction.phase, "verify")
   assert.equal(first!.result.nextAction.actionType, "next-action")
+  assert.match(first!.result.nextAction.description, /Deadline 2026-08-15 passed before evaluation on 2026-08-18\./)
+  assert.match(first!.result.nextAction.description, /Unresolved proof gap: Offline verification mode validation\./)
+  assert.match(first!.result.nextAction.description, /Pertinent risk: Session Reset Loss \(open, medium\/high\)\./)
+  assert.match(first!.result.nextAction.description, /Next recommended phase: verify\./)
   assert.equal(first!.result.sideEffectPayload, null)
   assert.deepEqual(first, second)
   assert.equal(JSON.stringify(project), before)
+})
+
+test("LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_UNRESOLVED_PROOF_GAP", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+  project.deadlineLabel = "2026-08-25"
+
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+
+  assert.ok(projection)
+  assert.equal(
+    projection!.result.nextAction.actionId,
+    "stated-verify-proof-gap-offline-verification-mode-validation",
+  )
+  assert.equal(projection!.result.nextAction.title, "Review unresolved proof gap before verify")
+  assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.equal(projection!.result.sideEffectPayload, null)
+})
+
+test("LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_PERTINENT_RISK_AFTER_PROOF_GAPS_CLEAR", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+  project.deadlineLabel = "2026-08-25"
+  project.unresolvedProofGaps = []
+
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+
+  assert.ok(projection)
+  assert.equal(projection!.result.nextAction.actionId, "stated-verify-risk-risk1")
+  assert.equal(projection!.result.nextAction.title, "Review Session Reset Loss before verify")
+  assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.equal(projection!.result.sideEffectPayload, null)
+})
+
+test("LIVE_DIRECTOR_INVALID_DEADLINE_FAILS_CLOSED_TO_METADATA_REVIEW", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+  project.deadlineLabel = "August-ish"
+
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+
+  assert.ok(projection)
+  assert.equal(projection!.result.nextAction.actionId, "stated-verify-deadline-metadata-review")
+  assert.equal(projection!.result.nextAction.title, "Review project deadline metadata")
+  assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.equal(projection!.result.sideEffectPayload, null)
+})
+
+test("LIVE_DIRECTOR_NEXT_RECOMMENDED_PHASE_QUALIFIES_FALLBACK_WHEN_NO_STRONGER_SIGNAL_EXISTS", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+  delete project.deadlineLabel
+  project.unresolvedProofGaps = []
+  project.risks = []
+
+  const projection = buildLiveDirectorProjection(project, "2026-08-18T16:47:00-04:00")
+
+  assert.ok(projection)
+  assert.equal(projection!.result.nextAction.actionId, "stated-verify-phase-review")
+  assert.equal(projection!.result.nextAction.title, "Prepare verify phase review")
+  assert.equal(projection!.result.nextAction.phase, "verify")
+  assert.equal(projection!.result.sideEffectPayload, null)
 })
 
 test("UNMAPPED_PROJECT_WITHOUT_MODE_EVIDENCE_DOES_NOT_GET_FORCED_INTO_A_DIRECTOR_MODE", () => {
@@ -109,5 +194,5 @@ test("UNMAPPED_PROJECT_WITHOUT_MODE_EVIDENCE_DOES_NOT_GET_FORCED_INTO_A_DIRECTOR
     },
   }
   assert.deepEqual(resolveDirectorModeForProject(unsupported), { mode: null, resolution: "UNMAPPED" })
-  assert.equal(buildLiveDirectorProjection(unsupported), null)
+  assert.equal(buildLiveDirectorProjection(unsupported, "2026-08-18T16:47:00-04:00"), null)
 })
