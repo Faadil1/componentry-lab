@@ -3,18 +3,24 @@
 import { useTransition } from "react"
 import { signIn, signOut } from "next-auth/react"
 
-export function AuthControls({ authenticated }: { authenticated: boolean }) {
+export function AuthControls({
+  authenticated,
+  callbackUrl = "/",
+}: {
+  authenticated: boolean
+  callbackUrl?: string
+}) {
   const [pending, startTransition] = useTransition()
 
   const handleSignIn = () => {
     startTransition(() => {
-      void signIn("github", { callbackUrl: "/" })
+      void signIn("github", { callbackUrl })
     })
   }
 
   const handleSignOut = () => {
     startTransition(() => {
-      void signOut({ callbackUrl: "/" })
+      void signOut({ callbackUrl })
     })
   }
 
