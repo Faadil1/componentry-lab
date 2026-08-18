@@ -9,209 +9,260 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED ACTION / WRITE PLANE
 PHASE_CODE = CREATIVE_OS_GOVERNED_ACTION_WRITE_PLANE_V1
 TRACK = CONTROLLED CROSS-SYSTEM WRITES
-STATUS = SLICE_I_COMPLETE / PREVIEW_QA_PASS / SLICE_J_NEXT
+STATUS = SLICES_I_J_K_COMPLETE / PREVIEW_QA_PASS / SLICE_L_NEXT
 SOURCE_OF_TRUTH = GitHub feature/governed-action-write-plane-01
 BASE_PRODUCTION_HEAD = e1be1978fb6109e2d7c302efcffc373c2ae91730
-PRODUCTION_RUNTIME_BASELINE = PRODUCTION_PROMOTION_COMPLETE / RUNTIME_QA_PASS
-FEATURE_HEAD_BEFORE_HANDOVER = a3e9ccaeeacde674e5a589be5197efe9aa477b54
-SLICE_I_PREVIEW = dpl_ASLVe1r9E8X1oHFgVWsDyoecpojw
-SLICE_I_PREVIEW_STATE = READY
-COLLABORATION_ACTION_TESTS = 71 / 71 PASS
+FEATURE_HEAD_BEFORE_HANDOVER = 9af5980b925ee13918a84ad918f1dd0478e750f9
+FINAL_K_PREVIEW = dpl_a4SoXJNnigURaKrsA5bP4mAs1VFM
+FINAL_K_PREVIEW_STATE = READY
+COLLABORATION_ACTION_TESTS = 90 / 90 PASS
 NEXT_COMPILE = PASS
 TYPESCRIPT = PASS
 STATIC_GENERATION = 93 / 93 PASS
 PREVIEW_ERROR_FATAL_LOGS = NONE
+REAL_PREVIEW_DB_MUTATION = NONE
 PRODUCTION_MODIFIED = NO
 ```
 
-## Why this phase exists
+## Phase invariant
 
-The governed collaboration mesh is Production-verified, but most collaborators are intentionally read-only/advisory. This phase introduces bounded, auditable mutation without collapsing collaboration into unrestricted cross-system writes.
-
-Core invariant:
+The Production-verified collaboration mesh remains the read/analyze/recommend plane. Mutation is layered on top through explicit typed contracts only.
 
 > COLLABORATION MAY PROPOSE; ONLY A GOVERNED ACTION GATE MAY AUTHORIZE A WRITE; ONLY THE TARGET OWNER MAY APPLY IT.
 
-## Authority architecture
-
-The collaboration mesh remains the read/analyze/recommend plane.
-
-The action/write plane mediates state mutation:
+The write sequence is:
 
 ```text
 Collaborator proposal
-  -> Governed Action Proposal
-  -> deterministic validation + before/after fingerprint
-  -> explicit owner approval bound to exact proposal fingerprint
-  -> canonical write-access check
+  -> deterministic Governed Action Proposal
+  -> before-state fingerprint
+  -> exact owner approval bound to proposal fingerprint
+  -> canonical owner authentication
+  -> domain scope/authority validation
   -> target-owned executor
-  -> mutation
-  -> immutable execution receipt
-  -> collaboration/audit feedback
+  -> bounded mutation
+  -> immutable receipt
+  -> re-read canonical state
 ```
 
-No collaborator receives unrestricted write authority.
+No collaborator receives generic write authority.
 
-## Slice I — COMPLETE
+## Slice I — COMPLETE — canonicalize a Director next action
 
-The first executable mutation is intentionally narrow:
+Typed operation:
 
 ```text
 PROJECT_BRAIN_APPEND_NEXT_ACTION
+scope = project:next-action:append
+authority = LOCAL_REVERSIBLE
+approval = EXPLICIT
+human review = REQUIRED
+source = CREATIVE_DIRECTOR
+target = PROJECT_BRAIN
 ```
 
-Required scope:
+Safety properties:
+- proposal generation is pure/read-only;
+- new actions enter only as `todo`;
+- duplicate ID with different content is blocked;
+- exact duplicate is idempotent `NO_CHANGE`;
+- Project Brain must still match the approved SHA-256 precondition;
+- local and Postgres paths use target-owned writers;
+- Postgres persisted updates use compare-and-swap semantics;
+- owner auth and domain authority are separate gates.
 
-```text
-project:next-action:append
-```
-
-Required authority and identity:
-
-```text
-LOCAL_REVERSIBLE
-explicit human approval
-canonical owner authentication
-```
-
-### Implemented substrate
-
+Key implementation:
 - `lib/projects/fingerprint.ts`
-  - canonical JSON normalization;
-  - SHA-256 Project Brain fingerprinting.
 - `lib/projects/next-action-writer.ts`
-  - target-owned bounded writer;
-  - local-file atomic runtime overlay;
-  - Postgres seed INSERT and persisted UPDATE paths;
-  - compare-and-swap stale-state protection;
-  - duplicate identity protection;
-  - exact duplicate idempotency.
 - `lib/creative-os/action-plane/types.ts`
-  - versioned proposal / approval / receipt contracts.
 - `lib/creative-os/action-plane/validation.ts`
-  - fail-closed contract validation.
 - `lib/creative-os/action-plane/project-brain-next-action.ts`
-  - pure proposal generation;
-  - exact proposal-fingerprint approval binding;
-  - canonical owner authentication;
-  - target-owned execution;
-  - immutable receipt creation.
 
-### Mutation safety
+## Slice J — COMPLETE — Director Live governed action surface
 
-A proposal itself never mutates canonical state.
+`/director/live` now exposes governed write intent without making proposal rendering mutative.
 
-An executable Slice I write must satisfy all of these conditions:
+The browser is never trusted for identity or arbitrary mutation payloads. Approval forms submit only:
 
 ```text
-sourceSystem = CREATIVE_DIRECTOR
-targetSystem = PROJECT_BRAIN
-operation = PROJECT_BRAIN_APPEND_NEXT_ACTION
-effectClass = OWNER_STATE_MUTATION
-requiredAuthority = LOCAL_REVERSIBLE
-approvalRequirement = EXPLICIT
-humanReviewRequired = true
-requiredScopes = [project:next-action:append]
-proposalFingerprint = exact approved proposal
-Project Brain beforeFingerprint = exact current canonical state
-owner session = authenticated canonical owner
+projectId
+proposalFingerprint
 ```
 
-If any one condition fails, no mutation occurs.
+The server then:
+1. reloads canonical Project Brain;
+2. rebuilds the live Director projection;
+3. regenerates the governed proposal;
+4. compares the exact proposal fingerprint;
+5. verifies canonical GitHub owner authentication;
+6. invokes the typed target-owned executor only if all gates pass.
 
-New actions must enter as `todo`. Existing IDs cannot be overwritten. An exact duplicate is idempotent and returns `NO_CHANGE`.
+If OAuth or canonical owner configuration is absent for the environment, write controls remain visibly locked. There is no anonymous/development bypass.
 
-## Local + Postgres parity proof
+Current live Project Brain projects already contain their Director-selected next actions, so the append surface correctly reports `ALREADY_CANONICAL` rather than duplicating them.
 
-The final `test:collaboration` gate includes 14 Slice I tests in addition to the prior 57 collaboration tests.
+Key implementation:
+- `lib/creative-os/action-plane/director-next-action.ts`
+- `app/director/live/actions.ts`
+- `components/director/governed-action-panel.tsx`
+- `app/director/live/page.tsx`
+- `components/auth/auth-controls.tsx`
 
-Postgres parity is tested with fake SQL only — no Preview or Production database mutation was performed.
+## Slice K — COMPLETE — start one canonical next action
 
-Proven paths:
+Second typed operation:
 
 ```text
-unpersisted seed Project Brain
+PROJECT_BRAIN_START_NEXT_ACTION
+scope = project:next-action:start
+transition = todo -> doing
+authority = LOCAL_REVERSIBLE
+approval = EXPLICIT
+human review = REQUIRED
+source = CREATIVE_DIRECTOR
+target = PROJECT_BRAIN
+```
+
+This is deliberately a lifecycle-state mutation only. It does NOT:
+- change Project Brain phase;
+- change overall project status;
+- execute the actual work represented by the action;
+- invoke Film Kit;
+- execute a provider/reference/resource;
+- mutate decisions/evidence truth state;
+- make network/external side effects.
+
+Lifecycle behavior:
+
+```text
+todo -> governed start proposal available
+doing -> ALREADY_STARTED / no write
+done -> ALREADY_COMPLETED / no write
+blocked -> ACTION_BLOCKED / no write
+missing canonical action -> ACTION_NOT_CANONICAL / no write
+stale Project Brain fingerprint -> BLOCKED / no write
+```
+
+Only the selected action status and `updatedLabel` can change. Tests prove project phase, project status, decisions, evidence, blockers, and action count remain unchanged.
+
+Key implementation:
+- `lib/projects/next-action-status-writer.ts`
+- `lib/creative-os/action-plane/project-brain-start-next-action.ts`
+- generalized `lib/creative-os/action-plane/validation.ts`
+- Director start intent in `director-next-action.ts`
+- owner-approved server action `approveDirectorStartNextAction`
+- second governed action panel in `/director/live`.
+
+## Local + Postgres proof
+
+No real Preview or Production database write was used to validate this phase.
+
+Postgres parity is proven with fake SQL for both typed operations:
+
+```text
+seed/unpersisted canonical project
 -> INSERT runtime overlay
 
-persisted Project Brain matching approved fingerprint
+persisted project matching approved fingerprint
 -> conditional UPDATE
 
-persisted Project Brain with stale fingerprint
--> STALE_PRECONDITION / zero write
+stale persisted payload
+-> STALE_PRECONDITION / zero update
 
-concurrent change between read and write
+concurrent write race
 -> compare-and-swap returns zero rows
--> STALE_PRECONDITION / zero write
+-> STALE_PRECONDITION / zero update
 ```
 
-Final Preview QA:
+## Final Slice K Preview QA
 
 ```text
-DEPLOYMENT = dpl_ASLVe1r9E8X1oHFgVWsDyoecpojw
+DEPLOYMENT = dpl_a4SoXJNnigURaKrsA5bP4mAs1VFM
+COMMIT = 9af5980b925ee13918a84ad918f1dd0478e750f9
 STATE = READY
-TESTS = 71 / 71 PASS
+TESTS = 90 / 90 PASS
 COMPILE = PASS
 TYPESCRIPT = PASS
 STATIC_GENERATION = 93 / 93 PASS
+/director/live = emitted dynamic route
 ERROR/FATAL LOGS = NONE OBSERVED
+ALIAS_ERROR = null
 ```
 
-## Explicitly still blocked
+An earlier Slice K gate failed only because one test restored Vercel's Production-like environment before reading a local fixture. The test was corrected to keep all fixture reads inside its isolated local repository; no authority/runtime production code was weakened.
 
-Slice I does NOT authorize:
+## Mutable surface now authorized by code
 
-- arbitrary JSON Patch / arbitrary field mutation;
+Exactly these Project Brain mutations are modeled by the new action plane:
+
+```text
+1. PROJECT_BRAIN_APPEND_NEXT_ACTION
+   -> append one new canonical todo action
+
+2. PROJECT_BRAIN_START_NEXT_ACTION
+   -> change one existing canonical action from todo to doing
+```
+
+Project creation remains the pre-existing separately governed write path.
+
+## Still explicitly blocked
+
+- arbitrary JSON Patch / generic object mutation;
 - project phase mutation;
-- project status mutation;
+- project overall status mutation;
+- action completion `doing -> done` until separately modeled;
+- action unblock/cancel/delete;
 - decision approval/rejection mutation;
-- evidence promotion or truth-status mutation;
+- evidence promotion/truth-status mutation;
 - Registry V2 mutation;
 - Component Library mutation;
 - Film Kit execution/publishing;
-- external provider execution;
-- network/external side effects;
-- writes initiated solely because a method/reference/playbook recommends them;
-- implicit authority elevation through collaboration routing.
+- provider/reference/source/resource execution;
+- external network side effects;
+- implicit writes from Method/Playbook/Reference recommendations;
+- authority widening through collaboration routing.
 
-The collaboration mesh remains read-only unless a separately validated governed action reaches a target-owned executor.
+## Production auth nuance
 
-## Important live-product nuance
+Production source is still the prior stable baseline and has not received this feature branch.
 
-The current Director often selects its canonical next action from an action that is already present in `ProjectBrain.nextActions`. Therefore `PROJECT_BRAIN_APPEND_NEXT_ACTION` is a valid foundational write capability but may legitimately return `NO_CHANGE` for the current live Project Brain state.
-
-Do not fabricate a second copy merely to demonstrate mutation.
-
-The next product slice should expose governed write intent visibly and then introduce only the minimum additional typed operation needed for a useful live workflow.
-
-## Slice J — SELECTED NEXT
+Before any future Production write smoke, GitHub OAuth + canonical owner identity must be configured for Production. The existing app recognizes:
 
 ```text
-DIRECTOR LIVE GOVERNED ACTION PREVIEW + OWNER APPROVAL UX
+GITHUB_ID or AUTH_GITHUB_ID
+GITHUB_SECRET or AUTH_GITHUB_SECRET
+AUTH_OWNER_GITHUB_ACCOUNT_ID
 ```
 
-Slice J rules:
+Do not guess or fabricate these values. Until configured, the future Production write UI must remain locked even after code promotion.
 
-1. `/director/live` may display the governed action proposal, exact operation, scope, authority, and before-state fingerprint.
-2. Proposal rendering remains pure/read-only.
-3. Application requires the authenticated canonical GitHub owner.
-4. Approval must bind to the exact server-generated proposal fingerprint.
-5. The server must regenerate/revalidate canonical Project Brain state before execution.
-6. Client identity and arbitrary client mutation payloads are never trusted.
-7. If GitHub OAuth is not configured for the environment, the write control is visibly locked; no development/anonymous bypass is allowed.
-8. Existing Director action already canonical in Project Brain should be shown as idempotent/already represented rather than duplicated.
-9. A useful second typed operation may be considered only if it preserves the same explicit approval, scope, fingerprint and target-owned executor guarantees.
-10. Production promotion remains a separate explicit decision after Preview QA.
+## Slice L — SELECTED NEXT
+
+```text
+GOVERNED ACTION COMPLETION + AUDIT RECEIPT PROJECTION
+```
+
+Slice L scope:
+1. Add one more typed lifecycle mutation only: `PROJECT_BRAIN_COMPLETE_NEXT_ACTION` = `doing -> done`.
+2. Preserve the same exact owner auth, explicit approval, scope, fingerprint, stale-state and target-owned-executor gates.
+3. Never auto-complete an action merely because Director/Method says it is done.
+4. Completion must require explicit human approval and an evidence reference or completion note sufficient for traceability.
+5. Project phase/status must remain unchanged by action completion.
+6. Project Brain Audit/Evidence feedback should receive an immutable receipt projection; receipt projection is not itself independent truth verification.
+7. No external side effect or provider execution.
+8. Preview QA must use local/fake SQL only; no real canonical DB mutation.
+9. Production promotion remains a separate explicit gate.
 
 ## HANDOVER
 
 Resume on `feature/governed-action-write-plane-01`.
 
-Do not modify `master` until Preview QA passes for the intended phase and Production promotion is explicitly authorized.
+Do not modify `master` until the intended phase passes Preview QA and Production promotion is explicitly authorized.
 
-Do not reopen the completed collaboration mesh, weaken its read-only defaults, remove owner authentication, or replace typed operations with arbitrary patch semantics.
+Do not reopen the completed collaboration mesh, weaken read-only defaults, remove owner authentication, or replace typed operations with arbitrary patch semantics.
 
 ## Exactly one next action
 
 ```text
-SLICE J — ADD DIRECTOR LIVE GOVERNED ACTION PREVIEW + OWNER-APPROVAL SURFACE
+SLICE L — IMPLEMENT PROJECT_BRAIN_COMPLETE_NEXT_ACTION + IMMUTABLE AUDIT RECEIPT PROJECTION + TESTS
 ```
