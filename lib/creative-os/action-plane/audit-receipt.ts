@@ -50,8 +50,8 @@ export function projectGovernedActionReceiptToAuditEvidence(
     requestedEffectClass: "NONE",
     hopTrace: [
       {
-        sourceSystem: "CREATIVE_DIRECTOR",
-        targetSystem: "AUDIT_EVIDENCE",
+        sourceSystem: "PROJECT_BRAIN",
+        targetSystem: "CREATIVE_DIRECTOR",
       },
     ],
     status: "REQUESTED",
