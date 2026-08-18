@@ -18,6 +18,7 @@ import { resolveDirectorPhase } from "./phases"
 import { resolveModeState } from "./modes"
 import { canAuthorizeExternalAction, defaultAuthorityLevelForAction } from "./authority"
 import { selectSkillsForMode } from "./skills"
+import { isDirectorGeneratedFallbackActionId, qualifyDirectorSemanticFallback } from "./semantic-fallback"
 import { projectGovernedDirectorSkills } from "../creative-os/collaboration/director-adapter"
 
 function mapBlockers(project: ProjectBrain): CanonicalBlocker[] {
@@ -124,57 +125,46 @@ function mapCreativePhase(projectPhase: string): "intake" | "clarify" | "route" 
   }
 }
 
-function getDefaultModeActionFallback(mode: CreativeProjectMode): { title: string; description: string } {
-  switch (mode) {
-    case "DAY_CHALLENGE":
-      return {
-        title: "Validate single-day hero proof",
-        description: "Verify the core hero demo moment and proof moment before timebox expiration.",
-      }
-    case "HACKATHON":
-      return {
-        title: "Prepare hackathon demo review",
-        description: "Review hackathon judge criteria, sponsor requirements, and submission completeness.",
-      }
-    case "MARA":
-      return {
-        title: "Review episodic narrative continuity",
-        description: "Audit narrative continuity, character memory hooks, and audience retention points.",
-      }
-    case "DATA_STORY":
-      return {
-        title: "Inspect analytical proof evidence",
-        description: "Verify quantitative metrics, stakeholder proof points, and executive evidence clarity.",
-      }
-  }
-}
-
 function mapActionCandidate(
   project: ProjectBrain,
   mode: CreativeProjectMode,
   phase: string,
   blockers: CanonicalBlocker[],
   authorityRequirement: string,
-  sourceDecisionOrGate: string
+  sourceDecisionOrGate: string,
+  evaluationTimestamp: string | undefined,
 ): AuthorizedAction {
   const creativePhase = mapCreativePhase(phase)
   const nonTerminalActions = project.nextActions.filter((action) => action.status !== "done")
   const matchingAction = nonTerminalActions.find((act) => mapCreativePhase(act.phase) === creativePhase)
   const baseAction = matchingAction ?? nonTerminalActions[0]
-  const modeFallback = getDefaultModeActionFallback(mode)
+  const semanticFallback = baseAction ? null : qualifyDirectorSemanticFallback(project, mode, evaluationTimestamp)
+  const hasBlockers = blockers.length > 0
 
-  const title = baseAction?.label ?? (blockers.length > 0 ? `Review ${mode.toLowerCase().replace("_", " ")} blockers` : modeFallback.title)
-  const description = baseAction?.description ?? modeFallback.description
-  const actionType = baseAction?.status === "blocked" || blockers.length > 0 ? "review-required" : "next-action"
+  const title = baseAction?.label
+    ?? (hasBlockers ? `Review ${mode.toLowerCase().replace("_", " ")} blockers` : semanticFallback!.title)
+  const description = baseAction?.description
+    ?? (hasBlockers
+      ? "Review the canonical Project Brain blockers and their resolution conditions before advancing."
+      : semanticFallback!.description)
+  const actionType = baseAction?.status === "blocked" || hasBlockers ? "review-required" : "next-action"
+  const actionId = baseAction?.id
+    ?? (hasBlockers ? `${project.id}-${mode.toLowerCase()}-blocker-review` : semanticFallback!.actionId)
+  const actionPhase = baseAction || hasBlockers
+    ? creativePhase
+    : mapCreativePhase(semanticFallback!.phase)
+  const generatedFallback = !baseAction
+    || isDirectorGeneratedFallbackActionId(project, actionId)
+    || actionId === `${project.id}-${mode.toLowerCase()}-blocker-review`
 
   return {
-    actionId: baseAction?.id ?? `${project.id}-${mode.toLowerCase()}-safe-action`,
+    actionId,
     actionType,
     title,
     description,
     rationale: description,
     mode,
-    phase: creativePhase,
+    phase: actionPhase,
     authorityRequirement: authorityRequirement as never,
     approvalStatus: canAuthorizeExternalAction({
       authorityLevel: authorityRequirement as never,
@@ -192,7 +182,7 @@ function mapActionCandidate(
     blockers,
     expectedResult: description,
     reversibility: "reversible",
-    evidenceNeededAfterCompletion: project.evidence.map((item) => item.id),
+    evidenceNeededAfterCompletion: generatedFallback ? [] : project.evidence.map((item) => item.id),
     sourceDecisionOrGate,
   }
 }
@@ -325,7 +315,8 @@ export function adaptDirectorResult(input: DirectorInput): DirectorResult {
     resolveDirectorPhase(input.mode, input.phaseContext),
     blockers,
     input.authorityContext.authorityLevel,
-    gateEvaluations.find((gate) => gate.gateId === "hero-demo-moment")?.gateId ?? "director:gates"
+    gateEvaluations.find((gate) => gate.gateId === "hero-demo-moment")?.gateId ?? "director:gates",
+    input.evaluationTimestamp,
   )
 
   return {
