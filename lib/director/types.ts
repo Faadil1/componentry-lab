@@ -183,6 +183,14 @@ export interface SkillMetadata {
   loadingPolicy: SkillLoadingPolicy
   sourcePaths: string[]
   status: "available" | "inactive" | "deprecated"
+  canonicalCapabilityRef?: string
+  runtimeMethodId?: string
+  sourceEntityKind?: string
+  sourceLifecycleState?: string
+  sourceAuthorityCeiling?: string
+  sourceMethodAuthorityRequired?: string
+  capabilityGaps?: string[]
+  evidenceRefs?: string[]
 }
 
 export interface CreativeProjectModeState {

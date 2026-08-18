@@ -18,7 +18,7 @@ import { resolveDirectorPhase } from "./phases"
 import { resolveModeState } from "./modes"
 import { canAuthorizeExternalAction, defaultAuthorityLevelForAction } from "./authority"
 import { selectSkillsForMode } from "./skills"
-
+import { projectGovernedDirectorSkills } from "../creative-os/collaboration/director-adapter"
 
 function mapBlockers(project: ProjectBrain): CanonicalBlocker[] {
   return [
@@ -236,13 +236,15 @@ export function adaptProjectBrainToDirectorInput(
   authorityContext: DirectorInput["authorityContext"],
   evaluationTimestamp?: string
 ): DirectorInput {
+  const governedSkills = projectGovernedDirectorSkills()
+
   return {
     project,
     mode,
     phaseContext,
     evidence: mapEvidence(project),
     authorityContext,
-    availableSkills: [],
+    availableSkills: governedSkills.valid ? [...governedSkills.skills] : [],
     lockedDecisions: project.decisions
       .filter((decision) => decision.status === "approved")
       .map((decision) => ({
@@ -354,7 +356,6 @@ export function adaptDirectorResultWithAdvisoryEvidence(
   const baseResult = adaptDirectorResult(mergedInput)
 
   if (advisoryEvidence.length > 0) {
-    // Check for failure/contradiction
     const failEvidence = advisoryEvidence.find(e => e.status === "fail")
     if (failEvidence) {
       const newBlocker: CanonicalBlocker = {

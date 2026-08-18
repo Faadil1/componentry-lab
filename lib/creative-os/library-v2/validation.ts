@@ -1,5 +1,3 @@
-import assert from "node:assert/strict"
-
 import { METHOD_DEFINITIONS } from "../methods/registry"
 import { RESOURCE_REGISTRY } from "../registry"
 import type { ResourceMetadata } from "../types"
@@ -53,11 +51,15 @@ function isLegacyPlaceholder(resource: ResourceMetadata): boolean {
 }
 
 function assertMethodEntity(entity: LibraryV2Entity): asserts entity is MethodEntity {
-  assert.equal(entity.entityKind, "METHOD")
+  if (entity.entityKind !== "METHOD") {
+    throw new Error(`expected METHOD entity, received ${entity.entityKind}`)
+  }
 }
 
 function assertSourceEntity(entity: LibraryV2Entity): asserts entity is SourceEntity {
-  assert.equal(entity.entityKind, "SOURCE")
+  if (entity.entityKind !== "SOURCE") {
+    throw new Error(`expected SOURCE entity, received ${entity.entityKind}`)
+  }
 }
 
 function validateProjectionWarnings(
