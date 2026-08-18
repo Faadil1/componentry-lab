@@ -52,6 +52,50 @@ test("LIVE_DIRECTOR_PROJECTION_IS_DETERMINISTIC_FOR_SAME_PROJECT_STATE", () => {
   assert.deepEqual(first, second)
 })
 
+test("LIVE_DIRECTOR_SKIPS_DONE_ACTION_AND_ROUTES_TO_EXISTING_NON_TERMINAL_ACTION", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [
+    { ...project.nextActions[0], status: "done" },
+    {
+      id: "act2",
+      label: "Verify submission bundle",
+      description: "Review the existing proof bundle before submission.",
+      phase: "verify",
+      status: "todo",
+    },
+  ]
+  const before = JSON.stringify(project)
+
+  const projection = buildLiveDirectorProjection(project)
+
+  assert.ok(projection)
+  assert.equal(projection!.result.nextAction.actionId, "act2")
+  assert.equal(projection!.result.nextAction.title, "Verify submission bundle")
+  assert.notEqual(projection!.result.nextAction.actionId, "act1")
+  assert.equal(projection!.result.sideEffectPayload, null)
+  assert.equal(JSON.stringify(project), before)
+})
+
+test("LIVE_DIRECTOR_USES_DETERMINISTIC_READ_ONLY_FALLBACK_WHEN_ALL_CANONICAL_ACTIONS_ARE_DONE", () => {
+  const source = getProjectById("stated")!
+  const project = structuredClone(source)
+  project.nextActions = [{ ...project.nextActions[0], status: "done" }]
+  const before = JSON.stringify(project)
+
+  const first = buildLiveDirectorProjection(project)
+  const second = buildLiveDirectorProjection(project)
+
+  assert.ok(first)
+  assert.ok(second)
+  assert.equal(first!.result.nextAction.actionId, "stated-hackathon-safe-action")
+  assert.equal(first!.result.nextAction.title, "Prepare hackathon demo review")
+  assert.equal(first!.result.nextAction.actionType, "next-action")
+  assert.equal(first!.result.sideEffectPayload, null)
+  assert.deepEqual(first, second)
+  assert.equal(JSON.stringify(project), before)
+})
+
 test("UNMAPPED_PROJECT_WITHOUT_MODE_EVIDENCE_DOES_NOT_GET_FORCED_INTO_A_DIRECTOR_MODE", () => {
   const project = getProjectById("stated")!
   const unsupported = {
