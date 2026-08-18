@@ -1,3 +1,4 @@
 export * from "./types"
 export * from "./validation"
 export * from "./library-projection"
+export * from "./project-brain-adapter"
