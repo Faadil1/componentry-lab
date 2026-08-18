@@ -8,12 +8,14 @@ export interface LiveDirectorProjectSummary {
   kind: ProjectKind
   currentPhase: string
   mode: CreativeProjectMode | null
+  modeResolution: "EXPLICIT_KIND" | "PROJECT_EVIDENCE" | "UNMAPPED"
   compatible: boolean
 }
 
 export interface LiveDirectorProjection {
   projectId: string
   mode: CreativeProjectMode
+  modeResolution: "EXPLICIT_KIND" | "PROJECT_EVIDENCE"
   input: DirectorInput
   result: DirectorResult
   evaluationTimestamp: string
@@ -35,15 +37,43 @@ export function resolveDirectorModeForProjectKind(kind: ProjectKind): CreativePr
   }
 }
 
+function resolveDirectorModeFromProjectEvidence(project: ProjectBrain): CreativeProjectMode | null {
+  const playbookSignals = project.selectedPlaybookIds.map((id) => id.toLowerCase())
+  const audience = project.videoPlan.audience.toLowerCase()
+  const challenge = (project.challenge ?? "").toLowerCase()
+
+  const hasHackathonEvidence =
+    playbookSignals.some((id) => id.startsWith("hackathon-") || id.includes("hackathon")) ||
+    audience.includes("hackathon judge") ||
+    challenge.includes("hackathon")
+
+  if (hasHackathonEvidence) return "HACKATHON"
+  return null
+}
+
+export function resolveDirectorModeForProject(project: ProjectBrain): {
+  mode: CreativeProjectMode | null
+  resolution: "EXPLICIT_KIND" | "PROJECT_EVIDENCE" | "UNMAPPED"
+} {
+  const explicitMode = resolveDirectorModeForProjectKind(project.kind)
+  if (explicitMode) return { mode: explicitMode, resolution: "EXPLICIT_KIND" }
+
+  const evidenceMode = resolveDirectorModeFromProjectEvidence(project)
+  if (evidenceMode) return { mode: evidenceMode, resolution: "PROJECT_EVIDENCE" }
+
+  return { mode: null, resolution: "UNMAPPED" }
+}
+
 export function summarizeLiveDirectorProject(project: ProjectBrain): LiveDirectorProjectSummary {
-  const mode = resolveDirectorModeForProjectKind(project.kind)
+  const resolved = resolveDirectorModeForProject(project)
   return {
     id: project.id,
     title: project.title,
     kind: project.kind,
     currentPhase: project.currentPhase,
-    mode,
-    compatible: mode !== null,
+    mode: resolved.mode,
+    modeResolution: resolved.resolution,
+    compatible: resolved.mode !== null,
   }
 }
 
@@ -54,8 +84,8 @@ function stableEvaluationTimestamp(project: ProjectBrain): string {
 }
 
 export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirectorProjection | null {
-  const mode = resolveDirectorModeForProjectKind(project.kind)
-  if (!mode) return null
+  const resolved = resolveDirectorModeForProject(project)
+  if (!resolved.mode || resolved.resolution === "UNMAPPED") return null
 
   const authorityContext: AuthorityContext = {
     authorityLevel: "suggest",
@@ -70,7 +100,7 @@ export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirector
   const evaluationTimestamp = stableEvaluationTimestamp(project)
   const input = adaptProjectBrainToDirectorInput(
     project,
-    mode,
+    resolved.mode,
     project.currentPhase,
     authorityContext,
     evaluationTimestamp,
@@ -79,7 +109,8 @@ export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirector
 
   return {
     projectId: project.id,
-    mode,
+    mode: resolved.mode,
+    modeResolution: resolved.resolution,
     input,
     result,
     evaluationTimestamp,
