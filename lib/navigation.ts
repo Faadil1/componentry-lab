@@ -39,6 +39,11 @@ export function getActiveNavigationItem(pathname: string): SiteNavigationItem | 
   const exactMatch = SITE_NAVIGATION.find((item) => item.href === pathname)
   if (exactMatch) return exactMatch
 
+  // Preserve the historical fixture workspace as an alias while normal navigation points to the live Director.
+  if (pathname === "/director") {
+    return SITE_NAVIGATION.find((item) => item.id === "creative-director") || null
+  }
+
   const possibleMatches = SITE_NAVIGATION.filter(
     (item) => item.href !== "/" && pathname.startsWith(`${item.href}/`)
   ).sort((a, b) => b.href.length - a.href.length)
