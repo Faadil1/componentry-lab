@@ -1,12 +1,22 @@
 import Link from "next/link"
 
+import { authRuntimeSummary } from "@/auth"
+import { GovernedActionPanel } from "@/components/director/governed-action-panel"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
-import { buildDualLibraryProjection } from "@/lib/creative-os/collaboration"
+import {
+  buildDualLibraryProjection,
+} from "@/lib/creative-os/collaboration"
+import {
+  projectDirectorNextActionToGovernedWriteIntent,
+} from "@/lib/creative-os/action-plane"
 import {
   buildLiveDirectorProjection,
   summarizeLiveDirectorProject,
 } from "@/lib/director/live-projection"
+import { fingerprintProjectBrain } from "@/lib/projects/fingerprint"
+import { PROJECT_NEXT_ACTION_APPEND_SCOPE } from "@/lib/projects/next-action-writer"
 import { listProjects } from "@/lib/projects/repository"
+import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
 
 export const dynamic = "force-dynamic"
 
@@ -25,6 +35,12 @@ export default async function LiveDirectorPage({
   const project = requestedProject ?? compatibleProjects[0] ?? null
   const projection = project ? buildLiveDirectorProjection(project) : null
   const libraries = buildDualLibraryProjection()
+  const authReady = authRuntimeSummary.oauthConfigured && authRuntimeSummary.ownerAccountIdConfigured
+  const writeAccess = authReady ? await requireCanonicalWriteAccess() : null
+  const ownerAuthorized = writeAccess?.ok === true
+  const writeIntent = project && projection
+    ? projectDirectorNextActionToGovernedWriteIntent(project, projection.result, projection.evaluationTimestamp)
+    : null
 
   return (
     <main className="min-h-screen bg-stone-50 text-neutral-950">
@@ -43,12 +59,12 @@ export default async function LiveDirectorPage({
                   Live Project Brain
                 </span>
                 <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-800">
-                  Governed read-only projection
+                  Governed projection + bounded writes
                 </span>
               </div>
               <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Creative Director — Live Collaboration</h1>
               <p className="text-sm leading-relaxed text-stone-600">
-                Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. No project mutation is performed here.
+                Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. Proposals remain read-only until an exact typed mutation passes owner authentication, explicit approval, scope validation, and stale-state checks.
               </p>
             </div>
             <Link
@@ -133,10 +149,29 @@ export default async function LiveDirectorPage({
                 <p className="mt-2 text-sm leading-relaxed text-stone-300">{projection.result.nextAction.description}</p>
                 <div className="mt-4 flex flex-wrap gap-2 font-mono text-[10px] uppercase">
                   <span className="rounded-full border border-stone-700 px-2.5 py-1">{projection.result.nextAction.authorityRequirement}</span>
-                  <span className="rounded-full border border-stone-700 px-2.5 py-1">side effects: none</span>
+                  <span className="rounded-full border border-stone-700 px-2.5 py-1">proposal side effects: none</span>
                 </div>
               </article>
             </section>
+
+            {writeIntent ? (
+              <GovernedActionPanel
+                projectId={project.id}
+                callbackUrl={`/director/live?project=${encodeURIComponent(project.id)}`}
+                status={writeIntent.status}
+                operation="PROJECT_BRAIN_APPEND_NEXT_ACTION"
+                scope={PROJECT_NEXT_ACTION_APPEND_SCOPE}
+                beforeFingerprint={fingerprintProjectBrain(project)}
+                proposalFingerprint={writeIntent.proposalFingerprint}
+                actionLabel={writeIntent.candidateAction.label}
+                actionDescription={writeIntent.candidateAction.description}
+                existingActionStatus={writeIntent.existingAction?.status ?? null}
+                oauthConfigured={authRuntimeSummary.oauthConfigured}
+                ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
+                ownerAuthorized={ownerAuthorized}
+                errors={writeIntent.errors}
+              />
+            ) : null}
 
             <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <article className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
@@ -188,15 +223,15 @@ export default async function LiveDirectorPage({
                 <h2 className="text-base font-bold">Supporting systems remain bounded</h2>
                 <div className="mt-4 grid gap-2 text-sm">
                   {[
-                    ["Project Brain", "canonical context owner; no hidden mutation"],
-                    ["Creative Director", "one canonical next action"],
+                    ["Project Brain", "canonical context owner; writes only through typed governed action gates"],
+                    ["Creative Director", "one canonical next action + mutation proposal authority only"],
                     ["Registry V2", "governance + evidence + authority"],
                     ["Component Library", "composition/build intelligence"],
                     ["Creative Method Runtime", "deterministic advisory execution"],
                     ["Film Kit", "planning/intent only in this phase"],
                     ["Playbooks", "read-only knowledge metadata"],
                     ["References / Sources", "Registry discovery only; never executors"],
-                    ["Audit / Evidence", "immutable trace projection; no persistence"],
+                    ["Audit / Evidence", "immutable trace projection; no canonical persistence"],
                   ].map(([label, description]) => (
                     <div key={label} className="flex gap-3 rounded-xl bg-stone-50 p-3">
                       <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
