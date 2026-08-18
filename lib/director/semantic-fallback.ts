@@ -64,6 +64,21 @@ function slugPart(value: string): string {
   return normalized.slice(0, 48) || "review"
 }
 
+export function isDirectorGeneratedFallbackActionId(project: ProjectBrain, actionId: string): boolean {
+  const prefix = `${project.id}-`
+  if (!actionId.startsWith(prefix)) return false
+  const suffix = actionId.slice(prefix.length)
+
+  return (
+    suffix.endsWith("-deadline-metadata-review")
+    || suffix.endsWith("-post-deadline-review")
+    || suffix.includes("-proof-gap-")
+    || suffix.includes("-risk-")
+    || suffix.endsWith("-phase-review")
+    || suffix.endsWith("-safe-action")
+  )
+}
+
 function contextSentence(project: ProjectBrain, temporalState: DirectorTemporalState, evaluationTimestamp: string | undefined): string {
   const parts: string[] = []
   const evaluationDate = isoDateFromTimestamp(evaluationTimestamp)
