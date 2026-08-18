@@ -9,20 +9,20 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = DIRECTOR SEMANTIC / TEMPORAL FALLBACK QUALIFICATION
 PHASE_CODE = CREATIVE_OS_DIRECTOR_SEMANTIC_TEMPORAL_FALLBACK_V1
 TRACK = READ / ORCHESTRATION SEMANTIC CORRECTNESS
-STATUS = FEATURE_COMPLETE / BUILD_QA_PASS / PREVIEW_RUNTIME_ENV_BLOCKED
+STATUS = FEATURE_COMPLETE / TARGETED_REWORK_PASS / PROMOTION_RECOMMENDED
 SOURCE_OF_TRUTH = GitHub branch feature/director-semantic-temporal-fallback-v1
 BASELINE_MASTER = 670421af3b90dd471edd4e36067a5e58154ac243
-FUNCTIONAL_HEAD = 3fcbf428e0fba7a319e36f725b14e43df93d4fd8
-PREVIEW_DEPLOYMENT = dpl_HrLLYwnxHCj4NuKkaUFXEwXfaAuC
+FUNCTIONAL_HEAD = 62da42b54ebf6390bf5d73cbac916b47a56ddcbd
+FUNCTIONAL_PREVIEW = dpl_2BNSXXxTNr3aPisk3JPr1fC8fvoi
 PREVIEW_STATE = READY
-TESTS = 113 / 113 PASS
+TESTS = 114 / 114 PASS
 COMPILE = PASS
 TYPESCRIPT = PASS
 STATIC_GENERATION = 93 / 93 PASS
 AUTHORITY_CHANGE = NONE
 WRITER_CHANGE = NONE
 PROJECT_BRAIN_MUTATION = NONE
-PRODUCTION_PROMOTION = NOT_AUTHORIZED
+PRODUCTION_PROMOTION = RECOMMENDED / NOT YET AUTHORIZED
 ```
 
 ## Why this phase exists
@@ -77,7 +77,7 @@ No risk is converted into a blocker automatically.
 
 ## Temporal context
 
-`buildLiveDirectorProjection()` now accepts an explicit evaluation timestamp. Runtime default is the current timestamp, normalized to UTC day granularity:
+`buildLiveDirectorProjection()` accepts an explicit evaluation timestamp. Runtime default is the current timestamp, normalized to UTC day granularity:
 
 ```text
 YYYY-MM-DDT00:00:00.000Z
@@ -104,23 +104,49 @@ authority = suggest
 sideEffectPayload = null
 ```
 
-Description preserves the relevant semantic context instead of claiming the proof gap itself has been resolved:
+Description preserves the relevant semantic context:
 - deadline passed before evaluation;
 - unresolved offline-verification proof gap;
 - pertinent Session Reset Loss risk;
 - next recommended phase = verify.
 
-This intentionally frames the next step as a review, avoiding a false semantic implication that generic existing evidence is sufficient to close the proof gap.
+## Targeted rework found during Production Promotion Decision Gate
+
+The first promotion audit found a material evidence-binding gap:
+
+```text
+semantic fallback was context-qualified
+BUT
+evidenceNeededAfterCompletion = every Project Brain evidence id
+```
+
+For `stated`, `ev1` is the Commitment hash audit receipt while the unresolved proof gap is Offline verification mode validation. `ev1` must not be treated as sufficient evidence to close that generated review action.
+
+Targeted rework now guarantees:
+
+```text
+GENERATED DIRECTOR FALLBACK
+→ evidenceNeededAfterCompletion = []
+→ may be proposed
+→ may be canonicalized through existing V1 owner gate
+→ may be started through existing V1 owner gate
+→ completion = EVIDENCE_REQUIRED until specific canonical proof is explicitly linked
+```
+
+This property persists even after the generated fallback has become a canonical `doing` Project Brain action. Existing non-generated canonical actions preserve their V1 behavior.
+
+Generated fallback identity remains deterministic and namespaced under the project id. No writer schema or persistence contract was expanded.
 
 ## Files changed
 
-Functional diff from baseline master:
+Final diff from baseline master:
 
 ```text
-lib/director/semantic-fallback.ts                  NEW
-lib/director/adapters.ts                           semantic fallback routing only
-lib/director/live-projection.ts                    explicit day-stable evaluation context
-tests/creative-os-live-director-projection.test.ts +5 semantic/temporal tests
+docs/evidence/creative-os-director-semantic-temporal-fallback-v1/CANONICAL-HANDOVER.md
+lib/director/semantic-fallback.ts
+lib/director/adapters.ts
+lib/director/live-projection.ts
+tests/creative-os-live-director-projection.test.ts
 ```
 
 No changes under:
@@ -148,7 +174,7 @@ EXTERNAL_SIDE_EFFECT = NONE
 
 ## Proof
 
-New tests:
+Semantic/temporal tests include:
 
 ```text
 LIVE_DIRECTOR_EVALUATION_TIMESTAMP_IS_EXPLICIT_DAY_STABLE_AND_FAILS_CLOSED = PASS
@@ -157,25 +183,27 @@ LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_UNRESOLVED_PROOF_GAP = PASS
 LIVE_DIRECTOR_BEFORE_DEADLINE_PRIORITIZES_PERTINENT_RISK_AFTER_PROOF_GAPS_CLEAR = PASS
 LIVE_DIRECTOR_INVALID_DEADLINE_FAILS_CLOSED_TO_METADATA_REVIEW = PASS
 LIVE_DIRECTOR_NEXT_RECOMMENDED_PHASE_QUALIFIES_FALLBACK_WHEN_NO_STRONGER_SIGNAL_EXISTS = PASS
+LIVE_DIRECTOR_CANONICALIZED_SEMANTIC_FALLBACK_STAYS_EVIDENCE_BLOCKED_UNTIL_SPECIFIC_PROOF_EXISTS = PASS
 ```
 
-Full prebuild/build gate:
+Full final build gate on functional head `62da42b54ebf6390bf5d73cbac916b47a56ddcbd`:
 
 ```text
-113 / 113 tests PASS
+114 / 114 tests PASS
 Next.js compile PASS
 TypeScript PASS
 93 / 93 static generation PASS
 Preview deployment READY
+Alias error = null
 ```
 
-The existing canonical-project immutability assertions remain green.
+The existing canonical-project immutability and all frozen Governed Write Plane V1 tests remain green.
 
 ## Preview runtime note
 
-Direct Preview GET to `/api/director/live?projectId=stated` returns 500 because this new branch does not have the branch-scoped Preview storage configuration.
+Direct Preview runtime remains blocked on this custom branch because it does not have branch-scoped Preview storage configuration.
 
-Runtime log confirms the existing intentional boundary:
+The known fail-closed error is:
 
 ```text
 COMPONENTRY_LAB_STORAGE_MODE must be set to 'postgres' in production.
@@ -184,28 +212,51 @@ Falling back to local-file is not allowed.
 
 This is an environment-scope limitation, not a semantic fallback regression. Do not weaken storage fail-closed behavior.
 
+## Production Promotion Decision Gate
+
+Final branch comparison against current `master`:
+
+```text
+MASTER = 670421af3b90dd471edd4e36067a5e58154ac243
+BRANCH = feature/director-semantic-temporal-fallback-v1
+STATUS = ahead
+BEHIND = 0
+FUNCTIONAL_HEAD = 62da42b54ebf6390bf5d73cbac916b47a56ddcbd
+```
+
+Gate verdict:
+
+```text
+PROMOTION_RECOMMENDED
+```
+
+Reason:
+- semantic/temporal correctness gap fixed;
+- completion evidence-binding gap found during gate and fixed fail-closed;
+- 114/114 tests green;
+- build/TypeScript/static generation green;
+- no write authority, auth, persistence, Registry, Film Kit, or external-effect contract changed.
+
 ## HANDOVER
 
 Resume from `feature/director-semantic-temporal-fallback-v1`.
 
-The semantic/temporal fallback is implemented and build-gated. The frozen Governed Write Plane V1 is unchanged.
+The frozen Governed Write Plane V1 remains unchanged. This phase only changes Director read/orchestration semantics and tightens evidence requirements for generated fallbacks.
 
 ## Exactly one next action
 
 ```text
-PRODUCTION PROMOTION DECISION GATE
+PRODUCTION PROMOTION EXECUTION
 
-Before promotion:
-- compare branch against current master;
-- ensure master has not advanced incompatibly;
-- confirm 113/113 prebuild proof and Preview READY;
-- confirm no writer/auth/persistence authority files changed.
-
-If promoted, perform READ-ONLY Production QA first:
-- stated.act1 remains done;
-- Director next action becomes `Run post-deadline verify review`;
-- phase = verify;
-- description names deadline 2026-08-15, evaluation date 2026-08-18, proof gap, pertinent risk, and nextRecommendedPhase;
-- sideEffectPayload remains null;
-- no Project Brain write is performed during promotion QA.
+Only after explicit user authorization:
+1. merge feature/director-semantic-temporal-fallback-v1 into master;
+2. wait for Production deployment READY;
+3. perform READ-ONLY Production QA first;
+4. verify stated.act1 remains done;
+5. verify Director next action = Run post-deadline verify review;
+6. verify phase = verify;
+7. verify description carries deadline/proof-gap/risk/nextRecommendedPhase context;
+8. verify evidenceNeededAfterCompletion = [] for the generated fallback;
+9. verify sideEffectPayload = null;
+10. perform no Project Brain write during promotion QA.
 ```
