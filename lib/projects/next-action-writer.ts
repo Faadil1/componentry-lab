@@ -42,9 +42,11 @@ interface LocalProjectRepositoryState {
   runtimeProjects: ProjectBrain[]
 }
 
-type ProjectSqlClient = {
+export type ProjectNextActionSqlClient = {
   unsafe<T extends Array<Record<string, unknown>> = Array<Record<string, unknown>>>(query: string, values?: unknown[]): Promise<T>
 }
+
+export type ProjectNextActionStorageBootstrap = (sql: ProjectNextActionSqlClient) => Promise<void>
 
 function cloneProject(project: ProjectBrain): ProjectBrain {
   return JSON.parse(JSON.stringify(project)) as ProjectBrain
@@ -182,25 +184,26 @@ async function appendLocal(
   }
 }
 
-async function loadProjectSqlClient(): Promise<ProjectSqlClient> {
+async function loadProjectSqlClient(): Promise<ProjectNextActionSqlClient> {
   const { getDatabase } = await import("../persistence/db")
-  return getDatabase() as unknown as ProjectSqlClient
+  return getDatabase() as unknown as ProjectNextActionSqlClient
 }
 
-async function ensureProjectStorage(sql: ProjectSqlClient): Promise<void> {
+async function ensureProjectStorage(sql: ProjectNextActionSqlClient): Promise<void> {
   const { ensureCanonicalStorageSchema } = await import("../persistence/canonical-storage-bootstrap")
   await ensureCanonicalStorageSchema(sql as never)
 }
 
-async function appendPostgres(
+export async function appendProjectNextActionPostgresWithSql(
+  sql: ProjectNextActionSqlClient,
   current: ProjectBrain,
   updated: ProjectBrain,
   expectedProjectFingerprint: string,
   executedAt: string,
+  bootstrap: ProjectNextActionStorageBootstrap = ensureProjectStorage,
 ): Promise<AppendProjectNextActionResult> {
   try {
-    const sql = await loadProjectSqlClient()
-    await ensureProjectStorage(sql)
+    await bootstrap(sql)
 
     const rows = await sql.unsafe(
       `SELECT payload FROM componentry_projects WHERE project_id = $1 LIMIT 1`,
@@ -276,6 +279,22 @@ async function appendPostgres(
       error: error instanceof Error ? error.message : "Postgres Project Brain persistence failed.",
     }
   }
+}
+
+async function appendPostgres(
+  current: ProjectBrain,
+  updated: ProjectBrain,
+  expectedProjectFingerprint: string,
+  executedAt: string,
+): Promise<AppendProjectNextActionResult> {
+  const sql = await loadProjectSqlClient()
+  return appendProjectNextActionPostgresWithSql(
+    sql,
+    current,
+    updated,
+    expectedProjectFingerprint,
+    executedAt,
+  )
 }
 
 export async function appendProjectNextAction(
