@@ -8,194 +8,226 @@ Date: 2026-08-18
 PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED SYSTEM COLLABORATION
 TRACK = CROSS-SYSTEM COLLABORATION MESH
-STATUS = SLICE_A_B_C_D_E_COMPLETE
+STATUS = FEATURE_PHASE_COMPLETE / PREVIEW_QA_PASS
 SOURCE_BRANCH = feature/governed-system-collaboration-01
 BASE_MASTER_HEAD = a7244b318133cfac82993f442e943d47ee9bf4c0
-SLICE_E_FUNCTIONAL_HEAD = 1a68f12f2fccf8252eea89b64e0d02b0ce073a3a
-SLICE_E_PREVIEW = dpl_H3Z239C41FhVSGDYJr1GggEezxo9
+FUNCTIONAL_FEATURE_HEAD = 4eccc67ffc9ad17f6c349e93f6b6736456b87616
+FINAL_FUNCTIONAL_PREVIEW = dpl_B2a3ZeKysvQ5wqthdKBbL9q4K49D
+COLLABORATION_TESTS = 57 / 57 PASS
+NEXT_BUILD = PASS
+TYPESCRIPT = PASS
+STATIC_GENERATION = 93 / 93 PASS
+LIVE_DIRECTOR_ROUTE = /director/live
+LIVE_DIRECTOR_API = /api/director/live
+RUNTIME_ERROR_FATAL_LOGS = NONE OBSERVED
 PRODUCTION_PROMOTION = NOT_EXECUTED
-NEXT_SLICE = SLICE_F_SUPPORTING_SYSTEM_PARTICIPATION
+NEXT_REQUIRED_OUTPUT = PRODUCTION_PROMOTION_DECISION
 ```
 
-## Architecture locked
+## Final architecture
 
-The target is a governed collaboration mesh, not a new monolithic orchestrator.
+The feature implements a governed collaboration mesh rather than a monolithic orchestrator.
 
-- Project Brain owns canonical project state/context.
-- Creative Director owns exactly one canonical next action.
-- Creative OS Registry V2 is the governance/evidence/authority/identity plane.
-- The older Component Library is the composition/build-intelligence plane.
-- Creative Method Runtime executes only qualified internal deterministic advisory methods.
-- Film Kit is a specialized production collaborator and receives no authority expansion by implication.
-- Playbooks, References and Sources are knowledge/evidence collaborators unless separately qualified.
-- Decisions/Audit/Learnings/Evidence form the feedback plane.
+- **Project Brain** remains the canonical project state/context owner.
+- **Creative Director** owns exactly one canonical next action.
+- **Creative OS Registry V2** is the governance/evidence/authority/canonical-identity plane.
+- **Component Library (legacy `lib/registry` + `/library`)** is preserved as the composition/build-intelligence plane.
+- **Creative Method Runtime** executes only qualified internal deterministic advisory methods.
+- **Film Kit** participates as a specialized planning/production-intent collaborator without authority expansion.
+- **Playbooks** contributes read-only knowledge metadata.
+- **References / Sources / Resources / Providers** remain governed discovery/evidence entities through Registry V2 and do not become executors by routing.
+- **Audit / Evidence** is an immutable trace-projection plane; it does not persist or mutate canonical project state in this phase.
 
-No collaborator may silently mutate another system's canonical state. Cross-system writes require the owning system's explicit path and applicable review/authority.
+No collaborator may silently mutate another system's canonical state. The collaboration envelope coordinates requests/results but never grants authority by itself.
 
-## Slice A — Collaboration contract — COMPLETE
+## Slice A — Cross-system collaboration contract — COMPLETE
 
 Functional source: `f2130f79cff5ff60b73d48b88aac67c0c1db2903`.
 
-Canonical request/result envelopes now enforce known system identities, correlation, JSON-safe deterministic payloads, authority context, effect classes, bounded hop traces, no self-routing/repeated directed hops, owner-state mutation ownership, explicit-human-review requirements, and EXPLICIT_EXTERNAL authority for external side effects.
+Request/result contracts enforce known system IDs, correlation, JSON-safe deterministic payloads, authority context, effect classes, bounded hop traces, self/cycle protection, explicit ownership for mutations, and fail-closed external-effect semantics.
 
-The envelope coordinates work but does not itself grant mutation authority.
+## Slice B — Dual-library projection + crosswalk — COMPLETE
 
-## Slice B — Dual-library projection — COMPLETE
+Functional source: `ea99c0a8652958d6434188f01a8dec60fccb1cc3`; typing correction `bec04fe6e6aada7e36114a7d349c07fea7a649f4`.
 
-Functional source: `ea99c0a8652958d6434188f01a8dec60fccb1cc3` with typing correction `bec04fe6e6aada7e36114a7d349c07fea7a649f4`.
+Registry V2 and the older Component Library remain separate planes:
 
-### Creative OS Registry V2
+```text
+creative-os-registry-v2:<id> = governance identity
+component-library:<legacyId> = composition/build identity
+```
 
-Canonical refs: `creative-os-registry-v2:<id>`.
+Registry V2 remains 34 governed entities. Only the six qualified internal deterministic METHOD entities receive internal advisory execution eligibility. REFERENCE/SOURCE/RESOURCE/PROVIDER never enter the executable Director skill pool.
 
-The cumulative governed model remains the 34-entity baseline. Only six qualified internal deterministic advisory METHOD entities can receive internal advisory execution eligibility. REFERENCE/SOURCE/RESOURCE/PROVIDER entities do not become executable through collaboration.
+Legacy Component Library intelligence is preserved: interaction/foundation/layout/system/recipe/workflow taxonomy, maturity, capabilities, runtimes, viewports, deterministic/capture/SSR traits, source paths, dependencies, relations, limitations, recommended/avoid usage, memory hooks, signatures, search/filter/system-map/export behavior and playbook relationships.
 
-### Component Library
-
-Canonical refs: `component-library:<legacyId>`.
-
-Preserved composition intelligence includes categories/kinds, maturity, capabilities, runtimes, viewports, deterministic/capture/SSR traits, source paths, relations, limitations, recommended/avoid usage, memory hooks and signature metadata.
-
-Legacy IDs such as `capture-bridge` remain valid Component Library identities and are not fabricated as Registry V2 identities.
-
-Crosswalks are explicit, evidence-backed, namespaced and fail closed. String equality never establishes identity or authority equivalence.
+Crosswalks are namespaced, explicit, evidence-backed and fail closed. Name/string equality does not establish identity or authority equivalence.
 
 ## Slice C — Project Brain collaboration adapter — COMPLETE
 
 Functional source: `10610de5f7042f4b09fbc8e1564712804e67fda5`.
-Preview: `dpl_C2arEcfkHMyHxvPBHd5hpuC9Wdbw`.
 
-Project Brain can now emit validated READ_ONLY/effect-NONE collaboration context using the existing canonical `ProjectBrain` model. It supplies a JSON-safe context snapshot, integrity summary, input refs and evidence refs without fabricating capability identity.
-
-Collaboration results return to Project Brain as proposals/evidence. Even when an explicit owner-side-effect request is preserved for review, `mutationApplied = false`; no hidden Project Brain write path exists.
-
-QA: 19/19 collaboration tests, compile PASS, TypeScript PASS, 93/93 static, READY, GitHub/Vercel success, no observed error/fatal runtime logs.
+Project Brain emits validated read-only collaboration context from the existing canonical `ProjectBrain` object. Returned collaboration results are proposals/evidence only; `mutationApplied = false` and no hidden write path is introduced.
 
 ## Slice D — Creative Director governed orchestration — COMPLETE
 
-Initial source: `3536280494f66dbc231044a5c0a689cd96cd07df`.
-Current corrected source: `a9b5833f6ee69439dfef0559e043fca8fd276ce2`.
-Preview: `dpl_DUnZdwCQZJ3A3jLawNiQnNxMCt5F`.
+Corrected functional source: `a9b5833f6ee69439dfef0559e043fca8fd276ce2`.
 
-The real `adaptProjectBrainToDirectorInput(...)` no longer initializes `availableSkills: []`. It now receives the governed V2 method projection.
+The real Project Brain → Director adapter now receives six Registry-derived governed METHOD skills rather than `availableSkills: []`. Mode/phase/authority filtering remains strict. Broader Director authority does not widen method eligibility. Director retains exactly one canonical next action and `sideEffectPayload = null`.
 
-Each Director skill retains canonical V2 capability identity plus its internal `runtimeMethodId`, provenance, modes/phases, capability gaps, required inputs/output schema, lifecycle, source authority and evidence refs.
-
-Verified governed pool:
-
-```text
-AVAILABLE GOVERNED DIRECTOR SKILLS = 6
-ENTITY KIND = METHOD ONLY
-REFERENCE/SOURCE/RESOURCE/PROVIDER IN SKILL POOL = 0
-```
-
-Existing mode/phase/authority filtering remains strict. A broader Director authority does not silently widen eligibility. Director still returns one canonical next action and `sideEffectPayload = null`.
-
-A client/server defect was caught: Registry V2 validation imported Node-only `node:assert/strict` and became client-reachable through `/director`. It was removed and replaced by browser-safe invariant checks, not polyfilled or bypassed.
-
-QA: 24/24 collaboration tests, compile PASS, TypeScript PASS, 93/93 static, `/director` buildable, READY, GitHub/Vercel success, no observed error/fatal runtime logs.
-
-## Slice E — Creative Method Runtime collaboration execution — COMPLETE
+## Slice E — Creative Method Runtime collaboration — COMPLETE
 
 Functional source: `1a68f12f2fccf8252eea89b64e0d02b0ce073a3a`.
-Preview: `dpl_H3Z239C41FhVSGDYJr1GggEezxo9`.
 
-Implemented in `lib/creative-os/collaboration/method-runtime-adapter.ts`.
+A closed dispatcher contains exactly the six internal governed Creative Methods. There is no dynamic provider loading, eval, installation, repository import, network execution, generation spend, publishing or external side effect. Runtime execution is accepted only when identity/mode/phase/capability constraints match and the runtime reports `isReadOnly = true` and `sideEffects = null`.
 
-A closed dispatcher contains exactly the six internal governed method runtimes. There is no dynamic provider loading, eval, installation, repository import, network execution, publication or generation spend.
+## Slice F — Supporting system participation — COMPLETE
 
-`executeGovernedMethodCollaboration(...)` requires:
+### Film Kit
 
-- source `CREATIVE_DIRECTOR`;
-- target `CREATIVE_METHOD_RUNTIME`;
-- intent `REQUEST_ADVISORY_WORK`;
-- requested effect `NONE`;
-- READ_ONLY or SUGGEST requested authority;
-- selected Director skill sourced from a METHOD entity;
-- preserved canonical capability identity;
-- known `runtimeMethodId` in the closed six-method dispatcher;
-- request capability refs containing the selected canonical skill;
-- exact runtime method/mode/phase/capability-gap compatibility.
+Functional source: `7e1df4fe8448759a1a73bd0f53a2c89e1d8423aa`.
 
-The runtime result is accepted only if `isReadOnly = true`, `sideEffects = null`, and runtime identity matches the selected governed method.
+Film Kit accepts Director planning/production-intent requests only under effect `NONE` and read-only/suggest authority. It returns honest existing production truth and preserves `NO_CANONICAL_PRODUCTION_SPINE` when appropriate rather than fabricating readiness. No provider execution or Film Kit authority expansion is introduced.
 
-The collaboration result flows back:
+### Playbooks
+
+Functional sources include `024031169dbc2513c862ffc68ce5104ac95f10e1` and its gated test integration.
+
+Playbooks accepts Director `REQUEST_CONTEXT` lookups and returns metadata/search evidence only: classification, collections, phases, audiences, outcomes, related Registry/playbook IDs, recommendations and limitations. Full Markdown is not transported by this adapter. `capabilityUsed = null`; playbook/reference classification never grants execution authority.
+
+### References / Sources
+
+These remain available through Registry V2 discovery/evidence projection. They are intentionally not given independent executor adapters in this phase because their canonical role is read/discovery evidence, not execution.
+
+## Slice G — Audit / Evidence feedback plane — COMPLETE
+
+Functional source begins at `905d7c1180c64c55569e28acec5aff83015eadf8` with tests/gating following.
+
+Audit/Evidence accepts traceable evidence from approved collaboration producers and normalizes subject, producer, authority snapshot, evidence refs, provenance refs, quality/limitation refs and correlation. It explicitly returns:
 
 ```text
-CREATIVE_METHOD_RUNTIME → CREATIVE_DIRECTOR
+persistenceApplied = false
+mutationApplied = false
+sideEffectRequest = null
 ```
 
-and carries structured method output, quality-gate results, advisory evidence, provenance, canonical capability identity and limitations, with `sideEffectRequest = null`.
+Accepted evidence metadata is not treated as independent verification of the underlying claim.
 
-Verified representative path:
+## Slice H — Integrated collaboration mesh QA — COMPLETE
+
+Integrated test source: `81cd62d0802f4bfac5d50de4a16d0be358accb5c` with prebuild gate at `c22bb640882a9ca95478288bcc9e15dd4cc42b92`.
+
+The integrated proof exercises:
 
 ```text
 Project Brain
-→ Director
-→ Registry-derived Library-First Composition Router skill
-→ Creative Method Runtime
-→ deterministic advisory execution
-→ quality gates + evidence
-→ Director
+→ Creative Director
+→ Registry V2 governance + Component Library composition projection
+→ Director-selected Creative Method Runtime
+→ result/evidence
+→ Audit/Evidence projection
+
+Creative Director → Playbooks read-only context
+Creative Director → Film Kit planning intent
 ```
 
-No Project Brain mutation occurs.
+The representative Project Brain object remains byte-for-byte unchanged across the mesh.
 
-### Slice E verified QA
+## Live Director convergence — COMPLETE
+
+The backend collaboration mesh was not considered product-complete while `/director` remained fixture-only. That gap is now closed.
+
+### Live server projection
+
+`lib/director/live-projection.ts` builds a real Director projection from canonical Project Brain state and Registry-derived methods.
+
+Mode resolution is fail-closed:
+
+- explicit ProjectKind mappings are used when available;
+- otherwise a mode may be resolved only from non-ambiguous Project Brain evidence;
+- example: `stated` is `product-prototype`, but its `hackathon-*` playbooks / Hackathon judge audience provide explicit evidence for `HACKATHON`;
+- an unsupported project without such evidence remains `UNMAPPED` and is not coerced.
+
+### Live API
+
+`/api/director/live` reads real `listProjects()` / `getProjectById()` repository state and returns project summaries plus the governed Director projection. Unknown project IDs and unmapped project modes fail explicitly.
+
+### Live workspace
+
+`/director/live` is the normal product-facing Director workspace. It shows:
+
+- real canonical Project Brain context;
+- one canonical next action;
+- Registry V2 governed entity plane;
+- preserved Component Library composition plane;
+- Registry-derived Director method pool and selected methods;
+- collaboration-system boundaries;
+- quality gates, evidence and blockers.
+
+The historical fixture workspace remains available at `/director` for development/regression purposes. Normal navigation now points `Creative Director` to `/director/live`; `/director` remains recognized as its historical alias.
+
+## Final verified QA
+
+Functional head:
+`4eccc67ffc9ad17f6c349e93f6b6736456b87616`
+
+Preview:
+`dpl_B2a3ZeKysvQ5wqthdKBbL9q4K49D`
 
 ```text
-COLLABORATION TESTS = 30 / 30 PASS
+COLLABORATION TESTS = 57 / 57 PASS
 FAIL = 0
 NEXT.JS = 16.2.11
-COMPILE = PASS
-TYPESCRIPT = PASS
+COMPILE = PASS (18.7s)
+TYPESCRIPT = PASS (14.7s)
 STATIC GENERATION = 93 / 93 PASS
+/api/director/live = emitted dynamic route
+/director/live = emitted dynamic route
 DEPLOYMENT = READY
 ALIAS_ERROR = null
-GITHUB / VERCEL = SUCCESS
-ERROR/FATAL RUNTIME LOGS = NONE OBSERVED
+RUNTIME ERROR/FATAL LOGS = NONE OBSERVED
 ```
 
-New E tests prove:
-
-- dispatcher is closed to exactly six internal methods;
-- a Director-selected governed method executes through the collaboration contract;
-- runtime ID mismatch fails closed;
-- a forged non-METHOD skill cannot execute;
-- an external side-effect request cannot execute through Creative Method Runtime;
-- same request/input produces deterministic identical execution/result;
-- read-only/no-side-effect contract is preserved.
+Direct HTTP smoke of the protected preview redirects to Vercel SSO, which is preview-access protection rather than an application error. Build output proves both live routes are emitted, deployment is READY, and no error/fatal runtime logs were observed.
 
 ## Production status
 
-Production is unchanged by this feature phase.
+Production is unchanged by this functional phase.
 
-`master` remains the Production source of truth at baseline `a7244b318133cfac82993f442e943d47ee9bf4c0`.
+```text
+MASTER / PRODUCTION BASELINE = a7244b318133cfac82993f442e943d47ee9bf4c0
+FEATURE BRANCH = 35 commits ahead of master at functional validation
+FEATURE MERGE = NOT EXECUTED
+PRODUCTION PROMOTION = NOT EXECUTED
+```
 
-No merge or Production promotion of `feature/governed-system-collaboration-01` has been executed.
+Do not merge or deploy this feature to Production without a separate explicit user authorization.
 
-## Authority boundaries — still locked
+## Authority boundaries — locked
 
 - no external provider execution;
 - no automatic Project Brain mutation;
 - no Film Kit authority expansion;
-- no reference execution;
+- no reference/source execution;
 - no implicit dual-library identity equivalence;
 - no authority widening from Component Library metadata;
 - no unrestricted cross-system writes;
-- Director retains exactly-one-canonical-next-action ownership;
-- Creative Method Runtime remains local, deterministic, advisory and effect-NONE.
+- Director retains one-canonical-next-action ownership;
+- Creative Method Runtime remains local/deterministic/advisory;
+- Playbooks remains read-only knowledge;
+- Audit/Evidence remains projection-only;
+- external effects remain outside this feature phase.
 
 ## HANDOVER
 
 Resume from `feature/governed-system-collaboration-01` after this checkpoint.
 
-Do not rebuild A/B/C/D/E. Do not merge the two Library planes. Do not infer crosswalks from names. Do not reintroduce Node-only dependencies into client-reachable Registry paths. Do not add Project Brain direct writes. Do not route external providers through the Creative Method dispatcher. Do not promote to Production without a separate explicit promotion gate.
+The governed collaboration feature itself is complete and preview-verified. Do not rebuild Slices A–H, do not collapse the two Library planes, do not reactivate fixture-only Director as the product default, and do not infer unsupported project modes or crosswalks.
 
-The next task is Slice F: connect supporting systems through adapters without merging authority. Begin with Film Kit's existing fail-closed planning/intention surfaces, then knowledge/evidence participation where useful. Film Kit currently reports `NO_CANONICAL_PRODUCTION_SPINE` rather than fabricating production truth; this must remain honest. The first Slice F proof should therefore be Film Kit planning/intent collaboration and evidence return, not provider execution.
+The next step is not another functional slice. It is a separate release decision: review the completed feature diff/preview and decide whether to merge/promote it to Production. That decision must remain explicit and human-authorized.
 
 ## Exactly one next action
 
 ```text
-SLICE F — FILM KIT PLANNING/INTENT COLLABORATION ADAPTER + TESTS
+PRODUCTION PROMOTION DECISION GATE — AWAIT EXPLICIT USER AUTHORIZATION
 ```
