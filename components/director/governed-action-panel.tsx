@@ -7,8 +7,15 @@ import {
   approveDirectorCompleteNextAction,
   approveDirectorNextAction,
   approveDirectorStartNextAction,
-  INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,
+  type GovernedDirectorActionState,
 } from "@/app/director/live/actions"
+
+const INITIAL_GOVERNED_DIRECTOR_ACTION_STATE: GovernedDirectorActionState = {
+  status: "IDLE",
+  receiptId: null,
+  auditTraceRef: null,
+  error: null,
+}
 
 export type GovernedActionPanelStatus =
   | "PROPOSAL_READY"
@@ -61,6 +68,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
   )
 
   const state = props.approvalKind === "complete" ? completeState : props.approvalKind === "start" ? startState : appendState
+  const stateStatus = state?.status ?? "IDLE"
   const formAction = props.approvalKind === "complete" ? completeFormAction : props.approvalKind === "start" ? startFormAction : appendFormAction
   const pending = props.approvalKind === "complete" ? completePending : props.approvalKind === "start" ? startPending : appendPending
   const authReady = props.oauthConfigured && props.ownerAccountConfigured
@@ -179,9 +187,9 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
         </div>
       ) : null}
 
-      {state.status !== "IDLE" ? (
-        <div className={`mt-4 rounded-xl border p-3 text-sm ${state.status === "APPLIED" || state.status === "NO_CHANGE" || state.status === "ALREADY_CANONICAL" || state.status === "ALREADY_STARTED" || state.status === "ALREADY_COMPLETED" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
-          <p className="font-semibold">Execution result: {state.status.replaceAll("_", " ")}</p>
+      {stateStatus !== "IDLE" ? (
+        <div className={`mt-4 rounded-xl border p-3 text-sm ${stateStatus === "APPLIED" || stateStatus === "NO_CHANGE" || stateStatus === "ALREADY_CANONICAL" || stateStatus === "ALREADY_STARTED" || stateStatus === "ALREADY_COMPLETED" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
+          <p className="font-semibold">Execution result: {stateStatus.replaceAll("_", " ")}</p>
           {state.receiptId ? <p className="mt-1 font-mono text-[10px]">Receipt: {state.receiptId}</p> : null}
           {state.auditTraceRef ? <p className="mt-1 font-mono text-[10px]">Audit trace: {state.auditTraceRef}</p> : null}
           {state.error ? <p className="mt-1 text-xs">{state.error}</p> : null}
