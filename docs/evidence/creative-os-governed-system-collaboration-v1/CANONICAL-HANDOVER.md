@@ -8,18 +8,19 @@ Date: 2026-08-18
 PROJECT = Componentry Lab / Creative OS
 PHASE = GOVERNED SYSTEM COLLABORATION
 TRACK = CROSS-SYSTEM COLLABORATION MESH
-STATUS = SLICE_A_B_C_COMPLETE
+STATUS = SLICE_A_B_C_D_COMPLETE
 SOURCE_BRANCH = feature/governed-system-collaboration-01
 BASE_MASTER_HEAD = a7244b318133cfac82993f442e943d47ee9bf4c0
 SLICE_C_FUNCTIONAL_HEAD = 10610de5f7042f4b09fbc8e1564712804e67fda5
-SLICE_C_PREVIEW = dpl_C2arEcfkHMyHxvPBHd5hpuC9Wdbw
+SLICE_D_FUNCTIONAL_HEAD = a9b5833f6ee69439dfef0559e043fca8fd276ce2
+SLICE_D_PREVIEW = dpl_DUnZdwCQZJ3A3jLawNiQnNxMCt5F
 PRODUCTION_PROMOTION = NOT_EXECUTED
-NEXT_SLICE = SLICE_D_CREATIVE_DIRECTOR_COLLABORATION_ORCHESTRATION
+NEXT_SLICE = SLICE_E_CREATIVE_METHOD_RUNTIME_COLLABORATION_EXECUTION
 ```
 
 ## Milestone decision
 
-Slices A, B, and C are complete on the feature branch. The collaboration substrate now has a governed request/result contract, a dual-library governance/composition projection, and a read-only Project Brain collaboration adapter.
+Slices A through D are complete on the feature branch. The existing systems now share a governed collaboration contract; Registry V2 and the older Component Library retain complementary roles; Project Brain can project canonical read-only context; and the real Director input now receives governed Registry V2 methods instead of an empty skill pool.
 
 ## Slice A — collaboration contract — complete
 
@@ -46,114 +47,128 @@ Functional source: `ea99c0a8652958d6434188f01a8dec60fccb1cc3` with typing correc
 Role: governance plane.
 Canonical refs: `creative-os-registry-v2:<id>`.
 
-The live cumulative V2 model remains 34 entities / 0 warnings at the Production baseline. Only the six qualified internal deterministic advisory `METHOD` entities receive `INTERNAL_ADVISORY_EXECUTION` access. `REFERENCE`, `SOURCE`, `RESOURCE`, and `PROVIDER` entities do not gain execution authority through this projection.
+Only the six qualified internal deterministic advisory `METHOD` entities can receive internal advisory collaboration execution eligibility. `REFERENCE`, `SOURCE`, `RESOURCE`, and `PROVIDER` entities remain non-executable in this phase.
 
 ### Component Library
 
 Role: composition/build intelligence plane.
 Canonical refs: `component-library:<legacyId>`.
 
-The projection preserves legacy composition intelligence: kind/category/maturity, capabilities, runtime, viewports, deterministic/capture/SSR characteristics, source paths, relation graph, limitations, recommended/avoid use, memory hooks, and signature metadata.
+The projection preserves legacy composition intelligence: categories, maturity, capabilities, runtime, viewports, deterministic/capture/SSR traits, source paths, graph relations, limitations, recommendations, memory hooks, and signature metadata.
 
-Legacy identities such as `capture-bridge` remain valid Component Library identities and are never fabricated as Creative OS Registry V2 IDs.
+Crosswalks remain explicit, evidence-backed, namespaced, and fail closed. Matching strings never imply identity equivalence and Component Library metadata never widens V2 authority.
 
-### Crosswalk
-
-Crosswalks are explicit, evidence-backed, namespaced, and fail closed. Matching strings never imply identity equivalence and Component Library metadata never widens V2 authority.
-
-## Slice C — Project Brain collaboration hub adapter — complete
+## Slice C — Project Brain collaboration adapter — complete
 
 Functional source: `10610de5f7042f4b09fbc8e1564712804e67fda5`.
+Preview: `dpl_C2arEcfkHMyHxvPBHd5hpuC9Wdbw`.
 
-Implemented in:
+`createProjectBrainCollaborationRequest(...)` validates and projects the existing canonical Project Brain through a READ_ONLY / effect-NONE collaboration envelope. It carries canonical project context, integrity summary, input refs and evidence refs without fabricating capability identity.
 
-`lib/creative-os/collaboration/project-brain-adapter.ts`
+`projectCollaborationResultToProjectBrainProposal(...)` returns collaborator output as a proposal/evidence packet. Explicit Project Brain mutation requests may be preserved for owner review, but `mutationApplied` remains `false` and there is no hidden write path.
 
-The adapter uses the existing canonical `ProjectBrain` model and `validateProjectBrain(...)`; it does not create a parallel project schema.
-
-### Outbound Project Brain collaboration
-
-`createProjectBrainCollaborationRequest(...)`:
-
-- validates Project Brain before projection;
-- fails closed on invalid Project Brain state;
-- source system is `PROJECT_BRAIN`;
-- target must be a different known collaborator;
-- projects current canonical project phase and kind;
-- authority is fixed to `READ_ONLY → READ_ONLY`;
-- requested effect class is `NONE`;
-- serializes a JSON-safe full Project Brain context snapshot;
-- carries a Project Brain integrity summary;
-- carries namespaced input/source/evidence refs;
-- capability refs are accepted only when explicitly supplied;
-- the adapter never invents capability identity;
-- the canonical Project Brain object remains immutable.
-
-### Inbound collaboration result
-
-`projectCollaborationResultToProjectBrainProposal(...)`:
-
-- validates the complete request/result exchange;
-- requires matching project and correlation identity;
-- requires the result to target `PROJECT_BRAIN`;
-- returns structured output, gates, evidence, provenance, limitations and recommended next step as a proposal;
-- preserves any explicit Project Brain owner-side-effect request for review;
-- sets `requiresOwnerReview` when applicable;
-- always sets `mutationApplied: false`;
-- contains no hidden Project Brain write path.
-
-## Build gate
-
-The feature branch keeps a mandatory `prebuild` collaboration test gate before every Next.js build.
-
-Current Slice C QA command includes:
-
-- collaboration contract tests;
-- dual-library projection tests;
-- Project Brain collaboration adapter tests.
-
-## Slice C verified QA
-
-Preview:
-
-`dpl_C2arEcfkHMyHxvPBHd5hpuC9Wdbw`
-
-Source:
-
-`10610de5f7042f4b09fbc8e1564712804e67fda5`
-
-Results:
+Verified Slice C QA:
 
 ```text
 COLLABORATION TESTS = 19 / 19 PASS
+COMPILE = PASS
+TYPESCRIPT = PASS
+STATIC GENERATION = 93 / 93 PASS
+DEPLOYMENT = READY
+GITHUB / VERCEL = SUCCESS
+ERROR/FATAL RUNTIME LOGS = NONE OBSERVED
+```
+
+## Slice D — Creative Director collaboration orchestration — complete
+
+Initial functional source: `3536280494f66dbc231044a5c0a689cd96cd07df`.
+Browser-safety correction/current functional head: `a9b5833f6ee69439dfef0559e043fca8fd276ce2`.
+Preview: `dpl_DUnZdwCQZJ3A3jLawNiQnNxMCt5F`.
+
+### Governed skill projection
+
+Implemented in:
+
+`lib/creative-os/collaboration/director-adapter.ts`
+
+`projectGovernedDirectorSkills()` reads the live Registry V2 model and projects only eligible governed internal METHOD entities into Director `SkillMetadata`.
+
+Each projected skill preserves:
+
+- canonical capability ref `creative-os-registry-v2:<entityId>`;
+- runtime method ID;
+- method version;
+- provenance;
+- supported modes;
+- supported phases;
+- capability gaps / activation conditions;
+- required inputs;
+- output schema;
+- lifecycle state;
+- Registry authority ceiling;
+- method authority requirement;
+- evidence refs.
+
+Director advisory selection authority is conservatively mapped to `suggest`. The underlying source authority remains traceable and the Creative Method Runtime remains read-only/side-effect-free.
+
+### Real Project Brain → Director path
+
+The existing `adaptProjectBrainToDirectorInput(...)` no longer initializes `availableSkills: []`.
+
+It now consumes the governed Director skill projection. If the governed projection fails validation, the skill pool fails closed to `[]`.
+
+Current verified governed pool:
+
+```text
+AVAILABLE GOVERNED DIRECTOR SKILLS = 6
+ENTITY KIND = METHOD ONLY
+REFERENCE/SOURCE/RESOURCE/PROVIDER IN SKILL POOL = 0
+```
+
+The existing Director mode/phase/authority selection logic remains active. For a HACKATHON/build/suggest context, compatible governed methods are selected and Library-First Composition Router is demonstrably among eligible selections. If Director authority is `prepare`, these `suggest` methods are not silently widened into eligibility.
+
+Director still returns exactly one canonical next action and `sideEffectPayload = null`.
+
+### Browser-safety defect caught and corrected
+
+The first Slice D preview passed all 24 collaboration tests but failed bundling `/director` because the V2 validation layer imported Node-only `node:assert/strict` and was now transitively reachable from a Client Component.
+
+The correction removed the Node assert dependency from `lib/creative-os/library-v2/validation.ts` and replaced it with equivalent browser-safe typed invariant checks. No polyfill or client-side bypass was introduced.
+
+This also makes the canonical V2 validation path reusable across browser/server collaboration surfaces.
+
+## Slice D verified QA
+
+```text
+COLLABORATION TESTS = 24 / 24 PASS
 FAIL = 0
 NEXT.JS = 16.2.11
 COMPILE = PASS
 TYPESCRIPT = PASS
 STATIC GENERATION = 93 / 93 PASS
+/DIRECTOR = BUILDABLE CLIENT SURFACE
 DEPLOYMENT = READY
 ALIAS_ERROR = null
 GITHUB / VERCEL = SUCCESS
 ERROR/FATAL RUNTIME LOGS = NONE OBSERVED
 ```
 
-New Slice C tests prove:
+New Slice D tests prove:
 
-- Project Brain request is canonical/read-only;
-- Project Brain object remains unchanged after projection;
-- traceable input/evidence refs are preserved;
-- capability identity is never fabricated;
-- invalid Project Brain fails before collaboration;
-- Project Brain self-routing fails closed;
-- collaborator results return as proposals rather than mutations;
-- explicit owner mutation requests remain human-review proposals;
-- mismatched correlation cannot be projected back into Project Brain.
+- exactly six governed METHOD skills are projected;
+- canonical V2 identity and runtime method identity are both retained;
+- the real Project Brain → Director input consumes those methods;
+- Director mode/phase compatibility filtering remains active;
+- references/sources/resources/providers never enter the skill pool;
+- higher Director authority does not widen suggest-method eligibility;
+- Project Brain remains immutable;
+- Director `sideEffectPayload` remains null.
 
 ## Production status
 
 Production remains untouched by this functional phase.
 
-`master` remains the Production source of truth at the phase baseline `a7244b318133cfac82993f442e943d47ee9bf4c0`. No merge or Production promotion of `feature/governed-system-collaboration-01` has been executed.
+`master` remains the Production source of truth at baseline `a7244b318133cfac82993f442e943d47ee9bf4c0`. No merge or Production promotion of `feature/governed-system-collaboration-01` has been executed.
 
 ## Authority boundaries still locked
 
@@ -162,20 +177,21 @@ Production remains untouched by this functional phase.
 - no Film Kit authority expansion;
 - no reference execution;
 - no implicit dual-library identity equivalence;
-- no authority widening from Component Library maturity/capture metadata;
+- no authority widening from Component Library metadata;
 - no unrestricted cross-system writes;
-- Creative Director retains responsibility for exactly one canonical next action.
+- Creative Director retains responsibility for exactly one canonical next action;
+- Creative Method execution remains advisory, local and effect-NONE until separately proven through Slice E.
 
 ## Handover
 
 Resume from `feature/governed-system-collaboration-01` after this checkpoint.
 
-Do not rebuild A/B/C. Do not merge the two library planes. Do not infer crosswalks from names. Do not add a direct Project Brain write path. Do not promote this feature branch to Production without a separate explicit promotion gate.
+Do not rebuild A/B/C/D. Do not reintroduce Node-only validation dependencies into client-reachable Registry paths. Do not merge the two library planes or infer crosswalks. Do not add a Project Brain direct write path. Do not promote this feature branch to Production without a separate explicit promotion gate.
 
-The next task is to connect Creative Director to the collaboration/capability substrate: replace the current empty live `availableSkills` supply with Registry V2-derived eligible internal methods, preserve Director compatibility filtering, and prove that no external or reference entity enters the executable skill pool.
+The next task is to route a Director-selected governed internal method into the Creative Method Runtime through the collaboration envelope, validate the selected canonical capability/runtime method pair, execute only the deterministic local method, and return structured output + quality gates + advisory evidence as a collaboration result with no side effects.
 
 ## Exactly one next action
 
 ```text
-SLICE D — CREATIVE DIRECTOR ↔ COLLABORATION ORCHESTRATION + TESTS
+SLICE E — CREATIVE METHOD RUNTIME ↔ COLLABORATION EXECUTION / RESULT RETURN + TESTS
 ```
