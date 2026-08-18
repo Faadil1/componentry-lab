@@ -18,7 +18,7 @@ import { resolveDirectorPhase } from "./phases"
 import { resolveModeState } from "./modes"
 import { canAuthorizeExternalAction, defaultAuthorityLevelForAction } from "./authority"
 import { selectSkillsForMode } from "./skills"
-import { qualifyDirectorSemanticFallback } from "./semantic-fallback"
+import { isDirectorGeneratedFallbackActionId, qualifyDirectorSemanticFallback } from "./semantic-fallback"
 import { projectGovernedDirectorSkills } from "../creative-os/collaboration/director-adapter"
 
 function mapBlockers(project: ProjectBrain): CanonicalBlocker[] {
@@ -153,6 +153,9 @@ function mapActionCandidate(
   const actionPhase = baseAction || hasBlockers
     ? creativePhase
     : mapCreativePhase(semanticFallback!.phase)
+  const generatedFallback = !baseAction
+    || isDirectorGeneratedFallbackActionId(project, actionId)
+    || actionId === `${project.id}-${mode.toLowerCase()}-blocker-review`
 
   return {
     actionId,
@@ -179,7 +182,7 @@ function mapActionCandidate(
     blockers,
     expectedResult: description,
     reversibility: "reversible",
-    evidenceNeededAfterCompletion: project.evidence.map((item) => item.id),
+    evidenceNeededAfterCompletion: generatedFallback ? [] : project.evidence.map((item) => item.id),
     sourceDecisionOrGate,
   }
 }
