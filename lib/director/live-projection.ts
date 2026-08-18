@@ -77,15 +77,22 @@ export function summarizeLiveDirectorProject(project: ProjectBrain): LiveDirecto
   }
 }
 
-function stableEvaluationTimestamp(project: ProjectBrain): string {
-  const parsed = Date.parse(project.updatedLabel)
-  if (Number.isFinite(parsed)) return new Date(parsed).toISOString()
-  return "2000-01-01T00:00:00.000Z"
+export function normalizeDirectorEvaluationTimestamp(timestamp: string): string | null {
+  const parsed = Date.parse(timestamp)
+  if (!Number.isFinite(parsed)) return null
+  const date = new Date(parsed).toISOString().slice(0, 10)
+  return `${date}T00:00:00.000Z`
 }
 
-export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirectorProjection | null {
+export function buildLiveDirectorProjection(
+  project: ProjectBrain,
+  evaluationTimestamp: string = new Date().toISOString(),
+): LiveDirectorProjection | null {
   const resolved = resolveDirectorModeForProject(project)
   if (!resolved.mode || resolved.resolution === "UNMAPPED") return null
+
+  const normalizedEvaluationTimestamp = normalizeDirectorEvaluationTimestamp(evaluationTimestamp)
+  if (!normalizedEvaluationTimestamp) return null
 
   const authorityContext: AuthorityContext = {
     authorityLevel: "suggest",
@@ -97,13 +104,12 @@ export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirector
     grantedScope: [],
     status: "pending",
   }
-  const evaluationTimestamp = stableEvaluationTimestamp(project)
   const input = adaptProjectBrainToDirectorInput(
     project,
     resolved.mode,
     project.currentPhase,
     authorityContext,
-    evaluationTimestamp,
+    normalizedEvaluationTimestamp,
   )
   const result = adaptDirectorResult(input)
 
@@ -113,6 +119,6 @@ export function buildLiveDirectorProjection(project: ProjectBrain): LiveDirector
     modeResolution: resolved.resolution,
     input,
     result,
-    evaluationTimestamp,
+    evaluationTimestamp: normalizedEvaluationTimestamp,
   }
 }
