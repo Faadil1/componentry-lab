@@ -30,7 +30,7 @@ export const SITE_NAVIGATION: SiteNavigationItem[] = [
   { id: "foundations", label: "Foundations", href: "/foundations", group: "LAB", subGroup: "System labs" },
   { id: "interaction-player", label: "Interaction Player", href: "/player", group: "LAB", subGroup: "System labs" },
   { id: "decision-systems", label: "Decision Systems", href: "/decisions", group: "LAB", subGroup: "System labs" },
-  { id: "creative-director", label: "Creative Director", href: "/director", group: "LAB", subGroup: "System labs" },
+  { id: "creative-director", label: "Creative Director", href: "/director/live", group: "LAB", subGroup: "System labs" },
   { id: "capture-systems", label: "Capture Systems", href: "/capture", group: "LAB", subGroup: "System labs" },
   { id: "composition-recipes", label: "Composition Recipes", href: "/recipes", group: "LAB", subGroup: "System labs" },
 ]
