@@ -1,15 +1,15 @@
-import { buildLibraryV2ReadModel } from "../../../lib/creative-os/library-v2"
+import { buildLiveLibraryV2ReadModel } from "../../../lib/creative-os/library-v2"
 
 import { RegistryExplorer } from "./registry-explorer"
 import { buildRegistryV2ViewModel } from "./registry-view-model"
 
 export const metadata = {
   title: "Creative OS - Governed Resource Registry",
-  description: "Read-only registry index for the Library V2 model, presented as grouped sections with inline detail expansion and local filtering."
+  description: "Read-only cumulative registry index for the Library V2 model, including governed entities and qualified external findings."
 }
 
 export default function CreativeOSRegistryPage() {
-  const viewModel = buildRegistryV2ViewModel(buildLibraryV2ReadModel())
+  const viewModel = buildRegistryV2ViewModel(buildLiveLibraryV2ReadModel())
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -19,7 +19,7 @@ export default function CreativeOSRegistryPage() {
           <div className="space-y-2">
             <h1 className="text-[32px] font-semibold tracking-tight md:text-[36px] xl:text-[40px]">Governed Resource Registry</h1>
             <p className="max-w-3xl text-[14px] leading-6 text-muted-foreground">
-              Read-only registry index for the Library V2 model, presented as grouped sections with inline detail expansion and local filtering.
+              Cumulative read-only Library V2 index: existing governed entities plus qualified external findings, grouped by role with local filtering and inline detail expansion.
             </p>
           </div>
         </header>

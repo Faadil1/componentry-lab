@@ -1,5 +1,10 @@
 import { RESOURCE_REGISTRY } from "../registry"
 import type { ResourceMetadata } from "../types"
+import {
+  EXTERNAL_FINDING_ENTITIES,
+  RECONCILED_LEGACY_PLACEHOLDER_IDS,
+  reconcileHistoricalExternalEntity
+} from "./external-findings"
 import { validateLibraryV2Projection } from "./validation"
 import type {
   LibraryEntityKind,
@@ -37,6 +42,22 @@ const METHOD_DOMAINS: readonly MethodDomain[] = [
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
+}
+
+function cloneDeep<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneDeep(item)) as T
+  }
+
+  if (isRecord(value)) {
+    const output: Record<string, unknown> = {}
+    for (const [key, item] of Object.entries(value)) {
+      output[key] = cloneDeep(item)
+    }
+    return output as T
+  }
+
+  return value
 }
 
 function deepFreeze<T>(value: T): T {
@@ -130,6 +151,59 @@ export function buildLibraryV2ReadModel(
     errors: deepFreeze([...validation.errors]),
     warnings: deepFreeze([...validation.warnings]),
     entities,
+    countsByKind,
+    methodCountsByDomain
+  })
+}
+
+function duplicateIds(entities: readonly LibraryV2Entity[]): string[] {
+  const seen = new Set<string>()
+  const duplicates = new Set<string>()
+
+  for (const entity of entities) {
+    if (seen.has(entity.id)) duplicates.add(entity.id)
+    seen.add(entity.id)
+  }
+
+  return [...duplicates].sort((a, b) => a.localeCompare(b))
+}
+
+export function buildLiveLibraryV2ReadModel(
+  resources: readonly ResourceMetadata[] = RESOURCE_REGISTRY
+): LibraryV2ReadModel {
+  const base = buildLibraryV2ReadModel(resources)
+  if (!base.valid) return base
+
+  const reconciledLegacy = base.entities.map((entity) => reconcileHistoricalExternalEntity(cloneDeep(entity)))
+  const externalFindings = EXTERNAL_FINDING_ENTITIES.map((entity) => cloneDeep(entity))
+  const combined = [...reconciledLegacy, ...externalFindings]
+  const duplicates = duplicateIds(combined)
+
+  if (duplicates.length > 0) {
+    return deepFreeze({
+      valid: false,
+      errors: deepFreeze(duplicates.map((id) => `duplicate live Library V2 entity id detected: ${id}`)),
+      warnings: deepFreeze([] as ProjectionWarning[]),
+      entities: deepFreeze([] as LibraryV2Entity[]),
+      countsByKind: deepFreeze(createZeroCountsByKind()),
+      methodCountsByDomain: deepFreeze(createZeroMethodCountsByDomain())
+    })
+  }
+
+  const warnings = base.warnings.filter(
+    (warning) =>
+      !(
+        warning.code === "LEGACY_PLACEHOLDER_SOURCE" &&
+        RECONCILED_LEGACY_PLACEHOLDER_IDS.has(warning.resourceId)
+      )
+  )
+  const { countsByKind, methodCountsByDomain } = buildCountMaps(combined)
+
+  return deepFreeze({
+    valid: true,
+    errors: deepFreeze([...base.errors]),
+    warnings: deepFreeze([...warnings]),
+    entities: deepFreeze(combined),
     countsByKind,
     methodCountsByDomain
   })
