@@ -5,6 +5,7 @@ import { GovernedActionPanel } from "@/components/director/governed-action-panel
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { buildDualLibraryProjection } from "@/lib/creative-os/collaboration"
 import {
+  projectDirectorNextActionToGovernedCompleteIntent,
   projectDirectorNextActionToGovernedStartIntent,
   projectDirectorNextActionToGovernedWriteIntent,
 } from "@/lib/creative-os/action-plane"
@@ -15,6 +16,7 @@ import {
 import { fingerprintProjectBrain } from "@/lib/projects/fingerprint"
 import { PROJECT_NEXT_ACTION_APPEND_SCOPE } from "@/lib/projects/next-action-writer"
 import { PROJECT_NEXT_ACTION_START_SCOPE } from "@/lib/projects/next-action-status-writer"
+import { PROJECT_NEXT_ACTION_COMPLETE_SCOPE } from "@/lib/projects/next-action-complete-writer"
 import { listProjects } from "@/lib/projects/repository"
 import { requireCanonicalWriteAccess } from "@/lib/security/canonical-write-access"
 
@@ -44,6 +46,9 @@ export default async function LiveDirectorPage({
   const startIntent = project && projection
     ? projectDirectorNextActionToGovernedStartIntent(project, projection.result, projection.evaluationTimestamp)
     : null
+  const completeIntent = project && projection
+    ? projectDirectorNextActionToGovernedCompleteIntent(project, projection.result, projection.evaluationTimestamp)
+    : null
   const projectFingerprint = project ? fingerprintProjectBrain(project) : ""
 
   return (
@@ -64,7 +69,7 @@ export default async function LiveDirectorPage({
               </div>
               <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Creative Director — Live Collaboration</h1>
               <p className="text-sm leading-relaxed text-stone-600">
-                Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. Proposals remain read-only until an exact typed mutation passes owner authentication, explicit approval, scope validation, and stale-state checks.
+                Canonical Project Brain context is evaluated against Registry V2 governed methods while the Component Library remains a separate composition-intelligence plane. Proposals remain read-only until an exact typed mutation passes owner authentication, explicit approval, scope validation, stale-state checks, and — for completion — canonical evidence requirements.
               </p>
             </div>
             <Link href="/director" className="rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-700 hover:bg-stone-100">Open fixture lab</Link>
@@ -147,7 +152,7 @@ export default async function LiveDirectorPage({
               </article>
             </section>
 
-            <div className="grid gap-4 xl:grid-cols-2">
+            <div className="grid gap-4 xl:grid-cols-3">
               {writeIntent ? (
                 <GovernedActionPanel
                   projectId={project.id}
@@ -185,6 +190,27 @@ export default async function LiveDirectorPage({
                   ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
                   ownerAuthorized={ownerAuthorized}
                   errors={startIntent.errors}
+                />
+              ) : null}
+
+              {completeIntent ? (
+                <GovernedActionPanel
+                  projectId={project.id}
+                  callbackUrl={`/director/live?project=${encodeURIComponent(project.id)}`}
+                  approvalKind="complete"
+                  status={completeIntent.status}
+                  operation="PROJECT_BRAIN_COMPLETE_NEXT_ACTION"
+                  scope={PROJECT_NEXT_ACTION_COMPLETE_SCOPE}
+                  beforeFingerprint={projectFingerprint}
+                  proposalFingerprint={completeIntent.proposalFingerprint}
+                  actionLabel={`Complete: ${completeIntent.candidateAction.label}`}
+                  actionDescription="Move only this canonical Project Brain next action from doing to done, using canonical available evidence. This does not change project phase/status or execute external work."
+                  existingActionStatus={completeIntent.existingAction?.status ?? null}
+                  evidenceRef={completeIntent.evidenceId ? `project-brain:${project.id}:evidence:${completeIntent.evidenceId}` : null}
+                  oauthConfigured={authRuntimeSummary.oauthConfigured}
+                  ownerAccountConfigured={authRuntimeSummary.ownerAccountIdConfigured}
+                  ownerAuthorized={ownerAuthorized}
+                  errors={completeIntent.errors}
                 />
               ) : null}
             </div>
