@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache"
 
 import type { GovernedDirectorActionState } from "@/app/director/live/action-state"
+export type { GovernedDirectorActionState } from "@/app/director/live/action-state"
+
 import {
   executeProjectBrainCompleteNextActionProposal,
   executeProjectBrainNextActionProposal,
