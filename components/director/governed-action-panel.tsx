@@ -7,8 +7,15 @@ import {
   approveDirectorCompleteNextAction,
   approveDirectorNextAction,
   approveDirectorStartNextAction,
-  INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,
+  type GovernedDirectorActionState,
 } from "@/app/director/live/actions"
+
+const INITIAL_GOVERNED_DIRECTOR_ACTION_STATE: GovernedDirectorActionState = {
+  status: "IDLE",
+  receiptId: null,
+  auditTraceRef: null,
+  error: null,
+}
 
 export type GovernedActionPanelStatus =
   | "PROPOSAL_READY"
@@ -46,6 +53,11 @@ function fingerprintPreview(value: string | null): string {
   return `${value.slice(0, 12)}…${value.slice(-8)}`
 }
 
+function statusLabel(value: string | null | undefined): string {
+  if (!value) return "INVALID PROPOSAL"
+  return value.split("_").join(" ")
+}
+
 export function GovernedActionPanel(props: GovernedActionPanelProps) {
   const [appendState, appendFormAction, appendPending] = useActionState(
     approveDirectorNextAction,
@@ -61,11 +73,13 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
   )
 
   const state = props.approvalKind === "complete" ? completeState : props.approvalKind === "start" ? startState : appendState
+  const stateStatus = state?.status ?? "IDLE"
+  const panelStatus: GovernedActionPanelStatus = props.status ?? "INVALID_PROPOSAL"
   const formAction = props.approvalKind === "complete" ? completeFormAction : props.approvalKind === "start" ? startFormAction : appendFormAction
   const pending = props.approvalKind === "complete" ? completePending : props.approvalKind === "start" ? startPending : appendPending
   const authReady = props.oauthConfigured && props.ownerAccountConfigured
-  const canApprove = props.status === "PROPOSAL_READY" && authReady && props.ownerAuthorized && Boolean(props.proposalFingerprint)
-  const completedState = props.status === "ALREADY_CANONICAL" || props.status === "ALREADY_STARTED" || props.status === "ALREADY_COMPLETED"
+  const canApprove = panelStatus === "PROPOSAL_READY" && authReady && props.ownerAuthorized && Boolean(props.proposalFingerprint)
+  const completedState = panelStatus === "ALREADY_CANONICAL" || panelStatus === "ALREADY_STARTED" || panelStatus === "ALREADY_COMPLETED"
   const blockedState = [
     "IDENTITY_CONFLICT",
     "INVALID_PROPOSAL",
@@ -73,7 +87,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
     "ACTION_NOT_CANONICAL",
     "ACTION_NOT_STARTED",
     "EVIDENCE_REQUIRED",
-  ].includes(props.status)
+  ].includes(panelStatus)
 
   const approvalLabel = props.approvalKind === "complete"
     ? "Approve completion"
@@ -95,7 +109,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
           <p className="text-sm leading-relaxed text-stone-600">{props.actionDescription}</p>
         </div>
         <span className="rounded-full border border-stone-300 bg-stone-50 px-3 py-1 font-mono text-[10px] font-bold uppercase text-stone-600">
-          {props.status.replaceAll("_", " ")}
+          {statusLabel(panelStatus)}
         </span>
       </div>
 
@@ -130,9 +144,9 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
         <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
           <p className="font-semibold">No additional write required.</p>
           <p className="mt-1">
-            {props.status === "ALREADY_CANONICAL" ? "This Director next action already exists in canonical Project Brain and will not be duplicated." : null}
-            {props.status === "ALREADY_STARTED" ? "This canonical next action is already in progress." : null}
-            {props.status === "ALREADY_COMPLETED" ? "This canonical next action is already completed." : null}
+            {panelStatus === "ALREADY_CANONICAL" ? "This Director next action already exists in canonical Project Brain and will not be duplicated." : null}
+            {panelStatus === "ALREADY_STARTED" ? "This canonical next action is already in progress." : null}
+            {panelStatus === "ALREADY_COMPLETED" ? "This canonical next action is already completed." : null}
             {props.existingActionStatus ? ` Current status: “${props.existingActionStatus}”.` : ""}
           </p>
         </div>
@@ -145,7 +159,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
         </div>
       ) : null}
 
-      {props.status === "PROPOSAL_READY" ? (
+      {panelStatus === "PROPOSAL_READY" ? (
         <div className="mt-4 space-y-3 rounded-xl border border-stone-200 bg-stone-50 p-4">
           <div>
             <p className="text-sm font-semibold">Approval boundary</p>
@@ -179,9 +193,9 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
         </div>
       ) : null}
 
-      {state.status !== "IDLE" ? (
-        <div className={`mt-4 rounded-xl border p-3 text-sm ${state.status === "APPLIED" || state.status === "NO_CHANGE" || state.status === "ALREADY_CANONICAL" || state.status === "ALREADY_STARTED" || state.status === "ALREADY_COMPLETED" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
-          <p className="font-semibold">Execution result: {state.status.replaceAll("_", " ")}</p>
+      {stateStatus !== "IDLE" ? (
+        <div className={`mt-4 rounded-xl border p-3 text-sm ${stateStatus === "APPLIED" || stateStatus === "NO_CHANGE" || stateStatus === "ALREADY_CANONICAL" || stateStatus === "ALREADY_STARTED" || stateStatus === "ALREADY_COMPLETED" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-200 bg-amber-50 text-amber-950"}`}>
+          <p className="font-semibold">Execution result: {statusLabel(stateStatus)}</p>
           {state.receiptId ? <p className="mt-1 font-mono text-[10px]">Receipt: {state.receiptId}</p> : null}
           {state.auditTraceRef ? <p className="mt-1 font-mono text-[10px]">Audit trace: {state.auditTraceRef}</p> : null}
           {state.error ? <p className="mt-1 text-xs">{state.error}</p> : null}

@@ -179,3 +179,17 @@ test("DIRECTOR_WRITE_UI_HAS_NO_BYPASS_AND_EXPOSES_APPEND_START_COMPLETE_AS_TYPED
   assert.equal(panel.includes("NODE_ENV"), false)
   assert.equal(panel.includes("anonymous bypass"), false)
 })
+
+test("DIRECTOR_WRITE_UI_KEEPS_INITIAL_ACTION_STATE_CLIENT_LOCAL_FOR_SSR", () => {
+  const panel = readFileSync(new URL("../components/director/governed-action-panel.tsx", import.meta.url), "utf8")
+
+  assert.equal(panel.includes("const INITIAL_GOVERNED_DIRECTOR_ACTION_STATE: GovernedDirectorActionState = {"), true)
+  assert.equal(panel.includes('status: "IDLE"'), true)
+  assert.equal(panel.includes('const stateStatus = state?.status ?? "IDLE"'), true)
+  assert.equal(panel.includes('const panelStatus: GovernedActionPanelStatus = props.status ?? "INVALID_PROPOSAL"'), true)
+  assert.equal(panel.includes("replaceAll"), false)
+  assert.equal(
+    panel.includes('  INITIAL_GOVERNED_DIRECTOR_ACTION_STATE,\n} from "@/app/director/live/actions"'),
+    false,
+  )
+})
