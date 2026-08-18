@@ -11,7 +11,7 @@ import { buildLiveLibraryV2ReadModel } from "../lib/creative-os/library-v2"
 test("DUAL_LIBRARY_PROJECTION_PRESERVES_BOTH_PLANES", () => {
   const projection = buildDualLibraryProjection()
   assert.equal(projection.valid, true)
-  assert.equal(projection.counts.governedCapabilities, 34)
+  assert.equal(projection.counts.governedCapabilities, 35)
   assert.equal(projection.counts.compositions, registryComponents.length)
   assert.equal(projection.counts.explicitCrosswalks, 0)
   assert.equal(projection.unmappedCompositionRefs.length, registryComponents.length)

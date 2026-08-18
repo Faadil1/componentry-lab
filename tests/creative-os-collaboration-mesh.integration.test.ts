@@ -44,7 +44,7 @@ test("GOVERNED_COLLABORATION_MESH_PROVES_ALL_CURRENT_SYSTEM_PLANES_WITHOUT_MUTAT
   // 2. Both Library planes participate distinctly: Registry V2 governs; Component Library composes.
   const libraries = buildDualLibraryProjection()
   assert.equal(libraries.valid, true)
-  assert.equal(libraries.governedCapabilities.length, 34)
+  assert.equal(libraries.governedCapabilities.length, 35)
   assert.ok(libraries.compositions.length > 0)
   assert.ok(libraries.governedCapabilities.some((entry) => entry.entityKind === "REFERENCE" && entry.collaborationAccess === "READ_DISCOVERY_ONLY"))
   assert.ok(libraries.governedCapabilities.some((entry) => entry.entityKind === "SOURCE" && entry.collaborationAccess === "READ_DISCOVERY_ONLY"))

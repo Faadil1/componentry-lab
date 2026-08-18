@@ -2,11 +2,13 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import {
+  CURRENT_FINDING_ENTITIES,
   EXTERNAL_FINDING_ENTITIES,
   buildLibraryV2ReadModel,
   buildLiveLibraryV2ReadModel,
   getLibraryV2EntityById,
   type ProviderEntity,
+  type ReferenceEntity,
   type ResourceEntity,
   type SourceEntity
 } from "../lib/creative-os/library-v2"
@@ -37,11 +39,11 @@ test("LIVE_LIBRARY_V2_PRESERVES_LEGACY_ENGINE_AND_ADDS_EXTERNAL_FINDINGS", () =>
   assert.equal(legacy.countsByKind.REFERENCE, 0)
 
   assert.equal(live.valid, true)
-  assert.equal(live.entities.length, 34)
+  assert.equal(live.entities.length, 35)
   assert.deepStrictEqual(live.countsByKind, {
     SOURCE: 7,
     RESOURCE: 6,
-    REFERENCE: 12,
+    REFERENCE: 13,
     METHOD: 6,
     PROVIDER: 3
   })
@@ -52,6 +54,28 @@ test("LIVE_LIBRARY_V2_PRESERVES_LEGACY_ENGINE_AND_ADDS_EXTERNAL_FINDINGS", () =>
     EXTERNAL_FINDING_ENTITIES.map((entity) => entity.id).sort(),
     EXPECTED_EXTERNAL_FINDING_IDS
   )
+})
+
+test("LIVE_LIBRARY_V2_INTEGRATES_CURRENT_VISUAL_REFERENCE_WITHOUT_GRANTING_UX_OR_EXECUTION_AUTHORITY", () => {
+  const legacy = buildLibraryV2ReadModel()
+  const live = buildLiveLibraryV2ReadModel()
+  const reference = getLibraryV2EntityById(live, "ref_best_designs_on_x") as ReferenceEntity
+
+  assert.equal(CURRENT_FINDING_ENTITIES.length, 1)
+  assert.equal(getLibraryV2EntityById(legacy, "ref_best_designs_on_x"), null)
+  assert.ok(reference)
+  assert.equal(reference.entityKind, "REFERENCE")
+  assert.equal(reference.lifecycleState, "CAPTURED")
+  assert.equal(reference.referenceDomain, "VISUAL_DIRECTION")
+  assert.equal(reference.stageAffinity, "VISUAL_DIRECTION_GATE")
+  assert.equal(reference.usageMode, "HUMAN_BROWSE")
+  assert.equal(reference.packageDescriptor?.packageLocator, "https://bestdesignsonx.com/")
+  assert.ok(reference.tags?.includes("DIFFERENTIATION_SIGNAL"))
+  assert.ok(reference.tags?.includes("NOT_UX_AUTHORITY"))
+  assert.ok(reference.tags?.includes("HUMAN_BROWSE_ONLY"))
+  assert.equal(Object.hasOwn(reference, "authorityPolicy"), false)
+  assert.equal(Object.hasOwn(reference, "automationPolicy"), false)
+  assert.equal(reference.licenseEvidenceRecords?.[0]?.status, "UNKNOWN")
 })
 
 test("LIVE_LIBRARY_V2_RECONCILES_KNOWN_EXTERNAL_LOCATORS_WITHOUT_V1_MUTATION", () => {

@@ -1,5 +1,6 @@
 import { RESOURCE_REGISTRY } from "../registry"
 import type { ResourceMetadata } from "../types"
+import { CURRENT_FINDING_ENTITIES } from "./current-findings"
 import {
   EXTERNAL_FINDING_ENTITIES,
   RECONCILED_LEGACY_PLACEHOLDER_IDS,
@@ -175,8 +176,9 @@ export function buildLiveLibraryV2ReadModel(
   if (!base.valid) return base
 
   const reconciledLegacy = base.entities.map((entity) => reconcileHistoricalExternalEntity(cloneDeep(entity)))
-  const externalFindings = EXTERNAL_FINDING_ENTITIES.map((entity) => cloneDeep(entity))
-  const combined = [...reconciledLegacy, ...externalFindings]
+  const historicalExternalFindings = EXTERNAL_FINDING_ENTITIES.map((entity) => cloneDeep(entity))
+  const currentFindings = CURRENT_FINDING_ENTITIES.map((entity) => cloneDeep(entity))
+  const combined = [...reconciledLegacy, ...historicalExternalFindings, ...currentFindings]
   const duplicates = duplicateIds(combined)
 
   if (duplicates.length > 0) {
