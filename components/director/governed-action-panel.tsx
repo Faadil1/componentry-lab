@@ -174,7 +174,7 @@ export function GovernedActionPanel(props: GovernedActionPanelProps) {
               </div>
 
               {!authReady ? (
-                <p className="max-w-md border-l-2 border-amber-500 pl-3 text-xs text-stone-700">Write locked: GitHub OAuth and the canonical owner account must both be configured.</p>
+                <p className="max-w-md border-l-2 border-amber-500 pl-3 text-xs text-stone-700">Write locked for this environment: GitHub OAuth and the canonical owner account must both be configured.</p>
               ) : !props.ownerAuthorized ? (
                 <AuthControls authenticated={false} callbackUrl={props.callbackUrl} />
               ) : (
