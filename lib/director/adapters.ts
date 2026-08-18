@@ -158,8 +158,9 @@ function mapActionCandidate(
   sourceDecisionOrGate: string
 ): AuthorizedAction {
   const creativePhase = mapCreativePhase(phase)
-  const matchingAction = project.nextActions.find((act) => mapCreativePhase(act.phase) === creativePhase)
-  const baseAction = matchingAction ?? project.nextActions[0]
+  const nonTerminalActions = project.nextActions.filter((action) => action.status !== "done")
+  const matchingAction = nonTerminalActions.find((act) => mapCreativePhase(act.phase) === creativePhase)
+  const baseAction = matchingAction ?? nonTerminalActions[0]
   const modeFallback = getDefaultModeActionFallback(mode)
 
   const title = baseAction?.label ?? (blockers.length > 0 ? `Review ${mode.toLowerCase().replace("_", " ")} blockers` : modeFallback.title)
