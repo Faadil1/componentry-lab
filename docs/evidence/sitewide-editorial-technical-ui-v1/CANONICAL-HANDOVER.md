@@ -9,9 +9,10 @@ PROJECT = Componentry Lab / Creative OS
 PHASE = SITEWIDE EDITORIAL / TECHNICAL UI SYSTEM
 PHASE_CODE = COMPONENTRY_SITEWIDE_EDITORIAL_TECHNICAL_UI_V1
 TRACK = VISUAL SYSTEM / PRODUCT SHELL
-STATUS = IMPLEMENTED_ON_FEATURE_BRANCH / BUILD_QA_PENDING
+STATUS = IMPLEMENTED_ON_FEATURE_BRANCH / CURRENT_HEAD_PREVIEW_RETRY_TRIGGERED
 SOURCE_OF_TRUTH = GitHub branch feature/sitewide-editorial-technical-ui-v1
 BASE_MASTER = b01c60303edceff1ac1fe589ba90a53e5a2de3d4
+FUNCTIONAL_HEAD_BEFORE_RETRY = 950192e7d6ccf18cffc98aa4d480c0f13ad40d02
 PRODUCTION_CODE_MUTATION = NONE
 PROJECT_BRAIN_MUTATION = NONE
 WRITE_AUTHORITY_CHANGE = NONE
@@ -136,28 +137,42 @@ components/projects/project-hero.tsx
 components/director/governed-action-panel.tsx
 app/director/live/page.tsx
 tests/sitewide-editorial-technical-ui.test.ts
+tests/creative-os-governed-action-director-ui.test.ts
 docs/evidence/sitewide-editorial-technical-ui-v1/CANONICAL-HANDOVER.md
 ```
 
-## Build QA
+## Build QA history
 
-At handover creation time:
+First Preview from functional UI commit `43b786da487b1797ddb02fab1c0016f64dbb93b2` reached the build runner and failed one legacy UI contract assertion in `tests/creative-os-governed-action-director-ui.test.ts` because the test matched old presentation wording.
+
+Targeted repair commit:
 
 ```text
-BUILD_QA = PENDING
-REASON = commit not yet created / Vercel build availability must be checked after atomic commit
-EXPECTED TEST COUNT = prior suite + 3 sitewide UI contract tests
+950192e7d6ccf18cffc98aa4d480c0f13ad40d02
 ```
 
-Do not claim build PASS until TypeScript, node tests and Next build have actually completed.
+The repair restores the contract wording expected by the existing governed-action UI test without reverting the new visual system and without changing write-plane behavior.
+
+A later manual Vercel redeploy (`dpl_BpyPo58VJfiCMY5Kjo7eNRoBCnYy`) re-ran the OLD commit `43b786da...`, so it predictably reproduced the same old test failure and does not qualify the repaired head.
+
+Current action on 2026-08-18T23:16-04:00:
+
+```text
+CURRENT_HEAD_PREVIEW_RETRY = TRIGGERED_BY_DOCS_ONLY_COMMIT
+CODE_FUNCTIONAL_DIFF = UNCHANGED FROM 950192e7...
+BUILD_QA = PENDING CURRENT-HEAD VERCEL RESULT
+PRODUCTION = UNCHANGED
+```
+
+Do not claim build PASS until tests, TypeScript and Next build have actually completed on the current head.
 
 ## Exactly one next action
 
 ```text
-CREATE ATOMIC FEATURE COMMIT
-→ inspect exact master...feature diff
-→ attempt Preview / Build QA
-→ if Vercel build-rate-limit persists, record environment blocker without promoting
-→ if build succeeds, perform visual/runtime QA on Command, Project Brain and Director Live
+WAIT FOR CURRENT-HEAD PREVIEW
+→ verify collaboration test suite
+→ verify TypeScript / Next build
+→ inspect Command, Project Brain and Director Live runtime rendering
+→ record visual QA findings
 → only then open Production Promotion Decision Gate
 ```
