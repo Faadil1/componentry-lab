@@ -18,7 +18,7 @@ export default async function CommandPage({
 }) {
   const params = searchParams ? await searchParams : {}
   const projectId = typeof params.project === "string" ? params.project : undefined
-  const session = await getServerSession(authOptions)
+  const session = authRuntimeSummary.oauthConfigured ? await getServerSession(authOptions) : null
   const projection = await buildCommandProjection(projectId)
   const activeProject = projection.activeProject
 
@@ -45,10 +45,13 @@ export default async function CommandPage({
           </div>
 
           <dl className="divide-y divide-stone-300 border-y border-stone-300 font-mono text-[10px] uppercase tracking-[0.12em]">
-            <div className="flex items-center justify-between gap-4 py-2.5">
-              <dt className="text-stone-500">Auth</dt>
-              <dd className="text-right normal-case tracking-normal text-neutral-950">
-                <AuthControls authenticated={!!session?.user} />
+            <div className="flex items-start justify-between gap-4 py-2.5">
+              <dt className="pt-1 text-stone-500">Auth</dt>
+              <dd className="min-w-0 text-right normal-case tracking-normal text-neutral-950">
+                <AuthControls
+                  authenticated={!!session?.user}
+                  available={authRuntimeSummary.oauthConfigured}
+                />
               </dd>
             </div>
             <div className="flex items-center justify-between gap-4 py-2.5">

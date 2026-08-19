@@ -5,9 +5,11 @@ import { signIn, signOut } from "next-auth/react"
 
 export function AuthControls({
   authenticated,
+  available = true,
   callbackUrl = "/",
 }: {
   authenticated: boolean
+  available?: boolean
   callbackUrl?: string
 }) {
   const [pending, startTransition] = useTransition()
@@ -24,32 +26,41 @@ export function AuthControls({
     })
   }
 
+  if (!available) {
+    return (
+      <div className="flex max-w-56 flex-col items-end gap-1 text-right">
+        <p className="text-xs font-medium text-neutral-950">Authentication unavailable</p>
+        <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-stone-500">
+          OAuth is not configured in this environment
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col gap-3">
-      <p className="mt-1 font-medium text-neutral-950">
+    <div className="flex max-w-56 flex-col items-end gap-2 text-right">
+      <p className="text-xs font-medium text-neutral-950">
         {authenticated ? "GitHub owner session present" : "No authenticated GitHub owner session"}
       </p>
-      <div className="flex flex-wrap gap-3">
-        {authenticated ? (
-          <button
-            type="button"
-            onClick={handleSignOut}
-            disabled={pending}
-            className="inline-flex items-center justify-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-neutral-900 transition hover:border-neutral-400 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Sign out
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleSignIn}
-            disabled={pending}
-            className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Sign in with GitHub
-          </button>
-        )}
-      </div>
+      {authenticated ? (
+        <button
+          type="button"
+          onClick={handleSignOut}
+          disabled={pending}
+          className="inline-flex min-h-9 items-center justify-center rounded-sm border border-stone-400 bg-stone-50 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-900 transition-colors hover:border-neutral-950 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Sign out
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={handleSignIn}
+          disabled={pending}
+          className="inline-flex min-h-9 items-center justify-center rounded-sm border border-neutral-950 bg-neutral-950 px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-50 transition-colors hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Sign in with GitHub
+        </button>
+      )}
     </div>
   )
 }
