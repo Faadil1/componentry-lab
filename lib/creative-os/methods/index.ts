@@ -69,3 +69,15 @@ export {
   runLibraryFirstCompositionRouter
 } from "./library-first-composition-router"
 
+export {
+  CREATIVE_DIVERGENCE_ORCHESTRATOR_ID,
+  DIVERGENCE_OPERATOR_FAMILIES,
+  creativeDivergenceOrchestratorDefinition,
+  creativeDivergenceOrchestratorGates,
+  runCreativeDivergenceOrchestrator
+} from "./creative-divergence-orchestrator"
+
+export type {
+  DivergenceScoutRole,
+  DivergenceOperatorFamily
+} from "./creative-divergence-orchestrator"
