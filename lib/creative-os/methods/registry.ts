@@ -5,6 +5,7 @@ import { relationshipPreservingAbstractionDefinition } from "./relationship-pres
 import { cognitiveMetaphorIllustratorDefinition } from "./cognitive-metaphor-illustrator"
 import { physicalSituationStoryboarderDefinition } from "./physical-situation-storyboarder"
 import { libraryFirstCompositionRouterDefinition } from "./library-first-composition-router"
+import { creativeDivergenceOrchestratorDefinition } from "./creative-divergence-orchestrator"
 import { createRuntimeContext } from "./runtime"
 import type { CreativeMethodRuntimeContext } from "./types"
 
@@ -14,7 +15,8 @@ export const METHOD_DEFINITIONS: CreativeMethodDefinition[] = [
   relationshipPreservingAbstractionDefinition,
   cognitiveMetaphorIllustratorDefinition,
   physicalSituationStoryboarderDefinition,
-  libraryFirstCompositionRouterDefinition
+  libraryFirstCompositionRouterDefinition,
+  creativeDivergenceOrchestratorDefinition
 ]
 
 /**
