@@ -106,7 +106,7 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
   {
     id: "res_creative_divergence_orchestrator",
     name: "Creative Divergence Orchestrator",
-    type: "CORE_METHOD",
+    type: "SKILL",
     lifecycleState: "TEST_CANDIDATE",
     maxExecutionAuthority: "SUGGEST",
     license: "MIT",
