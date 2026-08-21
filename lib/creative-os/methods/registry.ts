@@ -5,9 +5,15 @@ import { relationshipPreservingAbstractionDefinition } from "./relationship-pres
 import { cognitiveMetaphorIllustratorDefinition } from "./cognitive-metaphor-illustrator"
 import { physicalSituationStoryboarderDefinition } from "./physical-situation-storyboarder"
 import { libraryFirstCompositionRouterDefinition } from "./library-first-composition-router"
+import { creativeDivergenceOrchestratorDefinition } from "./creative-divergence-orchestrator"
 import { createRuntimeContext } from "./runtime"
 import type { CreativeMethodRuntimeContext } from "./types"
 
+/**
+ * Validated production method set. I21 creative divergence remains a TEST_CANDIDATE
+ * until its dedicated promotion gate is closed, so the existing validated-count
+ * contract stays stable.
+ */
 export const METHOD_DEFINITIONS: CreativeMethodDefinition[] = [
   sacredRulesBreakerDefinition,
   somaticResponseDesignDefinition,
@@ -17,8 +23,15 @@ export const METHOD_DEFINITIONS: CreativeMethodDefinition[] = [
   libraryFirstCompositionRouterDefinition
 ]
 
+export const METHOD_TEST_CANDIDATES: CreativeMethodDefinition[] = [
+  creativeDivergenceOrchestratorDefinition
+]
+
 /**
- * Singleton runtime context for all registered Creative Methods.
- * Immutable after initialization.
+ * Runtime discovery includes governed test candidates, while lifecycle metadata
+ * prevents them from being misrepresented as validated production methods.
  */
-export const METHOD_RUNTIME_CONTEXT: CreativeMethodRuntimeContext = createRuntimeContext(METHOD_DEFINITIONS)
+export const METHOD_RUNTIME_CONTEXT: CreativeMethodRuntimeContext = createRuntimeContext([
+  ...METHOD_DEFINITIONS,
+  ...METHOD_TEST_CANDIDATES
+])

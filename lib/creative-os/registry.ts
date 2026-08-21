@@ -104,6 +104,23 @@ export const RESOURCE_REGISTRY: ResourceMetadata[] = [
     activationRules: []
   },
   {
+    id: "res_creative_divergence_orchestrator",
+    name: "Creative Divergence Orchestrator",
+    type: "SKILL",
+    lifecycleState: "TEST_CANDIDATE",
+    maxExecutionAuthority: "SUGGEST",
+    license: "MIT",
+    provenance: "internal:method:creative-divergence-orchestrator:i21",
+    modes: ["DAY_CHALLENGE", "HACKATHON", "MARA", "DATA_STORY"],
+    capabilities: {
+      actions: ["plan-isolated-divergence", "delay-critique", "cluster-distinct-mechanisms"],
+      artifactTypes: ["creative-divergence-plan"],
+      capabilityGaps: ["creative-divergence", "generic-convergence-risk", "concept-breadth"],
+      requiredAuthority: "SUGGEST"
+    },
+    activationRules: []
+  },
+  {
     id: "res_ai_camera_movements",
     name: "AI Camera Movements",
     type: "KNOWLEDGE_PACK",

@@ -1,0 +1,31 @@
+name: I21 Creative Divergence
+
+on:
+  pull_request:
+    paths:
+      - 'lib/creative-os/**'
+      - 'tests/creative-os-divergence.test.ts'
+      - 'tests/creative-os-methods.test.ts'
+      - 'package.json'
+      - '.github/workflows/i21-creative-divergence.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Run I21 divergence contract tests
+        run: npm run test:creative-divergence
+      - name: Run existing Creative OS method regression suite
+        run: node --import jiti/register --test tests/creative-os-methods.test.ts
+      - name: Type-check
+        run: npx tsc --noEmit
