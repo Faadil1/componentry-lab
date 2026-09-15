@@ -47,9 +47,34 @@ function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
 }
 
-function assertPatchPayload(payload: Record<string, unknown>): Record<string, unknown> {
-  const patch = payload.patch
-  if (!patch || typeof patch !== "object" || Array.isArray(patch)) {
+function asObject(value: unknown): Record<string, unknown> | undefined {
+  let candidate = value
+  if (typeof candidate === "string") {
+    try {
+      candidate = JSON.parse(candidate) as unknown
+    } catch {
+      return undefined
+    }
+  }
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return undefined
+  return candidate as Record<string, unknown>
+}
+
+function assertPatchPayload(payloadValue: unknown): Record<string, unknown> {
+  const payload = asObject(payloadValue)
+  let patch = asObject(payload?.patch)
+
+  // Compatibility recovery: older/driver-flattened rows may expose the patch
+  // itself as the action payload. Accept that shape only when every key is
+  // already inside the reversible Project Brain allowlist.
+  if (!patch && payload) {
+    const keys = Object.keys(payload)
+    if (keys.length > 0 && keys.every((key) => PATCHABLE_PROJECT_KEYS.has(key as keyof ProjectBrain))) {
+      patch = payload
+    }
+  }
+
+  if (!patch) {
     throw new Error("PROJECT_BRAIN_PATCH action is missing a patch object.")
   }
   for (const key of Object.keys(patch)) {
@@ -57,7 +82,7 @@ function assertPatchPayload(payload: Record<string, unknown>): Record<string, un
       throw new Error(`Project Brain field is outside the TRACE runtime reversible allowlist: ${key}`)
     }
   }
-  return patch as Record<string, unknown>
+  return patch
 }
 
 async function persistProject(project: ProjectBrain): Promise<void> {
@@ -102,7 +127,7 @@ async function executeProjectBrainPatch(action: RuntimeActionRecord): Promise<Re
 
 async function revertProjectBrainPatch(action: RuntimeActionRecord): Promise<Record<string, unknown>> {
   if (!action.projectId) throw new Error("Project Brain patch requires a project id.")
-  const previousValues = action.result?.previousValues
+  const previousValues = asObject(action.result)?.previousValues
   if (!previousValues || typeof previousValues !== "object" || Array.isArray(previousValues)) {
     throw new Error("No reversible Project Brain snapshot is recorded for this action.")
   }
@@ -118,7 +143,7 @@ async function revertProjectBrainPatch(action: RuntimeActionRecord): Promise<Rec
   const validation = validateProjectBrain(next)
   if (!validation.valid) throw new Error(`Project Brain revert failed validation: ${validation.errors.join("; ")}`)
   await persistProject(next)
-  return { ...(action.result ?? {}), revertedAt: new Date().toISOString() }
+  return { ...(asObject(action.result) ?? {}), revertedAt: new Date().toISOString() }
 }
 
 function githubHeaders(accessToken: string) {
@@ -214,13 +239,14 @@ async function revertGithubEvidenceBranch(action: RuntimeActionRecord, accessTok
     const body = await response.text()
     throw new Error(`GitHub branch revert failed: ${response.status} ${body}`)
   }
-  return { ...(action.result ?? {}), branchDeleted: true, revertedAt: new Date().toISOString() }
+  return { ...(asObject(action.result) ?? {}), branchDeleted: true, revertedAt: new Date().toISOString() }
 }
 
 export async function executeTraceAction(actionId: string, accessToken?: string): Promise<TraceActionExecutionResult> {
   const action = await getTraceAction(actionId)
   if (!action) throw new Error(`TRACE runtime action not found: ${actionId}`)
-  if (action.status !== "PREPARED") throw new Error(`Action is not prepared: ${action.status}`)
+  const retryableFailedPatch = action.type === "PROJECT_BRAIN_PATCH" && action.status === "FAILED"
+  if (action.status !== "PREPARED" && !retryableFailedPatch) throw new Error(`Action is not prepared: ${action.status}`)
 
   try {
     const result = action.type === "PROJECT_BRAIN_PATCH"
@@ -229,7 +255,7 @@ export async function executeTraceAction(actionId: string, accessToken?: string)
     await updateTraceAction(actionId, "EXECUTED", result)
     const updated = await getTraceAction(actionId)
     if (!updated) throw new Error("Action disappeared after execution.")
-    return { action: updated, message: `${action.title} executed.` }
+    return { action: updated, message: `${action.title} executed${retryableFailedPatch ? " after safe retry" : ""}.` }
   } catch (error) {
     const result = { error: error instanceof Error ? error.message : String(error) }
     await updateTraceAction(actionId, "FAILED", result)
