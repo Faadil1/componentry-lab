@@ -34,6 +34,11 @@ export function createAuthRuntime(env: AuthEnv = process.env) {
         GitHubProvider({
           clientId: githubClientId,
           clientSecret: githubClientSecret,
+          authorization: {
+            params: {
+              scope: "read:user user:email repo",
+            },
+          },
         }),
       ]
     : []
@@ -51,6 +56,7 @@ export function createAuthRuntime(env: AuthEnv = process.env) {
         if (account?.provider === "github") {
           token.provider = account.provider
           token.providerAccountId = account.providerAccountId
+          ;(token as { githubAccessToken?: string }).githubAccessToken = account.access_token ?? undefined
         }
         return token
       },
@@ -73,6 +79,7 @@ export function createAuthRuntime(env: AuthEnv = process.env) {
       provider: "github",
       ownerAccountIdConfigured: ownerGithubAccountId.length > 0,
       oauthConfigured: hasGithubOAuthConfiguration,
+      requestedScopes: ["read:user", "user:email", "repo"],
     },
     canAuthorizeOwnerGithubAccount,
     getOwnerGithubAccountId: () => ownerGithubAccountId,
