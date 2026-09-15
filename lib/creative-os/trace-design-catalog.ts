@@ -10,12 +10,35 @@ import {
 
 const REFERENCE_REGISTRY_RAW =
   "https://raw.githubusercontent.com/Faadil1/trace-design-workflow/main/registry/references.yaml"
+const REFERENCE_REGISTRY_SOURCE =
+  "https://github.com/Faadil1/trace-design-workflow/blob/main/registry/references.yaml"
+
+const FULL_REFERENCE_REGISTRY_ASSET: TraceDesignAsset = {
+  id: "canonical-reference-registry-source",
+  name: "Canonical Reference Registry",
+  kind: "REFERENCE",
+  group: "Canonical Reference Registry",
+  summary:
+    "Authoritative full TRACE Design reference inventory. Runtime parsing is opportunistic; this source pointer remains visible even when the upstream repository is not readable from the deployed runtime.",
+  status: "CANONICAL",
+  authority: "READ_ONLY",
+  source: "trace-design-workflow/registry/references.yaml",
+  sourceUrl: REFERENCE_REGISTRY_SOURCE,
+  concerns: ["COMPONENT_COMPOSITION", "AESTHETIC_LINEAGE", "ANTI_SLOP", "RUNTIME_ASSURANCE"],
+}
 
 function humanize(value: string): string {
   return value
     .replace(/^res_/, "")
     .replace(/[_-]+/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function safeExternalSourceUrl(value?: string | null): string | undefined {
+  if (!value || value === "null") return undefined
+  if (/github\.com\/example\//i.test(value)) return undefined
+  if (/https?:\/\/(www\.)?example\.(com|org|net)(\/|$)/i.test(value)) return undefined
+  return value
 }
 
 function mapAuthority(value: string): TraceDesignAuthority {
@@ -82,7 +105,7 @@ function parseCanonicalReferenceRegistry(yaml: string): TraceDesignAsset[] {
       status: "CANONICAL",
       authority: "READ_ONLY",
       source: "trace-design-workflow/registry/references.yaml",
-      sourceUrl: current.url,
+      sourceUrl: safeExternalSourceUrl(current.url),
       concerns: concernsForGate(current.gate),
     })
   }
@@ -137,7 +160,7 @@ function projectCreativeOsRegistry(): TraceDesignAsset[] {
     status: mapResourceStatus(resource.lifecycleState),
     authority: mapAuthority(resource.maxExecutionAuthority),
     source: resource.provenance,
-    sourceUrl: resource.sourceUrl,
+    sourceUrl: safeExternalSourceUrl(resource.sourceUrl),
     modes: resource.modes,
     concerns: resource.capabilities.capabilityGaps.map((gap) => {
       const normalized = gap.toLowerCase()
@@ -197,6 +220,7 @@ export async function buildTraceDesignCatalog(): Promise<TraceDesignCatalogSnaps
 
   const assets = dedupeAssets([
     ...TRACE_STUDIO_STATIC_ASSETS,
+    FULL_REFERENCE_REGISTRY_ASSET,
     ...canonical.assets,
     ...creativeOs,
     ...components,
@@ -207,7 +231,7 @@ export async function buildTraceDesignCatalog(): Promise<TraceDesignCatalogSnaps
     sync: {
       canonicalReferenceRegistry: canonical.synced,
       canonicalReferenceCount: canonical.assets.length,
-      staticStudioCount: TRACE_STUDIO_STATIC_ASSETS.length,
+      staticStudioCount: TRACE_STUDIO_STATIC_ASSETS.length + 1,
       creativeOsCount: creativeOs.length,
       componentRegistryCount: components.length,
     },
