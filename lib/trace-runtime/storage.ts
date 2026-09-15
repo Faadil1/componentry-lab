@@ -97,6 +97,19 @@ function rowValue<T>(row: Record<string, unknown>, key: string): T {
   return row[key] as T
 }
 
+function jsonObject(value: unknown): Record<string, unknown> | undefined {
+  let candidate = value
+  if (typeof candidate === "string") {
+    try {
+      candidate = JSON.parse(candidate) as unknown
+    } catch {
+      return undefined
+    }
+  }
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) return undefined
+  return candidate as Record<string, unknown>
+}
+
 export async function createTraceRun(run: TraceRuntimeRun): Promise<void> {
   const sql = await getSql()
   await ensureSchema(sql)
@@ -240,8 +253,8 @@ export async function getTraceAction(actionId: string): Promise<(TraceRuntimeAct
     authority: rowValue<TraceRuntimeAction["authority"]>(row, "authority"),
     reversible: rowValue<boolean>(row, "reversible"),
     status: rowValue<TraceRuntimeAction["status"]>(row, "status"),
-    payload: rowValue<Record<string, unknown>>(row, "payload"),
-    result: rowValue<Record<string, unknown> | null>(row, "result") ?? undefined,
+    payload: jsonObject(rowValue<unknown>(row, "payload")) ?? {},
+    result: jsonObject(rowValue<unknown>(row, "result")),
     createdAt: new Date(rowValue<string | Date>(row, "created_at")).toISOString(),
     executedAt: rowValue<string | Date | null>(row, "executed_at") ? new Date(rowValue<string | Date>(row, "executed_at")).toISOString() : undefined,
   }
