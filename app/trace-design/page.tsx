@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 import { getServerSession } from "next-auth/next"
 
-import { authOptions } from "@/auth"
+import { authOptions, authRuntimeSummary } from "@/auth"
 import { LabNavigation } from "@/components/navigation/lab-navigation"
 import { TraceRuntimeConsole } from "@/components/trace-design/trace-runtime-console"
 import { TraceDesignStudio } from "@/components/trace-design/trace-design-studio"
 import { buildTraceDesignCatalog } from "@/lib/creative-os/trace-design-catalog"
+import { projectPresets } from "@/lib/projects/presets"
 import { listProjects } from "@/lib/projects/repository"
+import type { ProjectBrain } from "@/lib/projects/types"
 
 export const metadata: Metadata = {
   title: "TRACE Design Runtime",
@@ -15,6 +17,17 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic"
 
+async function loadRuntimeProjects(): Promise<ProjectBrain[]> {
+  if (process.env.COMPONENTRY_LAB_STORAGE_MODE !== "postgres") {
+    return projectPresets
+  }
+  try {
+    return await listProjects()
+  } catch {
+    return projectPresets
+  }
+}
+
 export default async function TraceDesignPage({
   searchParams,
 }: {
@@ -22,10 +35,10 @@ export default async function TraceDesignPage({
 }) {
   const params = searchParams ? await searchParams : {}
   const requestedProjectId = typeof params.project === "string" ? params.project : undefined
-  const [catalog, session, projects] = await Promise.all([
+  const [catalog, projects, session] = await Promise.all([
     buildTraceDesignCatalog(),
-    getServerSession(authOptions),
-    listProjects(),
+    loadRuntimeProjects(),
+    authRuntimeSummary.oauthConfigured ? getServerSession(authOptions).catch(() => null) : Promise.resolve(null),
   ])
   const projectId = requestedProjectId ?? projects[0]?.id
   const projectOptions = projects.map((project) => ({
