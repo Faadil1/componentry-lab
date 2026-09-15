@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next"
 import { NextResponse } from "next/server"
 
-import { authOptions } from "@/auth"
+import { authOptions, authRuntimeSummary } from "@/auth"
 import { TRACE_DESIGN_CONCERNS, TRACE_DESIGN_MODES, TRACE_DESIGN_SURFACES } from "@/lib/creative-os/trace-design-studio"
 import { TRACE_RUNTIME_TARGETS, getTraceRuntimeTarget } from "@/lib/trace-runtime/catalog"
 import { executeTraceRuntime } from "@/lib/trace-runtime/engine"
@@ -11,7 +11,8 @@ import type { TraceRuntimeInput } from "@/lib/trace-runtime/types"
 export const dynamic = "force-dynamic"
 
 async function requireOwnerSession() {
-  const session = await getServerSession(authOptions)
+  if (!authRuntimeSummary.oauthConfigured) return null
+  const session = await getServerSession(authOptions).catch(() => null)
   return session?.user ? session : null
 }
 
