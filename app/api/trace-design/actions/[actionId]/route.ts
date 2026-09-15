@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next"
 import { getToken } from "next-auth/jwt"
 import { NextRequest, NextResponse } from "next/server"
 
-import { authOptions } from "@/auth"
+import { authOptions, authRuntimeSummary } from "@/auth"
 import { executeTraceAction, revertTraceAction } from "@/lib/trace-runtime/actions"
 
 export const dynamic = "force-dynamic"
@@ -11,7 +11,11 @@ export async function POST(
   request: NextRequest,
   context: { params: Promise<{ actionId: string }> },
 ) {
-  const session = await getServerSession(authOptions)
+  if (!authRuntimeSummary.oauthConfigured) {
+    return NextResponse.json({ error: "TRACE runtime OAuth is not configured in this deployment." }, { status: 401 })
+  }
+
+  const session = await getServerSession(authOptions).catch(() => null)
   if (!session?.user) return NextResponse.json({ error: "Owner GitHub authentication is required." }, { status: 401 })
 
   try {
