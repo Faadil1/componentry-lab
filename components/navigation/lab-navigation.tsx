@@ -79,7 +79,13 @@ export function LabNavigation({
 
   const preserveProjectHref = (href: string) => {
     if (!activeProjectId) return href
-    if (href === "/" || href === "/projects" || href.startsWith("/film-kit")) {
+    if (
+      href === "/" ||
+      href === "/projects" ||
+      href === "/trace-design" ||
+      href.startsWith("/director") ||
+      href.startsWith("/film-kit")
+    ) {
       const separator = href.includes("?") ? "&" : "?"
       return `${href}${separator}project=${encodeURIComponent(activeProjectId)}`
     }

@@ -10,6 +10,7 @@ export interface SiteNavigationItem {
 
 export const SITE_NAVIGATION: SiteNavigationItem[] = [
   { id: "command", label: "Command", href: "/", group: "CORE" },
+  { id: "trace-design", label: "TRACE Design", href: "/trace-design", group: "CORE" },
   { id: "library", label: "Library", href: "/library", group: "CORE" },
   { id: "playbooks", label: "Playbooks", href: "/playbooks", group: "CORE" },
   { id: "projects", label: "Projects", href: "/projects", group: "CORE" },
@@ -62,7 +63,7 @@ export function getActiveNavigationItem(pathname: string): SiteNavigationItem | 
 export function getSurfaceContext(pathname: string): { brand: string; title: string | null } {
   const activeItem = getActiveNavigationItem(pathname)
   return {
-    brand: "Componentry Lab",
+    brand: "TRACE Design",
     title: activeItem ? activeItem.label : null,
   }
 }

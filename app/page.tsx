@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { getServerSession } from "next-auth/next"
 import { authOptions, authRuntimeSummary } from "@/auth"
 import { AuthControls } from "@/components/auth/auth-controls"
@@ -7,7 +8,7 @@ import { buildCommandProjection } from "@/lib/command/projection"
 
 export const metadata: Metadata = {
   title: "Command",
-  description: "Read-only orchestration of canonical system truth for Componentry Lab.",
+  description: "Read-only orchestration of canonical system truth for TRACE Design.",
 }
 
 export default async function CommandPage({
@@ -20,15 +21,16 @@ export default async function CommandPage({
   const session = await getServerSession(authOptions)
   const projection = await buildCommandProjection(projectId)
   const activeProject = projection.activeProject
+  const studioHref = projectId ? `/trace-design?project=${encodeURIComponent(projectId)}` : "/trace-design"
 
   return (
     <main className="min-h-screen bg-[#f5f4f0] text-neutral-900 selection:bg-neutral-900 selection:text-stone-100">
       <header className="sticky top-0 z-50 border-b border-stone-300/70 bg-[#f5f4f0]/90 px-4 py-3 backdrop-blur-md shadow-xs md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="space-y-1">
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">Componentry Lab</p>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-stone-500">TRACE Design</p>
             <h1 className="text-sm font-semibold tracking-tight text-neutral-900">Command</h1>
-            <p className="text-xs text-neutral-500">Read-only orchestration of canonical system truth</p>
+            <p className="text-xs text-neutral-500">Canonical project truth → exactly one next move → evidence</p>
           </div>
           <LabNavigation
             projectId={projectId}
@@ -91,6 +93,15 @@ export default async function CommandPage({
               <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-300">1</span>
             </div>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-stone-300">{projection.directorRationaleSummary ?? "No director result available."}</p>
+          </article>
+
+          <article className="rounded-3xl border border-[#e66b43] bg-[#fff0e9] p-5 shadow-sm md:p-6">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-[#a34728]">Visible Studio</p>
+            <h3 className="mt-2 text-2xl font-black tracking-tight text-neutral-950">TRACE Design is testable here</h3>
+            <p className="mt-3 text-sm leading-6 text-stone-700">Open the complete visible surface for references, skills, agents, Creative OS resources, reusable components and deterministic routing tests.</p>
+            <Link href={studioHref} className="mt-5 inline-flex rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5">
+              Open TRACE Design Studio
+            </Link>
           </article>
         </section>
       </div>

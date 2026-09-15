@@ -2,6 +2,13 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import { getActiveNavigationItem, getSurfaceContext, SITE_NAVIGATION } from "../lib/navigation"
 
+test("maps TRACE Design to CORE", () => {
+  const item = getActiveNavigationItem("/trace-design")
+  assert.ok(item)
+  assert.equal(item.group, "CORE")
+  assert.equal(item.id, "trace-design")
+})
+
 test("maps Library to CORE", () => {
   const item = getActiveNavigationItem("/library")
   assert.ok(item)
@@ -92,10 +99,14 @@ test("returns null for unknown routes safely", () => {
 
 test("shell contextual metadata functions correctly", () => {
   const context = getSurfaceContext("/library")
-  assert.equal(context.brand, "Componentry Lab")
+  assert.equal(context.brand, "TRACE Design")
   assert.equal(context.title, "Library")
-  
+
+  const studioContext = getSurfaceContext("/trace-design")
+  assert.equal(studioContext.brand, "TRACE Design")
+  assert.equal(studioContext.title, "TRACE Design")
+
   const ytContext = getSurfaceContext("/youtube")
-  assert.equal(ytContext.brand, "Componentry Lab")
+  assert.equal(ytContext.brand, "TRACE Design")
   assert.equal(ytContext.title, "YouTube")
 })

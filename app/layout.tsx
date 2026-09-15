@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Componentry Lab",
-    template: "%s · Componentry Lab",
+    default: "TRACE Design",
+    template: "%s · TRACE Design",
   },
   description:
-    "Componentry Lab is a library of capture-ready interactions, typography systems, and reusable primitives for prototypes, demos, and motion studies.",
+    "TRACE Design is the visible Componentry Lab control surface for governed design intelligence, reusable components, skills, agents, evidence and capture-ready production workflows.",
 }
 
 export default function RootLayout({
